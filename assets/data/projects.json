@@ -1,0 +1,75 @@
+[
+  {
+    "slug": "vox-mana",
+    "title": "Vox Mana",
+    "kicker": "Commander color identity placement, data modeling, visual UX, and source governance.",
+    "status": "Active builder laboratory",
+    "tags": [
+      "Static Site",
+      "Data Modeling",
+      "Visual QA",
+      "AI Workflow"
+    ],
+    "problem": "Creative identity systems can become vague fast when data, lore, UI, and generated output all blur together.",
+    "goal": "Build a source-governed Commander color identity placement system that feels useful, visual, and maintainable.",
+    "stack": "HTML, CSS, JavaScript, generated JSON, visual regression checks, Codex-assisted workflows.",
+    "constraints": "No confidential data, source-first governance, public copy must stay understandable, generated data must not become source authority.",
+    "built": "A multi-page static site with Home, Strategium, Archscry, Apocrypha, placement data, identity dossiers, and documented decision layers.",
+    "broke": "Visual regression drift, route-specific readability issues, generated data boundaries, and AI scope creep all needed explicit guardrails.",
+    "learned": "Good side projects need the same quality habits as work systems: contracts, checks, scope boundaries, and handoffs."
+  },
+  {
+    "slug": "rapidbotz-reporting-concept",
+    "title": "Rapidbotz QA Reporting Concept",
+    "kicker": "Automated QA run summaries and readable release visibility.",
+    "status": "Concept / workflow design",
+    "tags": [
+      "QA Reporting",
+      "Automation Triage",
+      "HTML Reports"
+    ],
+    "problem": "Automation runs can produce lots of data without producing a clear decision for teams or leaders.",
+    "goal": "Turn run results into a readable report that explains what moved, what failed, why it matters, and what action is needed.",
+    "stack": "HTML report concept, run-result ingestion, classification rules, weekly handoff structure.",
+    "constraints": "No private employer data, no exposed system names, examples must remain generalized.",
+    "built": "A concept structure for transforming raw automation results into a leadership-friendly QA signal.",
+    "broke": "The reporting model needs disciplined failure categories or it becomes another dashboard nobody trusts.",
+    "learned": "A good QA report should reduce ambiguity, not just visualize more metrics."
+  },
+  {
+    "slug": "recipe-flexibility-app-concept",
+    "title": "Recipe Flexibility App Concept",
+    "kicker": "Recipe adaptation for cookware, substitutions, time, and family constraints.",
+    "status": "Product concept",
+    "tags": [
+      "Product Thinking",
+      "Food",
+      "AI Assistance"
+    ],
+    "problem": "Recipes often assume you have the exact pan, ingredient, oven behavior, time, and skill level they were written for.",
+    "goal": "Help home cooks adapt recipes safely and practically when real life does not match the recipe card.",
+    "stack": "Static concept today; future app could use structured recipe parsing, substitution rules, and user constraints.",
+    "constraints": "Must avoid unsafe cooking advice, must explain uncertainty, and must keep changes simple enough for a parent cooking on a weeknight.",
+    "built": "A concept model for cookware swaps, time adjustments, ingredient substitutions, and family-friendly constraints.",
+    "broke": "The hard part is not generating suggestions; it is knowing when a substitution changes the actual cooking method.",
+    "learned": "Useful AI products need constraint handling more than clever responses."
+  },
+  {
+    "slug": "mtg-store-inventory-app-concept",
+    "title": "MTG Store Inventory App Concept",
+    "kicker": "Inventory ingestion, pricing, condition tracking, and local game store support.",
+    "status": "Product concept",
+    "tags": [
+      "MTG",
+      "Inventory",
+      "Product Strategy"
+    ],
+    "problem": "Local card inventory is hard to evaluate because condition, pricing, demand, duplicates, and data ingestion all interact.",
+    "goal": "Explore whether a lightweight app could help a local store understand inventory value, sales opportunity, and operational gaps.",
+    "stack": "Concept stage; possible future stack includes card APIs, barcode/CSV ingestion, pricing feeds, and condition workflows.",
+    "constraints": "Inventory data quality, pricing volatility, card condition judgment, and store-specific workflow differences.",
+    "built": "A product framing around ingestion, normalization, pricing, condition tracking, and decision support.",
+    "broke": "The moat is not just displaying card data; existing tools already do that. The opportunity is workflow fit and store-level insight.",
+    "learned": "A product stands out when it solves the messy operational layer, not just the visible lookup problem."
+  }
+]

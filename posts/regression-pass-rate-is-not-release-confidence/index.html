@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regression Pass Rate Is Not Release Confidence — Robert Boles</title>
+  <meta name="description" content="Why pass rate is useful but dangerous when treated as the main signal for release readiness.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="Regression Pass Rate Is Not Release Confidence — Robert Boles">
+  <meta property="og:description" content="Why pass rate is useful but dangerous when treated as the main signal for release readiness.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js"></script>
+</head>
+<body data-root="../../" class="">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+        <a class="nav-link" href="../../automation-cookbook/">cookbook</a>
+        <a class="nav-link" href="../../learning-lab/">learning lab</a>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link" href="../../about/">about</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container page-hero narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../../articles/">Articles</a> / Regression Pass Rate Is Not Release Confidence</div>
+        <p class="eyebrow">QA Field Guide</p>
+        <h1>Regression Pass Rate Is Not Release Confidence</h1>
+        <p class="lede">Why pass rate is useful but dangerous when treated as the main signal for release readiness.</p>
+        <div class="article-meta"><span>Jun 24, 2026</span><span>1 min read</span><span>QA Authority</span></div>
+        <div class="tag-row"><span>Metrics</span><span>Regression</span><span>Release Readiness</span></div>
+      </div>
+    </section>
+    <article class="article">
+      <div class="container article-grid">
+        <div class="article-body">
+          <p class="promise">A pass rate is a signal, not a verdict.</p>
+<h2 id="the-problem">The problem</h2>
+<p>Regression pass rate is easy to understand, easy to chart, and easy to misuse. A high pass rate can hide untested risk. A low pass rate can be caused by noisy automation, bad environments, or duplicate failures. By itself, the number does not tell you whether the product is releasable.</p>
+<h2 id="the-context">The context</h2>
+<p>Leaders like pass rates because they compress complexity into one percentage. Teams like them because they give a visible target. The problem is that software risk does not distribute evenly. One failed test in a critical money movement path can matter more than fifty passed tests around low-impact display behavior.</p>
+<h2 id="the-pattern">The pattern</h2>
+<p>Use pass rate as one input in a release confidence model. Pair it with risk area, defect severity, automation reliability, environment status, test data freshness, escaped defect history, and open dependency status. A release dashboard should answer what matters, not just what ran.</p>
+<h2 id="example">Example</h2>
+<p>Instead of reporting ‘Regression is 91% passed,’ report: ‘Core quote, bind, payment, and document flows are green. Four failures remain. Two are known flaky UI checks, one is blocked by test data, and one is a real defect in cancellation messaging. No Sev 1 or Sev 2 defects are open.’ The second report creates a decision.</p>
+<h2 id="common-mistakes">Common mistakes</h2>
+<p>Do not compare pass rates across teams unless the suites measure similar risk. Do not reward teams for deleting hard tests just to improve the percentage. Do not let a pass rate hide the difference between not run, blocked, skipped, flaky, failed, and not applicable.</p>
+<h2 id="my-rule-of-thumb">My rule of thumb</h2>
+<p>A pass rate tells me how the suite behaved. Release confidence tells me how the product is likely to behave when real users touch it.</p>
+
+          <h2>Related posts</h2>
+          <div class="two-grid"><a class="article-nav-card" href="../../posts/what-good-qa-actually-owns/"><strong>What Good QA Actually Owns</strong><span>QA Field Guide</span></a><a class="article-nav-card" href="../../posts/my-practical-release-readiness-checklist/"><strong>My Practical Release Readiness Checklist</strong><span>QA Field Guide</span></a><a class="article-nav-card" href="../../posts/how-i-review-a-failed-nightly-automation-run/"><strong>How I Review A Failed Nightly Automation Run</strong><span>Automation Cookbook</span></a></div>
+        </div>
+        <aside class="article-aside">
+          <div class="note-card">
+            <h2>On this page</h2>
+            <a href="#the-problem">The problem</a><a href="#the-context">The context</a><a href="#the-pattern">The pattern</a><a href="#example">Example</a><a href="#common-mistakes">Common mistakes</a><a href="#my-rule-of-thumb">My rule of thumb</a>
+          </div>
+          <button class="button copy-link" type="button" data-copy-link>Copy article link</button>
+        </aside>
+      </div>
+    </article>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© 2026 Robert Boles.</span>
+      <span>Built for GitHub Pages. No build step required.</span>
+    </div>
+  </footer>
+</body>
+</html>

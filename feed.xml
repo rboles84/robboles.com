@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+  <title>Robert Boles</title>
+  <link>https://robboles.com/</link>
+  <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
+  <language>en-us</language>
+  <item>
+    <title>What Good QA Actually Owns</title>
+    <link>https://robboles.com/posts/what-good-qa-actually-owns/</link>
+    <guid>https://robboles.com/posts/what-good-qa-actually-owns/</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A practical breakdown of what strong QA ownership looks like beyond clicking through tickets and counting defects.</description>
+  </item>
+  <item>
+    <title>Regression Pass Rate Is Not Release Confidence</title>
+    <link>https://robboles.com/posts/regression-pass-rate-is-not-release-confidence/</link>
+    <guid>https://robboles.com/posts/regression-pass-rate-is-not-release-confidence/</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+    <description>Why pass rate is useful but dangerous when treated as the main signal for release readiness.</description>
+  </item>
+  <item>
+    <title>My Practical Release Readiness Checklist</title>
+    <link>https://robboles.com/posts/my-practical-release-readiness-checklist/</link>
+    <guid>https://robboles.com/posts/my-practical-release-readiness-checklist/</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A field-ready checklist for deciding whether a release is actually understood, not merely finished.</description>
+  </item>
+  <item>
+    <title>How I Review A Failed Nightly Automation Run</title>
+    <link>https://robboles.com/posts/how-i-review-a-failed-nightly-automation-run/</link>
+    <guid>https://robboles.com/posts/how-i-review-a-failed-nightly-automation-run/</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A repeatable triage pattern for making failed automation runs useful instead of noisy.</description>
+  </item>
+  <item>
+    <title>When Not To Automate A Test</title>
+    <link>https://robboles.com/posts/when-not-to-automate-a-test/</link>
+    <guid>https://robboles.com/posts/when-not-to-automate-a-test/</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A practical filter for deciding whether automation will increase confidence or just add maintenance drag.</description>
+  </item>
+  <item>
+    <title>Test Data Is Usually The Real E2E Problem</title>
+    <link>https://robboles.com/posts/test-data-is-usually-the-real-e2e-problem/</link>
+    <guid>https://robboles.com/posts/test-data-is-usually-the-real-e2e-problem/</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+    <description>Why E2E testing often fails because of data control, not because the test idea is wrong.</description>
+  </item>
+  <item>
+    <title>What Vox Mana Taught Me About Data Contracts</title>
+    <link>https://robboles.com/posts/what-vox-mana-taught-me-about-data-contracts/</link>
+    <guid>https://robboles.com/posts/what-vox-mana-taught-me-about-data-contracts/</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+    <description>How a side project reinforced the value of source layers, generated data boundaries, and explicit contracts.</description>
+  </item>
+  <item>
+    <title>How I Use AI/Codex Without Losing Control Of The Project</title>
+    <link>https://robboles.com/posts/how-i-use-ai-codex-without-losing-control-of-the-project/</link>
+    <guid>https://robboles.com/posts/how-i-use-ai-codex-without-losing-control-of-the-project/</guid>
+    <pubDate>Wed, 24 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A practical workflow for using AI assistants while keeping ownership, scope, and decision history clear.</description>
+  </item>
+</channel>
+</rss>

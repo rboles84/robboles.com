@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "what-good-qa-actually-owns",
+    "title": "What Good QA Actually Owns",
+    "date": "2026-06-24",
+    "category": "QA Field Guide",
+    "lane": "QA Authority",
+    "tags": [
+      "QA Strategy",
+      "Release Confidence",
+      "Leadership"
+    ],
+    "description": "A practical breakdown of what strong QA ownership looks like beyond clicking through tickets and counting defects.",
+    "promise": "Good QA owns confidence, risk, feedback, and the shape of the release conversation.",
+    "reading_minutes": 2
+  },
+  {
+    "slug": "regression-pass-rate-is-not-release-confidence",
+    "title": "Regression Pass Rate Is Not Release Confidence",
+    "date": "2026-06-24",
+    "category": "QA Field Guide",
+    "lane": "QA Authority",
+    "tags": [
+      "Metrics",
+      "Regression",
+      "Release Readiness"
+    ],
+    "description": "Why pass rate is useful but dangerous when treated as the main signal for release readiness.",
+    "promise": "A pass rate is a signal, not a verdict.",
+    "reading_minutes": 1
+  },
+  {
+    "slug": "my-practical-release-readiness-checklist",
+    "title": "My Practical Release Readiness Checklist",
+    "date": "2026-06-24",
+    "category": "QA Field Guide",
+    "lane": "QA Authority",
+    "tags": [
+      "Checklist",
+      "Release Readiness",
+      "Risk"
+    ],
+    "description": "A field-ready checklist for deciding whether a release is actually understood, not merely finished.",
+    "promise": "A release checklist should expose risk, not create ceremony.",
+    "reading_minutes": 1
+  },
+  {
+    "slug": "how-i-review-a-failed-nightly-automation-run",
+    "title": "How I Review A Failed Nightly Automation Run",
+    "date": "2026-06-24",
+    "category": "Automation Cookbook",
+    "lane": "Automation Cookbook",
+    "tags": [
+      "Automation",
+      "Nightly Runs",
+      "Triage"
+    ],
+    "description": "A repeatable triage pattern for making failed automation runs useful instead of noisy.",
+    "promise": "A failed nightly run is only useful when it becomes a decision record.",
+    "reading_minutes": 1
+  },
+  {
+    "slug": "when-not-to-automate-a-test",
+    "title": "When Not To Automate A Test",
+    "date": "2026-06-24",
+    "category": "Automation Cookbook",
+    "lane": "Automation Cookbook",
+    "tags": [
+      "Automation",
+      "Test Strategy",
+      "Maintenance"
+    ],
+    "description": "A practical filter for deciding whether automation will increase confidence or just add maintenance drag.",
+    "promise": "Automation should buy confidence faster than it spends maintenance.",
+    "reading_minutes": 1
+  },
+  {
+    "slug": "test-data-is-usually-the-real-e2e-problem",
+    "title": "Test Data Is Usually The Real E2E Problem",
+    "date": "2026-06-24",
+    "category": "QA Field Guide",
+    "lane": "QA Authority",
+    "tags": [
+      "E2E Testing",
+      "Test Data",
+      "Environments"
+    ],
+    "description": "Why E2E testing often fails because of data control, not because the test idea is wrong.",
+    "promise": "Most E2E pain is data pain wearing a different mask.",
+    "reading_minutes": 1
+  },
+  {
+    "slug": "what-vox-mana-taught-me-about-data-contracts",
+    "title": "What Vox Mana Taught Me About Data Contracts",
+    "date": "2026-06-24",
+    "category": "Learning Lab",
+    "lane": "Builder Laboratory",
+    "tags": [
+      "Vox Mana",
+      "Data Contracts",
+      "Builder Notes"
+    ],
+    "description": "How a side project reinforced the value of source layers, generated data boundaries, and explicit contracts.",
+    "promise": "Side projects become useful when they force you to name the system boundaries.",
+    "reading_minutes": 1
+  },
+  {
+    "slug": "how-i-use-ai-codex-without-losing-control-of-the-project",
+    "title": "How I Use AI/Codex Without Losing Control Of The Project",
+    "date": "2026-06-24",
+    "category": "Learning Lab",
+    "lane": "Builder Laboratory",
+    "tags": [
+      "AI Workflows",
+      "Codex",
+      "Project Systems"
+    ],
+    "description": "A practical workflow for using AI assistants while keeping ownership, scope, and decision history clear.",
+    "promise": "AI is useful when the workflow keeps the human in control of scope and judgment.",
+    "reading_minutes": 1
+  }
+]
