@@ -3,3 +3,8 @@ Thumbs.db
 node_modules/
 
 .claude/
+
+# Local-only agent coordination layer — kept private, never published to the public repo / Pages
+.codex/
+docs/
+learning.md
