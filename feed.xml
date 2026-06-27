@@ -6,6 +6,62 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>How I Triage Flaky Automation</title>
+    <link>https://robboles.com/posts/how-i-triage-flaky-automation/</link>
+    <guid>https://robboles.com/posts/how-i-triage-flaky-automation/</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A repeatable way to classify flaky tests by cause before you touch a single line of test code.</description>
+  </item>
+  <item>
+    <title>How To Structure A Selenium Test</title>
+    <link>https://robboles.com/posts/how-to-structure-a-selenium-test/</link>
+    <guid>https://robboles.com/posts/how-to-structure-a-selenium-test/</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A layered structure that keeps UI tests readable and survivable when the interface changes.</description>
+  </item>
+  <item>
+    <title>How To Build An API Smoke Suite</title>
+    <link>https://robboles.com/posts/how-to-build-an-api-smoke-suite/</link>
+    <guid>https://robboles.com/posts/how-to-build-an-api-smoke-suite/</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A small, fast, stable suite that decides whether a build is even worth deeper testing.</description>
+  </item>
+  <item>
+    <title>How To Write A Useful Regression Report</title>
+    <link>https://robboles.com/posts/how-to-write-a-useful-regression-report/</link>
+    <guid>https://robboles.com/posts/how-to-write-a-useful-regression-report/</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A report shape that leads with the decision and the blockers instead of a wall of pass/fail counts.</description>
+  </item>
+  <item>
+    <title>How To Write A Test Plan That Does Not Become Junk</title>
+    <link>https://robboles.com/posts/how-to-write-a-test-plan-that-survives/</link>
+    <guid>https://robboles.com/posts/how-to-write-a-test-plan-that-survives/</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A short, decision-oriented test plan that captures risk and scope instead of describing everything.</description>
+  </item>
+  <item>
+    <title>A Simple QA Dashboard That Leaders Actually Read</title>
+    <link>https://robboles.com/posts/a-simple-qa-dashboard-leaders-actually-read/</link>
+    <guid>https://robboles.com/posts/a-simple-qa-dashboard-leaders-actually-read/</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A dashboard that puts the release decision first and treats charts as supporting evidence.</description>
+  </item>
+  <item>
+    <title>A Better Handoff Template For Long-Running Projects</title>
+    <link>https://robboles.com/posts/a-better-handoff-template-for-long-running-projects/</link>
+    <guid>https://robboles.com/posts/a-better-handoff-template-for-long-running-projects/</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
+    <description>A handoff structure that transfers decisions and context, not just files and repositories.</description>
+  </item>
+  <item>
+    <title>Turning Side Projects Into Proof Of Engineering Judgment</title>
+    <link>https://robboles.com/posts/turning-side-projects-into-proof-of-engineering-judgment/</link>
+    <guid>https://robboles.com/posts/turning-side-projects-into-proof-of-engineering-judgment/</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
+    <description>How to make a side project demonstrate judgment and tradeoffs, not just that you can finish things.</description>
+  </item>
+  <item>
     <title>What Good QA Actually Owns</title>
     <link>https://robboles.com/posts/what-good-qa-actually-owns/</link>
     <guid>https://robboles.com/posts/what-good-qa-actually-owns/</guid>
