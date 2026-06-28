@@ -586,3 +586,160 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 6px; }
   .filter-bar { gap: 6px; }
 }
+
+/* ==========================================================================
+   Empty / drafting states (used while the library is being written)
+   ========================================================================== */
+.lane-note {
+  background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 6px; padding: 24px 26px; max-width: 72ch;
+}
+.lane-note .caption { margin-bottom: 10px; }
+.lane-note p { margin: 0 0 12px; font-size: 16px; line-height: 1.65; color: var(--muted); }
+.lane-note p:last-child { margin-bottom: 0; }
+.lane-note .lane-note-cta { font-size: 14.5px; color: var(--faint); }
+.lane-note a { color: var(--accent); border-bottom: 1px solid var(--accent-soft-line); }
+.lane-note a:hover { border-color: var(--accent); }
+.links-soon { font-family: var(--mono); font-size: 12.5px; color: var(--faint); margin: 0; }
+
+/* ==========================================================================
+   Article template components (RBB-002 scaffolding)
+   ========================================================================== */
+/* Freshness / "last verified" line */
+.article-verified {
+  font-family: var(--mono); font-size: 12px; color: var(--faint);
+  margin: 0 0 28px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.article-verified .dot { color: var(--accent); }
+
+/* Callouts: tip (default, reuses .callout) + warn variant */
+.callout { margin: 24px 0; }
+.callout .callout-label {
+  display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; font-weight: 600; margin-bottom: 6px; color: var(--accent);
+}
+.callout p { margin: 0; }
+.callout.warn { background: #fbf3e7; border-color: #ecd8b3; color: #5c4708; }
+.callout.warn .callout-label { color: #b5810c; }
+.callout.warn strong { color: #8a6308; }
+
+/* Code blocks with language label + copy button */
+.code-block { position: relative; margin: 24px 0; }
+.code-block .code-label {
+  position: absolute; top: 0; left: 0; font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--dark-faint);
+  background: var(--dark-3); padding: 4px 10px; border-radius: 6px 0 6px 0;
+}
+.code-block pre {
+  margin: 0; background: var(--dark); color: #e9e6dd; border: 1px solid var(--dark-line);
+  border-radius: 6px; padding: 34px 18px 18px; overflow-x: auto;
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.65;
+}
+.code-block pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+.code-copy {
+  position: absolute; top: 6px; right: 6px; font-family: var(--mono); font-size: 11px;
+  color: var(--dark-muted); background: var(--dark-3); border: 1px solid var(--dark-line-2);
+  border-radius: 4px; padding: 4px 9px; cursor: pointer; transition: color .14s, border-color .14s;
+}
+.code-copy:hover { color: var(--accent-hi); border-color: var(--accent); }
+
+/* Comparison / micro tables inside articles */
+.article-body table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14.5px; }
+.article-body thead th {
+  text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--faint); font-weight: 600;
+  border-bottom: 2px solid var(--line); padding: 8px 12px;
+}
+.article-body tbody td { border-bottom: 1px solid var(--line); padding: 10px 12px; vertical-align: top; color: var(--muted); }
+.article-body tbody tr:hover { background: var(--surface); }
+.article-body .table-caption { font-size: 13px; color: var(--faint); margin: -14px 0 24px; font-style: italic; }
+
+/* Mid-article inline newsletter CTA (placed after the first solved task) */
+.cta-inline {
+  margin: 36px 0; padding: 22px 24px; background: var(--accent-soft);
+  border: 1px solid var(--accent-soft-line); border-radius: 8px;
+}
+.cta-inline h3 { font-family: var(--display); font-size: 18px; color: var(--ink); margin: 0 0 6px; }
+.cta-inline p { margin: 0 0 14px; font-size: 14.5px; line-height: 1.6; color: #2f5a43; }
+.cta-inline form { display: flex; gap: 8px; flex-wrap: wrap; }
+.cta-inline input[type=email] {
+  flex: 1 1 220px; font-family: var(--mono); font-size: 13.5px; padding: 10px 12px;
+  border: 1px solid var(--accent-soft-line); border-radius: 6px; background: var(--surface);
+}
+
+/* Reusable-asset / lead-magnet block (the anti-slop payload) */
+.reusable-asset {
+  margin: 28px 0; padding: 20px 22px; border: 1px dashed var(--accent-soft-line);
+  border-radius: 8px; background: var(--surface);
+}
+.reusable-asset .caption { margin-bottom: 8px; }
+.reusable-asset p { margin: 0 0 12px; font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+
+/* Author bio block (links to the ProfilePage on /about/) */
+.author-bio {
+  display: grid; grid-template-columns: 56px 1fr; gap: 18px; align-items: start;
+  margin: 48px 0 0; padding: 24px 0 0; border-top: 1px solid var(--line);
+}
+.author-bio .avatar {
+  width: 56px; height: 56px; border-radius: 50%; background: var(--surface-2);
+  border: 1px solid var(--line); display: grid; place-items: center;
+  font-family: var(--mono); font-size: 18px; color: var(--accent); font-weight: 600;
+}
+.author-bio h2 { font-family: var(--display); font-size: 17px; margin: 0 0 4px; }
+.author-bio p { margin: 0 0 8px; font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+.author-bio .bio-links a { font-family: var(--mono); font-size: 12.5px; color: var(--accent); margin-right: 14px; }
+
+/* TOC active-section highlight (driven by IntersectionObserver) */
+.note-card a.is-current { color: var(--accent); font-weight: 600; }
+
+@media (max-width: 760px) {
+  .author-bio { grid-template-columns: 1fr; }
+  .author-bio .avatar { display: none; }
+}
+
+/* ==========================================================================
+   Field Kit (reusable artifacts library)
+   ========================================================================== */
+.narrow-body { max-width: 760px; margin: 0 auto; }
+.narrow-body h2 { font-family: var(--display); font-size: 22px; font-weight: 600; margin: 36px 0 14px; }
+.narrow-body > p { font-size: 16px; line-height: 1.7; color: var(--muted); margin: 0 0 18px; }
+.narrow-body code { font-family: var(--mono); font-size: 0.88em; background: var(--surface-2); border-radius: 3px; padding: 2px 6px; }
+
+.kit-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.button.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.kit-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+.kit-table thead th {
+  text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--faint); font-weight: 600;
+  border-bottom: 2px solid var(--line); padding: 9px 12px;
+}
+.kit-table tbody td { border-bottom: 1px solid var(--line); padding: 11px 12px; vertical-align: top; color: var(--muted); }
+.kit-table tbody td strong { color: var(--ink); }
+
+/* General table caption (article-scoped rule above still wins inside .article-body) */
+.table-caption { font-size: 13px; color: var(--faint); margin: -6px 0 24px; font-style: italic; }
+
+.kit-voice {
+  margin: 16px 0; padding: 16px 18px; background: var(--surface);
+  border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 6px;
+}
+.kit-voice-label {
+  display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; font-weight: 600; color: var(--accent); margin-bottom: 6px;
+}
+.kit-voice p { margin: 0; font-size: 15px; line-height: 1.65; color: #2a2823; }
+.kit-voice code { background: var(--surface-2); }
+
+.kit-back { margin-top: 32px; font-family: var(--mono); font-size: 13px; }
+.kit-back a { color: var(--accent); }
+
+/* Print: strip the chrome so a Field Kit card saves clean to PDF */
+@media print {
+  .site-header, .site-footer, .skip-link, .kit-actions, .kit-back, .nav-toggle { display: none !important; }
+  body { background: #fff; }
+  .page-hero { padding-top: 12px !important; }
+  a { color: inherit; text-decoration: none; }
+  .kit-voice, .kit-table, .callout { break-inside: avoid; }
+}

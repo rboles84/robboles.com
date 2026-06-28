@@ -98,6 +98,64 @@
       });
   }
 
+  // Print / save-as-PDF buttons (Field Kit artifacts)
+  document.querySelectorAll('[data-print]').forEach(function (button) {
+    button.addEventListener('click', function () { window.print(); });
+  });
+
+  // Code-block copy buttons (article template)
+  document.querySelectorAll('[data-code-copy]').forEach(function (button) {
+    button.addEventListener('click', async function () {
+      const block = button.closest('.code-block');
+      const pre = block ? block.querySelector('pre') : null;
+      if (!pre) return;
+      try {
+        await navigator.clipboard.writeText(pre.innerText);
+        const original = button.textContent;
+        button.textContent = 'copied';
+        setTimeout(function () { button.textContent = original; }, 1500);
+      } catch (err) {
+        button.textContent = 'failed';
+      }
+    });
+  });
+
+  // Active-section tracking for the sticky article TOC.
+  // Scroll-position based: the active heading is the last one scrolled past the
+  // offset line below the sticky header. Reliable across thin headings and fast scrolls.
+  const tocNav = document.querySelector('[data-toc]');
+  if (tocNav) {
+    const tocLinks = Array.from(tocNav.querySelectorAll('a'));
+    const sections = tocLinks
+      .map(function (link) {
+        const id = (link.getAttribute('href') || '').replace('#', '');
+        return { link: link, el: id && document.getElementById(id) };
+      })
+      .filter(function (s) { return s.el; });
+
+    if (sections.length) {
+      let ticking = false;
+      const offset = 100; // px below the top, clears the sticky header
+      function updateToc() {
+        ticking = false;
+        let active = sections[0];
+        for (let i = 0; i < sections.length; i++) {
+          if (sections[i].el.getBoundingClientRect().top - offset <= 0) {
+            active = sections[i];
+          } else {
+            break;
+          }
+        }
+        tocLinks.forEach(function (l) { l.classList.remove('is-current'); });
+        if (active) active.link.classList.add('is-current');
+      }
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; window.requestAnimationFrame(updateToc); }
+      }, { passive: true });
+      updateToc();
+    }
+  }
+
   function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, function (char) {
       return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]);

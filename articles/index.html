@@ -47,109 +47,14 @@
     </section>
     <section class="section">
       <div class="container">
-        <div class="filter-bar">
-          <button class="filter-button is-active" type="button" data-filter="all">All</button>
-          <button class="filter-button" type="button" data-filter="QA Field Guide">QA Field Guide</button>
-          <button class="filter-button" type="button" data-filter="Automation Cookbook">Automation Cookbook</button>
-          <button class="filter-button" type="button" data-filter="Learning Lab">Learning Lab</button>
-          <input class="search-box" type="search" placeholder="Filter articles..." data-filter-input>
+        <div class="card-grid">
+          <article class="post-card" data-card data-title="What Good QA Actually Owns" data-category="QA Field Guide" data-tags="QA Strategy Release Confidence Ownership">
+            <div class="card-topline"><span>QA Field Guide</span><span>4 min read</span></div>
+            <h3><a href="../posts/what-good-qa-actually-owns/">What Good QA Actually Owns</a></h3>
+            <p>QA owns quality &mdash; and you own it by making it visible to the right people, in the language they can act on, before it ships.</p>
+            <div class="tag-row"><span>QA Strategy</span><span>Release Confidence</span><span>Ownership</span></div>
+          </article>
         </div>
-        <div class="card-grid"><article class="post-card" data-card data-title="How I Triage Flaky Automation" data-category="Automation Cookbook" data-tags="Automation Flaky Tests Triage">
-  <div class="card-topline"><span>Automation Cookbook</span><span>3 min read</span></div>
-  <h3><a href="../posts/how-i-triage-flaky-automation/">How I Triage Flaky Automation</a></h3>
-  <p>A repeatable way to classify flaky tests by cause before you touch a single line of test code.</p>
-  <div class="tag-row"><span>Automation</span><span>Flaky Tests</span><span>Triage</span></div>
-</article>
-<article class="post-card" data-card data-title="How To Structure A Selenium Test" data-category="Automation Cookbook" data-tags="Selenium Page Objects Automation">
-  <div class="card-topline"><span>Automation Cookbook</span><span>3 min read</span></div>
-  <h3><a href="../posts/how-to-structure-a-selenium-test/">How To Structure A Selenium Test</a></h3>
-  <p>A layered structure that keeps UI tests readable and survivable when the interface changes.</p>
-  <div class="tag-row"><span>Selenium</span><span>Page Objects</span><span>Automation</span></div>
-</article>
-<article class="post-card" data-card data-title="How To Build An API Smoke Suite" data-category="Automation Cookbook" data-tags="API Smoke Tests Rest Assured">
-  <div class="card-topline"><span>Automation Cookbook</span><span>3 min read</span></div>
-  <h3><a href="../posts/how-to-build-an-api-smoke-suite/">How To Build An API Smoke Suite</a></h3>
-  <p>A small, fast, stable suite that decides whether a build is even worth deeper testing.</p>
-  <div class="tag-row"><span>API</span><span>Smoke Tests</span><span>Rest Assured</span></div>
-</article>
-<article class="post-card" data-card data-title="How To Write A Useful Regression Report" data-category="Automation Cookbook" data-tags="Reporting Regression Communication">
-  <div class="card-topline"><span>Automation Cookbook</span><span>3 min read</span></div>
-  <h3><a href="../posts/how-to-write-a-useful-regression-report/">How To Write A Useful Regression Report</a></h3>
-  <p>A report shape that leads with the decision and the blockers instead of a wall of pass/fail counts.</p>
-  <div class="tag-row"><span>Reporting</span><span>Regression</span><span>Communication</span></div>
-</article>
-<article class="post-card" data-card data-title="How To Write A Test Plan That Does Not Become Junk" data-category="Automation Cookbook" data-tags="Test Planning Documentation Strategy">
-  <div class="card-topline"><span>Automation Cookbook</span><span>3 min read</span></div>
-  <h3><a href="../posts/how-to-write-a-test-plan-that-survives/">How To Write A Test Plan That Does Not Become Junk</a></h3>
-  <p>A short, decision-oriented test plan that captures risk and scope instead of describing everything.</p>
-  <div class="tag-row"><span>Test Planning</span><span>Documentation</span><span>Strategy</span></div>
-</article>
-<article class="post-card" data-card data-title="A Simple QA Dashboard That Leaders Actually Read" data-category="QA Field Guide" data-tags="Metrics Dashboards Reporting">
-  <div class="card-topline"><span>QA Field Guide</span><span>3 min read</span></div>
-  <h3><a href="../posts/a-simple-qa-dashboard-leaders-actually-read/">A Simple QA Dashboard That Leaders Actually Read</a></h3>
-  <p>A dashboard that puts the release decision first and treats charts as supporting evidence.</p>
-  <div class="tag-row"><span>Metrics</span><span>Dashboards</span><span>Reporting</span></div>
-</article>
-<article class="post-card" data-card data-title="A Better Handoff Template For Long-Running Projects" data-category="Learning Lab" data-tags="Handoffs Documentation Project Systems">
-  <div class="card-topline"><span>Learning Lab</span><span>3 min read</span></div>
-  <h3><a href="../posts/a-better-handoff-template-for-long-running-projects/">A Better Handoff Template For Long-Running Projects</a></h3>
-  <p>A handoff structure that transfers decisions and context, not just files and repositories.</p>
-  <div class="tag-row"><span>Handoffs</span><span>Documentation</span><span>Project Systems</span></div>
-</article>
-<article class="post-card" data-card data-title="Turning Side Projects Into Proof Of Engineering Judgment" data-category="Learning Lab" data-tags="Builder Notes Career Side Projects">
-  <div class="card-topline"><span>Learning Lab</span><span>3 min read</span></div>
-  <h3><a href="../posts/turning-side-projects-into-proof-of-engineering-judgment/">Turning Side Projects Into Proof Of Engineering Judgment</a></h3>
-  <p>How to make a side project demonstrate judgment and tradeoffs, not just that you can finish things.</p>
-  <div class="tag-row"><span>Builder Notes</span><span>Career</span><span>Side Projects</span></div>
-</article>
-<article class="post-card" data-card data-title="What Good QA Actually Owns" data-category="QA Field Guide" data-tags="QA Strategy Release Confidence Leadership">
-  <div class="card-topline"><span>QA Field Guide</span><span>2 min read</span></div>
-  <h3><a href="../posts/what-good-qa-actually-owns/">What Good QA Actually Owns</a></h3>
-  <p>A practical breakdown of what strong QA ownership looks like beyond clicking through tickets and counting defects.</p>
-  <div class="tag-row"><span>QA Strategy</span><span>Release Confidence</span><span>Leadership</span></div>
-</article>
-<article class="post-card" data-card data-title="Regression Pass Rate Is Not Release Confidence" data-category="QA Field Guide" data-tags="Metrics Regression Release Readiness">
-  <div class="card-topline"><span>QA Field Guide</span><span>1 min read</span></div>
-  <h3><a href="../posts/regression-pass-rate-is-not-release-confidence/">Regression Pass Rate Is Not Release Confidence</a></h3>
-  <p>Why pass rate is useful but dangerous when treated as the main signal for release readiness.</p>
-  <div class="tag-row"><span>Metrics</span><span>Regression</span><span>Release Readiness</span></div>
-</article>
-<article class="post-card" data-card data-title="My Practical Release Readiness Checklist" data-category="QA Field Guide" data-tags="Checklist Release Readiness Risk">
-  <div class="card-topline"><span>QA Field Guide</span><span>1 min read</span></div>
-  <h3><a href="../posts/my-practical-release-readiness-checklist/">My Practical Release Readiness Checklist</a></h3>
-  <p>A field-ready checklist for deciding whether a release is actually understood, not merely finished.</p>
-  <div class="tag-row"><span>Checklist</span><span>Release Readiness</span><span>Risk</span></div>
-</article>
-<article class="post-card" data-card data-title="How I Review A Failed Nightly Automation Run" data-category="Automation Cookbook" data-tags="Automation Nightly Runs Triage">
-  <div class="card-topline"><span>Automation Cookbook</span><span>1 min read</span></div>
-  <h3><a href="../posts/how-i-review-a-failed-nightly-automation-run/">How I Review A Failed Nightly Automation Run</a></h3>
-  <p>A repeatable triage pattern for making failed automation runs useful instead of noisy.</p>
-  <div class="tag-row"><span>Automation</span><span>Nightly Runs</span><span>Triage</span></div>
-</article>
-<article class="post-card" data-card data-title="When Not To Automate A Test" data-category="Automation Cookbook" data-tags="Automation Test Strategy Maintenance">
-  <div class="card-topline"><span>Automation Cookbook</span><span>1 min read</span></div>
-  <h3><a href="../posts/when-not-to-automate-a-test/">When Not To Automate A Test</a></h3>
-  <p>A practical filter for deciding whether automation will increase confidence or just add maintenance drag.</p>
-  <div class="tag-row"><span>Automation</span><span>Test Strategy</span><span>Maintenance</span></div>
-</article>
-<article class="post-card" data-card data-title="Test Data Is Usually The Real E2E Problem" data-category="QA Field Guide" data-tags="E2E Testing Test Data Environments">
-  <div class="card-topline"><span>QA Field Guide</span><span>1 min read</span></div>
-  <h3><a href="../posts/test-data-is-usually-the-real-e2e-problem/">Test Data Is Usually The Real E2E Problem</a></h3>
-  <p>Why E2E testing often fails because of data control, not because the test idea is wrong.</p>
-  <div class="tag-row"><span>E2E Testing</span><span>Test Data</span><span>Environments</span></div>
-</article>
-<article class="post-card" data-card data-title="What Vox Mana Taught Me About Data Contracts" data-category="Learning Lab" data-tags="Vox Mana Data Contracts Builder Notes">
-  <div class="card-topline"><span>Learning Lab</span><span>1 min read</span></div>
-  <h3><a href="../posts/what-vox-mana-taught-me-about-data-contracts/">What Vox Mana Taught Me About Data Contracts</a></h3>
-  <p>How a side project reinforced the value of source layers, generated data boundaries, and explicit contracts.</p>
-  <div class="tag-row"><span>Vox Mana</span><span>Data Contracts</span><span>Builder Notes</span></div>
-</article>
-<article class="post-card" data-card data-title="How I Use AI/Codex Without Losing Control Of The Project" data-category="Learning Lab" data-tags="AI Workflows Codex Project Systems">
-  <div class="card-topline"><span>Learning Lab</span><span>1 min read</span></div>
-  <h3><a href="../posts/how-i-use-ai-codex-without-losing-control-of-the-project/">How I Use AI/Codex Without Losing Control Of The Project</a></h3>
-  <p>A practical workflow for using AI assistants while keeping ownership, scope, and decision history clear.</p>
-  <div class="tag-row"><span>AI Workflows</span><span>Codex</span><span>Project Systems</span></div>
-</article></div>
         <p class="empty-state" data-empty-state>No matching articles.</p>
       </div>
     </section>
@@ -166,6 +71,7 @@
         <a href="../qa-field-guide/">QA Field Guide</a>
         <a href="../automation-cookbook/">Automation Cookbook</a>
         <a href="../learning-lab/">Learning Lab</a>
+        <a href="../field-kit/">Field Kit</a>
         <a href="../projects/">Projects</a>
       </div>
       <div>

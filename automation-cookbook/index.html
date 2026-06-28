@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Automation Cookbook — Robert Boles</title>
-  <meta name="description" content="Specific, searchable, copy-pasteable automation recipes. Each one solves a single real problem — no framework tours, no theory dumps.">
+  <meta name="description" content="Specific, copy-pasteable automation recipes. Each one solves a single real problem — no framework tours, no theory dumps.">
   <meta name="author" content="Robert Boles">
   <meta name="color-scheme" content="light">
   <meta property="og:title" content="Automation Cookbook — Robert Boles">
-  <meta property="og:description" content="Specific, searchable, copy-pasteable automation recipes. Each one solves a single real problem — no framework tours, no theory dumps.">
+  <meta property="og:description" content="Specific, copy-pasteable automation recipes. Each one solves a single real problem — no framework tours, no theory dumps.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="../assets/css/styles.css">
@@ -41,83 +41,17 @@
       <div class="container">
         <div class="breadcrumbs"><a href="../">~</a> / automation-cookbook</div>
         <h1>Automation Cookbook</h1>
-        <p class="lede">Specific, searchable, copy-pasteable recipes. Each one solves a single real problem — no framework tours, no theory dumps. The cookbook grows one tested recipe at a time.</p>
-        <div class="filter-bar" style="margin-top:24px;">
-          <input class="search-box" type="search" placeholder="/ search recipes — e.g. flaky, nightly, strategy" data-filter-input>
-        </div>
+        <p class="lede">Specific, copy-pasteable recipes. Each one solves a single real problem — no framework tours, no theory dumps. The cookbook grows one tested recipe at a time.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="card-grid">
-
-          <article class="post-card" data-card data-title="How I Review A Failed Nightly Automation Run" data-category="Automation Cookbook" data-tags="automation nightly triage ci-cd">
-            <div class="card-topline"><span>r01</span><span>practical</span></div>
-            <h3><a href="../posts/how-i-review-a-failed-nightly-automation-run/">How to review a failed nightly automation run</a></h3>
-            <p>A repeatable triage pattern for turning a noisy failed run into a clear decision record.</p>
-            <div class="tag-row"><span>nightly</span><span>triage</span><span>ci-cd</span></div>
-            <div class="card-topline" style="margin-top:6px;"><span style="color:var(--fainter);">~1 min read</span><span style="color:var(--accent);font-size:14px;">→</span></div>
-          </article>
-
-          <article class="post-card" data-card data-title="When Not To Automate A Test" data-category="Automation Cookbook" data-tags="automation strategy roi maintenance">
-            <div class="card-topline"><span>r02</span><span>judgment</span></div>
-            <h3><a href="../posts/when-not-to-automate-a-test/">How to decide what not to automate</a></h3>
-            <p>A practical filter for whether automation will buy confidence or just add maintenance drag.</p>
-            <div class="tag-row"><span>strategy</span><span>roi</span><span>maintenance</span></div>
-            <div class="card-topline" style="margin-top:6px;"><span style="color:var(--fainter);">~1 min read</span><span style="color:var(--accent);font-size:14px;">→</span></div>
-          </article>
-
-          <article class="post-card" data-card data-title="How I Triage Flaky Automation" data-category="Automation Cookbook" data-tags="flaky stability triage automation">
-            <div class="card-topline"><span>r03</span><span>core</span></div>
-            <h3><a href="../posts/how-i-triage-flaky-automation/">How to triage flaky automation</a></h3>
-            <p>Classify flaky tests by cause — environment, design, or real product instability — before you fix anything.</p>
-            <div class="tag-row"><span>flaky</span><span>stability</span><span>triage</span></div>
-            <div class="card-topline" style="margin-top:6px;"><span style="color:var(--fainter);">~3 min read</span><span style="color:var(--accent);font-size:14px;">→</span></div>
-          </article>
-
-          <article class="post-card" data-card data-title="How To Structure A Selenium Test" data-category="Automation Cookbook" data-tags="selenium page-objects automation">
-            <div class="card-topline"><span>r04</span><span>core</span></div>
-            <h3><a href="../posts/how-to-structure-a-selenium-test/">How to structure a Selenium test</a></h3>
-            <p>A layered page-object structure that keeps UI tests readable and survivable when the interface changes.</p>
-            <div class="tag-row"><span>selenium</span><span>page-objects</span><span>patterns</span></div>
-            <div class="card-topline" style="margin-top:6px;"><span style="color:var(--fainter);">~3 min read</span><span style="color:var(--accent);font-size:14px;">→</span></div>
-          </article>
-
-          <article class="post-card" data-card data-title="How To Build An API Smoke Suite" data-category="Automation Cookbook" data-tags="api smoke rest-assured">
-            <div class="card-topline"><span>r05</span><span>core</span></div>
-            <h3><a href="../posts/how-to-build-an-api-smoke-suite/">How to build an API smoke suite</a></h3>
-            <p>A small, fast, stable suite that decides whether a build is even worth deeper testing.</p>
-            <div class="tag-row"><span>api</span><span>smoke</span><span>rest-assured</span></div>
-            <div class="card-topline" style="margin-top:6px;"><span style="color:var(--fainter);">~3 min read</span><span style="color:var(--accent);font-size:14px;">→</span></div>
-          </article>
-
-          <article class="post-card" data-card data-title="How To Write A Useful Regression Report" data-category="Automation Cookbook" data-tags="reporting regression communication">
-            <div class="card-topline"><span>r06</span><span>practical</span></div>
-            <h3><a href="../posts/how-to-write-a-useful-regression-report/">How to write a useful regression report</a></h3>
-            <p>Lead with the decision and the blockers instead of a wall of pass/fail counts.</p>
-            <div class="tag-row"><span>reporting</span><span>regression</span><span>comms</span></div>
-            <div class="card-topline" style="margin-top:6px;"><span style="color:var(--fainter);">~3 min read</span><span style="color:var(--accent);font-size:14px;">→</span></div>
-          </article>
-
-          <article class="post-card" data-card data-title="How To Write A Test Plan That Does Not Become Junk" data-category="Automation Cookbook" data-tags="planning docs strategy">
-            <div class="card-topline"><span>r07</span><span>judgment</span></div>
-            <h3><a href="../posts/how-to-write-a-test-plan-that-survives/">How to write a test plan that does not become junk</a></h3>
-            <p>A short, decision-oriented plan that captures risk and scope instead of describing everything.</p>
-            <div class="tag-row"><span>planning</span><span>docs</span><span>strategy</span></div>
-            <div class="card-topline" style="margin-top:6px;"><span style="color:var(--fainter);">~3 min read</span><span style="color:var(--accent);font-size:14px;">→</span></div>
-          </article>
-
-          <article class="post-card" data-card data-title="A Better Handoff Template For Long-Running Projects" data-category="Automation Cookbook" data-tags="handoff docs project-systems">
-            <div class="card-topline"><span>r08</span><span>practical</span></div>
-            <h3><a href="../posts/a-better-handoff-template-for-long-running-projects/">How to create a QA handoff file</a></h3>
-            <p>A handoff structure that transfers decisions and context, not just files and repositories.</p>
-            <div class="tag-row"><span>handoff</span><span>docs</span><span>context</span></div>
-            <div class="card-topline" style="margin-top:6px;"><span style="color:var(--fainter);">~3 min read</span><span style="color:var(--accent);font-size:14px;">→</span></div>
-          </article>
-
+        <div class="lane-note">
+          <p class="caption">// status: stocking the kitchen</p>
+          <p>No recipes are published yet. Each one will be a single, tested, copy-pasteable solution — real config, the failure it prevents, and the exact command or snippet you can lift into your own suite.</p>
+          <p class="lane-note-cta">First recipes are being written from the <a href="../qa-field-guide/">Automation</a> topics. <a href="../#subscribe">Subscribe</a> or grab the <a href="../feed.xml">RSS feed</a> to get them as they ship.</p>
         </div>
-        <p class="empty-state" data-empty-state>No recipes match that filter — try "nightly", "triage", or "strategy".</p>
       </div>
     </section>
 
@@ -133,6 +67,7 @@
         <a href="../qa-field-guide/">QA Field Guide</a>
         <a href="../automation-cookbook/">Automation Cookbook</a>
         <a href="../learning-lab/">Learning Lab</a>
+        <a href="../field-kit/">Field Kit</a>
         <a href="../projects/">Projects</a>
       </div>
       <div>

@@ -13,7 +13,34 @@
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../feed.xml">
+  <link rel="canonical" href="https://robboles.com/about/">
   <script defer src="../assets/js/site.js"></script>
+
+  <!-- ProfilePage: the author entity that every article's TechArticle author @id points to. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": "https://robboles.com/about/",
+    "mainEntity": {
+      "@type": "Person",
+      "@id": "https://robboles.com/about/#person",
+      "name": "Robert Boles",
+      "url": "https://robboles.com/about/",
+      "jobTitle": "QA Lead",
+      "description": "QA lead focused on release confidence, automation systems, and practical experiments — owns quality in production and builds side projects as a public laboratory.",
+      "knowsAbout": [
+        "Quality Assurance",
+        "Test Automation",
+        "Release Readiness",
+        "QA Metrics and Reporting",
+        "End-to-End Testing",
+        "AI-assisted QA workflows"
+      ]
+    }
+  }
+  </script>
+  <!-- TODO: add "sameAs": ["https://github.com/<handle>", "https://www.linkedin.com/in/<handle>"] to the Person above once the real profile URLs are confirmed. This is the strongest single E-E-A-T signal. -->
 </head>
 <body data-root="../" class="">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -91,6 +118,7 @@
         <a href="../qa-field-guide/">QA Field Guide</a>
         <a href="../automation-cookbook/">Automation Cookbook</a>
         <a href="../learning-lab/">Learning Lab</a>
+        <a href="../field-kit/">Field Kit</a>
         <a href="../projects/">Projects</a>
       </div>
       <div>

@@ -8,3 +8,6 @@ node_modules/
 .codex/
 docs/
 learning.md
+
+# Local-only drafting scratch (working material; the published post lives under posts/)
+content/drafts/
