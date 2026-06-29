@@ -692,6 +692,15 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
 /* TOC active-section highlight (driven by IntersectionObserver) */
 .note-card a.is-current { color: var(--accent); font-weight: 600; }
 
+/* Home "start here" lanes — roadmap state for not-yet-live lanes */
+.lane-card .soon-tag {
+  display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--faint); background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; margin-bottom: 10px;
+}
+.lane-card.is-soon { opacity: .72; }
+.lane-card.is-soon:hover { opacity: 1; }
+
 @media (max-width: 760px) {
   .author-bio { grid-template-columns: 1fr; }
   .author-bio .avatar { display: none; }
