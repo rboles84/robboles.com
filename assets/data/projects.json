@@ -19,24 +19,6 @@
     "learned": "Good side projects need the same quality habits as work systems: contracts, checks, scope boundaries, and handoffs."
   },
   {
-    "slug": "rapidbotz-reporting-concept",
-    "title": "Rapidbotz QA Reporting Concept",
-    "kicker": "Automated QA run summaries and readable release visibility.",
-    "status": "Concept / workflow design",
-    "tags": [
-      "QA Reporting",
-      "Automation Triage",
-      "HTML Reports"
-    ],
-    "problem": "Automation runs can produce lots of data without producing a clear decision for teams or leaders.",
-    "goal": "Turn run results into a readable report that explains what moved, what failed, why it matters, and what action is needed.",
-    "stack": "HTML report concept, run-result ingestion, classification rules, weekly handoff structure.",
-    "constraints": "No private employer data, no exposed system names, examples must remain generalized.",
-    "built": "A concept structure for transforming raw automation results into a leadership-friendly QA signal.",
-    "broke": "The reporting model needs disciplined failure categories or it becomes another dashboard nobody trusts.",
-    "learned": "A good QA report should reduce ambiguity, not just visualize more metrics."
-  },
-  {
     "slug": "recipe-flexibility-app-concept",
     "title": "Recipe Flexibility App Concept",
     "kicker": "Recipe adaptation for cookware, substitutions, time, and family constraints.",
