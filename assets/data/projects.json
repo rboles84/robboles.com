@@ -2,8 +2,9 @@
   {
     "slug": "vox-mana",
     "title": "Vox Mana",
-    "kicker": "Commander color identity placement, data modeling, visual UX, and source governance.",
-    "status": "Active builder laboratory",
+    "live_url": "https://voxmana.io",
+    "kicker": "A live, source-governed Commander discovery tool — enterprise QA habits at hobby scale.",
+    "status": "Live build",
     "tags": [
       "Static Site",
       "Data Modeling",
