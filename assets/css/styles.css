@@ -752,3 +752,35 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   a { color: inherit; text-decoration: none; }
   .kit-voice, .kit-table, .callout { break-inside: avoid; }
 }
+
+/* ---- Card-name hover preview (Table Talk articles) ----------------------
+   .cardname wraps an MTG card name in article body copy. The image shown on
+   hover/focus is a small, locally-hosted thumbnail (assets/images/cards/) —
+   fetched once at authoring time, not at runtime — so there is no live
+   third-party request. The popup's outbound link still goes to Scryfall for
+   whoever wants the current printing. See assets/js/site.js initCardHover(). */
+.cardname {
+  border-bottom: 1px dotted var(--fainter);
+  cursor: help;
+}
+.cardname:hover, .cardname:focus { border-bottom-color: var(--accent); color: var(--accent); }
+
+#cardpop {
+  display: none; position: fixed; z-index: 60; width: 240px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: 0 18px 40px -22px rgba(28, 27, 24, 0.5);
+  opacity: 0; transform: translateY(4px); transition: opacity .14s ease, transform .14s ease;
+}
+/* Not interactive until it has actually faded in — avoids a sliver of dead
+   space intercepting clicks/hover during the fade, while still letting the
+   reader move the pointer into the popup and click the Scryfall link once
+   it's shown (see the hide-delay logic in assets/js/site.js). */
+#cardpop:not(.on) { pointer-events: none; }
+#cardpop.on { opacity: 1; transform: translateY(0); }
+#cardpop img { display: block; width: 100%; border-radius: var(--radius) var(--radius) 0 0; }
+#cardpop .cp-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 10px; font-family: var(--mono); font-size: 11.5px;
+}
+#cardpop .cp-nm { color: var(--muted); }
+#cardpop .cp-foot a { color: var(--accent); border-bottom: none; }

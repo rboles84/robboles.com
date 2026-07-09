@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mana Base Codex · All 37 Commander Identities</title>
+<meta name="description" content="An illuminated reference to every Commander mana-fixing land and rock, mapped across all 37 color identities — with a hypergeometric consistency lab, a chronological timeline of fixing, and an authored lore layer.">
+<meta name="color-scheme" content="dark">
+<!-- Mana Font: MTG mana-symbol icons used in the Cycle Catalog member pips.
+     Self-hosted subset (mana-local.css + mana.woff/ttf) so this page makes zero external requests. -->
+<link rel="stylesheet" href="mana-local.css">
+<style>
+/* ============================================================================
+   THE MANA BASE CODEX  ·  Vox Mana
+   Museum-grade elevation of the reference codex. Established visual language
+   (obsidian / aged-bone / arcane-gold, WUBRG-strict) is preserved verbatim;
+   every new element is an information or atmosphere layer on top of it.
+   Cascade layers keep the added surface from fighting the original tokens.
+   ========================================================================== */
+@layer tokens, base, atmosphere, chrome, build, gallery, lab, timeline, catalog, motion, print;
+
+@layer tokens{
+  :root{
+    --ink:#0c0e13;          /* obsidian ground */
+    --ink-2:#12151d;        /* panel */
+    --ink-3:#181c26;        /* raised panel */
+    --ink-4:#1e2330;        /* hover / active raised */
+    --line:#2a3040;         /* hairline */
+    --line-2:#3a4256;
+    --bone:#e9e2cf;         /* primary text, aged bone */
+    --bone-dim:#b3ac98;     /* secondary */
+    --bone-faint:#7b7663;   /* tertiary / captions */
+    --gold:#c9a24b;         /* arcane accent, used sparingly */
+    --gold-dim:#8a7434;
+    --gold-glow:rgba(201,162,75,.18);
+    /* WUBRG identity pips — restrained, never neon */
+    --W:#f0e9cf; --U:#5fa0c9; --B:#a692c4; --R:#cc5f4c; --G:#6fa66a; --C:#a9b0bc;
+    --Wg:rgba(240,233,207,.14); --Ug:rgba(95,160,201,.16); --Bg:rgba(166,146,196,.16);
+    --Rg:rgba(204,95,76,.16); --Gg:rgba(111,166,106,.16); --Cg:rgba(169,176,188,.14);
+    /* tier colors */
+    --tS:#c9a24b; --tA:#7db8a0; --tB:#6f8fc0; --tC:#8a8272;
+    /* system */
+    --ease:cubic-bezier(.2,.8,.2,1);
+    --r-sm:3px; --r-md:5px; --r-lg:8px;
+    --flavor:0;             /* 0 = codex mode, 1 = flavor mode (JS-driven) */
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  }
+}
+
+@layer base{
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--bone);
+    background:
+      radial-gradient(1200px 700px at 78% -8%, rgba(201,162,75,.06), transparent 60%),
+      radial-gradient(900px 600px at 8% 108%, rgba(95,160,201,.05), transparent 60%),
+      var(--ink);
+    font-family:var(--serif);
+    font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:var(--mono)}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 22px 90px; position:relative; z-index:1}
+  h1,h2,h3{font-weight:600; letter-spacing:-.01em}
+  a{color:var(--gold); text-decoration:none; border-bottom:1px solid var(--gold-dim)}
+  .skip{position:absolute; left:-999px; top:0; background:var(--gold); color:#1a140a;
+    padding:8px 14px; border-radius:var(--r-sm); z-index:100; font-family:var(--mono); font-size:13px}
+  .skip:focus{left:12px; top:12px}
+  :where(button,a,input,summary,[tabindex]):focus-visible{
+    outline:2px solid var(--gold); outline-offset:2px; border-radius:2px}
+
+  /* shared pips */
+  .pips{display:flex; gap:4px}
+  .pip{width:15px; height:15px; border-radius:50%; display:inline-block; border:1px solid rgba(0,0,0,.35);
+    box-shadow:inset 0 1px 2px rgba(255,255,255,.18)}
+  .pip.W{background:var(--W)} .pip.U{background:var(--U)} .pip.B{background:var(--B)}
+  .pip.R{background:var(--R)} .pip.G{background:var(--G)} .pip.C{background:var(--C)}
+  /* mini-pip: small color-identity dot used in dense lists (catalog rows, ledger cards).
+     Sized as a fixed flex-none box (not just width/height) so it never gets squeezed
+     or wrapped by a flex parent — spacing between pips is handled by the parent's
+     `gap`, not by margin, so it can never mismatch the space it actually occupies. */
+  .mini-pip{width:11px; height:11px; min-width:11px; flex:none; border-radius:50%;
+    display:inline-block; border:1px solid rgba(0,0,0,.4)}
+  .res-id .pips .ms{width:1em; height:1em; font-size:20px; line-height:1; flex:0 0 auto;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+  .lcard .top .pips .ms{width:1em; height:1em; font-size:14px; line-height:1; flex:0 0 auto;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+  .idcard .pips{display:flex; gap:5px}
+  .idcard .pips .ms{width:1em; height:1em; font-size:15px; line-height:1; flex:0 0 auto;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+  .ledger .cname .ms{width:1em; height:1em; font-size:13px; line-height:1; flex:0 0 auto;
+    vertical-align:-0.16em; margin-right:2px; filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+  .cp-pips .ms{width:1em; height:1em; font-size:13px; line-height:1; flex:0 0 auto;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+  .tier{display:inline-block; width:20px; text-align:center; font-family:var(--mono);
+    font-size:11px; font-weight:700; border-radius:2px; padding:1px 0; line-height:1.4}
+  .tier.S{color:#1a140a; background:var(--tS)} .tier.A{color:#0c1512; background:var(--tA)}
+  .tier.B{color:#0a1018; background:var(--tB)} .tier.C{color:#12100a; background:var(--tC)}
+}
+
+/* ---- Ambient arcane field: extremely subtle, intensifies only in flavor mode ---- */
+@layer atmosphere{
+  .aether{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden}
+  .aether svg{position:absolute; inset:0; width:100%; height:100%}
+  .aether .rune{opacity:calc(.05 + var(--flavor) * .09); transition:opacity .6s var(--ease)}
+  .aether .drift{animation:drift 120s linear infinite}
+  .aether .drift-2{animation:drift 180s linear infinite reverse}
+  @keyframes drift{to{transform:translateY(-40px)}}
+  .vignette{position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(0,0,0,calc(.28 + var(--flavor)*.18)) 100%);
+    transition:background .6s var(--ease)}
+}
+
+@layer chrome{
+  /* ---- Header / thesis ---- */
+  header.hero{padding:46px 0 26px; border-bottom:1px solid var(--line); position:relative}
+  .hero-grid{display:grid; grid-template-columns:1fr; gap:26px}
+  @container (min-width:760px){ .hero-grid{grid-template-columns:1fr 260px; align-items:center} }
+  .eyebrow{font-family:var(--mono); font-size:11.5px; letter-spacing:.34em;
+    text-transform:uppercase; color:var(--gold); margin:0 0 14px}
+  h1{font-size:clamp(30px,5vw,52px); line-height:1.02; margin:0 0 14px}
+  h1 .thin{color:var(--bone-dim); font-style:italic; font-weight:400}
+  .lede{max-width:680px; color:var(--bone-dim); font-size:17px; margin:0}
+  .flavor-line{margin:16px 0 0; max-width:640px; color:var(--bone-faint); font-style:italic;
+    font-size:14.5px; max-height:0; overflow:hidden; opacity:0; transition:.5s var(--ease)}
+  body.flavor .flavor-line{max-height:80px; opacity:1; margin-top:18px}
+  .frontier{margin-top:22px; display:flex; flex-wrap:wrap; gap:10px}
+  .chip{font-family:var(--mono); font-size:11px; letter-spacing:.06em;
+    color:var(--bone-dim); border:1px solid var(--line-2); border-radius:2px;
+    padding:5px 9px; background:var(--ink-2)}
+  .chip b{color:var(--gold); font-weight:600}
+  /* hero sigil frame */
+  .hero-sigil{justify-self:center}
+  .hero-sigil svg{width:240px; height:240px; display:block}
+
+  /* ---- View toggle bar ---- */
+  .viewbar{position:sticky; top:0; z-index:20; margin:0 -22px; padding:12px 22px;
+    background:linear-gradient(var(--ink), rgba(12,14,19,.86)); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line); display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .tab{font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--bone-dim); background:transparent; border:1px solid var(--line-2); border-radius:2px;
+    padding:8px 14px; cursor:pointer; transition:.15s}
+  .tab:hover{color:var(--bone); border-color:var(--line-2)}
+  .tab[aria-selected="true"]{color:var(--ink); background:var(--gold); border-color:var(--gold); font-weight:600}
+  .viewbar .spacer{flex:1}
+  .count{font-family:var(--mono); font-size:11px; color:var(--bone-faint)}
+  .flavor-toggle{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--bone-dim); background:transparent; border:1px solid var(--line-2); border-radius:2px;
+    padding:8px 12px; cursor:pointer; display:inline-flex; gap:8px; align-items:center; transition:.15s}
+  .flavor-toggle:hover{color:var(--bone)}
+  .flavor-toggle .dot{width:8px;height:8px;border-radius:50%;background:var(--line-2); transition:.2s}
+  body.flavor .flavor-toggle{color:var(--gold); border-color:var(--gold-dim)}
+  body.flavor .flavor-toggle .dot{background:var(--gold); box-shadow:0 0 8px var(--gold-glow)}
+
+  section.pane{display:none; padding-top:30px}
+  section.pane.on{display:block}
+
+  .picker-intro{color:var(--bone-dim); margin:0 0 20px; max-width:760px}
+}
+
+@layer build{
+  /* ---- Identity picker ---- */
+  .grp{margin-bottom:26px}
+  .grp-h{display:flex; align-items:baseline; gap:12px; margin:0 0 12px}
+  .grp-h .n{font-family:var(--mono); font-size:11px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--gold)}
+  .grp-h .r{flex:1; height:1px; background:var(--line)}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(168px,1fr)); gap:10px}
+  .idcard{position:relative; text-align:left; cursor:pointer; background:var(--ink-2);
+    border:1px solid var(--line); border-radius:4px; padding:13px; transition:.15s;
+    color:var(--bone); font-family:inherit}
+  .idcard:hover{border-color:var(--line-2); background:var(--ink-3); transform:translateY(-1px)}
+  .idcard[aria-pressed="true"]{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold-dim) inset}
+  .idcard .nm{font-size:15.5px; font-weight:600}
+  .idcard .sb{font-size:11.5px; color:var(--bone-faint); margin-top:2px; min-height:15px}
+  .idcard .pips{margin-top:10px}
+
+  /* ---- Result header ---- */
+  #result{margin-top:6px}
+  .res-head{display:grid; grid-template-columns:1fr; gap:22px; padding:26px 0 18px;
+    border-bottom:1px solid var(--line); margin-bottom:22px}
+  @container (min-width:720px){ .res-head{grid-template-columns:180px 1fr; align-items:center} }
+  .res-sigil{justify-self:center}
+  .res-sigil svg{width:170px; height:170px; display:block}
+  .res-id .pips .pip{width:20px;height:20px}
+  .res-id h2{font-size:clamp(24px,4vw,36px); margin:10px 0 6px}
+  .res-id .meta{font-family:var(--mono); font-size:12px; color:var(--bone-dim)}
+  .res-id .meta b{color:var(--gold)}
+  .res-id .blurb{margin:12px 0 0; color:var(--bone-dim); max-width:640px; font-size:14.5px}
+
+  /* ---- Production stat tiles ---- */
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin:0 0 26px}
+  .stat{background:var(--ink-2); border:1px solid var(--line); border-radius:var(--r-md);
+    border-top:2px solid var(--gold-dim); padding:14px 15px}
+  .stat .v{font-size:26px; font-weight:600; line-height:1; letter-spacing:-.02em}
+  .stat .l{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--bone-faint); margin-top:7px}
+  .stat.accent .v{color:var(--gold)}
+
+  .callout{background:var(--ink-2); border:1px solid var(--line); border-left:2px solid var(--gold);
+    border-radius:var(--r-sm); padding:12px 15px; font-size:13.5px; color:var(--bone-dim); margin:0 0 26px}
+  .callout b{color:var(--bone)}
+
+  /* ---- Section head + view switch ---- */
+  .base-head{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:0 0 18px}
+  .base-head h3{margin:0; font-size:20px}
+  .base-head .k{font-family:var(--mono); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--bone-faint)}
+  .base-head .switch{margin-left:auto; display:inline-flex; border:1px solid var(--line-2); border-radius:3px; overflow:hidden}
+  .switch button{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    background:transparent; color:var(--bone-dim); border:0; padding:7px 13px; cursor:pointer; transition:.15s}
+  .switch button[aria-pressed="true"]{background:var(--gold); color:var(--ink); font-weight:600}
+
+  .cat{margin-bottom:34px}
+  .cat-h{display:flex; align-items:baseline; gap:12px; margin:0 0 4px}
+  .cat-h h4{font-size:16px; margin:0; font-weight:600; color:var(--bone)}
+  .cat-h .k{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--bone-faint)}
+  .cat-desc{color:var(--bone-faint); font-size:13px; margin:0 0 14px; max-width:820px}
+  .empty-note{color:var(--bone-faint); font-size:13px; font-style:italic}
+
+  /* Ledger table */
+  table.ledger{width:100%; border-collapse:collapse; font-size:14px}
+  table.ledger thead th{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--bone-faint); text-align:left; font-weight:500;
+    padding:0 12px 8px; border-bottom:1px solid var(--line)}
+  table.ledger tbody td{padding:9px 12px; border-bottom:1px solid rgba(42,48,64,.5); vertical-align:top}
+  table.ledger tbody tr:hover{background:rgba(255,255,255,.014)}
+  td.card{width:34%}
+  .cname{font-weight:600; color:var(--bone)}
+  .cyc{font-family:var(--mono); font-size:11px; color:var(--bone-faint); display:block; margin-top:1px}
+  td.beh{color:var(--bone-dim); font-size:13px}
+  td.src{width:14%}
+  .srctxt{font-family:var(--mono); font-size:11px; color:var(--bone-faint)}
+}
+
+/* =============================================================================
+   LAYER: gallery
+   The "premium card" view of a recommended base — one .lcard per land, with
+   its colors, tier, era/role, and (in Flavor Mode) its lore blurb. Built by
+   galleryCard() in the JS; this layer is pure presentation. `--edge` is a
+   per-card CSS variable set inline by the JS (one line per card, based on
+   its first color) so the top accent stripe (.lcard::before) can be a
+   different color per card without a separate CSS rule for every color. */
+  /* Gallery of premium land cards */@layer gallery{
+  /* Gallery of premium land cards */
+  .gallery{container-type:inline-size}
+  .gcards{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px}
+  .lcard{position:relative; background:
+      linear-gradient(180deg, var(--ink-3), var(--ink-2));
+    border:1px solid var(--line); border-radius:var(--r-md); padding:15px 15px 14px;
+    transition:transform .18s var(--ease), border-color .18s, box-shadow .18s; overflow:hidden}
+  .lcard::before{content:""; position:absolute; inset:0 0 auto 0; height:2px;
+    background:linear-gradient(90deg, var(--edge, var(--gold-dim)), transparent 70%)}
+  .lcard:hover{transform:translateY(-3px); border-color:var(--line-2);
+    box-shadow:0 18px 40px rgba(0,0,0,.4)}
+  .lcard .top{display:flex; align-items:flex-start; gap:8px; margin-bottom:8px}
+  .lcard .top .pips{margin-top:3px}
+  .lcard .nm{font-size:16px; font-weight:600; line-height:1.15; flex:1}
+  .lcard .cyc{font-family:var(--mono); font-size:10.5px; color:var(--bone-faint); margin-top:3px; display:block}
+  .lcard .beh{color:var(--bone-dim); font-size:12.5px; margin:8px 0 10px; line-height:1.5}
+  .lcard .foot{display:flex; align-items:center; gap:10px; padding-top:9px; border-top:1px solid rgba(42,48,64,.55);
+    font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--bone-faint)}
+  .lcard .foot .role{color:var(--bone-dim); text-transform:uppercase; letter-spacing:.1em}
+  .lcard .foot .era{margin-left:auto}
+  .lcard .lore{font-size:12px; color:var(--bone-faint); font-style:italic; margin:9px 0 0; line-height:1.5;
+    max-height:0; overflow:hidden; opacity:0; transition:.4s var(--ease)}
+  body.flavor .lcard .lore{max-height:120px; opacity:1; margin-top:10px; padding-top:9px;
+    border-top:1px dashed rgba(201,162,75,.25)}
+}
+
+/* =============================================================================
+   LAYER: lab
+   The Consistency Lab: an interactive hypergeometric calculator embedded at
+   the bottom of the Build tab. Structure only here — all the actual math
+   (hyperAtLeast/logC) and the slider wiring (wireLab/recalcLab) live in the
+   JS, Section 6. `container-name:build` lets the two-column layout below
+   respond to the LAB'S OWN width (via @container build (...)), not the
+   viewport's, so it lays out correctly even in a narrow embedded context.
+   ============================================================================= */@layer lab{
+  .lab{background:var(--ink-2); border:1px solid var(--line); border-radius:var(--r-lg);
+    padding:24px 24px 26px; margin:38px 0 0; container-type:inline-size; container-name:build}
+  .lab-h{display:flex; align-items:baseline; gap:12px; margin:0 0 4px}
+  .lab-h h3{margin:0; font-size:19px}
+  .lab-h .k{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold)}
+  .lab-sub{color:var(--bone-faint); font-size:13px; margin:0 0 20px; max-width:760px}
+  .lab-body{display:grid; grid-template-columns:1fr; gap:26px}
+  @container build (min-width:720px){ .lab-body{grid-template-columns:300px 1fr} }
+  .controls{display:flex; flex-direction:column; gap:18px}
+  .ctrl label{display:flex; justify-content:space-between; align-items:baseline;
+    font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--bone-dim); margin-bottom:7px}
+  .ctrl label .val{color:var(--gold); font-size:14px}
+  input[type=range]{width:100%; accent-color:var(--gold); background:transparent}
+  .segmented{display:inline-flex; border:1px solid var(--line-2); border-radius:3px; overflow:hidden}
+  .segmented button{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    background:transparent; color:var(--bone-dim); border:0; padding:6px 14px; cursor:pointer; transition:.15s}
+  .segmented button[aria-pressed="true"]{background:var(--ink-4); color:var(--bone)}
+  .colorpick{display:flex; gap:6px}
+  .colorpick button{width:30px;height:30px;border-radius:50%; border:1px solid rgba(0,0,0,.4); cursor:pointer;
+    box-shadow:inset 0 1px 2px rgba(255,255,255,.18); opacity:.4; transition:.15s}
+  .colorpick button[aria-pressed="true"]{opacity:1; outline:2px solid var(--gold); outline-offset:2px}
+  .readouts{display:flex; flex-direction:column; gap:22px; justify-content:center}
+  .meter .mlab{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px}
+  .meter .mlab .name{font-size:14.5px; color:var(--bone)}
+  .meter .mlab .name small{display:block; font-family:var(--mono); font-size:10.5px; color:var(--bone-faint);
+    letter-spacing:.05em; margin-top:2px; text-transform:none}
+  .meter .mlab .pct{font-family:var(--mono); font-size:22px; color:var(--gold); font-weight:600}
+  .track{height:12px; background:var(--ink-4); border-radius:6px; overflow:hidden; border:1px solid var(--line)}
+  .fill{height:100%; width:0; border-radius:6px; transition:width .55s var(--ease);
+    background:linear-gradient(90deg, var(--gold-dim), var(--gold))}
+  .fill.double{background:linear-gradient(90deg, #6f8fc0, #9fc0e0)}
+  .lab-note{font-size:12.5px; color:var(--bone-faint); margin:20px 0 0; padding-top:16px;
+    border-top:1px solid var(--line); line-height:1.6}
+  .lab-note b{color:var(--bone-dim)}
+}
+
+/* =============================================================================
+   LAYER: timeline
+   "Ages of Fixing" — every land cycle plotted on a vertical timeline,
+   grouped into six eras (see the ERAS constant, Section 2). Purely a list
+   layout: each .tl-item is one cycle, the connecting vertical line is a
+   single border on the shared .tl-track wrapper (not one per item), and the
+   colored dot marking each item (.tl-item::before) is gold-filled only for
+   S-tier cycles (`.tl-item.tS`) to draw the eye to the premium ones.
+   ============================================================================= */@layer timeline{
+  .tl-intro{color:var(--bone-dim); margin:0 0 26px; max-width:820px}
+  .era{margin-bottom:30px}
+  .era-h{display:flex; align-items:baseline; gap:12px; margin:0 0 4px}
+  .era-h .yr{font-family:var(--mono); font-size:12px; letter-spacing:.16em; color:var(--gold)}
+  .era-h .nm{font-size:17px; font-weight:600}
+  .era-h .r{flex:1; height:1px; background:var(--line)}
+  .era-desc{color:var(--bone-faint); font-size:12.5px; margin:0 0 14px; max-width:760px}
+  .tl-track{position:relative; margin-left:8px; padding-left:26px; border-left:1px solid var(--line-2)}
+  .tl-item{position:relative; padding:12px 0 14px}
+  .tl-item::before{content:""; position:absolute; left:-31px; top:17px; width:9px; height:9px; border-radius:50%;
+    background:var(--ink); border:1px solid var(--gold-dim)}
+  .tl-item.tS::before{background:var(--gold); box-shadow:0 0 8px var(--gold-glow)}
+  .tl-top{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  .tl-top .tl-nm{font-size:15.5px; font-weight:600}
+  .tl-top .tl-nick{font-style:italic; color:var(--bone-faint); font-size:12.5px}
+  .tl-top .tl-yr{font-family:var(--mono); font-size:11px; color:var(--bone-faint); margin-left:auto}
+  .tl-lore{color:var(--bone-dim); font-size:13px; margin:6px 0 0; max-width:820px; line-height:1.55}
+  .tl-plane{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:var(--bone-faint); margin-top:6px; text-transform:uppercase}
+}
+
+/* =============================================================================
+   LAYER: catalog
+   The searchable/filterable "Cycle catalog" tab: the sticky search+filter
+   bar (.explorer), one collapsible block per cycle (.cyc-block) with its
+   member lands listed inside (.memgrid/.mem — see the detailed fix note
+   just below), and the page footer. Search/filter/pin logic itself lives
+   in the JS, Section 7 (renderCatalog); this layer only styles the result.
+   ============================================================================= */@layer catalog{
+  .explorer{position:sticky; top:52px; z-index:15; background:linear-gradient(var(--ink), rgba(12,14,19,.92));
+    backdrop-filter:blur(6px); padding:14px 0 14px; margin-bottom:8px; border-bottom:1px solid var(--line)}
+  .explorer .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .search{flex:1; min-width:200px; display:flex; align-items:center; gap:8px; background:var(--ink-2);
+    border:1px solid var(--line-2); border-radius:3px; padding:8px 12px}
+  .search input{flex:1; background:transparent; border:0; color:var(--bone); font-family:var(--serif); font-size:14px; outline:none}
+  .search input::placeholder{color:var(--bone-faint)}
+  .search .ic{color:var(--bone-faint); font-family:var(--mono); font-size:13px}
+  .filters{display:flex; gap:6px; flex-wrap:wrap}
+  .fchip{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    background:var(--ink-2); color:var(--bone-dim); border:1px solid var(--line-2); border-radius:2px;
+    padding:7px 11px; cursor:pointer; transition:.15s}
+  .fchip:hover{color:var(--bone)}
+  .fchip[aria-pressed="true"]{background:var(--gold); color:var(--ink); border-color:var(--gold); font-weight:600}
+  .explorer .meta{font-family:var(--mono); font-size:11px; color:var(--bone-faint); margin-top:10px}
+
+  .cyc-block{margin-bottom:22px; background:var(--ink-2); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden}
+  .cyc-block.pinned{border-color:var(--gold-dim); box-shadow:0 0 0 1px rgba(138,116,52,.35) inset}
+  .cyc-top{display:flex; align-items:center; gap:14px; padding:14px 18px; flex-wrap:wrap;
+    background:var(--ink-3); border-bottom:1px solid var(--line)}
+  .cyc-top .name{font-size:17px; font-weight:600}
+  .cyc-top .nick{font-style:italic; color:var(--bone-faint); font-size:13px}
+  .cyc-top .flag{font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--R);
+    border:1px solid rgba(204,95,76,.4); border-radius:2px; padding:2px 6px}
+  .cyc-top .src{font-family:var(--mono); font-size:11px; color:var(--bone-faint)}
+  .cyc-top .pin{margin-left:auto; background:transparent; border:1px solid var(--line-2); border-radius:2px;
+    color:var(--bone-faint); font-family:var(--mono); font-size:11px; padding:5px 9px; cursor:pointer; transition:.15s}
+  .cyc-top .pin:hover{color:var(--gold); border-color:var(--gold-dim)}
+  .cyc-top .pin[aria-pressed="true"]{color:var(--gold); border-color:var(--gold-dim)}
+  .cyc-body{padding:12px 18px 16px}
+  .cyc-beh{color:var(--bone-dim); font-size:13.5px; margin:0 0 8px; max-width:860px}
+  .cyc-lore{color:var(--bone-faint); font-size:12.5px; font-style:italic; margin:0 0 12px; max-width:860px;
+    max-height:0; overflow:hidden; opacity:0; transition:.4s var(--ease)}
+  body.flavor .cyc-lore{max-height:100px; opacity:1; margin-bottom:14px}
+  /* ---- Cycle member grid (individual lands listed inside a cycle block, e.g.
+     "Original Dual Lands" -> Tundra, Scrubland, Plateau...) ----
+     Each land is one row: a centered cluster of Mana Font symbols, then the
+     land's name. Previously the pip cluster (`.lab`) had a hard-coded
+     `width:26px`, but two pips (11px + border + spacing) need more room than
+     that — so the second pip had nowhere to go and wrapped onto its own
+     line, stacking the pips vertically instead of side by side. Fixed below
+     by using `.mana-run` as a real flex row that can't wrap, with `gap` doing the
+     spacing instead of margins (so the space between pips always matches
+     the space the layout actually reserves for them). */
+  .memgrid{
+    display:grid;
+    /* Reflow into as many ~210px+ columns as fit the available width. */
+    grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+    gap:8px 20px; /* 8px between rows, 20px between columns */
+  }
+  .mem{
+    display:flex; align-items:center; gap:9px; /* gap = the ONE source of spacing between pips and name */
+    font-size:13.5px; padding:6px 4px;
+    border-radius:3px; /* rounds the hover highlight into a soft "chip" */
+    border-bottom:1px solid rgba(42,48,64,.4);
+    transition:background-color .15s var(--ease);
+  }
+  .mem:hover{ background:rgba(255,255,255,.035); } /* quiet row highlight, mirrors the ledger table's row hover */
+  .mem .mana-run{
+    /* The pip cluster itself. inline-flex (not a plain span) so its pip
+       children lay out in a true row that CANNOT wrap; flex:none stops the
+       parent `.mem` flex row from ever shrinking it; min-width reserves the
+       same width whether a row shows 2 pips (a guild pair, e.g. Tundra=WU)
+       or 3 (a triome, e.g. Raffine's Tower=WUB) — so every land NAME in a
+       column starts at the same x position, regardless of pip count. */
+    display:inline-flex; align-items:center; gap:3px; flex:none;
+    min-width:44px; /* comfortably fits 3 pips (11px each) + 2 gaps (3px each) = 39px, +margin for safety */
+  }
+  .mem .mn{ color:var(--bone); line-height:1.3; } /* the land's name */
+  .no-results{color:var(--bone-faint); font-style:italic; padding:30px 0}
+
+  footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--line); color:var(--bone-faint); font-size:12.5px}
+  footer .mono{font-size:11.5px}
+}
+
+/* =============================================================================
+   LAYER: motion
+   Everything time-based or viewport-based that isn't already covered by a
+   component's own transition: the scroll-triggered fade-up used on the
+   Timeline (.reveal, driven by the IntersectionObserver in Section 9), the
+   one mobile breakpoint the whole page needs, and the single global
+   `prefers-reduced-motion` override that disables all transitions/animations
+   at once for anyone who has that OS setting on.
+   ============================================================================= */@layer motion{
+  .reveal{opacity:0; transform:translateY(14px)}
+  .reveal.seen{opacity:1; transform:none; transition:opacity .6s var(--ease), transform .6s var(--ease)}
+  @media (max-width:640px){
+    td.src{display:none} td.card{width:44%}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+    .hero-sigil svg{width:180px;height:180px}
+    .explorer{position:static}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important; animation:none!important}
+    .reveal{opacity:1; transform:none}
+    .aether .drift,.aether .drift-2{animation:none!important}
+  }
+}
+
+/* =============================================================================
+   LAYER: print
+   Minimal print stylesheet: strip the dark theme and decorative/interactive
+   chrome (search bar, tabs, ambient field) that make no sense on paper, and
+   force every tab panel to print in full rather than only the active one.
+   ============================================================================= */@layer print{
+  @media print{
+    body{background:#fff; color:#111}
+    .aether,.vignette,.viewbar,.explorer,.flavor-toggle,.lab{display:none!important}
+    section.pane{display:block!important}
+    .lcard,.stat,.cyc-block{break-inside:avoid; border-color:#ccc}
+    a{color:#111}
+  }
+}
+
+/* =============================================================================
+   CARD HOVER POPUPS (#cardpop) — deliberately OUTSIDE the @layer cascade.
+   Everything above is organized into named layers so later layers can
+   safely override earlier ones by DESIGN (e.g. `catalog` overriding a
+   `build` default). The popup, though, must always win regardless of layer
+   order — an unlayered rule always beats ANY layered rule of equal
+   specificity, by the CSS spec — so it's kept plain on purpose rather than
+   filed into one of the named layers above.
+   The popup itself is a single reused DOM node (see cardPop IIFE, near the
+   end of the JS) that gets repositioned and its innerHTML swapped for
+   whichever card is currently hovered/focused, rather than one popup
+   element being created per card name.
+   ============================================================================= *//* ---- Card hover popups (Scryfall image + offline info fallback) — unlayered so overlay wins ---- */
+.cardname{cursor:help; border-bottom:1px dotted transparent; transition:color .15s, border-color .15s}
+.cardname:hover,.cardname:focus-visible{color:var(--gold); border-bottom-color:var(--gold-dim); outline:none}
+#cardpop{position:fixed; z-index:200; left:0; top:0; width:250px; max-width:78vw; display:none;
+  background:var(--ink-3); border:1px solid var(--line-2); border-radius:8px;
+  box-shadow:0 22px 60px rgba(0,0,0,.6); pointer-events:none; opacity:0; transform:translateY(4px);
+  transition:opacity .14s var(--ease), transform .14s var(--ease)}
+#cardpop.on{opacity:1; transform:none}
+#cardpop .cp-img{padding:8px; line-height:0}
+#cardpop .cp-img img{width:100%; border-radius:10px; display:block}
+#cardpop .cp-load{padding:26px 16px; text-align:center; font-family:var(--mono); font-size:11px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--bone-faint)}
+#cardpop .cp-load .sp{display:inline-block; width:10px; height:10px; border-radius:50%;
+  border:1.5px solid var(--gold-dim); border-top-color:var(--gold); margin-right:8px; vertical-align:-1px;
+  animation:cpspin .7s linear infinite}
+@keyframes cpspin{to{transform:rotate(360deg)}}
+#cardpop .cp-info{padding:14px 15px}
+#cardpop .cp-top{display:flex; align-items:flex-start; gap:8px}
+#cardpop .cp-nm{font-size:15px; font-weight:600; line-height:1.2; flex:1; color:var(--bone)}
+#cardpop .cp-pips{display:flex; gap:3px; margin-top:2px}
+#cardpop .cp-cyc{font-family:var(--mono); font-size:10.5px; color:var(--bone-faint); margin-top:4px; display:block}
+#cardpop .cp-beh{font-size:12.5px; color:var(--bone-dim); margin:9px 0 0; line-height:1.5}
+#cardpop .cp-foot{display:flex; gap:8px; align-items:center; margin-top:10px; padding-top:9px;
+  border-top:1px solid var(--line); font-family:var(--mono); font-size:10px; color:var(--bone-faint)}
+/* =============================================================================
+   UNDERSTAND PANE STYLES (also unlayered — see note above; kept alongside
+   the popup styles rather than filed into `@layer chrome`/`build` purely
+   for authoring convenience, since both were added in the same later pass).
+   Styles the plain-language explainer tab: numbered .lsec articles, the
+   Untapped/Tapped comparison cards (.lcompare), and the cycle-family
+   definition list (.lfam). All of the actual TEXT for this tab is static
+   HTML written directly in the body below — nothing here is JS-generated.
+   ============================================================================= */
+/* ---- Understand pane (merged explainer content) ---- *//* ---- Understand pane (merged explainer content) ---- */
+.learn{max-width:800px}
+/* Understanding mana-cost run.
+   This intentionally uses the same `mana-run` class as Cycle Catalog, but
+   remains scoped to the Understanding pane and has no outer pill/capsule. */
+#pane-understand .learn-cost.mana-run{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  white-space:nowrap;
+  vertical-align:-1px;
+  line-height:0;
+  margin:0;
+}
+.learn .tl-intro{margin-bottom:10px}
+.lsec{padding:34px 0; border-bottom:1px solid var(--line)}
+.lsec:first-of-type{padding-top:6px}
+.lsec:last-of-type{border-bottom:0}
+.lnum{font-family:var(--mono); font-size:11px; letter-spacing:.2em; color:var(--gold); display:block; margin-bottom:8px}
+.lsec h3{font-size:clamp(20px,3vw,25px); margin:0 0 6px; font-weight:600; letter-spacing:-.01em; color:var(--bone)}
+.lsec h4{font-size:16px; margin:22px 0 8px; font-weight:600; color:var(--bone)}
+.ltag{color:var(--bone-faint); font-style:italic; margin:0 0 16px}
+.lsec p{margin:0 0 14px; max-width:70ch; color:var(--bone-dim); font-size:15px; line-height:1.62}
+.lsec p b{color:var(--bone); font-weight:600}
+.lsec p i:not(.ms):not(.mana-symbol){color:var(--gold); font-style:italic}
+.lcall{background:var(--ink-2); border:1px solid var(--line); border-left:2px solid var(--gold); border-radius:4px;
+  padding:13px 16px; margin:6px 0 16px; font-size:14px; color:var(--bone-dim); max-width:70ch}
+.lcall b{color:var(--bone)}
+.lcompare{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:6px 0 16px; max-width:70ch}
+@container (max-width:520px){ .lcompare{grid-template-columns:1fr} }
+.lcol{background:var(--ink-2); border:1px solid var(--line); border-radius:6px; padding:14px 16px}
+.lcol h4{margin:0 0 6px; font-size:13px; font-family:var(--mono); letter-spacing:.08em; text-transform:uppercase}
+.lcol.up h4{color:var(--tA)} .lcol.tp h4{color:var(--tB)}
+.lcol p{font-size:13.5px; margin:0; color:var(--bone-dim)}
+table.ltable{max-width:760px; margin:6px 0 16px}
+.lfam{margin:0}
+.lfam dt{font-weight:600; color:var(--bone); margin-top:15px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:15px}
+.lfam dd{margin:4px 0 0; color:var(--bone-dim); font-size:14px; max-width:66ch; line-height:1.55}
+
+/* =============================================================================
+   PATCH: Cycle Catalog Mana Font symbols + member-row alignment.
+   Scope is intentionally limited to the Cycle Catalog member grid so the
+   Consistency Lab and Build view pips remain unchanged.
+   ============================================================================= */
+#pane-catalog .cyc-top{
+  align-items:center;
+  gap:10px 12px;
+}
+#pane-catalog .cyc-top .tier,
+#pane-catalog .cyc-top .flag,
+#pane-catalog .cyc-top .src{
+  flex:none;
+}
+#pane-catalog .cyc-top .name{
+  line-height:1.2;
+}
+#pane-catalog .cyc-top .pin{
+  align-self:center;
+  margin-left:0;
+  flex:none;
+}
+#pane-catalog .cyc-toggle{
+  appearance:none;
+  -webkit-appearance:none;
+  flex:1 1 auto;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:10px 12px;
+  flex-wrap:wrap;
+  padding:0;
+  margin:0;
+  border:0;
+  background:transparent;
+  color:inherit;
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+#pane-catalog .cyc-toggle:hover .name,
+#pane-catalog .cyc-toggle:focus-visible .name{
+  color:var(--gold);
+}
+#pane-catalog .cyc-toggle .twisty{
+  flex:none;
+  width:18px;
+  height:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(58,66,86,.7);
+  border-radius:50%;
+  color:var(--gold);
+  font-family:var(--mono);
+  font-size:10px;
+  line-height:1;
+  background:rgba(12,14,19,.42);
+}
+#pane-catalog .cyc-toggle .twisty::before{
+  content:"▾";
+  transform:translateY(-1px);
+}
+#pane-catalog .cyc-block.collapsed .cyc-toggle .twisty::before{
+  content:"▸";
+  transform:none;
+}
+#pane-catalog .cyc-block.collapsed .cyc-top{
+  border-bottom:0;
+}
+#pane-catalog .cyc-block.collapsed .cyc-body{
+  display:none;
+}
+#pane-catalog .memgrid{
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:10px 18px;
+  align-items:stretch;
+}
+#pane-catalog .mem{
+  display:grid;
+  grid-template-columns:64px minmax(0,1fr);
+  align-items:center;
+  gap:12px;
+  min-height:40px;
+  padding:8px 10px;
+  border:1px solid rgba(42,48,64,.48);
+  border-radius:4px;
+  background:rgba(12,14,19,.18);
+  border-bottom:1px solid rgba(42,48,64,.48);
+}
+#pane-catalog .mem:hover{
+  background:rgba(255,255,255,.035);
+  border-color:rgba(58,66,86,.85);
+}
+#pane-catalog .mem .mana-run{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  justify-self:center;
+  gap:7px;
+  width:auto;
+  min-width:66px;
+  height:28px;
+  padding:0 10px;
+  white-space:nowrap;
+  line-height:1;
+  border:1px solid rgba(58,66,86,.55);
+  border-radius:999px;
+  background:rgba(12,14,19,.44);
+}
+#pane-catalog .mem:hover .mana-run{
+  border-color:rgba(201,162,75,.45);
+}
+#pane-catalog .mem .mana-run .ms,
+#pane-understand .learn-cost .ms,
+#pane-understand .mana-run .ms{
+  font-size:16px;
+  flex:0 0 auto;
+  /* .ms-cost sizes the circle badge to 1.3em tall (of ITS OWN font-size,
+     i.e. this rule's 16px = 20.8px). line-height must match that height —
+     not just "1" (16px) — or the glyph centers against the wrong line box
+     and sits high in the circle with empty space below it. */
+  line-height:1.3;
+  font-style:normal;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.5));
+}
+#pane-understand .learn-cost.mana-run .ms{
+  display:block;
+  margin:0;
+}
+#pane-catalog .mem .mn{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  line-height:1.35;
+  padding-top:1px;
+}
+#pane-catalog .mem .mn .cardname{
+  line-height:1.3;
+}
+@media (max-width:640px){
+  #pane-catalog .memgrid{
+    grid-template-columns:1fr;
+  }
+  #pane-catalog .cyc-top .pin{
+    margin-left:0;
+  }
+}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Ambient arcane field (decorative, aria-hidden) -->
+<!-- Ambient rune field: two empty <g> groups, filled in by the aether()
+     IIFE near the top of the script block at the bottom of this file. Kept as
+     inline SVG (not a background image) so its dots can react live to the
+     --flavor CSS variable without swapping image files. -->
+<div class="aether" aria-hidden="true">
+  <svg viewBox="0 0 800 1200" preserveAspectRatio="xMidYMin slice">
+    <g class="rune drift" id="aether-a"></g>
+    <g class="rune drift-2" id="aether-b"></g>
+  </svg>
+</div>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- .wrap: the page's single content column (max-width, centered, side
+     padding). `container-type:inline-size` turns it into a CSS container
+     query context, so components inside (the hero grid, the result header,
+     the Lab) can respond to THIS element's width via @container rules
+     instead of only the viewport's — useful since the same layout can end
+     up narrower than the viewport depending on window size. -->
+<div class="wrap" style="container-type:inline-size">
+
+  <!-- Hero: page title, one-sentence pitch, a few fact "chips", and the
+       decorative 5-color guide sigil (filled in by JS boot). Static markup;
+       nothing here is rebuilt at runtime. -->
+  <header class="hero">
+    <div class="hero-grid">
+      <div>
+        <p style="margin:0 0 12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;"><a href="../" style="border-bottom:none;color:var(--bone-faint)">&larr; back to Table Talk · robboles.com</a></p>
+        <p class="eyebrow">Vox Mana · Reference Codex</p>
+        <h1>The Mana Base Codex<br><span class="thin">every fixing land &amp; rock, across all 37 identities</span></h1>
+        <p class="lede">The complete Commander mana-fixing stack — original duals, shocks, fetches, pains, and
+          every modern cycle through the current Marvel Super Heroes set — mapped onto each of the 37 color
+          identities. Choose an identity to raise its recommended base, weigh its odds in the Consistency Lab,
+          or walk the full history of fixing.</p>
+        <p class="flavor-line" id="hero-flavor"></p>
+        <div class="frontier">
+          <span class="chip"><b>Frontier:</b> Marvel Super Heroes (MSH) · Jun 26 2026</span>
+          <span class="chip">20 two-color cycles</span>
+          <span class="chip">Triomes + tri-lands</span>
+          <span class="chip">Banned: Mana Crypt · Jeweled Lotus</span>
+        </div>
+      </div>
+      <div class="hero-sigil" id="hero-sigil" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <!-- Tab bar (ARIA tablist pattern): each button's `data-view` matches the
+       `id="pane-<view>"` of the section it controls, and the click handler
+       in the JS (Section 9) uses that convention to find and show the right
+       panel — so adding a 5th tab later only needs a button here + a
+       matching pane section with a corresponding id, no JS changes. -->
+  <nav class="viewbar" role="tablist" aria-label="Codex views">
+    <button class="tab" id="tab-understand" role="tab" aria-selected="true"  aria-controls="pane-understand" data-view="understand">Understand</button>
+    <button class="tab" id="tab-build"    role="tab" aria-selected="false" aria-controls="pane-build"    data-view="build">Build a base</button>
+    <button class="tab" id="tab-catalog"  role="tab" aria-selected="false" aria-controls="pane-catalog"  data-view="catalog">Cycle catalog</button>
+    <button class="tab" id="tab-timeline" role="tab" aria-selected="false" aria-controls="pane-timeline" data-view="timeline">Ages of fixing</button>
+    <div class="spacer"></div>
+    <span class="count" id="picker-count"></span>
+    <button class="flavor-toggle" id="flavor-toggle" aria-pressed="false" title="Surface the lore layer and warm the atmosphere">
+      <span class="dot"></span> Flavor mode
+    </button>
+  </nav>
+
+  <main id="main">
+    <!-- All four tabs below are ALWAYS present in the DOM at once; only one
+         has the `.on` class at any moment (CSS: `section.pane{display:none}`,
+         `.pane.on{display:block}`). Switching tabs is therefore instant and
+         never re-fetches anything — see the tab click-handler in the JS. -->
+    <!-- ============ UNDERSTAND VIEW ============
+         Static prose (no JS-generated content) — the plain-language guide.
+         Each numbered <article class="lsec"> below is one self-contained
+         topic; see the CSS comment above `.learn` for how they're styled. -->    <!-- ============ UNDERSTAND VIEW ============ -->
+    <section class="pane on" id="pane-understand" role="tabpanel" aria-labelledby="tab-understand">
+      <div class="learn">
+        <p class="tl-intro">A plain-language walkthrough of fixing — what it is, why some lands beat others, and
+          how to turn that into a base that casts your spells on curve. Switch to <b>Build a base</b> whenever
+          you're ready to apply it to one of the 37 identities.</p>
+
+        <article class="lsec" id="l-what">
+          <span class="lnum">01</span><h3>What a mana base is</h3>
+          <p class="ltag">The engine room. Boring when it works; the reason you lose when it doesn't.</p>
+          <p>Nearly every spell in Magic costs <b>mana</b>, and most spells demand mana of specific colors — the
+            little colored symbols in the top-right corner of the card. A card that costs
+            <span class="learn-cost mana-run" aria-label="two generic, one blue, one black"><i class="ms ms-2 ms-cost mana-symbol" aria-hidden="true"></i><i class="ms ms-u ms-cost mana-symbol" aria-hidden="true"></i><i class="ms ms-b ms-cost mana-symbol" aria-hidden="true"></i></span>
+            needs one blue and one black source available the turn you want to cast it. Your
+            <b>mana base</b> is the set of cards whose job is to produce that mana: your lands, plus the artifacts
+            and effects that make or fetch mana. Everything else in the deck is the payoff; the mana base is what
+            lets the payoff happen.</p>
+          <p>In Commander, one rule shapes the whole exercise: <b>color identity</b>. Your commander's colors
+            define which colors every card in the deck — including your lands — is allowed to be. An Esper
+            (white/blue/black) commander means your base only ever needs to make those three colors. That's why
+            this Codex is organized by identity rather than by deck: the 37 possible color identities are the 37
+            different fixing problems you might have to solve.</p>
+          <div class="lcall"><b>The core problem, in one sentence:</b> a singleton, 99-card deck can't run four
+            copies of the perfect land, so consistency comes from stacking many <i>different</i> lands that each
+            make the colors you need — enough that the odds work out in your favor.</div>
+        </article>
+
+        <article class="lsec" id="l-tension">
+          <span class="lnum">02</span><h3>The one tension: tapped vs. untapped</h3>
+          <p class="ltag">Almost every fixing land is a trade between speed and cost.</p>
+          <p>A land that enters the battlefield <b>untapped</b> can make mana the moment you play it. A land that
+            enters <b>tapped</b> can't be used until your next turn — you've effectively skipped a beat. One tapped
+            land in an opening hand is rarely a problem; three of them means your turns two, three, and four all
+            run a mana short, and in a format defined by explosive starts, that adds up.</p>
+          <div class="lcompare">
+            <div class="lcol up"><h4>Untapped</h4><p>Ready immediately. The premium lands find a way to be
+              untapped — by paying a little life, by checking a condition, or simply because they're that good.
+              You pay for the privilege, in life or in money.</p></div>
+            <div class="lcol tp"><h4>Tapped</h4><p>Enters "asleep" for a turn. Usually cheaper, often carries a
+              small bonus (scry, life, a surveil, a basic type). Fine in small numbers and in slower decks; a tax
+              in fast ones.</p></div>
+          </div>
+          <p>Most cycles of lands are just different answers to this trade. When you evaluate a land, the first
+            question is almost always: <i>does this come in ready to use, and what did it cost me to get there?</i></p>
+        </article>
+
+        <article class="lsec" id="l-types">
+          <span class="lnum">03</span><h3>Basic land types &amp; fetchability</h3>
+          <p class="ltag">Why "Watery Grave is an Island and a Swamp" is a bigger deal than it looks.</p>
+          <p>A basic land — Plains, Island, Swamp, Mountain, Forest — has a <b>basic land type</b>. Some nonbasic
+            lands <b>also carry those types</b>: a shock land like Watery Grave is literally an Island Swamp, even
+            though it isn't a basic. That single fact unlocks two things.</p>
+          <p>First, <b>fetch lands</b> can find it. A fetch land sacrifices itself to search your library for a
+            land with a chosen basic type, then puts it onto the battlefield. If your duals carry types, one fetch
+            can grab whichever one you need right now — turning ten different lands into a single flexible slot,
+            and thinning the deck as it goes. Second, <b>check lands</b> ("do you control an Island or a Swamp?")
+            see typed lands as friends and enter untapped alongside them.</p>
+          <div class="lcall"><b>Rule of thumb:</b> a dual that carries basic types is worth more than an
+            otherwise-identical dual that doesn't, because fetches and checklands can interact with it. In this
+            Codex, that's the <b>Fetchable</b> tag — and it's a big part of why true duals, shocks, surveil lands,
+            and triomes rank so highly.</div>
+        </article>
+
+        <article class="lsec" id="l-tiers">
+          <span class="lnum">04</span><h3>The tier system</h3>
+          <p class="ltag">A quick read on "how much does this land cost me to play?"</p>
+          <p>Every land and rock in the Codex carries a tier. It isn't about power level in the abstract — it's
+            about how painlessly the card does its one job of fixing your mana.</p>
+          <table class="ledger ltable"><thead><tr><th>Tier</th><th>Means</th><th>Examples</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tier S">S</span></td><td>Untapped with no real cost. The best fixing in the game.</td><td>True duals, shocks, fetches, triomes, Command Tower, Sol Ring</td></tr>
+            <tr><td><span class="tier A">A</span></td><td>Untapped with a light condition or small life cost.</td><td>Pain lands, fastlands, checklands, pathways, signets, talismans</td></tr>
+            <tr><td><span class="tier B">B</span></td><td>Reliable, but enters tapped or is narrow.</td><td>Temples (scry), tri-lands, slow lands, battle lands</td></tr>
+            <tr><td><span class="tier C">C</span></td><td>Budget or always-tapped filler — the floor of a base.</td><td>Gain lands, snow duals, karoo "bounce" lands</td></tr>
+          </tbody></table>
+          <p>You don't need an all-S base to win. Tiers are a drafting order: fill from the top down, take the
+            premium pieces your budget allows, and pad the rest with reliable B/C fixing.</p>
+        </article>
+
+        <article class="lsec" id="l-families">
+          <span class="lnum">05</span><h3>The cycle families</h3>
+          <p class="ltag">Lands come in cycles — one per color pair. Learn the family, and you know all ten members.</p>
+          <p>Most fixing lands are printed as a <b>cycle</b>: the same design, once for each color combination.
+            You don't have to memorize two hundred land names — you learn what a "shock land" does, and that
+            knowledge applies to all ten of them. The full roster lives in the <b>Cycle catalog</b> tab; here's the
+            shape of each family in plain terms.</p>
+          <dl class="lfam">
+            <dt>Original dual lands <span class="tier S">S</span></dt>
+            <dd>The oldest and best: untapped, no drawback, and they carry both basic types. Never reprinted, so
+              they're expensive and collectible.</dd>
+            <dt>Shock lands <span class="tier S">S</span></dt>
+            <dd>Enter untapped if you pay 2 life, or tapped for free. Typed and fetchable — the practical premium
+              dual most decks are actually built on.</dd>
+            <dt>Fetch lands <span class="tier S">S</span></dt>
+            <dd>Sacrifice themselves plus 1 life to search out a typed land. They fix, thin your deck, and power up
+              anything that cares about lands entering or hitting the graveyard.</dd>
+            <dt>Pain lands <span class="tier A">A</span></dt>
+            <dd>Always untapped. Free for colorless, or a color for 1 damage to you. No setup, no basic types —
+              brilliant on turn one.</dd>
+            <dt>Fastlands &amp; slow lands <span class="tier A">A</span> / <span class="tier B">B</span></dt>
+            <dd>Mirror images. Fastlands enter untapped only with few lands (great early); slow lands only with
+              several (great later).</dd>
+            <dt>Check lands <span class="tier A">A</span></dt>
+            <dd>Untapped if you already control a matching basic type — rewarding a base full of typed lands and
+              real basics.</dd>
+            <dt>Filter lands <span class="tier A">A</span></dt>
+            <dd>Spend one mana to filter it into two of the guild's colors. Unmatched for double-colored costs
+              colorless ramp can't help with.</dd>
+            <dt>Pathways <span class="tier A">A</span></dt>
+            <dd>A two-sided card: choose which color it makes as it enters, always untapped — flexible, but only
+              ever one color per copy.</dd>
+            <dt>Triomes <span class="tier S">S</span></dt>
+            <dd>Enter tapped, but make any of <i>three</i> colors, carry all three basic types, and can be cycled
+              away when flooded. The best three-color land ever made.</dd>
+            <dt>Taplands: temples, tri-lands, gain lands <span class="tier B">B</span> / <span class="tier C">C</span></dt>
+            <dd>The dependable, affordable layer — enter tapped, sometimes with a scry, a point of life, or a
+              third color.</dd>
+            <dt>Signets &amp; talismans <span class="tier A">A</span> <i>(rocks, not lands)</i></dt>
+            <dd>Two-mana artifacts that fix and ramp at once — cheap acceleration that also smooths your colors.</dd>
+          </dl>
+        </article>
+
+        <article class="lsec" id="l-build">
+          <span class="lnum">06</span><h3>How to build a base</h3>
+          <p class="ltag">Two questions: how many lands, and how many of each color?</p>
+          <h4>How many lands</h4>
+          <p>A typical Commander deck runs <b>36–38 lands</b>, adjusted for artifact ramp and curve. A low,
+            aggressive curve with lots of two-mana rocks can dip toward 33–34; a top-heavy deck wants 38+ so it
+            keeps hitting land drops. Start around 37 and tune from there.</p>
+          <h4>How many sources of each color</h4>
+          <p>A <b>source</b> is anything that can make a given color — a basic, a dual, a rainbow land, a rock. The
+            goal is enough sources that the color you need is reliably there by the turn you want to cast it. The
+            <b>Consistency Lab</b> in the Build tab runs the exact probability for any source count — these are the
+            rounded rules of thumb, in a 99-card singleton deck:</p>
+          <table class="ledger ltable"><thead><tr><th>What you're casting</th><th>Aim for roughly</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>A single-pip cost on curve</td><td>~16–18 sources</td><td>Clears ~90% by about turn three</td></tr>
+            <tr><td>A double-pip cost</td><td>~20–23 sources</td><td>Needs two to show up, not one — a steeper ask</td></tr>
+            <tr><td>A later splash</td><td>~10–12 sources</td><td>More turns drawn = more chances to hit</td></tr>
+          </tbody></table>
+          <div class="lcall"><b>The tension you'll feel:</b> in one color every target is easy. In three, and
+            especially with double pips in more than one color, sources start competing for the same ~37 land
+            slots — exactly what premium duals, triomes, and rainbow lands are for.</div>
+        </article>
+
+        <article class="lsec" id="l-seq">
+          <span class="lnum">07</span><h3>Sequencing, rocks &amp; ramp</h3>
+          <p class="ltag">A good base is also about the order you play it in.</p>
+          <p><b>Play your tapped lands when they cost you nothing.</b> If you have a tapland and an untapped land
+            and no play to make anyway, lead with the tapland — keep the untapped one for a turn you actually
+            need it.</p>
+          <p><b>Mind conditional lands.</b> Fastlands want to come down early; slow lands and checklands want a
+            board already built. A checkland played before you control a matching type wastes its whole point.</p>
+          <p><b>Fetch with intent.</b> Grab exactly the color you're short on — and, with a shuffle- or
+            landfall-matters card, at the moment it helps most.</p>
+          <h4>Rocks and ramp</h4>
+          <p>Mana rocks accelerate <i>and</i> fix at once. A near-universal shortlist: <b>Sol Ring</b> everywhere,
+            <b>Arcane Signet</b> and <b>Command Tower</b> in every multicolor deck, then <b>signets</b> and
+            <b>talismans</b> for your specific pairs. In three-plus colors, a <b>Chromatic Lantern</b> or
+            <b>Coalition Relic</b> turns a greedy base honest.</p>
+        </article>
+
+        <article class="lsec" id="l-codex">
+          <span class="lnum">08</span><h3>How to use the rest of this Codex</h3>
+          <p class="ltag">Everything above, made interactive.</p>
+          <p><b>Build a base</b> — pick one of the 37 identities. It raises the recommended base, sorted from the
+            premium duals down, with production stats and a per-identity sigil. Flip between <i>Gallery</i> and
+            <i>Ledger</i>; the <b>Consistency Lab</b> underneath is the section 06 math, live. Hover any card name
+            anywhere in the Codex for its image.</p>
+          <p><b>Cycle catalog</b> — the full roster, tiered and searchable; filter by untapped, tapped, fetchable,
+            or budget, and pin the cycles you rely on. <b>Ages of fixing</b> walks the same data as a history.
+            <b>Flavor mode</b> surfaces the lore behind each cycle.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ BUILD VIEW ============
+         #picker and #result start EMPTY — both are filled entirely by JS:
+         renderPicker() (Section 5, runs at script load) fills #picker once;
+         build() (Section 5d, runs on every identity click) replaces #result
+         each time a different identity is chosen. -->    <!-- ============ BUILD VIEW ============ -->
+    <section class="pane" id="pane-build" role="tabpanel" aria-labelledby="tab-build">
+      <p class="picker-intro">37 buckets: 1 colorless, 5 mono, 10 guilds, the 5 Strixhaven colleges
+        (flavor-distinct but sharing a guild's mana base), 5 Alara shards, 5 Tarkir clans, 5 four-color
+        identities, and five-color. Select one:</p>
+      <div id="picker"></div>
+      <div id="result" aria-live="polite"></div>
+    </section>
+
+    <!-- ============ CATALOG VIEW ============
+         The search input and filter chips are real, always-present markup
+         (so they're keyboard/screen-reader accessible independent of JS);
+         #catalog itself is filled by renderCatalog() (Section 7), which
+         re-runs on every keystroke/filter/pin click. -->    <!-- ============ CATALOG VIEW ============ -->
+    <section class="pane" id="pane-catalog" role="tabpanel" aria-labelledby="tab-catalog">
+      <div class="explorer">
+        <div class="row">
+          <div class="search">
+            <span class="ic" aria-hidden="true">⌕</span>
+            <input id="search" type="search" placeholder="Search a land, cycle, or nickname…" aria-label="Search cycles and lands">
+          </div>
+          <div class="filters" id="filters" role="group" aria-label="Filter cycles">
+            <button class="fchip" data-filter="untapped"  aria-pressed="false">Untapped</button>
+            <button class="fchip" data-filter="tapped"    aria-pressed="false">Tapped</button>
+            <button class="fchip" data-filter="fetchable" aria-pressed="false">Fetchable</button>
+            <button class="fchip" data-filter="budget"    aria-pressed="false">Budget</button>
+            <button class="fchip" data-filter="pinned"    aria-pressed="false">★ Pinned</button>
+          </div>
+        </div>
+        <p class="meta" id="explorer-meta"></p>
+      </div>
+      <div id="catalog"></div>
+    </section>
+
+    <!-- ============ TIMELINE VIEW ============
+         #timeline starts empty; renderTimeline() (Section 8) fills it the
+         FIRST time this tab is opened (see the tab click-handler, Section
+         9) rather than at page load, since it's the one tab most people
+         may never visit. -->    <!-- ============ TIMELINE VIEW ============ -->
+    <section class="pane" id="pane-timeline" role="tabpanel" aria-labelledby="tab-timeline">
+      <p class="tl-intro">Fixing has its own history. Every cycle below is placed at its debut, from the
+        founding duals of Alpha to the frontier of Marvel Super Heroes — a chronicle of how Magic learned,
+        over thirty years, to let five colors share a battlefield.</p>
+      <div id="timeline"></div>
+    </section>
+  </main>
+
+  <!-- Static footer: the tier legend (same S/A/B/C meanings used
+       throughout the JS-rendered tier badges) and a few standing
+       methodology notes. Never touched by JS. -->
+  <footer>
+    <p><b>Tier legend</b> — <span class="tier S">S</span> untapped, no real cost (duals, shocks, fetches).
+      <span class="tier A">A</span> untapped with a light condition or small life cost.
+      <span class="tier B">B</span> reliable but tapped or narrow.
+      <span class="tier C">C</span> budget / always-tapped filler.</p>
+    <p class="mono">Color identity governs the mana base, not flavor faction — so a Strixhaven college draws from
+      the same pool as its Ravnica guild (Silverquill = Orzhov, Prismari = Izzet, Witherbloom = Golgari,
+      Lorehold = Boros, Quandrix = Simic). Cycle membership current through Marvel Super Heroes (Jun 2026).
+      Rocks reflect the Sept 2024 Commander bans of Mana Crypt and Jeweled Lotus. Lore notes are original
+      summaries; no card text is reproduced.</p>
+  </footer>
+
+</div>
+
+<!-- Single script block at the end of the page body: by the time this
+     executes, every element above it already exists in the DOM, so the
+     code inside can safely call document.getElementById(...) etc.
+     immediately without waiting for a DOMContentLoaded/load event. -->
+<script>
+/* ===========================================================================
+   THE MANA BASE CODEX — engine
+   Section 1  DATA MODEL        (preserved verbatim from the reference codex)
+   Section 2  ENRICHMENT META   (era / plane / lore / role / tags — new layer)
+   Section 3  HELPERS + MATH    (pips, hypergeometric)
+   Section 4  SIGIL + AETHER    (SVG color-pentagon glyph, ambient field)
+   Section 5  BUILD PIPELINE    (sections -> ledger / gallery / stats)
+   Section 6  CONSISTENCY LAB   (interactive hypergeometric)
+   Section 7  CATALOG + EXPLORER(search / filter / pin)
+   Section 8  TIMELINE
+   Section 9  CHROME            (tabs, flavor mode, scroll reveal, boot)
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1) DATA MODEL  — pair keys are WUBRG-canonical two-letter codes.
+--------------------------------------------------------------------------- */
+/* ORDER + key(): color letters can arrive in any order (e.g. an identity's
+   `cs` array), but every lookup table below (CYCLES, TRIOMES, ...) is keyed
+   by the WUBRG-CANONICAL two/three-letter string ("WU", not "UW"). key()
+   re-sorts any set of color letters into that canonical order so a lookup
+   like cy.m[key(['U','W'])] always finds cy.m['WU']. */
+const ORDER = {W:0,U:1,B:2,R:3,G:4};
+const CNAME = {W:'White',U:'Blue',B:'Black',R:'Red',G:'Green',C:'Colorless'};
+function key(cs){return cs.slice().sort((a,b)=>ORDER[a]-ORDER[b]).join('');}
+
+/* All 37 Commander color identities, grouped for the picker UI (`g`) and
+   tagged with their WUBRG color letters (`cs`, empty = colorless). `sb` is
+   the short subtitle shown on the identity card; `twin` (only on the 5
+   Strixhaven colleges) points at the Ravnica guild whose mana base they
+   share, since color identity — not flavor faction — is what determines
+   which lands a deck can run. */
+const IDENTITIES = [
+  {g:'Colorless', id:'C',    nm:'Colorless',  sb:'Devoid · {C}',           cs:[]},
+  {g:'Mono',      id:'W',    nm:'Mono-White', sb:'Order',      cs:['W']},
+  {g:'Mono',      id:'U',    nm:'Mono-Blue',  sb:'Knowledge',  cs:['U']},
+  {g:'Mono',      id:'B',    nm:'Mono-Black', sb:'Ambition',   cs:['B']},
+  {g:'Mono',      id:'R',    nm:'Mono-Red',   sb:'Freedom',    cs:['R']},
+  {g:'Mono',      id:'G',    nm:'Mono-Green', sb:'Growth',     cs:['G']},
+  {g:'Guilds (Ravnica)', id:'azorius',  nm:'Azorius',  sb:'W/U', cs:['W','U']},
+  {g:'Guilds (Ravnica)', id:'dimir',    nm:'Dimir',    sb:'U/B', cs:['U','B']},
+  {g:'Guilds (Ravnica)', id:'rakdos',   nm:'Rakdos',   sb:'B/R', cs:['B','R']},
+  {g:'Guilds (Ravnica)', id:'gruul',    nm:'Gruul',    sb:'R/G', cs:['R','G']},
+  {g:'Guilds (Ravnica)', id:'selesnya', nm:'Selesnya', sb:'G/W', cs:['G','W']},
+  {g:'Guilds (Ravnica)', id:'orzhov',   nm:'Orzhov',   sb:'W/B', cs:['W','B']},
+  {g:'Guilds (Ravnica)', id:'izzet',    nm:'Izzet',    sb:'U/R', cs:['U','R']},
+  {g:'Guilds (Ravnica)', id:'golgari',  nm:'Golgari',  sb:'B/G', cs:['B','G']},
+  {g:'Guilds (Ravnica)', id:'boros',    nm:'Boros',    sb:'R/W', cs:['R','W']},
+  {g:'Guilds (Ravnica)', id:'simic',    nm:'Simic',    sb:'G/U', cs:['G','U']},
+  {g:'Colleges (Strixhaven)', id:'silverquill', nm:'Silverquill', sb:'= Orzhov · W/B',  cs:['W','B'], twin:'Orzhov'},
+  {g:'Colleges (Strixhaven)', id:'prismari',    nm:'Prismari',    sb:'= Izzet · U/R',   cs:['U','R'], twin:'Izzet'},
+  {g:'Colleges (Strixhaven)', id:'witherbloom', nm:'Witherbloom', sb:'= Golgari · B/G', cs:['B','G'], twin:'Golgari'},
+  {g:'Colleges (Strixhaven)', id:'lorehold',    nm:'Lorehold',    sb:'= Boros · R/W',   cs:['R','W'], twin:'Boros'},
+  {g:'Colleges (Strixhaven)', id:'quandrix',    nm:'Quandrix',    sb:'= Simic · G/U',   cs:['G','U'], twin:'Simic'},
+  {g:'Shards (Alara)', id:'bant',   nm:'Bant',   sb:'G/W/U', cs:['G','W','U']},
+  {g:'Shards (Alara)', id:'esper',  nm:'Esper',  sb:'W/U/B', cs:['W','U','B']},
+  {g:'Shards (Alara)', id:'grixis', nm:'Grixis', sb:'U/B/R', cs:['U','B','R']},
+  {g:'Shards (Alara)', id:'jund',   nm:'Jund',   sb:'B/R/G', cs:['B','R','G']},
+  {g:'Shards (Alara)', id:'naya',   nm:'Naya',   sb:'R/G/W', cs:['R','G','W']},
+  {g:'Clans (Tarkir)', id:'abzan',  nm:'Abzan',  sb:'W/B/G', cs:['W','B','G']},
+  {g:'Clans (Tarkir)', id:'jeskai', nm:'Jeskai', sb:'U/R/W', cs:['U','R','W']},
+  {g:'Clans (Tarkir)', id:'sultai', nm:'Sultai', sb:'B/G/U', cs:['B','G','U']},
+  {g:'Clans (Tarkir)', id:'mardu',  nm:'Mardu',  sb:'R/W/B', cs:['R','W','B']},
+  {g:'Clans (Tarkir)', id:'temur',  nm:'Temur',  sb:'G/U/R', cs:['G','U','R']},
+  {g:'Four-Color', id:'yoretiller', nm:'Yore-Tiller', sb:'Artifice · W/U/B/R (no G)', cs:['W','U','B','R']},
+  {g:'Four-Color', id:'glinteye',   nm:'Glint-Eye',   sb:'Chaos · U/B/R/G (no W)',    cs:['U','B','R','G']},
+  {g:'Four-Color', id:'dunebrood',  nm:'Dune-Brood',  sb:'Aggression · B/R/G/W (no U)',cs:['B','R','G','W']},
+  {g:'Four-Color', id:'inktreader', nm:'Ink-Treader',  sb:'Altruism · R/G/W/U (no B)', cs:['R','G','W','U']},
+  {g:'Four-Color', id:'witchmaw',   nm:'Witch-Maw',   sb:'Growth · G/W/U/B (no R)',   cs:['G','W','U','B']},
+  {g:'Five-Color', id:'wubrg', nm:'Five-Color', sb:'Domain · WUBRG', cs:['W','U','B','R','G']}
+];
+
+/* The two-color land cycles. Each entry is ONE cycle (e.g. "Shock Lands"),
+   printed once per guild — `m` maps a canonical pair key ("WU", "UB", ...)
+   to that specific card's name (e.g. m.WU = 'Hallowed Fountain'). Tier is a
+   judgment call baked into the data (S = untapped/no cost, down to C =
+   tapped budget filler — see the tier legend in the footer). `flag` marks
+   cycles that are incomplete (only some of the 10 pairs were ever printed).
+   This array, plus TRIOMES/TRILAND/SIGNETS/TALISMANS just below, is the
+   single source of truth every other view (Build, Catalog, Timeline, the
+   card hover popups) reads from — nothing duplicates this data elsewhere. */
+const CYCLES = [
+  {id:'abur', nm:'Original Dual Lands', nick:'"true duals" · Reserved List', tier:'S', src:'LEA→',
+   beh:'Untapped, no drawback, and carry both basic land types (fetchable). The gold standard — and the price tag to match.',
+   m:{WU:'Tundra',WB:'Scrubland',WR:'Plateau',WG:'Savannah',UB:'Underground Sea',UR:'Volcanic Island',UG:'Tropical Island',BR:'Badlands',BG:'Bayou',RG:'Taiga'}},
+  {id:'shock', nm:'Shock Lands', nick:'"shocks"', tier:'S', src:'RAV / GRN',
+   beh:'Enter untapped for 2 life (or tapped for free), with both basic land types — fetchable and the workhorse premium dual.',
+   m:{WU:'Hallowed Fountain',WB:'Godless Shrine',WR:'Sacred Foundry',WG:'Temple Garden',UB:'Watery Grave',UR:'Steam Vents',UG:'Breeding Pool',BR:'Blood Crypt',BG:'Overgrown Tomb',RG:'Stomping Ground'}},
+  {id:'fetch', nm:'Fetch Lands', nick:'"fetches"', tier:'S', src:'ONS / ZEN',
+   beh:'Sacrifice + 1 life to search a land with the right basic type — thins the deck and fixes toward shocks/duals. Onslaught (allied) + Zendikar (enemy).',
+   m:{WU:'Flooded Strand',UB:'Polluted Delta',BR:'Bloodstained Mire',RG:'Wooded Foothills',WG:'Windswept Heath',WB:'Marsh Flats',UR:'Scalding Tarn',BG:'Verdant Catacombs',WR:'Arid Mesa',UG:'Misty Rainforest'}},
+  {id:'pain', nm:'Pain Lands', nick:'"painlands"', tier:'A', src:'ICE / APC',
+   beh:'Always untapped: tap for colorless free, or a color for 1 damage. No basic types, but zero setup — excellent early.',
+   m:{WU:'Adarkar Wastes',WB:'Caves of Koilos',WR:'Battlefield Forge',WG:'Brushland',UB:'Underground River',UR:'Shivan Reef',UG:'Yavimaya Coast',BR:'Sulfurous Springs',BG:'Llanowar Wastes',RG:'Karplusan Forest'}},
+  {id:'fast', nm:'Fast Lands', nick:'"fastlands"', tier:'A', src:'SOM / KLD',
+   beh:'Enter untapped only if you control ≤2 other lands — superb in the early turns, dead draws late.',
+   m:{WU:'Seachrome Coast',UB:'Darkslick Shores',BR:'Blackcleave Cliffs',RG:'Copperline Gorge',WG:'Razorverge Thicket',WB:'Concealed Courtyard',UR:'Spirebluff Canal',BG:'Blooming Marsh',WR:'Inspiring Vantage',UG:'Botanical Sanctum'}},
+  {id:'check', nm:'Check Lands', nick:'"checklands" / buddy lands', tier:'A', src:'M10 / ISD',
+   beh:'Untapped if you control a land with a matching basic type (a Plains, an Island, a shock, a triome…). Pairs beautifully with basics and typed duals.',
+   m:{WU:'Glacial Fortress',UB:'Drowned Catacomb',BR:'Dragonskull Summit',RG:'Rootbound Crag',WG:'Sunpetal Grove',WB:'Isolated Chapel',UR:'Sulfur Falls',BG:'Woodland Cemetery',WR:'Clifftop Retreat',UG:'Hinterland Harbor'}},
+  {id:'verge', nm:'Verge Lands', nick:'"verges"', tier:'A', src:'DSK / DFT · 2024–25',
+   beh:'Enter untapped: one color free, the second color only while you control a source of the matching basic type. Complete cycle (Duskmourn allied + Aetherdrift enemy).',
+   m:{WU:'Floodfarm Verge',UB:'Gloomlake Verge',BR:'Blazemire Verge',RG:'Thornspire Verge',WG:'Hushwood Verge',WB:'Bleachbone Verge',UR:'Riverpyre Verge',UG:'Willowrush Verge',BG:'Wastewood Verge',WR:'Sunbillow Verge'}},
+  {id:'msh', nm:'"Home" Lands', nick:'MSH duals · newest cycle', tier:'A', src:'MSH · Jun 2026', flag:'CURRENT · allied only',
+   beh:'Enter untapped; tap for colorless anytime, or one of two colors on the turn they enter OR while you control any basic land. Not fetchable. Enemy half not yet printed.',
+   m:{WU:'Gleaming Bastion',UB:'Hidden Lair',BR:'Dark Fortress',RG:'Training Compound',WG:'Gathering Place'}},
+  {id:'filter', nm:'Filter Lands', nick:'"filter lands"', tier:'A', src:'SHM / EVE',
+   beh:'Spend {1} to filter into two mana of the guild colors. No untapped drawback and superb for double-pip costs, but they cannot make mana from nothing.',
+   m:{WU:'Mystic Gate',WB:'Fetid Heath',WR:'Rugged Prairie',WG:'Wooded Bastion',UB:'Sunken Ruins',UR:'Cascade Bluffs',UG:'Flooded Grove',BR:'Graven Cairns',BG:'Twilight Mire',RG:'Fire-Lit Thicket'}},
+  {id:'pathway', nm:'Pathway Lands', nick:'"pathways" · MDFC', tier:'A', src:'ZNR / KHM',
+   beh:'Modal double-faced land: choose one color face as it enters, always untapped. Flexible, never a dead color — but only ever one color per copy.',
+   m:{WU:'Hengegate Pathway',UB:'Clearwater Pathway',BR:'Blightstep Pathway',RG:'Cragcrown Pathway',WG:'Branchloft Pathway',WB:'Brightclimb Pathway',UR:'Riverglide Pathway',UG:'Barkchannel Pathway',BG:'Darkbore Pathway',WR:'Needleverge Pathway'}},
+  {id:'bond', nm:'Crowd Lands', nick:'"bond lands"', tier:'A', src:'BBD / CMR',
+   beh:'Enter untapped if two or more opponents — i.e., untapped by default in a normal Commander pod. Battlebond (allied) + Commander Legends (enemy).',
+   m:{WU:'Sea of Clouds',UB:'Morphic Pool',BR:'Luxury Suite',RG:'Spire Garden',WG:'Bountiful Promenade',WB:'Vault of Champions',UR:'Training Center',UG:'Rejuvenating Springs',BG:'Undergrowth Stadium',WR:'Spectator Seating'}},
+  {id:'surveil', nm:'Surveil Lands', nick:'"surveil duals"', tier:'A', src:'MKM · 2024',
+   beh:'Enter tapped, surveil 1 — and crucially they carry both basic land types, so fetches and checklands love them.',
+   m:{WU:'Meticulous Archive',UB:'Undercity Sewers',BR:'Raucous Theater',RG:'Commercial District',WG:'Lush Portico',WB:'Shadowy Backstreet',UR:'Thundering Falls',UG:'Hedge Maze',BG:'Underground Mortuary',WR:'Elegant Parlor'}},
+  {id:'battle', nm:'Battle Lands', nick:'"tango lands"', tier:'B', src:'BFZ · allied only', flag:'incomplete · 5',
+   beh:'Enter untapped if you control 2+ basics, otherwise tapped — and they carry basic types. Only the five allied versions exist.',
+   m:{WU:'Prairie Stream',UB:'Sunken Hollow',BR:'Smoldering Marsh',RG:'Cinder Glade',WG:'Canopy Vista'}},
+  {id:'horizon', nm:'Canopy Lands', nick:'"horizon lands"', tier:'A', src:'FUT / MH1', flag:'incomplete · 6',
+   beh:'Untapped; tap for colorless free or a color for 1 life, and sacrifice + {1} to draw a card. Only six exist (GW + the five enemy pairs).',
+   m:{WG:'Horizon Canopy',WB:'Silent Clearing',UR:'Fiery Islet',BG:'Nurturing Peatland',WR:'Sunbaked Canyon',UG:'Waterlogged Grove'}},
+  {id:'slow', nm:'Slow Lands', nick:'"slow lands"', tier:'B', src:'MID / VOW',
+   beh:'Enter untapped only if you already control 2+ other lands — the inverse of fastlands, good for the mid-game.',
+   m:{WU:'Deserted Beach',UB:'Shipwreck Marsh',BR:'Haunted Ridge',RG:'Rockfall Vale',WG:'Overgrown Farmland',WB:'Shattered Sanctum',UR:'Stormcarved Coast',UG:'Dreamroot Cascade',BG:'Deathcap Glade',WR:'Sundown Pass'}},
+  {id:'temple', nm:'Temples', nick:'"scry lands"', tier:'B', src:'THS / THB',
+   beh:'Enter tapped, scry 1. Smooths draws and is very budget-friendly; the tempo hit is the price.',
+   m:{WU:'Temple of Enlightenment',UB:'Temple of Deceit',BR:'Temple of Malice',RG:'Temple of Abandon',WG:'Temple of Plenty',WB:'Temple of Silence',UR:'Temple of Epiphany',UG:'Temple of Mystery',BG:'Temple of Malady',WR:'Temple of Triumph'}},
+  {id:'snow', nm:'Snow Duals', nick:'Kaldheim taplands', tier:'C', src:'KHM',
+   beh:'Enter tapped, produce two colors, and are snow permanents (enabling snow payoffs). Otherwise plain tapped duals.',
+   m:{WU:'Glacial Floodplain',UB:'Ice Tunnel',BR:'Sulfurous Mire',RG:'Highland Forest',WG:'Arctic Treeline',WB:'Snowfield Sinkhole',UR:'Volatile Fjord',UG:'Rimewood',BG:'Woodland Chasm',WR:'Alpine Meadow'}},
+  {id:'cycle', nm:'Bicycle Lands', nick:'cycling duals', tier:'B', src:'AKH · allied only', flag:'incomplete · 5',
+   beh:'Enter tapped, carry both basic types, and can be cycled for {2} when flooded. Only the five allied versions exist.',
+   m:{WU:'Irrigated Farmland',UB:'Fetid Pools',BR:'Canyon Slough',RG:'Sheltered Thicket',WG:'Scattered Groves'}},
+  {id:'bounce', nm:'Karoo Lands', nick:'"bounce lands"', tier:'C', src:'RAV',
+   beh:'Enter tapped and return a land you control to hand, then tap for two mana of the guild colors — net ramp, at the cost of a land drop.',
+   m:{WU:'Azorius Chancery',UB:'Dimir Aqueduct',BR:'Rakdos Carnarium',RG:'Gruul Turf',WG:'Selesnya Sanctuary',WB:'Orzhov Basilica',UR:'Izzet Boilerworks',UG:'Simic Growth Chamber',BG:'Golgari Rot Farm',WR:'Boros Garrison'}},
+  {id:'gain', nm:'Life Lands', nick:'"gain lands" / taplands', tier:'C', src:'KTK+ common cycle',
+   beh:'Enter tapped, gain 1 life. Ubiquitous budget fixing — the floor of any two-color base.',
+   m:{WU:'Tranquil Cove',UB:'Dismal Backwater',BR:'Bloodfell Caves',RG:'Rugged Highlands',WG:'Blossoming Sands',WB:'Scoured Barrens',UR:'Swiftwater Cliffs',UG:'Thornwood Falls',BG:'Jungle Hollow',WR:'Wind-Scarred Crag'}},
+  {id:'creature', nm:'Creature Lands', nick:'"manlands" · Restless cycle', tier:'B', src:'WWK / BFZ / WOE·LCI',
+   beh:'Enter tapped and tap for two colors, then pay mana to animate into a creature — fixing plus a resilient wincon that dodges sorcery-speed removal. The complete modern ten are the Restless lands.',
+   m:{WU:'Restless Anchorage',WB:'Restless Fortress',WR:'Restless Bivouac',WG:'Restless Prairie',UB:'Restless Reef',UR:'Restless Spire',UG:'Restless Vinestalk',BR:'Restless Vents',BG:'Restless Cottage',RG:'Restless Ridgeline'}},
+  {id:'tribal', nm:'Tribal Lands', nick:'Lorwyn typal duals', tier:'C', src:'LRW / MOR', flag:'incomplete · 5',
+   beh:'Enter untapped if you reveal a matching creature type from hand (Merfolk, Faerie, Goblin, Elf, or Giant) — otherwise tapped. Superb in the typal decks they were built for, dead weight elsewhere. Only five pairs exist.',
+   m:{WU:'Wanderwine Hub',UB:'Secluded Glen',BR:"Auntie's Hovel",BG:'Gilt-Leaf Palace',WR:'Ancient Amphitheater'}},
+  {id:'vivid', nm:'Vivid Lands', nick:'five-color charge lands', tier:'C', src:'LRW',
+   beh:'Enter tapped with two charge counters; tap for their own color, or remove a counter to make ANY color. Two guaranteed off-color activations plus reliable on-color mana — old-school four- and five-color fixing.',
+   m:{W:'Vivid Meadow',U:'Vivid Creek',B:'Vivid Marsh',R:'Vivid Crag',G:'Vivid Grove'}}
+];
+
+/* Three-color lands don't fit the two-color CYCLES shape above (their `m`
+   is keyed by 3-letter combos like "WUB", not 2-letter pairs), so they get
+   their own small objects here rather than forcing an awkward shared shape. */
+const TRIOMES = {id:'triome', nm:'Triomes', tier:'S', src:'IKO / SNC / TDM', nick:'"triomes"',
+  beh:'Enter tapped with all THREE basic land types (fetchable by any relevant fetch) plus cycling 3. The best three-color land in the game.',
+  m:{WUB:"Raffine's Tower",WUR:'Raugrin Triome',WUG:"Spara's Headquarters",WBR:'Savai Triome',WBG:'Indatha Triome',
+     WRG:"Jetmir's Garden",UBR:"Xander's Lounge",UBG:'Zagoth Triome',URG:'Ketria Triome',BRG:"Ziatora's Proving Ground"}};
+const TRILAND = {id:'triland', nm:'Tri-Lands', tier:'B', src:'ALA / KTK', nick:'"tap lands"',
+  beh:'Enter tapped, tap for any of the three colors. No basic types, but cheap and dependable fixing.',
+  m:{WUB:'Arcane Sanctum',WUR:'Mystic Monastery',WUG:'Seaside Citadel',WBR:'Nomad Outpost',WBG:'Sandsteppe Citadel',
+     WRG:'Jungle Shrine',UBR:'Crumbling Necropolis',UBG:'Opulent Palace',URG:'Frontier Bivouac',BRG:'Savage Lands'}};
+const LANDSCAPES = {id:'landscape', nm:'Landscapes', tier:'B', src:'MH3', nick:'tri-fetch · "panoramas"',
+  beh:'Enter untapped and tap for colorless, or sacrifice (no life, no mana) to fetch one of three basic types tapped — and cycle for one mana of each color when flooded. A free-to-crack three-color fetch, one per wedge and shard.',
+  m:{WUB:'Contaminated Landscape',WUR:'Perilous Landscape',WUG:'Tranquil Landscape',WBR:'Shattered Landscape',WBG:'Deceptive Landscape',
+     WRG:'Sheltering Landscape',UBR:'Seething Landscape',UBG:'Foreboding Landscape',URG:'Bountiful Landscape',BRG:'Twisted Landscape'}};
+
+/* Mana rocks, not lands — but shaped identically to a CYCLES entry (same
+   `id`/`nm`/`tier`/`src`/`beh`/`m` fields) so every function that consumes
+   a "cycle" (baseSections, renderCatalog, the card popup lookup, etc.) can
+   treat rocks and lands interchangeably without a special case. */
+const SIGNETS = {id:'signets', nm:'Signets', tier:'A', src:'RAV',
+  beh:'{1},{T}: filter into one of each guild color. Cheap two-mana rock that fixes and ramps at once.',
+  m:{WU:'Azorius Signet',WB:'Orzhov Signet',WR:'Boros Signet',WG:'Selesnya Signet',UB:'Dimir Signet',
+     UR:'Izzet Signet',UG:'Simic Signet',BR:'Rakdos Signet',BG:'Golgari Signet',RG:'Gruul Signet'}};
+const TALISMANS = {id:'talismans', nm:'Talismans', tier:'A', src:'MRD / MH+',
+  beh:'{T} for colorless free, or a guild color for 1 damage. Two-mana rock, untapped ramp on turn two.',
+  m:{WU:'Talisman of Progress',WB:'Talisman of Hierarchy',WR:'Talisman of Conviction',WG:'Talisman of Unity',
+     UB:'Talisman of Dominance',UR:'Talisman of Creativity',UG:'Talisman of Curiosity',BR:'Talisman of Indulgence',
+     BG:'Talisman of Resilience',RG:'Talisman of Impulse'}};
+
+/* Small mono-color-only rock/utility-land tables, used only when an
+   identity has exactly one color (see baseSections()'s n===1 branch below). */
+const DIAMONDS = {W:'Marble Diamond',U:'Sky Diamond',B:'Charcoal Diamond',R:'Fire Diamond',G:'Moss Diamond'};
+const MEDALLIONS = {W:'Pearl Medallion',U:'Sapphire Medallion',B:'Jet Medallion',R:'Ruby Medallion',G:'Emerald Medallion'};
+const MONOLAND = {
+  W:['Emeria, the Sky Ruin','Castle Ardenvale','Mistveil Plains'],
+  U:['Faerie Conclave','Castle Vantress','Mikokoro, Center of the Sea'],
+  B:['Cabal Coffers','Castle Locthwain','Volrath\u2019s Stronghold'],
+  R:['Valakut, the Molten Pinnacle','Castle Embereth','Den of the Bugbear'],
+  G:['Nykthos, Shrine to Nyx','Castle Garenbrig','Yavimaya, Cradle of Growth']
+};
+
+/* Cards that aren't tied to any specific color pair — they go in almost
+   any deck regardless of identity. Each has a `min` (minimum number of
+   colors an identity needs before this card is worth recommending) so, for
+   example, Command Tower doesn't get suggested for a mono-color deck where
+   it would be strictly worse than a basic land. */
+const UNIVERSAL_LANDS = [
+  {nm:'Command Tower', tier:'S', min:2, beh:'Taps for any color in your commander\u2019s identity. First land in almost every multicolor deck.'},
+  {nm:'Path of Ancestry', tier:'A', min:2, beh:'Any color in your identity, tapped; scry 1 when you tap it for a creature you share a type with.'},
+  {nm:'Reflecting Pool', tier:'A', min:2, beh:'Taps for any color a land you control could produce — untapped, no life cost, scales with your base.'},
+  {nm:'Exotic Orchard', tier:'B', min:2, beh:'Taps for any color an opponent\u2019s land could make — usually reliable in a colorful pod.'},
+  {nm:'Prismatic Vista', tier:'A', min:1, beh:'Fetch any basic (or basic-typed) land for 1 life — universal deck-thinning fixing.'},
+  {nm:'Fabled Passage', tier:'B', min:1, beh:'Sacrifice to fetch a basic tapped (untapped with 4+ lands). Budget fixing/thinning.'},
+  {nm:'Terramorphic Expanse / Evolving Wilds', tier:'C', min:2, beh:'Sacrifice to fetch any basic, tapped. Cheap fixing floor.'}
+];
+const UNIVERSAL_RAINBOW = [
+  {nm:'City of Brass', tier:'A', min:3, beh:'Any color; deals 1 damage to you when tapped. Untapped five-color staple.'},
+  {nm:'Mana Confluence', tier:'A', min:3, beh:'Any color for 1 life. The premium untapped rainbow land.'},
+  {nm:'The World Tree', tier:'A', min:3, beh:'Taps for any color while you control five+ lands; also fixes toward WUBRG.'},
+  {nm:'Gemstone Mine', tier:'B', min:3, beh:'Any color, three uses. Cheap early rainbow fixing.'},
+  {nm:'Cascading Cataracts', tier:'B', min:4, beh:'Enters tapped; {5} to make it any-color for the turn. Indestructible utility.'},
+  {nm:'Spire of Industry', tier:'B', min:3, beh:'Any color for 1 life while you control an artifact — strong in rock-heavy bases.'}
+];
+const UNIVERSAL_ROCKS = [
+  {nm:'Sol Ring', tier:'S', min:0, beh:'{1}: two colorless. The single strongest card in the format; runs in every deck.'},
+  {nm:'Arcane Signet', tier:'S', min:1, beh:'Any color in your commander\u2019s identity. Two-mana turn-one accelerant.'},
+  {nm:'Fellwar Stone', tier:'A', min:1, beh:'Taps for any color an opponent\u2019s land could produce. Reprinted in MSH.'},
+  {nm:'Chromatic Lantern', tier:'A', min:3, beh:'Every land you control taps for any color — the great equalizer for greedy bases.'},
+  {nm:'Commander\u2019s Sphere', tier:'B', min:2, beh:'Any color in identity; sacrifice to draw a card late. Flexible value rock.'},
+  {nm:'Coalition Relic', tier:'A', min:3, beh:'Any color, and can charge for a burst of extra mana. Excellent 3+ color ramp.'},
+  {nm:'Mind Stone', tier:'B', min:0, beh:'Colorless ramp that cashes in for a card later. Colorless-friendly.'},
+  {nm:'Wayfarer\u2019s Bauble', tier:'B', min:1, beh:'Sacrifice + {2} to fetch a basic to the battlefield — colorless fixing for any deck.'}
+];
+const COLORLESS_LANDS = [
+  {nm:'Ancient Tomb', tier:'S', beh:'{T}: two colorless, deals 2 to you. Explosive colorless ramp.'},
+  {nm:'City of Traitors', tier:'A', beh:'{T}: two colorless; sacrifices if you play another land. Fast mana.'},
+  {nm:'Cloudpost / Glimmerpost', tier:'B', beh:'Locus lands that scale as you assemble more — colorless ramp engine.'},
+  {nm:'Buried Ruin', tier:'B', beh:'Colorless; sacrifice to return an artifact from your graveyard.'},
+  {nm:'Inventors\u2019 Fair', tier:'B', beh:'Colorless; life gain and an artifact tutor with 3+ artifacts.'},
+  {nm:'Blast Zone', tier:'B', beh:'Colorless utility; charge-counter board wipe for a chosen mana value.'},
+  {nm:'Wastes', tier:'C', beh:'The colorless basic land — the backbone of a devoid/colorless base.'}
+];
+
+/* ---------------------------------------------------------------------------
+   2) ENRICHMENT META  — era / year / plane / role / lore / tags.
+   Original summaries; no card text reproduced. Keys match cycle ids
+   (plus triome / triland / signets / talismans).
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   2) ENRICHMENT META
+   Historical/flavor layer keyed by cycle id, kept in a SEPARATE object from
+   CYCLES (above) rather than merged into it — this is original research
+   added on top of the reference data, not part of the verbatim mana-base
+   model, so keeping it separate makes clear which fields are "hard rules"
+   (CYCLES) vs. "narrative context" (this). `tags` (untapped/tapped/
+   fetchable) drives the Catalog's filter chips; `era` must match one of the
+   six eras named in ERAS just below, or the Timeline silently drops it.
+--------------------------------------------------------------------------- */
+const CYCLE_META = {
+  abur:{yr:1993, era:'The Founding', plane:'The founding sets', role:'Premium dual', tags:['untapped','fetchable'],
+    lore:'The ten original dual lands debuted in Alpha, before the Multiverse had a map. Each carries two basic land types with no drawback — a design so strong it was never reprinted after Revised, and now anchors the Reserved List.'},
+  pain:{yr:1995, era:'The Founding', plane:'Dominaria', role:'Early untapped', tags:['untapped'],
+    lore:'Ice Age and Apocalypse taught the game its first bargain: colored mana in exchange for a point of life. The painlands never enter tapped, which is why thirty years on they still make the cut.'},
+  talismans:{yr:2003, era:'The Invasion Age', plane:'Mirrodin', role:'Rock · untapped ramp', tags:['untapped'],
+    lore:'Forged for the artifact-world of Mirrodin, the Talismans pair colorless ramp with a colored option that costs a little life — a two-mana engine that has followed Magic through every Horizons set since.'},
+  fetch:{yr:2002, era:'The Invasion Age', plane:'Otaria & Zendikar', role:'Fixing + thinning', tags:['untapped','fetchable'],
+    lore:'Onslaught gave the allied colors lands that sacrifice themselves to search the library; Zendikar completed the enemy half years later. Beyond fixing, they thin the deck and fuel every landfall and graveyard payoff in the format.'},
+  shock:{yr:2005, era:'Return to the Guilds', plane:'Ravnica', role:'Premium dual', tags:['untapped','fetchable'],
+    lore:'Ravnica: City of Guilds built its identity around ten guilds, and gave each a dual that enters untapped for two life. The shocklands are the workhorse premium duals — fetchable, and reprinted for every return to the city.'},
+  signets:{yr:2005, era:'Return to the Guilds', plane:'Ravnica', role:'Rock · fix + ramp', tags:['untapped'],
+    lore:'The Ravnican guilds also minted the Signets: two-mana artifacts that filter one mana into one of each guild color, ramping and fixing in a single tap.'},
+  bounce:{yr:2005, era:'Return to the Guilds', plane:'Ravnica', role:'Ramp', tags:['tapped'],
+    lore:'The Karoo, or bounce, lands returned a land to hand on the way in — a tempo cost repaid with two mana of the guild colors. The oldest form of guild ramp.'},
+  horizon:{yr:2007, era:'Return to the Guilds', plane:'Future Sight & the Horizons', role:'Card advantage', tags:['untapped'],
+    lore:"Future Sight's lone Horizon Canopy hinted at a whole cycle; Modern Horizons finally delivered it. They pay life for color and, when the game floods, sacrifice themselves for a card."},
+  filter:{yr:2008, era:'Return to the Guilds', plane:'Shadowmoor', role:'Double-pip fixing', tags:['untapped'],
+    lore:'Shadowmoor and Eventide, the dark mirror of Lorwyn, printed lands that filter a generic mana into two colored — peerless for the double-pipped costs that colorless ramp cannot pay.'},
+  triland:{yr:2008, era:'Return to the Guilds', plane:'Alara & Tarkir', role:'Budget tri-land', tags:['tapped'],
+    lore:'Shards of Alara framed the world as five three-color wedges, and gave each a tapland for all three colors. Khans of Tarkir revived the pattern for its clans.'},
+  check:{yr:2009, era:'Return to the Guilds', plane:'Innistrad', role:'Typed base', tags:['untapped'],
+    lore:'The buddy lands check whether you already control a matching basic type, and enter untapped if you do. Introduced in Magic 2010 and refined on Innistrad, they reward a base built on real land types.'},
+  fast:{yr:2010, era:'The Modern Era', plane:'Mirrodin & Kaladesh', role:'Aggressive base', tags:['untapped'],
+    lore:'Scars of Mirrodin and Kaladesh built lands for the fast starts of an artifact world — untapped while your battlefield is still small, and increasingly awkward as the game goes long.'},
+  temple:{yr:2013, era:'The Modern Era', plane:'Theros', role:'Draw smoothing', tags:['tapped'],
+    lore:'Theros, plane of prophecy, is the natural home of the scrylands: enter tapped, look at the top of your library, and smooth the draws to come.'},
+  gain:{yr:2014, era:'The Modern Era', plane:'Many planes', role:'Budget floor', tags:['tapped'],
+    lore:'The lifegain taplands are the common floor of fixing — cheap, ubiquitous, and printed in nearly every set since Khans of Tarkir.'},
+  battle:{yr:2015, era:'The Modern Era', plane:'Zendikar', role:'Basics reward', tags:['untapped','fetchable'],
+    lore:"Battle for Zendikar's tango lands enter untapped only once you hold two basics — and carry basic types, so fetchlands can find them. Only the allied five were ever printed."},
+  cycle:{yr:2017, era:'The Renaissance', plane:'Amonkhet', role:'Flood insurance', tags:['tapped','fetchable'],
+    lore:"Amonkhet's cycling duals turn a flooded late game into a fresh card. They carry both basic types, so they slot neatly under fetches — though only the allied five exist."},
+  bond:{yr:2018, era:'The Renaissance', plane:'Kylem & beyond', role:'Pod untapped', tags:['untapped'],
+    lore:'Designed for multiplayer on the arena-world of Kylem, the crowd lands enter untapped whenever two or more opponents face you — which, in Commander, is nearly always.'},
+  triome:{yr:2020, era:'The Renaissance', plane:'Ikoria, New Capenna & Tarkir', role:'Best tri-land', tags:['tapped','fetchable'],
+    lore:'Ikoria\u2019s Triomes are the finest three-color lands ever made: all three basic types, so any fetch can find them, plus cycling when they are the last thing you need. New Capenna and Tarkir expanded the cycle.'},
+  pathway:{yr:2020, era:'The Renaissance', plane:'Zendikar & Kaldheim', role:'Flexible MDFC', tags:['untapped'],
+    lore:'Zendikar Rising\u2019s modal double-faced pathways ask a single question as they enter — which color? — and answer it untapped, every time, forever one color per copy.'},
+  snow:{yr:2021, era:'The Renaissance', plane:'Kaldheim', role:'Snow synergy', tags:['tapped'],
+    lore:'Kaldheim\u2019s snow-covered duals enter tapped but count as snow permanents, feeding a whole subtheme of snow-matters payoffs.'},
+  slow:{yr:2021, era:'The Renaissance', plane:'Innistrad', role:'Midgame land', tags:['untapped'],
+    lore:'Innistrad\u2019s Midnight Hunt inverted the fastlands: these enter untapped only once you already hold two lands, rewarding patience over speed.'},
+  surveil:{yr:2024, era:'The Frontier', plane:'Ravnica', role:'Typed tapped dual', tags:['tapped','fetchable'],
+    lore:'Murders at Karlov Manor returned to a noir Ravnica with typed duals that surveil as they enter tapped — and because they carry basic types, fetches and checklands welcome them.'},
+  verge:{yr:2024, era:'The Frontier', plane:'Duskmourn & beyond', role:'Conditional untapped', tags:['untapped'],
+    lore:'The newest untapped conditional cycle, begun in Duskmourn and extended in Aetherdrift: one color free, the second only while you control the right basic type.'},
+  msh:{yr:2026, era:'The Frontier', plane:'The frontier', role:'Frontier dual', tags:['untapped'],
+    lore:'The frontier cycle, printed in Marvel Super Heroes. The allied five are here; the enemy half has not yet seen print.'},
+  creature:{yr:2010, era:'The Modern Era', plane:'Zendikar, then across the Multiverse', role:'Fixing + wincon', tags:['tapped'],
+    lore:'Worldwake taught lands to fight: its allied duals entered tapped and animated into Elementals. Battle for Zendikar and Oath of the Gatewatch mirrored them in enemy colors, and the Restless cycle — Wilds of Eldraine plus The Lost Caverns of Ixalan — finally completed all ten as attacking, fixing threats.'},
+  tribal:{yr:2007, era:'Return to the Guilds', plane:'Lorwyn', role:'Typal untapped dual', tags:['untapped'],
+    lore:'Lorwyn built its world around creature types and gave five of them a land: reveal a Merfolk, Faerie, Goblin, Elf, or Giant from hand and it enters untapped. Morningtide extended the idea. Peerless in the decks they serve, unplayable outside them.'},
+  vivid:{yr:2007, era:'Return to the Guilds', plane:'Lorwyn', role:'Five-color fixing', tags:['tapped'],
+    lore:'Lorwyn\u2019s Vivid lands enter tapped with two charge counters and can spend a counter to make any color — a small, guaranteed reservoir of off-color mana that anchored four- and five-color decks for years. Their name later lent itself to the 2026 Vivid mechanic.'},
+  landscape:{yr:2024, era:'The Frontier', plane:'Modern Horizons 3', role:'Three-color fetch', tags:['untapped','fetchable'],
+    lore:'Modern Horizons 3 gave every wedge and shard a common tri-fetch: sacrifice with no life or mana to grab one of three basic types, or cycle it away when flooded. A budget descendant of the Alara panoramas, but free to crack and far more flexible.'}
+};
+
+/* era ordering + one-line descriptions for the timeline */
+/* The six chronological eras shown as headings on the Timeline tab, each
+   [name, year-range label, one-line description]. Order in this array IS
+   the display order — renderTimeline() (Section 8) walks it top to bottom. */
+const ERAS = [
+  ['The Founding',        '1993 – 1995', 'Before the Multiverse had a map — the duals, and the first bargain of life for color.'],
+  ['The Invasion Age',    '2002 – 2003', 'Onslaught teaches the library to search itself; Mirrodin forges the first artifact ramp.'],
+  ['Return to the Guilds','2005 – 2009', 'Ravnica formalizes ten guilds and, with them, the modern grammar of two-color fixing.'],
+  ['The Modern Era',      '2010 – 2016', 'A decade of conditionals: fast, checked, scried, and rewarded for basics.'],
+  ['The Renaissance',     '2017 – 2021', 'Commander products and Modern Horizons pour out cycle after cycle — triomes crown the three-color base.'],
+  ['The Frontier',        '2024 – 2026', 'Surveil, verge, and the newest frontier duals push fixing into its fourth decade.']
+];
+
+/* ---------------------------------------------------------------------------
+   3) HELPERS + MATH
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   3) HELPERS + MATH — small pure functions reused across every render
+   function below. Keeping them here (rather than inline where first used)
+   means there's exactly one implementation of "how do we draw a pip" or
+   "how do we compute odds" to test and fix, not several copies.
+--------------------------------------------------------------------------- */
+const pip = c => `<span class="pip ${c}" title="${CNAME[c]}"></span>`;
+/* Escapes double-quotes so a card name can never break out of an HTML
+   attribute (e.g. data-card="..."). Card names in this dataset don't
+   currently contain quotes, but this makes that assumption unnecessary. */
+const escAttr = s => String(s).replace(/"/g,'&quot;');
+/* Wraps any card name in the markup the hover-popup system (cardPop, near
+   the end of this script) listens for: `tabindex="0"` makes it keyboard-
+   focusable (so the popup also works via Tab + the CARD's own focus, not
+   just mouse hover), and `data-card` carries the exact name cardPop will
+   look up on Scryfall / in the offline CARD_INFO table. */
+const cardName = nm => `<span class="cardname" tabindex="0" data-card="${escAttr(nm)}">${nm}</span>`;
+const minipip = c => `<span class="mini-pip" style="background:var(--${c})" title="${CNAME[c]}"></span>`;
+const manaSymbol = c => `<i class="ms ms-${c.toLowerCase()} ms-cost mana-symbol" aria-hidden="true"></i>`;
+const pipsHTML = cs => (cs && cs.length ? cs.map(pip).join('') : pip('C'));
+/* pairsOf/trisOf: given an identity's color list (e.g. ['W','U','B'] for
+   Esper), return every 2-color / 3-color SUBSET as canonical pair/tri keys
+   (key() applied to each combo) — e.g. pairsOf(['W','U','B']) => ['WU','WB','UB'].
+   This is how a 3+ color identity knows which duals/triomes apply to it:
+   Esper gets the WU, WB, and UB duals (three separate pairs), plus the
+   single WUB triome, all found via these two helpers rather than hand-listing
+   them per identity. */
+function pairsOf(cs){ const out=[]; for(let i=0;i<cs.length;i++) for(let j=i+1;j<cs.length;j++) out.push(key([cs[i],cs[j]])); return out; }
+function trisOf(cs){ const out=[]; for(let i=0;i<cs.length;i++)for(let j=i+1;j<cs.length;j++)for(let k=j+1;k<cs.length;k++) out.push(key([cs[i],cs[j],cs[k]])); return out; }
+const TIERRANK={S:0,A:1,B:2,C:3};
+
+/* hypergeometric — log-factorials keep C(99,k) finite */
+/* ---- Hypergeometric probability (powers the Consistency Lab, Section 6) ----
+   Computing C(n,k) (n choose k) directly overflows for a 99-card deck long
+   before you need it, so everything is done in LOG space instead: LOGF[i]
+   is log(i!), precomputed once for i up to 200 (comfortably covering a
+   99-card population). logC(n,k) then returns log(C(n,k)) as a subtraction
+   instead of an unrepresentable division of huge factorials. */
+const LOGF=[0]; for(let i=1;i<=200;i++) LOGF[i]=LOGF[i-1]+Math.log(i);
+function logC(n,k){ if(k<0||k>n||n<0) return -Infinity; return LOGF[n]-LOGF[k]-LOGF[n-k]; }
+/* P(at least `need` successes) drawing `draws` from population `N` holding `K` successes */
+/* P(drawing AT LEAST `need` successes) when drawing `draws` cards without
+   replacement from a population of `N` cards containing `K` successes —
+   the exact probability of, say, "seeing at least 1 of your 18 sources of
+   blue mana in the 9 cards you've seen by turn 3." Computed as
+   1 − P(0 successes) − P(1) − ... − P(need−1), i.e. 1 minus everything
+   below the threshold, since summing "at least" directly would require
+   adding up every possibility from `need` to `draws` instead of the
+   (usually much shorter) list of possibilities below it. */
+function hyperAtLeast(need, K, draws, N){
+  K=Math.max(0,Math.min(K,N)); draws=Math.max(0,Math.min(draws,N));
+  const denom=logC(N,draws);
+  let cum=0; // P(0)+..+P(need-1)
+  for(let k=0;k<need;k++){ const p=Math.exp(logC(K,k)+logC(N-K,draws-k)-denom); if(isFinite(p)) cum+=p; }
+  return Math.max(0,Math.min(1,1-cum));
+}
+
+/* ---------------------------------------------------------------------------
+   4) SIGIL  — the color-pie pentagon drawn as an illuminated glyph.
+   Canonical positions: W top, then U B R G clockwise (allies adjacent).
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   4) SIGIL — draws the color-pie pentagon as inline SVG for a given color
+   set: the small illuminated glyph shown in the hero and atop every "Build
+   a base" result. PENT_ORDER fixes the canonical layout — W at the top,
+   then U/B/R/G clockwise — matching how the color pie is traditionally
+   drawn in Magic's own materials, with allied colors adjacent.
+--------------------------------------------------------------------------- */
+const PENT_ORDER=['W','U','B','R','G'];
+/* Places each of the 5 colors evenly around a circle of radius `r`
+   centered at (cx,cy), starting at the top (-90°) and going clockwise in
+   72° steps (360°/5 colors). Returns e.g. {W:{x,y}, U:{x,y}, ...} — the
+   exact coordinates sigil() below connects with lines/polygons. */
+function pentPos(r, cx=100, cy=100){
+  const pos={}; PENT_ORDER.forEach((c,i)=>{ const a=(-90+i*72)*Math.PI/180;
+    pos[c]={x:cx+r*Math.cos(a), y:cy+r*Math.sin(a)}; }); return pos;
+}
+/* Renders one identity's sigil as an SVG string. `guide:true` (used only
+   for the decorative hero sigil, which represents ALL 5 colors at once) 
+   draws every node in gold as a reference/legend rather than lighting up
+   specific colors. For a real identity: colorless draws a hexagon+dot
+   glyph instead of pentagon nodes; 2+ colors draw a filled connecting
+   polygon (the "bond") between the active nodes so you can see the shape
+   of the identity at a glance, not just which dots are lit. */
+function sigil(cs, {guide=false}={}){
+  const P=pentPos(66);
+  const active=new Set(cs.length?cs:[]);
+  const colorless=cs.length===0;
+  let s=`<svg viewBox="0 0 200 200" role="img" aria-label="${colorless?'Colorless':cs.map(c=>CNAME[c]).join(' ')} identity sigil">`;
+  // faint guide pentagon connecting all five points
+  let guidePts=PENT_ORDER.map(c=>`${P[c].x.toFixed(1)},${P[c].y.toFixed(1)}`).join(' ');
+  s+=`<polygon points="${guidePts}" fill="none" stroke="rgba(58,66,86,.55)" stroke-width="1"/>`;
+  s+=`<circle cx="100" cy="100" r="66" fill="none" stroke="rgba(42,48,64,.5)" stroke-width="1"/>`;
+  // active bond polygon / chord
+  if(cs.length>=2){
+    const apts=cs.map(c=>`${P[c].x.toFixed(1)},${P[c].y.toFixed(1)}`).join(' ');
+    s+=`<polygon points="${apts}" fill="rgba(201,162,75,.07)" stroke="var(--gold-dim)" stroke-width="1.4" stroke-linejoin="round"/>`;
+  }
+  // colorless centerpiece
+  if(colorless){
+    s+=`<g transform="translate(100 100)"><polygon points="0,-20 17,-10 17,10 0,20 -17,10 -17,-10"
+      fill="none" stroke="var(--C)" stroke-width="1.6"/><circle r="5" fill="var(--C)"/></g>`;
+  }
+  // nodes
+  PENT_ORDER.forEach(c=>{
+    const on=active.has(c)||guide;
+    const {x,y}=P[c];
+    if(on){
+      s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="12" fill="var(--${guide?'gold':c})" fill-opacity="${guide?0.5:0.9}"
+           stroke="rgba(0,0,0,.4)" stroke-width="1"/>`;
+      s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="16.5" fill="none" stroke="var(--${guide?'gold':c})" stroke-opacity=".28" stroke-width="1"/>`;
+    } else {
+      s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="var(--ink-3)" stroke="var(--line-2)" stroke-width="1"/>`;
+    }
+  });
+  // center rune
+  if(!colorless) s+=`<circle cx="100" cy="100" r="3" fill="var(--gold)" fill-opacity="${cs.length>=2?0.9:0.4}"/>`;
+  s+=`</svg>`;
+  return s;
+}
+
+/* ambient rune field — deterministic, extremely faint */
+(function aether(){
+  function seeded(seed){ return ()=>{ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }; }
+  function fill(id, seed){
+    const g=document.getElementById(id); if(!g) return; const rnd=seeded(seed); let s='';
+    for(let i=0;i<26;i++){ const x=(rnd()*800).toFixed(0), y=(rnd()*1400).toFixed(0), r=(0.6+rnd()*1.6).toFixed(1);
+      s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="#c9a24b"/>`; }
+    for(let i=0;i<5;i++){ const x=(rnd()*800).toFixed(0), y=(rnd()*1400).toFixed(0), r=(20+rnd()*70).toFixed(0);
+      s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#5fa0c9" stroke-width="0.6"/>`; }
+    g.innerHTML=s;
+  }
+  fill('aether-a', 91237); fill('aether-b', 44519);
+})();
+
+/* ---------------------------------------------------------------------------
+   5) PICKER
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   5) PICKER — builds the 37-button identity grid once at page load. Grouped
+   by `d.g` (the same grouping field IDENTITIES is already sorted by), so a
+   new heading (.grp) starts every time the group name changes as we walk
+   the array in order — no separate grouping/sorting step needed.
+--------------------------------------------------------------------------- */
+const picker=document.getElementById('picker');
+(function renderPicker(){
+  let html='', lastG=null;
+  IDENTITIES.forEach(d=>{
+    if(d.g!==lastG){ if(lastG!==null) html+='</div></div>';
+      html+=`<div class="grp"><div class="grp-h"><span class="n">${d.g}</span><span class="r"></span></div><div class="grid">`;
+      lastG=d.g; }
+    html+=`<button class="idcard" role="button" aria-pressed="false" data-id="${d.id}">
+        <div class="nm">${d.nm}</div><div class="sb">${d.sb}</div>
+        <div class="pips">${d.cs.length?d.cs.map(manaSymbol).join(''):manaSymbol('C')}</div></button>`;
+  });
+  html+='</div></div>';
+  picker.innerHTML=html;
+  document.getElementById('picker-count').textContent = IDENTITIES.length+' identities';
+})();
+
+/* ---------------------------------------------------------------------------
+   5b) BASE SECTIONS  — mirrors the reference categorisation, but returns
+   structured data so it can render as a ledger OR a gallery, and feed stats.
+   Each item: {name, cycle, cycleId, beh, src, tier, colors, role, era}
+--------------------------------------------------------------------------- */
+function metaFor(id){ return CYCLE_META[id]||null; }
+function itemFromCycle(cy, pk){
+  const mm=metaFor(cy.id)||{};
+  return {name:cy.m[pk], cycle:cy.nm+(cy.nick?' · '+cy.nick:''), cycleId:cy.id, beh:cy.beh,
+    src:cy.src, tier:cy.tier, colors:pk.split(''), role:mm.role, era:mm.era, lore:mm.lore};
+}
+function itemFromGroup(grp, tk){
+  const mm=metaFor(grp.id)||{};
+  return {name:grp.m[tk], cycle:grp.nm+' · '+grp.nick, cycleId:grp.id, beh:grp.beh,
+    src:grp.src, tier:grp.tier, colors:tk.split(''), role:mm.role, era:mm.era, lore:mm.lore};
+}
+function plainItem(x, cycleName, colors, role){
+  return {name:x.nm, cycle:cycleName, cycleId:null, beh:x.beh, src:x.src||'', tier:x.tier,
+    colors:colors||null, role:role||null, era:null, lore:null};
+}
+
+/* THE CORE RECOMMENDATION ENGINE. Given one identity `d`, returns the list
+   of sections (e.g. "Untapped & premium duals", "Three-color lands", ...)
+   that make up its recommended base, each populated with the specific
+   cards that apply to THIS identity's colors — plus the stat tiles
+   computed from that same list (via computeStats, right below). This is
+   the one function that decides "what does Esper actually get recommended,
+   and in what order" — everything downstream (ledger rows, gallery cards,
+   the Lab's default source counts) just renders whatever this returns. */
+function baseSections(d){
+  const cs=d.cs, n=cs.length, sections=[];
+  const push=(title,k,desc,items)=>sections.push({title,k,desc,items});
+
+  if(n===0){
+    push('Colorless lands','ramp · utility','The core of a devoid / Eldrazi-style base.',
+      COLORLESS_LANDS.map(x=>plainItem(x,'Colorless land',null,'Colorless ramp')));
+    push('Mana rocks','colorless','Artifacts that ramp regardless of color.',
+      UNIVERSAL_ROCKS.filter(x=>x.min<=1).map(x=>plainItem(x,'Rock',null,'Colorless ramp')));
+    return {sections, stats:computeStats(sections,d)};
+  }
+
+  // universal core
+  push('Universal core lands','any identity','Goes in essentially every deck of this size, regardless of colors.',
+    UNIVERSAL_LANDS.filter(x=>x.min<=n).sort((a,b)=>TIERRANK[a.tier]-TIERRANK[b.tier])
+      .map(x=>plainItem(x,'Universal land',null,'Any-color fixing')));
+
+  if(n===1){
+    const c=cs[0];
+    push(`${CNAME[c]} utility lands`,'mono','Mono decks run mostly basics; these are the high-value nonbasics worth the slot.',
+      (MONOLAND[c]||[]).map(nm=>plainItem({nm,tier:c==='B'?'A':'B',beh:'Color-specific utility / ramp / recursion land.'},'Mono utility land',[c],'Utility')));
+    const rocks=[
+      plainItem({nm:DIAMONDS[c],tier:'C',beh:'{T}: one '+CNAME[c].toLowerCase()+' (enters tapped). Cheap fixing/ramp.',src:'MRD'},'Diamond',[c],'Ramp'),
+      plainItem({nm:MEDALLIONS[c],tier:'B',beh:CNAME[c]+' spells cost {1} less — accelerates a mono curve.',src:'TMP'},'Medallion',[c],'Cost reduction'),
+      ...UNIVERSAL_ROCKS.filter(x=>x.min<=1).map(x=>plainItem(x,'Rock',null,'Colorless ramp'))
+    ];
+    push('Mana rocks & ramp','mono','Colorless ramp plus the color\u2019s dedicated accelerants.',rocks);
+    return {sections, stats:computeStats(sections,d)};
+  }
+
+  const pairs=pairsOf(cs), tris=trisOf(cs);
+  const strongCycles=CYCLES.filter(cy=>['S','A'].includes(cy.tier)).sort((a,b)=>TIERRANK[a.tier]-TIERRANK[b.tier]);
+  const valueCycles =CYCLES.filter(cy=>['B','C'].includes(cy.tier)).sort((a,b)=>TIERRANK[a.tier]-TIERRANK[b.tier]);
+  const collect=set=>{ const out=[]; set.forEach(cy=>pairs.forEach(pk=>{ if(cy.m[pk]) out.push(itemFromCycle(cy,pk)); })); return out; };
+
+  push('Untapped &amp; premium duals','tier S–A',
+    'The backbone: enters untapped (or with a light condition) and fixes both colors. Draft your base from the top of this list down.',
+    collect(strongCycles));
+  push('Value &amp; tapped duals','tier B–C',
+    'Reliable fixing that enters tapped or is otherwise conditional — the budget and mid-power layer.',
+    collect(valueCycles));
+
+  if(n>=3){
+    const triItems=[];
+    [TRIOMES,TRILAND].forEach(grp=>tris.forEach(tk=>{ if(grp.m[tk]) triItems.push(itemFromGroup(grp,tk)); }));
+    push('Three-color lands','tri','Each three-color subset of your identity has a triome and a tap-land. Triomes are fetchable and belong in every 3+ color base.',triItems);
+    push('Rainbow / any-color lands', n>=4?'4–5c essential':'wide bases',
+      'Lands that tap for any color — increasingly essential as basics get squeezed out of a greedy base.',
+      UNIVERSAL_RAINBOW.filter(x=>x.min<=n).sort((a,b)=>TIERRANK[a.tier]-TIERRANK[b.tier]).map(x=>plainItem(x,'Rainbow land',null,'Any-color fixing')));
+  }
+
+  const rockItems=[];
+  [SIGNETS,TALISMANS].forEach(grp=>pairs.forEach(pk=>{ if(grp.m[pk]) rockItems.push(itemFromGroup(grp,pk)); }));
+  UNIVERSAL_ROCKS.filter(x=>x.min<=n).sort((a,b)=>TIERRANK[a.tier]-TIERRANK[b.tier]).forEach(x=>rockItems.push(plainItem(x,'Rock',null,'Ramp / fixing')));
+  push('Mana rocks','artifacts','Signets and talismans for each color pair, plus the universal accelerants. Sol Ring and Arcane Signet are near-auto-includes.',rockItems);
+
+  return {sections, stats:computeStats(sections,d)};
+}
+
+/* Turns the section list baseSections() just built into the 4-5 numbers
+   shown in the stat tiles ("83 fixing pieces", "55 premium options", ...).
+   Deliberately recomputed from the actual rendered items every time,
+   rather than hand-maintained per identity — so the numbers can never
+   drift out of sync with what's actually listed below them. */
+function computeStats(sections, d){
+  const n=d.cs.length;
+  const all=sections.flatMap(s=>s.items);
+  const cycleItems=all.filter(i=>i.cycleId);
+  const has=id=>i=>i.cycleId===id;
+  const untappedCyc=new Set(Object.keys(CYCLE_META).filter(k=>(CYCLE_META[k].tags||[]).includes('untapped')));
+  const fetchCyc  =new Set(Object.keys(CYCLE_META).filter(k=>(CYCLE_META[k].tags||[]).includes('fetchable')));
+  const premium = all.filter(i=>i.tier==='S'||i.tier==='A').length;
+  const untapped= cycleItems.filter(i=>untappedCyc.has(i.cycleId)).length;
+  const fetchable=cycleItems.filter(i=>fetchCyc.has(i.cycleId)).length;
+  const triomes = all.filter(has('triome')).length;
+  return [
+    {v:all.length, l:'Fixing pieces surfaced', accent:true},
+    {v:premium,    l:'Premium (S–A) options'},
+    {v:untapped,   l:'Untapped duals'},
+    {v:fetchable,  l:'Fetchable-type lands'},
+    ...(n>=3?[{v:triomes, l:'Triomes available'}]:[])
+  ];
+}
+
+/* ---------------------------------------------------------------------------
+   5c) RENDER LEDGER + GALLERY
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   5c) RENDER LEDGER + GALLERY — two different templates for the exact same
+   `it` (item) data shape, switched by the Gallery/Ledger toggle. Neither
+   function fetches or transforms data; they only format what
+   baseSections() already assembled.
+--------------------------------------------------------------------------- */
+function ledgerRow(it){
+  const pips = (it.colors&&it.colors.length) ? it.colors.map(manaSymbol).join('') : '';
+  return `<tr>
+    <td class="card"><span class="cname">${pips}${cardName(it.name)}</span><span class="cyc">${it.cycle}</span></td>
+    <td class="beh">${it.beh}</td>
+    <td class="src"><span class="srctxt">${it.src||''}</span></td>
+    <td><span class="tier ${it.tier}">${it.tier}</span></td></tr>`;
+}
+function renderLedgerSection(sec){
+  if(!sec.items.length) return emptySection(sec);
+  const rows=sec.items.map(ledgerRow).join('');
+  return `<div class="cat"><div class="cat-h"><h4>${sec.title}</h4><span class="k">${sec.k}</span></div>
+    <p class="cat-desc">${sec.desc}</p>
+    <table class="ledger"><thead><tr><th>Card</th><th>Behavior</th><th>Set</th><th>Tier</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
+}
+const EDGE={W:'#f0e9cf',U:'#5fa0c9',B:'#a692c4',R:'#cc5f4c',G:'#6fa66a'};
+function edgeColor(it){ if(it.colors&&it.colors.length) return EDGE[it.colors[0]]||'var(--gold-dim)'; return 'var(--gold-dim)'; }
+/* The Gallery's premium card template. `edgeColor(it)` (just above) picks
+   the top accent-stripe color from the card's first color, falling back to
+   gold for colorless/universal cards. The lore paragraph is always in the
+   HTML but stays visually collapsed (max-height:0) until Flavor Mode is on
+   — see the `body.flavor .lcard .lore` rule in @layer gallery. */
+function galleryCard(it){
+  const pips = (it.colors && it.colors.length) ? it.colors.map(manaSymbol).join('') : manaSymbol('C');
+  const era = it.era ? it.era : (it.src||'');
+  const role= it.role|| '';
+  const lore= it.lore ? `<p class="lore">${it.lore}</p>` : '';
+  return `<article class="lcard" style="--edge:${edgeColor(it)}">
+      <div class="top"><span class="pips">${pips}</span>
+        <div><span class="nm">${cardName(it.name)}</span><span class="cyc">${it.cycle}</span></div>
+        <span class="tier ${it.tier}">${it.tier}</span></div>
+      <p class="beh">${it.beh}</p>
+      <div class="foot"><span class="role">${role}</span><span class="era">${era}</span></div>
+      ${lore}
+    </article>`;
+}
+function renderGallerySection(sec){
+  if(!sec.items.length) return emptySection(sec);
+  const cards=sec.items.map(galleryCard).join('');
+  return `<div class="cat"><div class="cat-h"><h4>${sec.title}</h4><span class="k">${sec.k}</span></div>
+    <p class="cat-desc">${sec.desc}</p><div class="gallery"><div class="gcards">${cards}</div></div></div>`;
+}
+function emptySection(sec){
+  return `<div class="cat"><div class="cat-h"><h4>${sec.title}</h4><span class="k">${sec.k}</span></div>
+    <p class="cat-desc">${sec.desc}</p>
+    <p class="empty-note">No dedicated cards for this identity — lean on the universal and rainbow options above.</p></div>`;
+}
+
+/* ---------------------------------------------------------------------------
+   5d) BUILD ORCHESTRATOR
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   5d) BUILD ORCHESTRATOR — ties the picker, the section data, the stat
+   tiles, the Gallery/Ledger toggle, and the Consistency Lab together into
+   the single #result panel shown after an identity is picked.
+--------------------------------------------------------------------------- */
+let VIEW_MODE='gallery'; // 'gallery' | 'ledger'
+let CURRENT=null;
+
+/* Runs the full pipeline for a newly-selected identity `d`: compute its
+   sections+stats, render the result header/stats/base-list HTML in one
+   shot, then wire up this render's interactive bits (view-switch buttons,
+   the Lab) via wireResult(). Called fresh every time a different identity
+   card is clicked — nothing is diffed/patched, the whole #result panel is
+   just replaced, which is simple and plenty fast for content this size. */
+function build(d){
+  CURRENT=d;
+  const cs=d.cs, n=cs.length, res=document.getElementById('result');
+  const {sections, stats}=baseSections(d);
+  const twin=d.twin?` · shares the ${d.twin} base`:'';
+
+  const blurb = n===0
+    ? 'Colorless bases don\u2019t fix colors — they maximize raw colorless output and utility. Run a heavy count of Wastes, colorless ramp lands, and any-color rocks.'
+    : n===1
+    ? `A mono-${CNAME[cs[0]].toLowerCase()} base is mostly basics; the pieces below are the high-value nonbasics and the accelerants worth their slots.`
+    : `Draft the base from the premium duals down. ${n>=3?'Triomes anchor every three-color subset; ':''}the Consistency Lab below shows how many sources it takes to hit your colors on curve.`;
+
+  let out = `<div class="res-head">
+      <div class="res-sigil">${sigil(cs)}</div>
+      <div class="res-id"><div class="pips" aria-label="${(cs.length?cs:['C']).map(c=>CNAME[c]).join(' / ')}">${cs.length ? cs.map(manaSymbol).join('') : manaSymbol('C')}</div>
+        <h2>${d.nm}</h2>
+        <span class="meta"><b>${d.sb}</b>${twin}</span>
+        <p class="blurb">${blurb}</p></div>
+    </div>`;
+
+  // stat tiles
+  out += `<div class="stats">${stats.map(s=>`<div class="stat${s.accent?' accent':''}"><div class="v">${s.v}</div><div class="l">${s.l}</div></div>`).join('')}</div>`;
+
+  // base head + view switch
+  out += `<div class="base-head"><h3>Recommended base</h3><span class="k">${n===0?'colorless':n===1?'mono':n+'-color'}</span>
+      <div class="switch" role="group" aria-label="Display mode">
+        <button data-mode="gallery" aria-pressed="${VIEW_MODE==='gallery'}">Gallery</button>
+        <button data-mode="ledger"  aria-pressed="${VIEW_MODE==='ledger'}">Ledger</button>
+      </div></div>`;
+
+  out += `<div id="base-body">${renderBase(sections)}</div>`;
+
+  // consistency lab (skip pure colorless — no colored pips to hit)
+  if(n>=1) out += labMarkup(d);
+
+  res.innerHTML=out;
+  wireResult(sections, d);
+  res.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderBase(sections){
+  const fn = VIEW_MODE==='gallery' ? renderGallerySection : renderLedgerSection;
+  return sections.map(fn).join('');
+}
+
+function wireResult(sections, d){
+  document.querySelectorAll('.base-head .switch button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      VIEW_MODE=b.dataset.mode;
+      document.querySelectorAll('.base-head .switch button').forEach(x=>x.setAttribute('aria-pressed', x.dataset.mode===VIEW_MODE));
+      document.getElementById('base-body').innerHTML=renderBase(sections);
+    });
+  });
+  if(d.cs.length>=1) wireLab(d);
+}
+
+/* ---------------------------------------------------------------------------
+   6) CONSISTENCY LAB — hypergeometric color-hit odds
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   6) CONSISTENCY LAB — the interactive hypergeometric calculator. Sensible
+   starting source-counts per identity size (a mono deck defaults to 36
+   sources since it's basically "all your lands"; a 5-color deck defaults
+   lower per-color since sources have to be split five ways). These are
+   just the SLIDER's starting position — the math (hyperAtLeast, Section 3)
+   recomputes live as the person drags it, using whatever value it's at.
+--------------------------------------------------------------------------- */
+const DEFAULT_SOURCES={1:36,2:19,3:15,4:13,5:12};
+function labMarkup(d){
+  const cs=d.cs, n=cs.length;
+  const defSrc=DEFAULT_SOURCES[n]||18;
+  const colorBtns = cs.map((c,i)=>`<button class="cpk" data-color="${c}" aria-pressed="${i===0}" title="${CNAME[c]}"
+      style="background:var(--${c})"></button>`).join('');
+  return `<section class="lab" aria-label="Consistency lab">
+    <div class="lab-h"><h3>Consistency Lab</h3><span class="k">hypergeometric</span></div>
+    <p class="lab-sub">Exact odds of drawing a colored source in a 99-card singleton deck. Set the number of
+      sources of a color, the turn, and whether you are on the play or the draw — the meters recompute live.
+      One source clears a single pip; two clears a double-pipped cost.</p>
+    <div class="lab-body">
+      <div class="controls">
+        ${n>1?`<div class="ctrl"><label>Color <span class="val" id="lab-color-name">${CNAME[cs[0]]}</span></label>
+          <div class="colorpick">${colorBtns}</div></div>`:``}
+        <div class="ctrl"><label>Sources of this color <span class="val" id="lab-src-v">${defSrc}</span></label>
+          <input id="lab-src" type="range" min="1" max="40" value="${defSrc}"></div>
+        <div class="ctrl"><label>By turn <span class="val" id="lab-turn-v">3</span></label>
+          <input id="lab-turn" type="range" min="1" max="6" value="3"></div>
+        <div class="ctrl"><label>On the</label>
+          <div class="segmented" id="lab-pd">
+            <button data-pd="play" aria-pressed="true">Play</button>
+            <button data-pd="draw" aria-pressed="false">Draw</button>
+          </div></div>
+      </div>
+      <div class="readouts">
+        <div class="meter"><div class="mlab"><span class="name">At least one source
+            <small id="lab-seen-1">by turn 3 · 9 cards seen</small></span><span class="pct" id="lab-pct-1">—</span></div>
+          <div class="track"><div class="fill" id="lab-fill-1"></div></div></div>
+        <div class="meter"><div class="mlab"><span class="name">At least two sources
+            <small>double-pipped costs</small></span><span class="pct" id="lab-pct-2">—</span></div>
+          <div class="track"><div class="fill double" id="lab-fill-2"></div></div></div>
+      </div>
+    </div>
+    <p class="lab-note"><b>How to read it.</b> Population is 99 (your commander waits in the command zone). On the
+      play you see 7 + (turn − 1) cards; on the draw, 7 + turn. As a rule of thumb, aim for enough sources that a
+      single pip clears ~90% by turn three and a double pip clears comfortably by the time you want to cast it —
+      raising the slider shows exactly what that costs in deck slots.</p>
+  </section>`;
+}
+/* LAB holds the Lab's current control state (which color is selected, the
+   slider values). A plain global object rather than per-identity state,
+   because only one Lab is ever on screen at a time — it's fully reset by
+   wireLab() every time a new identity is built. */
+let LAB={color:null, sources:18, turn:3, onDraw:false};
+/* Attaches the Lab's event listeners for the identity just built. Resets
+   LAB's defaults for this identity's color count, then wires each slider/
+   button to update LAB and call recalcLab() — the actual math + DOM update
+   is intentionally kept in one place (recalcLab) rather than duplicated in
+   every listener. */
+function wireLab(d){
+  const cs=d.cs;
+  LAB={color:cs[0]||'W', sources:DEFAULT_SOURCES[cs.length]||18, turn:3, onDraw:false};
+  const $=id=>document.getElementById(id);
+  const srcEl=$('lab-src'), turnEl=$('lab-turn');
+  srcEl.value=LAB.sources; $('lab-src-v').textContent=LAB.sources;
+  srcEl.addEventListener('input',()=>{ LAB.sources=+srcEl.value; $('lab-src-v').textContent=LAB.sources; recalcLab(); });
+  turnEl.addEventListener('input',()=>{ LAB.turn=+turnEl.value; $('lab-turn-v').textContent=LAB.turn; recalcLab(); });
+  document.querySelectorAll('#lab-pd button').forEach(b=>b.addEventListener('click',()=>{
+    LAB.onDraw=b.dataset.pd==='draw';
+    document.querySelectorAll('#lab-pd button').forEach(x=>x.setAttribute('aria-pressed', (x.dataset.pd==='draw')===LAB.onDraw));
+    recalcLab();
+  }));
+  document.querySelectorAll('.colorpick .cpk').forEach(b=>b.addEventListener('click',()=>{
+    LAB.color=b.dataset.color;
+    document.querySelectorAll('.colorpick .cpk').forEach(x=>x.setAttribute('aria-pressed', x.dataset.color===LAB.color));
+    const nm=document.getElementById('lab-color-name'); if(nm) nm.textContent=CNAME[LAB.color];
+    recalcLab();
+  }));
+  recalcLab();
+}
+/* The Lab's only DOM-writing function: reads current LAB state, computes
+   "cards seen by this turn" (7-card opening hand, +1 per turn after,
+   +1 more if on the draw), runs hyperAtLeast() for both a single source
+   and a double (for double-pipped costs), and writes the two percentages
+   + meter bar widths. Called after every slider/button interaction. */
+function recalcLab(){
+  const seen=Math.min(99, 7 + (LAB.onDraw?LAB.turn:LAB.turn-1));
+  const p1=hyperAtLeast(1, LAB.sources, seen, 99);
+  const p2=hyperAtLeast(2, LAB.sources, seen, 99);
+  const $=id=>document.getElementById(id);
+  $('lab-seen-1').textContent=`by turn ${LAB.turn} · ${seen} cards seen`;
+  $('lab-pct-1').textContent=(p1*100).toFixed(1)+'%';
+  $('lab-pct-2').textContent=(p2*100).toFixed(1)+'%';
+  $('lab-fill-1').style.width=(p1*100).toFixed(1)+'%';
+  $('lab-fill-2').style.width=(p2*100).toFixed(1)+'%';
+}
+
+/* ---------------------------------------------------------------------------
+   7) CATALOG + EXPLORER
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   7) CATALOG + EXPLORER — the searchable/filterable/pinnable "Cycle
+   catalog" tab. ALL_CYCLES flattens every land AND rock family into one
+   list so search/filter/sort can treat them uniformly.
+--------------------------------------------------------------------------- */
+const ALL_CYCLES=[...CYCLES, TRIOMES, TRILAND, LANDSCAPES, SIGNETS, TALISMANS];
+/* Pinned cycles persist across page reloads via localStorage (see
+   loadPins/savePins just below) — a small quality-of-life feature so
+   someone's "cycles I actually care about" survive closing the tab. */
+let PINNED=loadPins();
+function loadPins(){ try{ return new Set(JSON.parse(localStorage.getItem('codex-pins')||'[]')); }catch(e){ return new Set(); } }
+function savePins(){ try{ localStorage.setItem('codex-pins', JSON.stringify([...PINNED])); }catch(e){} }
+let COLLAPSED=loadCollapsedCycles();
+function loadCollapsedCycles(){ try{ return new Set(JSON.parse(localStorage.getItem('codex-collapsed-cycles')||'[]')); }catch(e){ return new Set(); } }
+function saveCollapsedCycles(){ try{ localStorage.setItem('codex-collapsed-cycles', JSON.stringify([...COLLAPSED])); }catch(e){} }
+
+/* Renders the small grid of individual land names inside one cycle block
+   (e.g. Tundra, Scrubland, ... inside "Original Dual Lands"). `tri` picks
+   which fixed display ORDER to walk — the 10 two-color pairs or the 10
+   three-color trios — so lands always list in the same guild/wedge order
+   everywhere in the Codex, not in whatever order they happen to sit in the
+   cycle's `m` object. Each land name is wrapped by cardName() (Section 3)
+   so it becomes a hover/focus target for the Scryfall image popup. */
+function memberGrid(m, kind){
+  const ord = kind==='tri'  ? ['WUB','WUR','WUG','WBR','WBG','WRG','UBR','UBG','URG','BRG']
+            : kind==='mono' ? ['W','U','B','R','G']
+            :                 ['WU','WB','WR','WG','UB','UR','UG','BR','BG','RG'];
+  let g='';
+  ord.forEach(pk=>{ if(m[pk]) g+=`<div class="mem"><span class="mana-run" aria-label="${pk.split('').map(c=>CNAME[c]).join(' / ')} mana">${pk.split('').map(manaSymbol).join('')}</span><span class="mn">${cardName(m[pk])}</span></div>`; });
+  return g;
+}
+/* All filter chips (Untapped/Tapped/Fetchable/Budget/Pinned) are AND'd
+   together via this one function — a cycle must satisfy every currently-
+   active filter to show up, not just one of them. */
+function cycMatchesFilters(cy, filters){
+  if(!filters.size) return true;
+  const meta=CYCLE_META[cy.id]||{}; const tags=meta.tags||[];
+  for(const f of filters){
+    if(f==='untapped'  && !tags.includes('untapped'))  return false;
+    if(f==='tapped'    && !tags.includes('tapped'))    return false;
+    if(f==='fetchable' && !tags.includes('fetchable')) return false;
+    if(f==='budget'    && !(cy.tier==='B'||cy.tier==='C')) return false;
+    if(f==='pinned'    && !PINNED.has(cy.id))           return false;
+  }
+  return true;
+}
+function cycMatchesSearch(cy, q){
+  if(!q) return true; q=q.toLowerCase();
+  if((cy.nm+' '+(cy.nick||'')+' '+cy.src).toLowerCase().includes(q)) return true;
+  return Object.values(cy.m).some(name=>name.toLowerCase().includes(q));
+}
+/* Re-runs the full catalog list from scratch: reads the search box + which
+   filter chips are pressed, filters ALL_CYCLES down, sorts (pinned first,
+   then tier, then debut year — so the best/most-relevant fixing surfaces
+   first), and rewrites the #catalog HTML. Called on every keystroke in the
+   search box and every filter/pin click — simple to reason about, and the
+   dataset (24 cycles) is small enough that a full re-render is instant. */
+function renderCatalog(){
+  const q=(document.getElementById('search').value||'').trim();
+  const filters=new Set([...document.querySelectorAll('.fchip[aria-pressed="true"]')].map(b=>b.dataset.filter));
+  const list=ALL_CYCLES.filter(cy=>cycMatchesFilters(cy,filters)&&cycMatchesSearch(cy,q));
+  // pinned first, then tier, then debut year
+  list.sort((a,b)=>{
+    const pa=PINNED.has(a.id)?0:1, pb=PINNED.has(b.id)?0:1; if(pa!==pb) return pa-pb;
+    if(TIERRANK[a.tier]!==TIERRANK[b.tier]) return TIERRANK[a.tier]-TIERRANK[b.tier];
+    return (CYCLE_META[a.id]?.yr||9999)-(CYCLE_META[b.id]?.yr||9999);
+  });
+  const kindOf=cy=>(cy.id==='triome'||cy.id==='triland'||cy.id==='landscape')?'tri':(cy.id==='vivid'?'mono':'pair');
+  const host=document.getElementById('catalog');
+  if(!list.length){ host.innerHTML='<p class="no-results">Nothing matches those filters. Clear a chip or search term to see the full stack.</p>'; }
+  else {
+    host.innerHTML=list.map(cy=>{
+      const meta=CYCLE_META[cy.id]||{}; const flag=cy.flag?`<span class="flag">${cy.flag}</span>`:'';
+      const pinned=PINNED.has(cy.id);
+      const collapsed=COLLAPSED.has(cy.id);
+      const lore=meta.lore?`<p class="cyc-lore">${meta.lore}</p>`:'';
+      return `<div class="cyc-block${pinned?' pinned':''}${collapsed?' collapsed':''}">
+        <div class="cyc-top"><button class="cyc-toggle" data-id="${cy.id}" aria-expanded="${!collapsed}" aria-controls="cyc-body-${cy.id}" title="${collapsed?'Expand':'Collapse'} ${cy.nm}">
+          <span class="twisty" aria-hidden="true"></span><span class="tier ${cy.tier}">${cy.tier}</span>
+          <span class="name">${cy.nm}</span><span class="nick">${cy.nick||''}</span>${flag}
+          <span class="src">${cy.src}</span></button>
+          <button class="pin" data-id="${cy.id}" aria-pressed="${pinned}" title="Pin this cycle">${pinned?'★ pinned':'☆ pin'}</button></div>
+        <div class="cyc-body" id="cyc-body-${cy.id}"${collapsed?' hidden':''}><p class="cyc-beh">${cy.beh}</p>${lore}
+          <div class="memgrid">${memberGrid(cy.m, kindOf(cy))}</div></div></div>`;
+    }).join('');
+  }
+  document.getElementById('explorer-meta').textContent =
+    `${list.length} of ${ALL_CYCLES.length} cycles${filters.size?' · filtered':''}${q?` · “${q}”`:''}${PINNED.size?` · ${PINNED.size} pinned`:''}`;
+  document.querySelectorAll('.cyc-top .cyc-toggle').forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.id; if(COLLAPSED.has(id)) COLLAPSED.delete(id); else COLLAPSED.add(id); saveCollapsedCycles(); renderCatalog();
+  }));
+  document.querySelectorAll('.cyc-top .pin').forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.id; if(PINNED.has(id)) PINNED.delete(id); else PINNED.add(id); savePins(); renderCatalog();
+  }));
+}
+
+/* ---------------------------------------------------------------------------
+   8) TIMELINE — Ages of Fixing
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   8) TIMELINE — "Ages of Fixing." Buckets every cycle into its ERAS entry
+   (Section 2) by CYCLE_META[cy.id].era, sorts each era's cycles by debut
+   year, and renders one connected vertical track per era. Only called once,
+   the first time the Timeline tab is opened (see the tab click-handler,
+   Section 9) — the data never changes, so there's nothing to re-render.
+--------------------------------------------------------------------------- */
+function renderTimeline(){
+  const host=document.getElementById('timeline');
+  const byEra={}; ERAS.forEach(([nm])=>byEra[nm]=[]);
+  ALL_CYCLES.forEach(cy=>{ const m=CYCLE_META[cy.id]; if(m&&byEra[m.era]) byEra[m.era].push(cy); });
+  let html='';
+  ERAS.forEach(([nm,yrs,desc])=>{
+    const items=byEra[nm].sort((a,b)=>CYCLE_META[a.id].yr-CYCLE_META[b.id].yr);
+    if(!items.length) return;
+    html+=`<div class="era reveal"><div class="era-h"><span class="yr">${yrs}</span><span class="nm">${nm}</span><span class="r"></span></div>
+      <p class="era-desc">${desc}</p><div class="tl-track">`;
+    items.forEach(cy=>{ const m=CYCLE_META[cy.id];
+      html+=`<div class="tl-item t${cy.tier}"><div class="tl-top">
+          <span class="tier ${cy.tier}">${cy.tier}</span>
+          <span class="tl-nm">${cy.nm}</span><span class="tl-nick">${cy.nick||''}</span>
+          <span class="tl-yr">${m.yr} · ${cy.src}</span></div>
+        <p class="tl-lore">${m.lore}</p>
+        <p class="tl-plane">Plane · ${m.plane}</p></div>`;
+    });
+    html+='</div></div>';
+  });
+  host.innerHTML=html;
+  observeReveals();
+}
+
+/* ---------------------------------------------------------------------------
+   9) CHROME — tabs, flavor mode, scroll reveal, boot
+--------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   9) CHROME — event wiring for the identity picker, the four main tabs,
+   the catalog search/filter inputs, Flavor Mode, and scroll-reveal —
+   plus, at the very end of this section, the one-time boot sequence.
+--------------------------------------------------------------------------- */
+picker.addEventListener('click', e=>{
+  /* Identity picker: clicking a card marks it (and only it) aria-pressed,
+     then hands the matching IDENTITIES entry to build() (Section 5d). */
+  const b=e.target.closest('.idcard'); if(!b) return;
+  document.querySelectorAll('.idcard').forEach(x=>x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');
+  build(IDENTITIES.find(x=>x.id===b.dataset.id));
+});
+
+/* Main tab bar: swap which .pane has the `.on` class (see @layer chrome for
+   how that's styled) and flip aria-selected for accessibility. The
+   Timeline's content is only built the first time its tab is opened
+   (renderTimeline is otherwise never called), since its data never changes. */
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));
+  t.setAttribute('aria-selected','true');
+  const v=t.dataset.view;
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pane-'+v).classList.add('on');
+  if(v==='timeline') renderTimeline();
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+/* Catalog search box + filter chips both just call renderCatalog() (Section
+   7) again — it re-reads their current state itself, so there's nothing
+   else these two listeners need to do. */
+document.getElementById('search').addEventListener('input', renderCatalog);
+document.querySelectorAll('.fchip').forEach(b=>b.addEventListener('click',()=>{
+  b.setAttribute('aria-pressed', b.getAttribute('aria-pressed')!=='true'); renderCatalog();
+}));
+
+/* flavor mode */
+const HERO_FLAVOR='“Every land is a promise the plane makes to the spell — that when the moment comes, the color will be there.”';
+document.getElementById('hero-flavor').textContent=HERO_FLAVOR;
+document.getElementById('flavor-toggle').addEventListener('click', ()=>{
+  /* Flavor Mode is one boolean, expressed twice: a `.flavor` class on
+     <body> (which every "body.flavor ..." CSS rule keys off, e.g. showing
+     lore paragraphs) and the numeric `--flavor` CSS variable (which the
+     ambient rune field and vignette blend into their opacity via calc()).
+     Both are toggled together here so CSS classes and CSS variables never
+     disagree about whether Flavor Mode is on. */
+  const on=document.body.classList.toggle('flavor');
+  document.getElementById('flavor-toggle').setAttribute('aria-pressed', on);
+  document.documentElement.style.setProperty('--flavor', on?'1':'0');
+});
+
+/* scroll reveal (reduced-motion safe) */
+let RIO=null;
+function observeReveals(){
+  /* Fades in `.reveal` elements (used on the Timeline's era blocks) as they
+     scroll into view. Respects prefers-reduced-motion by skipping the
+     animation entirely (revealing everything immediately) rather than
+     just making it instant — a reduced-motion user shouldn't get a
+     same-effect-but-faster version, they should get no motion effect. */
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const els=document.querySelectorAll('.reveal:not(.seen)');
+  if(reduce || !('IntersectionObserver' in window)){ els.forEach(e=>e.classList.add('seen')); return; }
+  if(!RIO) RIO=new IntersectionObserver((ents)=>{ ents.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('seen'); RIO.unobserve(en.target);} }); }, {rootMargin:'0px 0px -8% 0px'});
+  els.forEach(e=>RIO.observe(e));
+}
+
+/* ---------------------------------------------------------------------------
+   CARD HOVER POPUPS — real Scryfall image, offline info fallback, cached.
+   Each unique card hits the Scryfall API at most once ever (persisted to
+   localStorage); images thereafter come from the browser / CDN cache.
+--------------------------------------------------------------------------- */
+/* Offline fallback data for the hover popup: every card name this Codex
+   could possibly show a popup for, flattened from CYCLES, TRIOMES, TRILAND,
+   SIGNETS, TALISMANS, and the UNIVERSAL_ tables into one { name: {colors,
+   tier,cycle,src,beh} } lookup table. Built once as an IIFE (Immediately
+   Invoked Function Expression) at script load, so it's just a plain object
+   by the time cardPop needs it — no re-computation on every hover. */
+const CARD_INFO = (function(){
+  const map={};
+  const add=(name,colors,tier,cycle,src,beh)=>{ if(name&&!map[name]) map[name]={colors,tier,cycle,src,beh}; };
+  CYCLES.forEach(cy=>Object.keys(cy.m).forEach(pk=>add(cy.m[pk], pk.split(''), cy.tier, cy.nm, cy.src, cy.beh)));
+  [TRIOMES,TRILAND].forEach(g=>Object.keys(g.m).forEach(tk=>add(g.m[tk], tk.split(''), g.tier, g.nm, g.src, g.beh)));
+  [SIGNETS,TALISMANS].forEach(g=>Object.keys(g.m).forEach(pk=>add(g.m[pk], pk.split(''), g.tier, g.nm, g.src, g.beh)));
+  UNIVERSAL_LANDS.forEach(x=>add(x.nm,null,x.tier,'Universal land','',x.beh));
+  UNIVERSAL_RAINBOW.forEach(x=>add(x.nm,null,x.tier,'Rainbow land','',x.beh));
+  UNIVERSAL_ROCKS.forEach(x=>add(x.nm,null,x.tier,'Mana rock','',x.beh));
+  COLORLESS_LANDS.forEach(x=>add(x.nm,['C'],x.tier,'Colorless land','',x.beh));
+  ['W','U','B','R','G'].forEach(c=>{
+    (MONOLAND[c]||[]).forEach(nm=>add(nm,[c],'B','Mono utility land','','Color-specific utility / ramp / recursion land.'));
+    add(DIAMONDS[c],[c],'C','Diamond','MRD','Taps for one '+CNAME[c].toLowerCase()+'; enters tapped.');
+    add(MEDALLIONS[c],[c],'B','Medallion','TMP',CNAME[c]+' spells cost {1} less.');
+  });
+  return map;
+})();
+
+/* The hover/focus/tap popup itself: shows a real card image fetched live
+   from Scryfall, falling back to the offline CARD_INFO summary if the
+   fetch fails, the card isn't found, or the person has no connection.
+   Wrapped as an IIFE returning only {init} — everything else (the DOM
+   node, the caches, the fetch queue) is a private closure variable, not
+   exposed globally, so nothing else on the page can accidentally poke at
+   the popup's internal state. */
+const cardPop = (function(){
+  let pop=null, hoverTimer=null, current=null;
+  const baseName=n=>n.split(' / ')[0].trim();
+
+  /* Published (robboles.com) build: the live Scryfall image lookup is removed
+     so this page makes zero runtime third-party calls. The popup always uses
+     the local CARD_INFO card (cycle, behavior, tier) plus a static link out
+     to Scryfall for anyone who wants the printed card. resolve() keeps its
+     async shape so show() below is unchanged. */
+  async function resolve(name){ return 'none'; }
+  const scryLink=name=>'https://scryfall.com/search?q='+encodeURIComponent('!"'+baseName(name)+'"');
+
+  /* Lazily creates the ONE popup DOM element used for every card (not one
+     per card name) — cheaper, and means there's only ever a single popup
+     visible at a time by construction. */
+  function ensure(){ if(pop) return pop; pop=document.createElement('div'); pop.id='cardpop'; pop.setAttribute('aria-hidden','true'); document.body.appendChild(pop); return pop; }
+  /* Positions the popup next to whichever element `el` triggered it,
+     preferring the right side but flipping to the left if it would run off
+     the right edge of the viewport, and clamping vertically so it never
+     renders partly off-screen top or bottom. */
+  function place(el){ const p=ensure(); const r=el.getBoundingClientRect(); p.style.display='block';
+    const pw=p.offsetWidth, ph=p.offsetHeight;
+    let left=r.right+12; if(left+pw>innerWidth-8) left=r.left-pw-12; if(left<8) left=8;
+    let top=r.top+r.height/2-ph/2; top=Math.max(8,Math.min(top,innerHeight-ph-8));
+    p.style.left=left+'px'; p.style.top=top+'px';
+  }
+  const LOAD='<div class="cp-load"><span class="sp"></span>Summoning…</div>';
+  function infoHTML(name){
+    const i=CARD_INFO[name]||CARD_INFO[baseName(name)];
+    const scry=`<a href="${scryLink(name)}" target="_blank" rel="noopener">Scryfall&nbsp;&#8599;</a>`;
+    if(!i) return `<div class="cp-info"><div class="cp-top"><span class="cp-nm">${name}</span></div>
+      <div class="cp-foot">${scry}</div></div>`;
+    const pips=(i.colors&&i.colors.length)?`<span class="cp-pips">${i.colors.map(manaSymbol).join('')}</span>`:'';
+    const foot=`<span class="tier ${i.tier}">${i.tier}</span>${i.src?`<span>${i.src}</span>`:''}${scry}`;
+    return `<div class="cp-info"><div class="cp-top"><span class="cp-nm">${name}</span>${pips}</div>
+      <span class="cp-cyc">${i.cycle}</span><p class="cp-beh">${i.beh}</p><div class="cp-foot">${foot}</div></div>`;
+  }
+  /* Shows the popup for element `el`: displays a loading state
+     immediately (so hovering never feels unresponsive even on a slow
+     connection), then resolves the image and swaps in either the <img> or
+     the offline info card once resolve() settles. The `current!==name`
+     checks guard against a slow, stale request overwriting a NEWER hover's
+     popup if the person moved to a different card while the fetch was
+     still in flight. */
+  function show(el){
+    const name=el.dataset.card; if(!name) return; current=name;
+    const p=ensure(); p.innerHTML=LOAD; place(el); requestAnimationFrame(()=>p.classList.add('on'));
+    resolve(name).then(val=>{
+      if(current!==name) return;
+      if(val && val!=='none'){
+        p.innerHTML=`<div class="cp-img"><img alt="${escAttr(name)}"></div>`;
+        const img=p.querySelector('img');
+        img.onload=()=>{ if(current===name) place(el); };
+        img.onerror=()=>{ if(current===name){ p.innerHTML=infoHTML(name); place(el); } };
+        img.src=val;
+      } else { p.innerHTML=infoHTML(name); place(el); }
+    });
+  }
+  /* Fades the popup out, then (after the transition finishes) sets
+     display:none — the delay just keeps the CSS opacity transition from
+     being cut off instantly. */
+  function hide(){ current=null; if(pop){ pop.classList.remove('on'); const t=pop; setTimeout(()=>{ if(!current) t.style.display='none'; },160); } }
+
+  /* Wires every interaction path that should show/hide the popup:
+     mouse hover (with a short delay via hoverTimer so quickly skimming
+     past many names doesn't fire a request for each one), keyboard focus/
+     blur (so Tab-only users get the same popup), Escape to dismiss, a
+     click to toggle it (useful on touch devices with no real "hover"), and
+     auto-hide on scroll/resize since a positioned popup would otherwise be
+     left floating over the wrong spot. Called once, at boot, below. */
+  function init(){
+    document.addEventListener('mouseover',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null; if(!el) return;
+      clearTimeout(hoverTimer); hoverTimer=setTimeout(()=>show(el),300); });
+    document.addEventListener('mouseout',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null; if(!el) return;
+      clearTimeout(hoverTimer); hide(); });
+    document.addEventListener('focusin',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null; if(el) show(el); });
+    document.addEventListener('focusout',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null; if(el) hide(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') hide(); });
+    document.addEventListener('click',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null;
+      if(el){ if(current===el.dataset.card) hide(); else show(el); } else if(current) hide(); });
+    addEventListener('scroll',()=>{ if(current) hide(); },{passive:true});
+    addEventListener('resize',()=>{ if(current) hide(); });
+  }
+  return {init};
+})();
+
+/* ---------------------------------------------------------------------------
+   BOOT — runs once, immediately, when this script block executes (there's no
+   DOMContentLoaded wrapper because the script tag is the last thing in
+   <body>, so the whole page above it already exists by the time this runs).
+   1. Draw the decorative 5-color guide sigil in the hero.
+   2. Render the Catalog tab's content once, up front (cheap enough that
+      there's no need to defer it until the tab is actually opened).
+   3. Wire up the card-hover popup system everywhere in the page.
+   4. Auto-select Esper as the default "Build a base" example, so the tab
+      isn't empty the first time someone opens it — this simulates a click
+      on that identity card rather than calling build() directly, so every
+      other picker-related bit of UI (aria-pressed state, etc.) ends up in
+      exactly the state it would be in from a real click.
+--------------------------------------------------------------------------- */
+/* boot */
+document.getElementById('hero-sigil').innerHTML/* boot */
+document.getElementById('hero-sigil').innerHTML=sigil(['W','U','B','R','G'],{guide:true});
+renderCatalog();
+cardPop.init();
+picker.querySelector('.idcard[data-id="esper"]')?.click();
+
+/* Hash deep-links (published build): #understand / #build / #catalog /
+   #timeline selects the matching tab on load and on hash change, so blog
+   posts can land a reader directly on a view (e.g. mana-base-codex/#timeline). */
+function openHashTab(){
+  const v=(location.hash||'').slice(1); if(!v) return;
+  const t=document.querySelector('.tab[data-view="'+CSS.escape(v)+'"]'); if(t) t.click();
+}
+addEventListener('hashchange', openHashTab);
+openHashTab();
+</script>
+</body>
+</html>

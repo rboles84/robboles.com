@@ -6,6 +6,27 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>How I Cut a Regression Cycle in Half</title>
+    <link>https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/</link>
+    <guid>https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/</guid>
+    <pubDate>Thu, 09 Jul 2026 12:00:00 +0000</pubDate>
+    <description>We ran every regression test every release — and it took two months. Here's the method that cut it to one: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.</description>
+  </item>
+  <item>
+    <title>The Ages of Fixing: What Every Magic Land Is Charging You</title>
+    <link>https://robboles.com/posts/why-magic-lands-are-so-weird/</link>
+    <guid>https://robboles.com/posts/why-magic-lands-are-so-weird/</guid>
+    <pubDate>Wed, 08 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Thirty years of Magic land design is one long argument about a single question: how easy should it be to cast your spells on time? Read the lands as answers and it starts to make sense.</description>
+  </item>
+  <item>
+    <title>How I Run AI Like a QA System</title>
+    <link>https://robboles.com/posts/how-i-run-ai-like-a-qa-system/</link>
+    <guid>https://robboles.com/posts/how-i-run-ai-like-a-qa-system/</guid>
+    <pubDate>Sun, 28 Jun 2026 12:00:00 +0000</pubDate>
+    <description>AI is non-deterministic by design. I run my AI work the way I run quality engineering: operating prompts, grounding, examples, gates, and feedback loops.</description>
+  </item>
+  <item>
     <title>What Good QA Actually Owns</title>
     <link>https://robboles.com/posts/what-good-qa-actually-owns/</link>
     <guid>https://robboles.com/posts/what-good-qa-actually-owns/</guid>

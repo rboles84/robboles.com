@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>All Articles &#8212; Robert Boles</title>
-  <meta name="description" content="All articles by Robert Boles on QA strategy, automation, and builder experiments.">
+  <title>Table Talk &#8212; Robert Boles</title>
+  <meta name="description" content="Magic: The Gathering, thought through out loud. Commander decks, mana bases, teaching the game, and the systems hiding under the cards.">
   <meta name="author" content="Robert Boles">
   <meta name="color-scheme" content="light">
-  <meta property="og:title" content="All Articles &#8212; Robert Boles">
-  <meta property="og:description" content="All articles by Robert Boles on QA strategy, automation, and builder experiments.">
+  <meta property="og:title" content="Table Talk &#8212; Robert Boles">
+  <meta property="og:description" content="Magic: The Gathering, thought through out loud. Commander decks, mana bases, teaching the game, and the systems hiding under the cards.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="../assets/css/styles.css">
@@ -36,42 +36,51 @@
   <main id="main">
 
     <section class="page-hero">
-      <div class="container page-hero narrow">
-        <div class="breadcrumbs"><a href="../">Home</a> / Articles</div>
-        <p class="eyebrow">Article library</p>
-        <h1>All articles.</h1>
-        <p class="lede">Browse the knowledge base across QA strategy, automation, and builder laboratory notes.</p>
+      <div class="container">
+        <div class="breadcrumbs"><a href="../">~</a> / table-talk</div>
+        <h1>Table Talk</h1>
+        <p class="lede">Magic: The Gathering, thought through out loud. Commander decks, mana bases, teaching the game at my own kitchen table, and the systems hiding under the cards. Off the clock, same brain.</p>
       </div>
     </section>
+
+    <!-- Featured: Mana Base Codex -->
+    <section class="section tight">
+      <div class="container">
+        <div class="project-feature" style="display:grid;grid-template-columns:1fr 0.8fr;gap:36px;align-items:center;border-radius:10px;padding:32px;">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="featured-line">
+              <span>reference artifact</span>
+              <span class="mana" aria-hidden="true"><span class="w"></span><span class="u"></span><span class="b"></span><span class="r"></span><span class="g"></span></span>
+            </div>
+            <h3>The Mana Base Codex</h3>
+            <p>An interactive reference to Commander mana fixing &mdash; every fixing cycle cataloged, a consistency lab, and the full "Ages of Fixing" timeline. Built as a research project; now it anchors this lane.</p>
+            <a class="button accent" href="mana-base-codex/" style="align-self:flex-start;">open the codex &rarr;</a>
+          </div>
+          <div class="note-card" style="background:var(--dark-2);border-color:var(--dark-line);">
+            <h2 style="color:var(--dark-fainter);">what's inside</h2>
+            <a href="mana-base-codex/#timeline" style="color:var(--dark-muted);border-color:var(--dark-line);">The Ages of Fixing timeline</a>
+            <p style="color:var(--dark-faint);font-size:13.5px;line-height:1.55;margin:10px 0 0;">Plus a cycle catalog, a build-a-base tool, and hypergeometric consistency math &mdash; all on one self-contained page.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Table log -->
     <section class="section">
       <div class="container">
+        <div class="row-head">
+          <h2>Table log</h2>
+          <span class="meta">~/table-talk/posts</span>
+        </div>
         <div class="card-grid">
-          <article class="post-card" data-card data-title="How I Cut a Regression Cycle in Half" data-category="QA Field Guide" data-tags="Risk-Based Testing Regression Release Readiness ISTQB">
-            <div class="card-topline"><span>QA Field Guide</span><span>6 min read</span></div>
-            <h3><a href="../posts/how-i-cut-a-regression-cycle-in-half/">How I Cut a Regression Cycle in Half</a></h3>
-            <p>We ran every regression test every release &mdash; and it took two months. Here's the method that cut it to one: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.</p>
-            <div class="tag-row"><span>Risk-Based Testing</span><span>Regression</span><span>Release Readiness</span></div>
-          </article>
           <article class="post-card" data-card data-title="The Ages of Fixing: What Every Magic Land Is Charging You" data-category="Table Talk" data-tags="Commander Mana Base Lands MTG">
             <div class="card-topline"><span>Table Talk</span><span>9 min read</span></div>
             <h3><a href="../posts/why-magic-lands-are-so-weird/">The Ages of Fixing: What Every Magic Land Is Charging You</a></h3>
             <p>Thirty years of Magic land design is one long argument about a single question: how easy should it be to cast your spells on time? Read the lands as answers and it starts to make sense.</p>
             <div class="tag-row"><span>Commander</span><span>Mana Base</span><span>Lands</span></div>
           </article>
-          <article class="post-card" data-card data-title="How I Run AI Like a QA System" data-category="Learning Lab" data-tags="AI Workflows Prompt Engineering Non-determinism RAG">
-            <div class="card-topline"><span>Learning Lab</span><span>7 min read</span></div>
-            <h3><a href="../posts/how-i-run-ai-like-a-qa-system/">How I Run AI Like a QA System</a></h3>
-            <p>AI is non-deterministic by design. I run my AI work the way I run quality engineering: operating prompts, grounding, examples, gates, and feedback loops.</p>
-            <div class="tag-row"><span>AI Workflows</span><span>Prompt Engineering</span><span>Non-determinism</span></div>
-          </article>
-          <article class="post-card" data-card data-title="What Good QA Actually Owns" data-category="QA Field Guide" data-tags="QA Strategy Release Confidence Ownership">
-            <div class="card-topline"><span>QA Field Guide</span><span>4 min read</span></div>
-            <h3><a href="../posts/what-good-qa-actually-owns/">What Good QA Actually Owns</a></h3>
-            <p>QA owns quality &mdash; and you own it by making it visible to the right people, in the language they can act on, before it ships.</p>
-            <div class="tag-row"><span>QA Strategy</span><span>Release Confidence</span><span>Ownership</span></div>
-          </article>
         </div>
-        <p class="empty-state" data-empty-state>No matching articles.</p>
+        <p class="lane-note-cta" style="margin-top:16px;color:var(--faint);">More table talk is coming &mdash; <a href="../#subscribe">subscribe</a> or grab the <a href="../feed.xml">RSS feed</a> to get it as it lands.</p>
       </div>
     </section>
 

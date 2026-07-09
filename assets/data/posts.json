@@ -1,5 +1,50 @@
 [
   {
+    "slug": "how-i-cut-a-regression-cycle-in-half",
+    "title": "How I Cut a Regression Cycle in Half",
+    "date": "2026-07-09",
+    "category": "QA Field Guide",
+    "lane": "QA Authority",
+    "tags": [
+      "Risk-Based Testing",
+      "Regression",
+      "Release Readiness"
+    ],
+    "description": "We ran every regression test every release — and it took two months. Here's the method that cut it to one: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.",
+    "promise": "The lever wasn't more machines or more people. It was deciding, on purpose, what not to run.",
+    "reading_minutes": 6
+  },
+  {
+    "slug": "why-magic-lands-are-so-weird",
+    "title": "The Ages of Fixing: What Every Magic Land Is Charging You",
+    "date": "2026-07-08",
+    "category": "Table Talk",
+    "lane": "Table Talk",
+    "tags": [
+      "Commander",
+      "Mana Base",
+      "Lands"
+    ],
+    "description": "Thirty years of Magic land design is one long argument about a single question: how easy should it be to cast your spells on time? Read the lands as answers and it starts to make sense.",
+    "promise": "The hand looked keepable until it didn't. Nobody countered me. Nobody outplayed me. I just couldn't cast my spells on time.",
+    "reading_minutes": 9
+  },
+  {
+    "slug": "how-i-run-ai-like-a-qa-system",
+    "title": "How I Run AI Like a QA System",
+    "date": "2026-06-28",
+    "category": "Learning Lab",
+    "lane": "Builder Laboratory",
+    "tags": [
+      "AI Workflows",
+      "Prompt Engineering",
+      "Non-determinism"
+    ],
+    "description": "AI is non-deterministic by design. I run my AI work the way I run quality engineering: operating prompts, grounding, examples, gates, and feedback loops.",
+    "promise": "Most people make AI reliable by wording the prompt better. I make it reliable the way QA makes anything reliable — with systems.",
+    "reading_minutes": 7
+  },
+  {
     "slug": "what-good-qa-actually-owns",
     "title": "What Good QA Actually Owns",
     "date": "2026-06-28",

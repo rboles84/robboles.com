@@ -1,0 +1,19 @@
+/* Mana font — locally hosted subset for the Mana Base Codex.
+   Extracted from mana-font v1.18.0 (https://mana.andrewgioia.com, MIT/SIL OFL).
+   Only the glyphs/classes this page uses: ms, ms-cost, ms-w/u/b/r/g/c, ms-2. */
+@font-face{font-family:"Mana";src:url("mana.woff") format("woff"),url("mana.ttf") format("truetype");font-weight:normal;font-style:normal}
+.ms{display:inline-block;font:normal normal normal 14px Mana;font-size:inherit;line-height:1em;text-rendering:auto;transform:translate(0, 0);speak:none;text-transform:none;vertical-align:middle;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;--ms-mana-b: #a7999e;--ms-mana-c: #d0c6bb;--ms-mana-g: #9fcba6;--ms-mana-r: #f19b79;--ms-mana-u: #bcdaf7;--ms-mana-w: #fdfbce}
+.ms-w::before{content:""}
+.ms-u::before{content:""}
+.ms-b::before{content:""}
+.ms-r::before{content:""}
+.ms-g::before{content:""}
+.ms-2{margin-left:inherit !important}
+.ms-2::before{content:""}
+.ms-c::before{content:""}
+.ms-cost{background-color:#beb9b2;border-radius:1em;color:#111;font-size:.95em;width:1.3em;height:1.3em;line-height:1.35em;text-align:center}
+.ms-cost.ms-w,.ms-cost.ms-wp{background-color:#f0f2c0}
+.ms-cost.ms-u,.ms-cost.ms-up{background-color:#b5cde3}
+.ms-cost.ms-b,.ms-cost.ms-bp{background-color:#aca29a}
+.ms-cost.ms-r,.ms-cost.ms-rp{background-color:#db8664}
+.ms-cost.ms-g,.ms-cost.ms-gp{background-color:#93b483}

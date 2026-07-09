@@ -98,6 +98,103 @@
       });
   }
 
+  // Card-name hover preview (Table Talk articles): shows a small, locally-
+  // hosted card thumbnail (assets/images/cards/<slug>.jpg, fetched once at
+  // authoring time — no runtime third-party request) plus a link out to
+  // Scryfall. Only runs if the page actually has .cardname spans.
+  const cardnames = document.querySelectorAll('.cardname');
+  if (cardnames.length) {
+    let pop = null;
+    let hoverTimer = null;
+    let hideTimer = null;
+    let current = null;
+    // hide() is delayed (not instant) so the pointer has time to travel from
+    // the card name into the popup itself — entering the popup cancels the
+    // pending hide, which is what makes the Scryfall link inside it clickable.
+    function scheduleHide() {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(hide, 300);
+    }
+    function cancelHide() { clearTimeout(hideTimer); }
+    function ensurePop() {
+      if (pop) return pop;
+      pop = document.createElement('div');
+      pop.id = 'cardpop';
+      pop.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(pop);
+      pop.addEventListener('mouseenter', cancelHide);
+      pop.addEventListener('mouseleave', scheduleHide);
+      return pop;
+    }
+    function place(el) {
+      const p = ensurePop();
+      const r = el.getBoundingClientRect();
+      p.style.display = 'block';
+      const pw = p.offsetWidth, ph = p.offsetHeight;
+      let left = r.right + 12;
+      if (left + pw > window.innerWidth - 8) left = r.left - pw - 12;
+      if (left < 8) left = 8;
+      let top = r.top + r.height / 2 - ph / 2;
+      top = Math.max(8, Math.min(top, window.innerHeight - ph - 8));
+      p.style.left = left + 'px';
+      p.style.top = top + 'px';
+    }
+    function show(el) {
+      const name = el.dataset.card;
+      const img = el.dataset.img;
+      if (!name) return;
+      current = name;
+      const p = ensurePop();
+      const scryUrl = 'https://scryfall.com/search?q=' + encodeURIComponent('!"' + name + '"');
+      p.innerHTML = (img ? '<img src="' + root + img + '" alt="' + escapeHtml(name) + '">' : '') +
+        '<div class="cp-foot"><span class="cp-nm">' + escapeHtml(name) + '</span>' +
+        '<a href="' + scryUrl + '" target="_blank" rel="noopener">Scryfall &#8599;</a></div>';
+      place(el);
+      requestAnimationFrame(function () { p.classList.add('on'); });
+    }
+    function hide() {
+      current = null;
+      if (pop) {
+        pop.classList.remove('on');
+        const p = pop;
+        setTimeout(function () { if (!current) p.style.display = 'none'; }, 160);
+      }
+    }
+    document.addEventListener('mouseover', function (e) {
+      const el = e.target.closest ? e.target.closest('.cardname') : null;
+      if (!el) return;
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(function () { show(el); }, 250);
+    });
+    document.addEventListener('mouseout', function (e) {
+      const el = e.target.closest ? e.target.closest('.cardname') : null;
+      if (!el) return;
+      clearTimeout(hoverTimer);
+      scheduleHide();
+    });
+    document.addEventListener('focusin', function (e) {
+      const el = e.target.closest ? e.target.closest('.cardname') : null;
+      if (el) { cancelHide(); show(el); }
+    });
+    document.addEventListener('focusout', function (e) {
+      const el = e.target.closest ? e.target.closest('.cardname') : null;
+      // Don't hide if focus is moving INTO the popup (e.g. Tab reaching the
+      // Scryfall link) — only hide once focus actually leaves both.
+      if (el && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('#cardpop'))) {
+        scheduleHide();
+      }
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('#cardpop')) return; // let the Scryfall link act normally
+      const el = e.target.closest ? e.target.closest('.cardname') : null;
+      if (el) { if (current === el.dataset.card) hide(); else show(el); }
+      else if (current) hide();
+    });
+    window.addEventListener('scroll', function () { if (current) hide(); }, { passive: true });
+    window.addEventListener('resize', function () { if (current) hide(); });
+  }
+
   // Print / save-as-PDF buttons (Field Kit artifacts)
   document.querySelectorAll('[data-print]').forEach(function (button) {
     button.addEventListener('click', function () { window.print(); });
