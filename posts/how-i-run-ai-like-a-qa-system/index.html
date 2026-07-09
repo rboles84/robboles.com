@@ -11,7 +11,7 @@
   <meta property="og:description" content="AI is non-deterministic by design. I spent 14 years making non-deterministic systems trustworthy — so I run my AI work the same way.">
   <meta property="og:type" content="article">
   <meta property="article:published_time" content="2026-06-28">
-  <meta property="article:modified_time" content="2026-06-28">
+  <meta property="article:modified_time" content="2026-07-09">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://robboles.com/posts/how-i-run-ai-like-a-qa-system/">
   <link rel="stylesheet" href="../../assets/css/styles.css">
@@ -31,10 +31,10 @@
         "description": "AI is non-deterministic by design. I run my AI work the way I run quality engineering: operating prompts, grounding, examples, gates, and feedback loops.",
         "inLanguage": "en-US",
         "datePublished": "2026-06-28",
-        "dateModified": "2026-06-28",
+        "dateModified": "2026-07-09",
         "articleSection": "Learning Lab",
         "proficiencyLevel": "Intermediate",
-        "keywords": "AI Workflows, Prompt Engineering, RAG, Non-determinism, QA",
+        "keywords": "AI Workflows, Systems Thinking, Grounding, Non-determinism, QA",
         "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
         "publisher": { "@type": "Person", "@id": "https://robboles.com/about/#person" }
       },
@@ -76,8 +76,8 @@
         <p class="eyebrow">Learning Lab</p>
         <h1>How I Run AI Like a QA System</h1>
         <p class="lede">AI is non-deterministic by design. I spent 14 years making non-deterministic systems trustworthy &mdash; so I run my AI work the same way: operating prompts, grounding, examples, gates, and feedback loops.</p>
-        <div class="article-meta"><span>Jun 28, 2026</span><span>7 min read</span><span>Learning Lab</span></div>
-        <div class="tag-row"><span>AI Workflows</span><span>Prompt Engineering</span><span>Non-determinism</span></div>
+        <div class="article-meta"><span>Jun 28, 2026</span><span>9 min read</span><span>Learning Lab</span></div>
+        <div class="tag-row"><span>AI Workflows</span><span>Systems Thinking</span><span>Non-determinism</span></div>
       </div>
     </section>
 
@@ -85,24 +85,30 @@
       <div class="container article-grid">
         <div class="article-body">
 
-          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jun 28, 2026</p>
+          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 9, 2026</p>
 
           <p class="promise">Most people try to make AI reliable by wording the prompt better. That's like fixing a flaky test by re-running it until it passes.</p>
 
           <p>Large language models are the most non-deterministic system I've ever shipped against. Same input, different output, equally confident either way. If you've spent any time in QA, that sentence should make the hair on your neck stand up &mdash; because making non-deterministic systems trustworthy is the entire job.</p>
 
-          <p>So I stopped treating prompts as magic words and started treating AI work the way I treat anything under test: with contracts, grounding, examples, gates, and feedback loops. Here's the actual workflow, built on real systems you can go look at &mdash; this blog and a Magic side project called <a href="https://voxmana.io" target="_blank" rel="noopener">Vox Mana</a> both run on it.</p>
+          <p>So I stopped treating prompts as magic words and started treating AI work the way I treat anything under test: with contracts, grounding, examples, gates, and feedback loops. This isn't a tidy workflow I sat down and designed &mdash; it's what survived after hundreds of hours and more prompts than I've bothered counting: operating prompts, role prompts, planning prompts, review prompts, documentation prompts, handoff prompts, memory systems. Most of it didn't work the first time. Here's what did, built on real systems you can go look at &mdash; this blog and a Magic side project called <a href="https://voxmana.io" target="_blank" rel="noopener">Vox Mana</a>, which forced me to solve source authority, structured knowledge, and long-lived project memory at a small scale before I trusted the pattern anywhere bigger.</p>
 
           <h2 id="system-under-test">A prompt is a system under test</h2>
           <p>QA doesn't eliminate variance. It contains it with structure &mdash; known inputs, expected behavior, and a review step that has to pass before anything ships. The mistake people make with AI is trying to win on wording, one prompt at a time. That doesn't scale and it doesn't repeat.</p>
           <p>The reframe that changed everything for me: a prompt isn't a wish, it's a test case. It has inputs, a contract for the output, and a way to tell whether the result is acceptable. Once you see it that way, the whole QA toolkit applies.</p>
 
+          <h2 id="macgyver">I use AI like MacGyver, not like an oracle</h2>
+          <p>Ask what I actually do and "prompt engineering" undersells it. I don't wait for the perfect tool or the perfect model. I grab what's already there, chain pieces together, prototype fast, and replace the weak part once I know which one it is. That's not a metaphor I'm reaching for &mdash; it's how I've built things long before AI showed up: find a working example, take it apart, understand it, swap out what doesn't hold, put it back together better than you found it.</p>
+          <p>QA gave me the discipline. This gave me the instinct. Together they're closer to what I actually do than either word alone &mdash; QA plus systems thinking plus MacGyver engineering, pointed at whatever system is in front of me that week.</p>
+
           <h2 id="operating-prompt">The operating prompt that runs before anything else</h2>
           <p>Every project I run with AI gets a master operating prompt that sets the rules before a single task starts. On this blog it's an <code>AGENTS.md</code> plus a set of role prompts &mdash; pre-flight, planning, testing, writing &mdash; that each say what that role may and may not do.</p>
           <p>It isn't clever wording. It's an operating model, the same thing I build for QA at work: standardize the intake, the boundaries, and the review, so a hundred small changes don't drift into chaos. Mine spells out the project's purpose, the hard boundaries (keep examples field-safe, never expose confidential detail), the workflow (one branch per task, don't commit without asking), and a checklist every change passes before it's "done." The agent reads it first, every time. Orchestration is just refusing to start work from blank context.</p>
+          <p>AGENTS.md didn't start as documentation and it didn't stay documentation for long. It became shared memory &mdash; the thing that answers "can I trust this," "where did it come from," "what changed," and "will someone else understand this six months from now" without needing me in the room to explain it. That's a bigger claim than "it's accurate." Accuracy is table stakes. Trust is what I'm actually optimizing for.</p>
 
           <h2 id="grounding">Grounding beats cleverness (RAG, the boring kind)</h2>
           <p>RAG doesn't have to mean a vector database. Mine is a curated, repo-local reference pack the agent must read before acting. For this blog it's a voice pack &mdash; a profile, a list of anti-patterns, a publish gate, and real annotated examples. For Vox Mana it's a source hierarchy: the repo and the evidence ledgers outrank generated output, which outranks whatever the model sounds sure about.</p>
+          <p>Most people hear "grounding" and think retrieval. Mine is broader: trusted sources, project history, past decisions, real examples, explicit boundaries, and documentation, all outranking whatever the model sounds sure about. Context is worth more than a clever prompt &mdash; which is why I've spent more hours building vaults, handoffs, and decision logs than I ever have tuning wording. Those aren't filing cabinets. They're externalized memory: the project remembering things so I don't have to re-explain them every session.</p>
           <div class="callout tip">
             <span class="callout-label">The rule under all of it</span>
             <p>Persuasive output is not proof. A model can sound completely certain about something it invented. Ground the claim against a source you trust, or cut it. Grounding kills more non-determinism than any prompt tweak ever will.</p>
@@ -111,6 +117,7 @@
           <h2 id="examples">Show it, don't tell it</h2>
           <p>The fastest way to raise output quality isn't a longer instruction &mdash; it's an example. My reference packs carry before/after pairs: a generic corporate sentence sitting next to the one I'd actually publish, a banned construction next to its fix. Models pattern-match; if you want a pattern, show the pattern.</p>
           <p>It's the same reason a good bug report shows the failing input and the expected-versus-actual instead of a paragraph describing the <em>vibe</em> of the bug. Concrete examples remove ambiguity for a junior engineer and a language model for exactly the same reason.</p>
+          <p>This is also just how I've always learned, long before AI entered the picture. Show me one working example and I can reverse-engineer the whole system faster than any explanation gets me there. So I don't ask a model to invent from a blank page &mdash; I give it something that already works and ask it to extend or repair that, then I take the result apart the same way I'd take apart the example.</p>
 
           <div class="cta-inline">
             <h3>One real workflow per email</h3>
@@ -133,6 +140,12 @@
           <h2 id="feedback-loops">Close the loop: every miss becomes a rule</h2>
           <p>In QA this is root-cause analysis. A defect escapes to production, you find out why, and you change the system so that <em>class</em> of defect can't escape again. The fix is never "be more careful next time." The fix is a guardrail.</p>
           <p>I run AI work the same way. When the model invented data in Vox Mana, the repair wasn't "prompt harder" &mdash; it was a check that fails the build when generated data outruns its source. When a draft came back sounding like AI filler, that exact tell went into the anti-patterns file so it gets caught next time. The workflow gets <em>less</em> non-deterministic over time because every surprise is converted into a constraint.</p>
+          <p>The clearest time I got this wrong: I spent a long stretch trying to prompt a UI mockup into looking a specific way, one increasingly desperate instruction at a time, and it kept almost-but-not-quite landing. The fix wasn't a better prompt. It was breaking the mockup into a puzzle &mdash; smaller, surgical prompts for individual pieces, built separately, then reassembled by hand. A bigger prompt wasn't the answer. Smaller, well-scoped ones were.</p>
+          <p>That turned into a habit: three questions before I trust anything the model hands me. What evidence supports this? How would I know if it were wrong? How do I stop this exact mistake from happening again? The third one is the one that compounds &mdash; it's what turns a one-time correction into a permanent rule instead of a thing I have to catch again next month.</p>
+          <div class="callout tip">
+            <span class="callout-label">Scope beats scale</span>
+            <p>My answer to "how do I make AI more reliable" used to be "better prompts." Then it was "better systems." Now it's smaller than either: tighter tasks, tighter acceptance criteria, shorter feedback loops, validation at each step instead of at the end. A giant prompt asking for a giant result fails in ways that are hard to even diagnose. Six small prompts with six checkpoints fail in ways you can actually point at.</p>
+          </div>
 
           <h2 id="vibe-vs-engineered">Vibe-prompting vs. an engineered workflow</h2>
           <table>
@@ -158,8 +171,10 @@
 
           <h2 id="rule-of-thumb">My rule of thumb</h2>
           <p>Treat the model like a brilliant junior with infinite confidence and no memory. Give it the contract, the examples, and the boundaries up front; ground every claim; gate the output; and turn every mistake into a rule it can't repeat.</p>
-          <p>That's not really prompt engineering. It's quality engineering pointed at a new kind of system. Same job I've had for fourteen years &mdash; just a stranger system under test.</p>
-          <p class="promise">Better tests. Better releases. Less theater.</p>
+          <p>That's not really prompt engineering. It's not really about AI, either &mdash; AI is just the newest system that happened to need this treatment. The same pattern shows up everywhere I build: QA, automation, Vox Mana, even sorting through a Commander mana base. Take something fuzzy. Understand it. Create structure. Reduce ambiguity. Leave behind a system that's better than the one you started with. If nothing else from this sticks, that's the part worth keeping.</p>
+          <p>The AI system was never really the point. It's about whether the next person &mdash; a teammate, a contributor, or just me in six months &mdash; can trust what's there, verify where it came from, and pick up where I left off without a debrief. That's not a side effect of the process. That's the actual job.</p>
+          <p>I don't think of what I've built as notes. Notes are things you write down and forget. This is accumulated judgment &mdash; the project remembering, on my behalf, every mistake I've already made so I don't make it twice.</p>
+          <p class="promise">Reduce the fuzzy. Build the structure. Leave it better than you found it.</p>
 
           <div class="reusable-asset">
             <p class="caption">// take this with you</p>
@@ -169,6 +184,7 @@
               <li>Ground it: a reference pack the model must read before acting. Source outranks fluency.</li>
               <li>Show, don't tell: keep before/after examples of good and bad output.</li>
               <li>Meta-prompt the tooling: spend your best prompt building the reference the others rely on.</li>
+              <li>Keep tasks small and well-scoped: tighter acceptance criteria, shorter feedback loops.</li>
               <li>Close the loop: every escaped mistake becomes a new rule or guardrail.</li>
               <li>Keep the human gate: review the output like a dashboard you don't fully trust yet.</li>
             </ul>
@@ -192,6 +208,7 @@
           <div class="note-card" data-toc>
             <h2>On this page</h2>
             <a href="#system-under-test">A prompt is a system under test</a>
+            <a href="#macgyver">I use AI like MacGyver</a>
             <a href="#operating-prompt">The operating prompt</a>
             <a href="#grounding">Grounding beats cleverness</a>
             <a href="#examples">Show it, don't tell it</a>

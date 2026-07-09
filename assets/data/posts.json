@@ -37,12 +37,12 @@
     "lane": "Builder Laboratory",
     "tags": [
       "AI Workflows",
-      "Prompt Engineering",
+      "Systems Thinking",
       "Non-determinism"
     ],
     "description": "AI is non-deterministic by design. I run my AI work the way I run quality engineering: operating prompts, grounding, examples, gates, and feedback loops.",
     "promise": "Most people make AI reliable by wording the prompt better. I make it reliable the way QA makes anything reliable — with systems.",
-    "reading_minutes": 7
+    "reading_minutes": 9
   },
   {
     "slug": "what-good-qa-actually-owns",
