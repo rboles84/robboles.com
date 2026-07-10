@@ -1,0 +1,8 @@
+{
+  "name": "robboles-blog",
+  "private": true,
+  "description": "Static site, no build step. This package.json exists only to run the test suite.",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}

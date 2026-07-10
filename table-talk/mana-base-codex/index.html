@@ -1019,6 +1019,12 @@ table.ltable{max-width:760px; margin:6px 0 16px}
 
 </div>
 
+<!-- Hypergeometric probability math, extracted to its own file so it's
+     testable from Node without a DOM (see tests/codex-math.test.js). Loaded
+     first as a plain script so LOGF/logC/hyperAtLeast are globals the main
+     script below can use exactly as before. -->
+<script src="hypergeometric.js"></script>
+
 <!-- Single script block at the end of the page body: by the time this
      executes, every element above it already exists in the DOM, so the
      code inside can safely call document.getElementById(...) etc.
@@ -1381,31 +1387,9 @@ function pairsOf(cs){ const out=[]; for(let i=0;i<cs.length;i++) for(let j=i+1;j
 function trisOf(cs){ const out=[]; for(let i=0;i<cs.length;i++)for(let j=i+1;j<cs.length;j++)for(let k=j+1;k<cs.length;k++) out.push(key([cs[i],cs[j],cs[k]])); return out; }
 const TIERRANK={S:0,A:1,B:2,C:3};
 
-/* hypergeometric — log-factorials keep C(99,k) finite */
-/* ---- Hypergeometric probability (powers the Consistency Lab, Section 6) ----
-   Computing C(n,k) (n choose k) directly overflows for a 99-card deck long
-   before you need it, so everything is done in LOG space instead: LOGF[i]
-   is log(i!), precomputed once for i up to 200 (comfortably covering a
-   99-card population). logC(n,k) then returns log(C(n,k)) as a subtraction
-   instead of an unrepresentable division of huge factorials. */
-const LOGF=[0]; for(let i=1;i<=200;i++) LOGF[i]=LOGF[i-1]+Math.log(i);
-function logC(n,k){ if(k<0||k>n||n<0) return -Infinity; return LOGF[n]-LOGF[k]-LOGF[n-k]; }
-/* P(at least `need` successes) drawing `draws` from population `N` holding `K` successes */
-/* P(drawing AT LEAST `need` successes) when drawing `draws` cards without
-   replacement from a population of `N` cards containing `K` successes —
-   the exact probability of, say, "seeing at least 1 of your 18 sources of
-   blue mana in the 9 cards you've seen by turn 3." Computed as
-   1 − P(0 successes) − P(1) − ... − P(need−1), i.e. 1 minus everything
-   below the threshold, since summing "at least" directly would require
-   adding up every possibility from `need` to `draws` instead of the
-   (usually much shorter) list of possibilities below it. */
-function hyperAtLeast(need, K, draws, N){
-  K=Math.max(0,Math.min(K,N)); draws=Math.max(0,Math.min(draws,N));
-  const denom=logC(N,draws);
-  let cum=0; // P(0)+..+P(need-1)
-  for(let k=0;k<need;k++){ const p=Math.exp(logC(K,k)+logC(N-K,draws-k)-denom); if(isFinite(p)) cum+=p; }
-  return Math.max(0,Math.min(1,1-cum));
-}
+/* hypergeometric (LOGF, logC, hyperAtLeast) now lives in hypergeometric.js,
+   loaded as a plain script above this one — same globals, same behavior,
+   now also unit-testable from Node. See tests/codex-math.test.js. */
 
 /* ---------------------------------------------------------------------------
    4) SIGIL  — the color-pie pentagon drawn as an illuminated glyph.
