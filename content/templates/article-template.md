@@ -14,7 +14,7 @@ Draft in this file, then port the prose into `article-template.html`
 - Category: QA Field Guide | Automation Cookbook | Learning Lab
 - Tags: <!-- 3 -->
 - post_type: <!-- one archetype from docs/voice/post-archetypes.md -->
-- voice_profile: robert-v1
+- voice_profile: robert-v1.1
 - metaphor_family: <!-- one family, or "none" (none is the common, correct answer) -->
 - status: draft <!-- draft | published; only "published" after passing the voice gate -->
 - Date published: <!-- YYYY-MM-DD -->
