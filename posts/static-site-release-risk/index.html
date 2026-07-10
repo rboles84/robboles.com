@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Static Doesn&#8217;t Mean Safe &#8212; What Building voxmana.io Taught Me &#8212; Robert Boles</title>
+  <meta name="description" content="Building voxmana.io as a static site didn't remove release risk — it hid it in the seams. Here's where a 'static' side project can still bite, and how I made those risks visible before launch.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="Static Doesn&#8217;t Mean Safe &#8212; What Building voxmana.io Taught Me">
+  <meta property="og:description" content="A static site has no server to crash — which is exactly why its release risks hide in the seams. Where a 'static' side project still bites, and how to make it visible.">
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2026-07-09">
+  <meta property="article:modified_time" content="2026-07-09">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://robboles.com/posts/static-site-release-risk/">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": "https://robboles.com/posts/static-site-release-risk/#article",
+        "isPartOf": { "@type": "WebPage", "@id": "https://robboles.com/posts/static-site-release-risk/" },
+        "mainEntityOfPage": "https://robboles.com/posts/static-site-release-risk/",
+        "headline": "Static Doesn't Mean Safe — What Building voxmana.io Taught Me",
+        "description": "A static site has no server to crash — which is exactly why its release risks hide in the seams. Where a static side project still bites, and how to make it visible.",
+        "inLanguage": "en-US",
+        "datePublished": "2026-07-09",
+        "dateModified": "2026-07-09",
+        "articleSection": "Learning Lab",
+        "proficiencyLevel": "Intermediate",
+        "keywords": "Static Sites, Release Readiness, Building in Public, Static Site QA",
+        "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "publisher": { "@type": "Person", "@id": "https://robboles.com/about/#person" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://robboles.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Learning Lab", "item": "https://robboles.com/learning-lab/" },
+          { "@type": "ListItem", "position": 3, "name": "Static Doesn't Mean Safe", "item": "https://robboles.com/posts/static-site-release-risk/" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-root="../../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link" href="../../about/">about</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container page-hero narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../../learning-lab/">Learning Lab</a> / Static Doesn&rsquo;t Mean Safe</div>
+        <p class="eyebrow">Learning Lab</p>
+        <h1>Static Doesn&rsquo;t Mean Safe &mdash; What Building voxmana.io Taught Me</h1>
+        <p class="lede">A static site has no server to crash &mdash; which is exactly why its release risks hide in the seams. Here&rsquo;s where a &ldquo;static&rdquo; side project can still bite, and how I made those risks visible before launch.</p>
+        <div class="article-meta"><span>Jul 9, 2026</span><span>6 min read</span><span>Learning Lab</span></div>
+        <div class="tag-row"><span>Static Sites</span><span>Release Readiness</span><span>Building in Public</span></div>
+      </div>
+    </section>
+
+    <article class="article">
+      <div class="container article-grid">
+        <div class="article-body">
+
+          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 9, 2026</p>
+
+          <p class="promise">The last thing I took <em>out</em> of <a href="https://voxmana.io" target="_blank" rel="noopener">voxmana.io</a> before I was happy calling it done was a feature that worked perfectly.</p>
+
+          <p>The Mana Base Codex &mdash; the reference piece on the site &mdash; pulled its card art live from Scryfall, a third-party card database. It looked great, and it worked every single time I tested it. Which is exactly why I almost shipped it. A &ldquo;static&rdquo; page that quietly makes live calls to someone else&rsquo;s servers isn&rsquo;t static, and it isn&rsquo;t fully mine: it works right up until the day that service is slow, rate-limits me, or renames a URL. So I pulled the live fetch and cached what I needed once, at build time.</p>
+
+          <p>That near-miss is the whole post. Static doesn&rsquo;t delete risk. It moves it somewhere quieter.</p>
+
+          <h2 id="risk-goes-quiet">Static isn&rsquo;t safe &mdash; the risk just goes quiet</h2>
+          <p>Going static removes a real category of failure. No server to crash at 2 a.m., no query timing out under load. That&rsquo;s why it&rsquo;s a great default for a side project, and it&rsquo;s most of why voxmana.io is one. The mistake is hearing &ldquo;no server&rdquo; and deciding &ldquo;no risk.&rdquo;</p>
+          <p>What actually happens is the risk changes shape. It stops looking like a stack trace and starts looking like a page that renders perfectly while quietly doing the wrong thing. That&rsquo;s the trap in one line: on a static site, the dangerous risks are the invisible ones. So the job was the same one I&rsquo;ve had for years &mdash; make them visible before launch, not after someone else finds them for me.</p>
+          <table>
+            <thead>
+              <tr><th>Looks fine</th><th>Actually</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>The Codex renders card art beautifully</td><td>It&rsquo;s phoning a third party at runtime &mdash; fine until that third party isn&rsquo;t</td></tr>
+              <tr><td>The site is live and reachable</td><td>It&rsquo;s on a <code>github.io</code> launchpad; the real domain and its metadata are a half-wired seam</td></tr>
+              <tr><td>A list on the page matches the data</td><td>The generated view and the source of truth quietly drifted apart</td></tr>
+              <tr><td>It works in my local preview</td><td>Cold-load fonts, deep-links, and hover art behave differently on the deployed URL</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">Every row looks shipped. Every row is a seam where &ldquo;looks fine&rdquo; and &ldquo;is fine&rdquo; quietly came apart.</p>
+
+          <h2 id="the-seams">The seams where a &ldquo;static&rdquo; side project bites</h2>
+          <ul>
+            <li><strong>The page that phones home.</strong> Anything fetched live at runtime &mdash; art, fonts, data &mdash; is a dependency you don&rsquo;t control wearing a static costume. On the Codex that was Scryfall; I moved it to art cached once at authoring time and a local font subset, so the page owes nothing to anyone else&rsquo;s uptime.</li>
+            <li><strong>The launchpad seam.</strong> voxmana.io runs on GitHub Pages while I finish the real thing &mdash; a deliberate MacGyver move: use what&rsquo;s already there, ship, replace the weak part once you find it. The cost isn&rsquo;t the launchpad; it&rsquo;s <em>forgetting</em> the launchpad &mdash; leaving canonical URLs, sitemap, and social metadata pointing at a domain that isn&rsquo;t fully the one serving the page yet. Fine to do. Not fine to lose track of.</li>
+            <li><strong>Data that drifts from the page.</strong> The thing on screen is generated; the truth lives in the source. Let those two fall out of sync and the page looks authoritative while it&rsquo;s subtly wrong. Most of the QA discipline underneath voxmana.io exists to keep the displayed thing honest to its source.</li>
+            <li><strong>Client code that only fails in the field.</strong> Hover-card previews, hash deep-links, the mana-symbol font &mdash; all of it works in my editor&rsquo;s preview and can still behave differently on the deployed page or a cold cache. Static pages still run code; the runtime is just the visitor&rsquo;s browser, which I don&rsquo;t get to control.</li>
+          </ul>
+          <p>It wasn&rsquo;t only the side project, either. On this blog, the subscribe form validates your email, flashes a friendly confirmation, and captures nothing &mdash; a front-end demo I hadn&rsquo;t wired to a real service yet. It passes every glance and fails every person who trusts it. Same trap, different repo.</p>
+
+          <h2 id="almost-wrong">The decision I almost got wrong</h2>
+          <p>Back to the Codex, because it&rsquo;s the cleanest version of the lesson.</p>
+          <p>The live-Scryfall version had no bug in it. Every line worked exactly as written. There was no failing test to catch it, because nothing failed &mdash; the gap was between what the page <em>looked</em> like it was (self-contained, mine, done) and what it was actually wired to do (lean on a third party every time it loaded). That gap is invisible from the page. You only find it if you go looking on purpose, and the only reason I went looking is that I&rsquo;ve been burned by the pattern enough times to distrust anything that works <em>too</em> cleanly on the happy path.</p>
+          <div class="callout tip">
+            <span class="callout-label">The tell</span>
+            <p>The failure with no error message is the one that ships. If something works perfectly on the happy path and you can&rsquo;t say <em>why</em> it would ever fail, you haven&rsquo;t found its failure mode yet &mdash; you&rsquo;ve just not gone looking.</p>
+          </div>
+          <p>Pulling the fetch made the page slightly more work to build and a lot more honest about what it is. That&rsquo;s usually the trade: the boring, self-contained version is the one you can actually stand behind.</p>
+
+          <h2 id="where-this-breaks">Where this breaks</h2>
+          <p>This is a map, not a checklist you run to zero.</p>
+          <ul>
+            <li>Several of these only fail on the real deployment &mdash; cold-load assets, cache behavior, the metadata seam. You can&rsquo;t fully prove them from a local preview; you have to check the deployed URL. &ldquo;Passes locally&rdquo; is a weaker claim than it feels.</li>
+            <li>It&rsquo;s easy to over-correct, too &mdash; to treat a hobby page like it&rsquo;s handling payments. Match the depth to the stakes. voxmana.io shows people information; that&rsquo;s a different risk profile than a site taking their money, and the check should be scoped to match.</li>
+            <li>Most of these hide because they&rsquo;re boring. Nobody demos the sitemap or the caching. That&rsquo;s exactly why they rot.</li>
+          </ul>
+
+          <h2 id="rule-of-thumb">My rule of thumb</h2>
+          <p>Before you call a static site done, make each invisible seam visible on the deployed URL: prove nothing phones a third party unless you meant it to, prove the metadata points at the site that&rsquo;s really live, prove the page matches its source, and prove anything that looks like it submits actually submits. If you can&rsquo;t see it, you don&rsquo;t own it &mdash; you&rsquo;re hoping.</p>
+          <p>That&rsquo;s the same thread I keep pulling on every project, and it isn&rsquo;t really about static sites. Take the thing that&rsquo;s fuzzy, understand it, give it structure, and leave behind a system that&rsquo;s a little harder to fool than the one you started with. A static site is just the version where the fuzziness is very good at hiding. If you want the other half of how voxmana.io actually gets built, it&rsquo;s in <a href="../how-i-run-ai-like-a-qa-system/">How I Run AI Like a QA System</a>; the QA principle underneath this one &mdash; owning quality by making risk visible &mdash; is in <a href="../what-good-qa-actually-owns/">What Good QA Actually Owns</a>.</p>
+          <p class="promise">If you can&rsquo;t see it, you don&rsquo;t own it &mdash; you&rsquo;re hoping.</p>
+
+          <div class="reusable-asset">
+            <p class="caption">// take this with you</p>
+            <p><strong>The Static Site Launch-Readiness Check</strong> &mdash; the invisible-seam list above turned into a print-friendly checklist you run against any static build before you point a domain at it.</p>
+            <p style="margin:0;"><a href="../../field-kit/static-site-launch-readiness/">Open the Field Kit card &rarr;</a></p>
+          </div>
+
+          <div class="author-bio">
+            <div class="avatar" aria-hidden="true">RB</div>
+            <div>
+              <h2>Robert Boles</h2>
+              <p>Senior SDET and QA architect with 14 years in enterprise property &amp; casualty insurance &mdash; I've halved a regression cycle, built the QA governance teams run on, and brought AI into test generation without losing the plot. Former Air Force lab tech; I build side projects like Vox Mana on the weekend.</p>
+              <p class="bio-links">
+                <a href="../../about/">About &amp; full bio</a>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="article-aside">
+          <div class="note-card" data-toc>
+            <h2>On this page</h2>
+            <a href="#risk-goes-quiet">Static isn&rsquo;t safe</a>
+            <a href="#the-seams">The seams where it bites</a>
+            <a href="#almost-wrong">The decision I almost got wrong</a>
+            <a href="#where-this-breaks">Where this breaks</a>
+            <a href="#rule-of-thumb">My rule of thumb</a>
+          </div>
+          <button class="button copy-link" type="button" data-copy-link>Copy article link</button>
+        </aside>
+      </div>
+    </article>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../field-kit/">Field Kit</a>
+        <a href="../../table-talk/">Table Talk</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&#169; 2026 Robert Boles.</span>
+      <span>Built for GitHub Pages. No build step required.</span>
+    </div>
+  </footer>
+</body>
+</html>
