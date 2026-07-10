@@ -1,5 +1,20 @@
 [
   {
+    "slug": "quiz-evidence-not-vibes",
+    "title": "A Quiz Can Be Evidence, Not Vibes",
+    "date": "2026-07-09",
+    "category": "Learning Lab",
+    "lane": "Builder Laboratory",
+    "tags": [
+      "Evidence-Based Design",
+      "Classifiers",
+      "Building in Public"
+    ],
+    "description": "Most fandom quizzes hand you a confident label and no receipts. Building voxmana.io's placement quiz, I built the other kind — one that tracks its evidence, resolves the near-miss, and refuses to call a vibe a fact.",
+    "promise": "A confident label with no receipts isn't a result. It's a costume.",
+    "reading_minutes": 6
+  },
+  {
     "slug": "static-site-release-risk",
     "title": "Static Doesn’t Mean Safe — What Building voxmana.io Taught Me",
     "date": "2026-07-09",
@@ -25,7 +40,7 @@
       "Regression",
       "Release Readiness"
     ],
-    "description": "We ran every regression test every release — and it took two months. Here's the method that cut it to one: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.",
+    "description": "Our platform upgraded twice a year, and testing one upgrade in full took three months. Here's the method that cut it to six weeks: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.",
     "promise": "The lever wasn't more machines or more people. It was deciding, on purpose, what not to run.",
     "reading_minutes": 6
   },

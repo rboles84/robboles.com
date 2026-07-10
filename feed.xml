@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>A Quiz Can Be Evidence, Not Vibes</title>
+    <link>https://robboles.com/posts/quiz-evidence-not-vibes/</link>
+    <guid>https://robboles.com/posts/quiz-evidence-not-vibes/</guid>
+    <pubDate>Thu, 09 Jul 2026 14:00:00 +0000</pubDate>
+    <description>Most fandom quizzes hand you a confident label and no receipts. Building voxmana.io's placement quiz, I built the other kind — one that tracks its evidence, resolves the near-miss, and refuses to call a vibe a fact.</description>
+  </item>
+  <item>
     <title>Static Doesn’t Mean Safe — What Building voxmana.io Taught Me</title>
     <link>https://robboles.com/posts/static-site-release-risk/</link>
     <guid>https://robboles.com/posts/static-site-release-risk/</guid>
@@ -17,7 +24,7 @@
     <link>https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/</link>
     <guid>https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/</guid>
     <pubDate>Thu, 09 Jul 2026 12:00:00 +0000</pubDate>
-    <description>We ran every regression test every release — and it took two months. Here's the method that cut it to one: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.</description>
+    <description>Our platform upgraded twice a year, and testing one upgrade in full took three months. Here's the method that cut it to six weeks: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.</description>
   </item>
   <item>
     <title>The Ages of Fixing: What Every Magic Land Is Charging You</title>

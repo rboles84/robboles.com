@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>How I Cut a Regression Cycle in Half &#8212; Robert Boles</title>
-  <meta name="description" content="We ran every regression test every release — and it took two months. Here's the method that cut it to one: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.">
+  <meta name="description" content="Our platform upgraded twice a year, and testing one upgrade in full took three months. Here's the method that cut it to six weeks: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.">
   <meta name="author" content="Robert Boles">
   <meta name="color-scheme" content="light">
   <meta property="og:title" content="How I Cut a Regression Cycle in Half &#8212; Robert Boles">
-  <meta property="og:description" content="We ran every regression test every release — and it took two months. Here's the method that cut it to one.">
+  <meta property="og:description" content="Our platform upgraded twice a year, and testing one upgrade took three months. Here's the method that cut it to six weeks.">
   <meta property="og:type" content="article">
   <meta property="article:published_time" content="2026-07-09">
-  <meta property="article:modified_time" content="2026-07-09">
+  <meta property="article:modified_time" content="2026-07-10">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/">
   <link rel="stylesheet" href="../../assets/css/styles.css">
@@ -28,10 +28,10 @@
         "isPartOf": { "@type": "WebPage", "@id": "https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/" },
         "mainEntityOfPage": "https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/",
         "headline": "How I Cut a Regression Cycle in Half",
-        "description": "We ran every regression test every release — and it took two months. Here's the method that cut it to one: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.",
+        "description": "Our platform upgraded twice a year, and testing one upgrade in full took three months. Here's the method that cut it to six weeks: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.",
         "inLanguage": "en-US",
         "datePublished": "2026-07-09",
-        "dateModified": "2026-07-09",
+        "dateModified": "2026-07-10",
         "articleSection": "QA Field Guide",
         "proficiencyLevel": "Intermediate",
         "keywords": "Risk-Based Testing, Regression, Release Readiness, ISTQB",
@@ -75,7 +75,7 @@
         <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../../qa-field-guide/">QA Field Guide</a> / How I Cut a Regression Cycle in Half</div>
         <p class="eyebrow">QA Field Guide</p>
         <h1>How I Cut a Regression Cycle in Half</h1>
-        <p class="lede">We ran every regression test every release &mdash; and it took two months. Here's the method that cut it to one: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.</p>
+        <p class="lede">Our platform upgraded twice a year, and testing one upgrade in full took three months. Here's the method that cut it to six weeks: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.</p>
         <div class="article-meta"><span>Jul 9, 2026</span><span>6 min read</span><span>QA Field Guide</span></div>
         <div class="tag-row"><span>Risk-Based Testing</span><span>Regression</span><span>Release Readiness</span></div>
       </div>
@@ -87,12 +87,12 @@
 
           <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 9, 2026</p>
 
-          <p class="promise">For a long stretch, our regression cycle ran about two months. Two months between &ldquo;code complete&rdquo; and &ldquo;confident enough to ship&rdquo; &mdash; running the whole suite, every release, because that's what you do. Run everything, miss nothing.</p>
+          <p class="promise">Our platform ran a major upgrade twice a year, and testing one of those upgrades took about three months. Three months between &ldquo;upgrade lands&rdquo; and &ldquo;confident enough to ship&rdquo; &mdash; running the whole suite against every upgrade, because that's what you do. Run everything, miss nothing.</p>
 
-          <p>Except &ldquo;run everything&rdquo; is how you end up running nothing useful <em>fast enough to matter</em>. The cycle was so long that feedback arrived after the decisions it should have informed. We got it down to about a month &mdash; roughly half. The lever wasn't more machines or more people. It was deciding, on purpose, what <strong>not</strong> to run.</p>
+          <p>Except &ldquo;run everything&rdquo; is how you end up running nothing useful <em>fast enough to matter</em>. With upgrades landing twice a year, a three-month test cycle meant we were still validating one upgrade when the next was already on the horizon &mdash; feedback arrived after the decisions it should have informed. We got it down to about six weeks &mdash; roughly half. The lever wasn't more machines or more people. It was deciding, on purpose, what <strong>not</strong> to run.</p>
 
           <h2 id="undifferentiated-coverage">The bottleneck isn't coverage. It's undifferentiated coverage.</h2>
-          <p>A regression suite that runs everything treats every test as equally important on every release. It isn't, and you already know it isn't. A change to one service does not put the entire application at risk &mdash; but a run-everything suite spends the same two months proving the untouched 90% still works as it does pressure-testing the 10% that actually changed.</p>
+          <p>A regression suite that runs everything treats every test as equally important on every upgrade. It isn't, and you already know it isn't. A platform upgrade does not put the entire application at equal risk &mdash; but a run-everything suite spends the same three months proving the untouched 90% still works as it does pressure-testing the 10% the upgrade actually touched.</p>
           <p>That's not safety. It's the <em>appearance</em> of safety, bought with the one resource a release can't spare: time. The longer the cycle, the later the feedback, and the more the rest of the org learns to route around QA instead of through it.</p>
 
           <h2 id="method">The method: audit first, then triage, then formalize it</h2>
@@ -104,7 +104,7 @@
             <li><strong>Model what the vendor platform already recommended.</strong> Rather than invent a coverage strategy from nothing, I looked at the testing platform's own guidance for regression coverage and adopted what actually fit our shop instead of reinventing it from scratch.</li>
             <li><strong>Formalize it as risk-based testing, ISTQB-style.</strong> Scored product risk the way the standard defines it &mdash; likelihood a component fails, weighted by the impact if it does &mdash; so tiering the suite stopped being a judgment call and became a documented, repeatable method.</li>
           </ol>
-          <p>That's five inputs, not one clever idea: an honest audit, a coverage map, a business-built rubric, vendor guidance, and a formal risk model layered on top. Applied together, that's what took the cycle from two months to one.</p>
+          <p>That's five inputs, not one clever idea: an honest audit, a coverage map, a business-built rubric, vendor guidance, and a formal risk model layered on top. Applied together, that's what took the cycle from three months to six weeks.</p>
 
           <div class="callout tip">
             <span class="callout-label">The rule under all of it</span>
@@ -114,10 +114,10 @@
           <h2 id="comparison">Run everything vs. run what matters</h2>
           <table>
             <thead>
-              <tr><th>&nbsp;</th><th>Run everything, every release</th><th>Risk-based regression</th></tr>
+              <tr><th>&nbsp;</th><th>Run everything, every upgrade</th><th>Risk-based regression</th></tr>
             </thead>
             <tbody>
-              <tr><td>Cycle time</td><td>~2 months</td><td>~1 month</td></tr>
+              <tr><td>Cycle time</td><td>~3 months</td><td>~6 weeks</td></tr>
               <tr><td>Feedback</td><td>late, all at once</td><td>fast, where it matters</td></tr>
               <tr><td>How &ldquo;critical&rdquo; gets decided</td><td>tribal knowledge, whoever's loudest</td><td>a rubric, built with business, scored like risk</td></tr>
               <tr><td>Maintenance pressure</td><td>every test must always be green</td><td>invest in the tests that carry risk</td></tr>
