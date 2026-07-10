@@ -108,10 +108,17 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
 }
 .brand { display: flex; align-items: center; gap: 7px; padding: 0; color: var(--ink); }
 .brand:hover { color: var(--ink); }
-.brand-mark {
-  font-family: var(--mono); font-weight: 700; color: var(--accent); font-size: 0;
+.brand-mark { width: 20px; height: 20px; flex: 0 0 20px; display: block; }
+.brand-mark .ring { fill: none; stroke: var(--faint); stroke-width: 11; }
+.brand-mark .core {
+  fill: var(--accent-hi); transform-box: fill-box; transform-origin: center;
+  animation: brand-pulse 2.4s ease-in-out infinite;
 }
-.brand-mark::before { content: '$'; font-size: 15px; }
+.brand:hover .brand-mark .core { animation-duration: 1s; }
+@keyframes brand-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark .core { animation: none; }
+}
 .brand-text { display: flex; align-items: baseline; gap: 6px; }
 .brand-text strong {
   font-family: var(--display); font-weight: 700; font-size: 16px; letter-spacing: -0.01em; color: var(--ink);
