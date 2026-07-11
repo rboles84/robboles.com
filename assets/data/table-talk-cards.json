@@ -1,0 +1,902 @@
+[
+  {
+    "name": "Command Tower",
+    "art": "assets/images/cards/art/command-tower.jpg",
+    "artist": "Leon Tukker",
+    "scryfall": "https://scryfall.com/card/msc/233/command-tower",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "common"
+  },
+  {
+    "name": "Exotic Orchard",
+    "art": "assets/images/cards/art/exotic-orchard.jpg",
+    "artist": "David Szabo",
+    "scryfall": "https://scryfall.com/card/msc/241/exotic-orchard",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Reliquary Tower",
+    "art": "assets/images/cards/art/reliquary-tower.jpg",
+    "artist": "Jesper Ejsing",
+    "scryfall": "https://scryfall.com/card/soc/398/reliquary-tower",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "uncommon"
+  },
+  {
+    "name": "Path of Ancestry",
+    "art": "assets/images/cards/art/path-of-ancestry.jpg",
+    "artist": "Ben Harvey",
+    "scryfall": "https://scryfall.com/card/msc/254/path-of-ancestry",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "common"
+  },
+  {
+    "name": "Evolving Wilds",
+    "art": "assets/images/cards/art/evolving-wilds.jpg",
+    "artist": "Rytis Sabaliauskas",
+    "scryfall": "https://scryfall.com/card/msc/240/evolving-wilds",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "common"
+  },
+  {
+    "name": "Rogue's Passage",
+    "art": "assets/images/cards/art/rogue-s-passage.jpg",
+    "artist": "Christine Choi",
+    "scryfall": "https://scryfall.com/card/soc/400/rogues-passage",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "uncommon"
+  },
+  {
+    "name": "Bojuka Bog",
+    "art": "assets/images/cards/art/bojuka-bog.jpg",
+    "artist": "Howard Lyon",
+    "scryfall": "https://scryfall.com/card/soc/363/bojuka-bog",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "common"
+  },
+  {
+    "name": "Terramorphic Expanse",
+    "art": "assets/images/cards/art/terramorphic-expanse.jpg",
+    "artist": "Arthur Yuan",
+    "scryfall": "https://scryfall.com/card/msc/273/terramorphic-expanse",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "common"
+  },
+  {
+    "name": "Myriad Landscape",
+    "art": "assets/images/cards/art/myriad-landscape.jpg",
+    "artist": "Richard Wright",
+    "scryfall": "https://scryfall.com/card/eoc/169/myriad-landscape",
+    "set": "eoc",
+    "set_name": "Edge of Eternities Commander",
+    "rarity": "uncommon"
+  },
+  {
+    "name": "Polluted Delta",
+    "art": "assets/images/cards/art/polluted-delta.jpg",
+    "artist": "Chris Ostrowski",
+    "scryfall": "https://scryfall.com/card/mh3/224/polluted-delta",
+    "set": "mh3",
+    "set_name": "Modern Horizons 3",
+    "rarity": "rare"
+  },
+  {
+    "name": "Flooded Strand",
+    "art": "assets/images/cards/art/flooded-strand.jpg",
+    "artist": "Alexander Forssberg",
+    "scryfall": "https://scryfall.com/card/mh3/220/flooded-strand",
+    "set": "mh3",
+    "set_name": "Modern Horizons 3",
+    "rarity": "rare"
+  },
+  {
+    "name": "Misty Rainforest",
+    "art": "assets/images/cards/art/misty-rainforest.jpg",
+    "artist": "Shelly Wan",
+    "scryfall": "https://scryfall.com/card/mh2/250/misty-rainforest",
+    "set": "mh2",
+    "set_name": "Modern Horizons 2",
+    "rarity": "rare"
+  },
+  {
+    "name": "Bloodstained Mire",
+    "art": "assets/images/cards/art/bloodstained-mire.jpg",
+    "artist": "Bruce Brenneise",
+    "scryfall": "https://scryfall.com/card/mh3/216/bloodstained-mire",
+    "set": "mh3",
+    "set_name": "Modern Horizons 3",
+    "rarity": "rare"
+  },
+  {
+    "name": "Windswept Heath",
+    "art": "assets/images/cards/art/windswept-heath.jpg",
+    "artist": "Alexander Forssberg",
+    "scryfall": "https://scryfall.com/card/mh3/235/windswept-heath",
+    "set": "mh3",
+    "set_name": "Modern Horizons 3",
+    "rarity": "rare"
+  },
+  {
+    "name": "Wooded Foothills",
+    "art": "assets/images/cards/art/wooded-foothills.jpg",
+    "artist": "Chris Ostrowski",
+    "scryfall": "https://scryfall.com/card/mh3/236/wooded-foothills",
+    "set": "mh3",
+    "set_name": "Modern Horizons 3",
+    "rarity": "rare"
+  },
+  {
+    "name": "Verdant Catacombs",
+    "art": "assets/images/cards/art/verdant-catacombs.jpg",
+    "artist": "Vance Kovacs",
+    "scryfall": "https://scryfall.com/card/mh2/260/verdant-catacombs",
+    "set": "mh2",
+    "set_name": "Modern Horizons 2",
+    "rarity": "rare"
+  },
+  {
+    "name": "Scalding Tarn",
+    "art": "assets/images/cards/art/scalding-tarn.jpg",
+    "artist": "Philip Straub",
+    "scryfall": "https://scryfall.com/card/mh2/254/scalding-tarn",
+    "set": "mh2",
+    "set_name": "Modern Horizons 2",
+    "rarity": "rare"
+  },
+  {
+    "name": "Fabled Passage",
+    "art": "assets/images/cards/art/fabled-passage.jpg",
+    "artist": "Mintautas Šukys",
+    "scryfall": "https://scryfall.com/card/msc/242/fabled-passage",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Marsh Flats",
+    "art": "assets/images/cards/art/marsh-flats.jpg",
+    "artist": "Izzy",
+    "scryfall": "https://scryfall.com/card/mh2/248/marsh-flats",
+    "set": "mh2",
+    "set_name": "Modern Horizons 2",
+    "rarity": "rare"
+  },
+  {
+    "name": "Watery Grave",
+    "art": "assets/images/cards/art/watery-grave.jpg",
+    "artist": "Sergey Glushakov",
+    "scryfall": "https://scryfall.com/card/eoe/261/watery-grave",
+    "set": "eoe",
+    "set_name": "Edge of Eternities",
+    "rarity": "rare"
+  },
+  {
+    "name": "Arid Mesa",
+    "art": "assets/images/cards/art/arid-mesa.jpg",
+    "artist": "Raymond Swanland",
+    "scryfall": "https://scryfall.com/card/mh2/244/arid-mesa",
+    "set": "mh2",
+    "set_name": "Modern Horizons 2",
+    "rarity": "rare"
+  },
+  {
+    "name": "Godless Shrine",
+    "art": "assets/images/cards/art/godless-shrine.jpg",
+    "artist": "Rob Rey",
+    "scryfall": "https://scryfall.com/card/eoe/254/godless-shrine",
+    "set": "eoe",
+    "set_name": "Edge of Eternities",
+    "rarity": "rare"
+  },
+  {
+    "name": "Breeding Pool",
+    "art": "assets/images/cards/art/breeding-pool.jpg",
+    "artist": "Constantin Marin",
+    "scryfall": "https://scryfall.com/card/eoe/251/breeding-pool",
+    "set": "eoe",
+    "set_name": "Edge of Eternities",
+    "rarity": "rare"
+  },
+  {
+    "name": "Hallowed Fountain",
+    "art": "assets/images/cards/art/hallowed-fountain.jpg",
+    "artist": "Adam Paquette",
+    "scryfall": "https://scryfall.com/card/ecl/265/hallowed-fountain",
+    "set": "ecl",
+    "set_name": "Lorwyn Eclipsed",
+    "rarity": "rare"
+  },
+  {
+    "name": "Ancient Tomb",
+    "art": "assets/images/cards/art/ancient-tomb.jpg",
+    "artist": "Yeong-Hao Han",
+    "scryfall": "https://scryfall.com/card/uma/236/ancient-tomb",
+    "set": "uma",
+    "set_name": "Ultimate Masters",
+    "rarity": "rare"
+  },
+  {
+    "name": "Steam Vents",
+    "art": "assets/images/cards/art/steam-vents.jpg",
+    "artist": "Adam Paquette",
+    "scryfall": "https://scryfall.com/card/ecl/267/steam-vents",
+    "set": "ecl",
+    "set_name": "Lorwyn Eclipsed",
+    "rarity": "rare"
+  },
+  {
+    "name": "Stomping Ground",
+    "art": "assets/images/cards/art/stomping-ground.jpg",
+    "artist": "Bruce Brenneise",
+    "scryfall": "https://scryfall.com/card/eoe/258/stomping-ground",
+    "set": "eoe",
+    "set_name": "Edge of Eternities",
+    "rarity": "rare"
+  },
+  {
+    "name": "Blood Crypt",
+    "art": "assets/images/cards/art/blood-crypt.jpg",
+    "artist": "Adam Paquette",
+    "scryfall": "https://scryfall.com/card/ecl/262/blood-crypt",
+    "set": "ecl",
+    "set_name": "Lorwyn Eclipsed",
+    "rarity": "rare"
+  },
+  {
+    "name": "Overgrown Tomb",
+    "art": "assets/images/cards/art/overgrown-tomb.jpg",
+    "artist": "Adam Paquette",
+    "scryfall": "https://scryfall.com/card/ecl/266/overgrown-tomb",
+    "set": "ecl",
+    "set_name": "Lorwyn Eclipsed",
+    "rarity": "rare"
+  },
+  {
+    "name": "Urborg, Tomb of Yawgmoth",
+    "art": "assets/images/cards/art/urborg-tomb-of-yawgmoth.jpg",
+    "artist": "John Avon",
+    "scryfall": "https://scryfall.com/card/tsr/287/urborg-tomb-of-yawgmoth",
+    "set": "tsr",
+    "set_name": "Time Spiral Remastered",
+    "rarity": "rare"
+  },
+  {
+    "name": "Temple of the False God",
+    "art": "assets/images/cards/art/temple-of-the-false-god.jpg",
+    "artist": "Brian Snõddy",
+    "scryfall": "https://scryfall.com/card/soc/416/temple-of-the-false-god",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "uncommon"
+  },
+  {
+    "name": "Sacred Foundry",
+    "art": "assets/images/cards/art/sacred-foundry.jpg",
+    "artist": "Titus Lunter",
+    "scryfall": "https://scryfall.com/card/eoe/256/sacred-foundry",
+    "set": "eoe",
+    "set_name": "Edge of Eternities",
+    "rarity": "rare"
+  },
+  {
+    "name": "Yavimaya, Cradle of Growth",
+    "art": "assets/images/cards/art/yavimaya-cradle-of-growth.jpg",
+    "artist": "Sarah Finnigan",
+    "scryfall": "https://scryfall.com/card/mh2/261/yavimaya-cradle-of-growth",
+    "set": "mh2",
+    "set_name": "Modern Horizons 2",
+    "rarity": "rare"
+  },
+  {
+    "name": "Boseiju, Who Endures",
+    "art": "assets/images/cards/art/boseiju-who-endures.jpg",
+    "artist": "Chris Ostrowski",
+    "scryfall": "https://scryfall.com/card/neo/266/boseiju-who-endures",
+    "set": "neo",
+    "set_name": "Kamigawa: Neon Dynasty",
+    "rarity": "rare"
+  },
+  {
+    "name": "Sulfur Falls",
+    "art": "assets/images/cards/art/sulfur-falls.jpg",
+    "artist": "Piotr Dura",
+    "scryfall": "https://scryfall.com/card/msc/269/sulfur-falls",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Temple Garden",
+    "art": "assets/images/cards/art/temple-garden.jpg",
+    "artist": "Adam Paquette",
+    "scryfall": "https://scryfall.com/card/ecl/268/temple-garden",
+    "set": "ecl",
+    "set_name": "Lorwyn Eclipsed",
+    "rarity": "rare"
+  },
+  {
+    "name": "Clifftop Retreat",
+    "art": "assets/images/cards/art/clifftop-retreat.jpg",
+    "artist": "Arthur Yuan",
+    "scryfall": "https://scryfall.com/card/msc/231/clifftop-retreat",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Cinder Glade",
+    "art": "assets/images/cards/art/cinder-glade.jpg",
+    "artist": "Pace Wilder",
+    "scryfall": "https://scryfall.com/card/msc/230/cinder-glade",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Sunken Hollow",
+    "art": "assets/images/cards/art/sunken-hollow.jpg",
+    "artist": "Pavel Kolomeyets",
+    "scryfall": "https://scryfall.com/card/msc/271/sunken-hollow",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Dragonskull Summit",
+    "art": "assets/images/cards/art/dragonskull-summit.jpg",
+    "artist": "Jonas De Ro",
+    "scryfall": "https://scryfall.com/card/msc/238/dragonskull-summit",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Otawara, Soaring City",
+    "art": "assets/images/cards/art/otawara-soaring-city.jpg",
+    "artist": "Alayna Danner",
+    "scryfall": "https://scryfall.com/card/neo/271/otawara-soaring-city",
+    "set": "neo",
+    "set_name": "Kamigawa: Neon Dynasty",
+    "rarity": "rare"
+  },
+  {
+    "name": "Isolated Chapel",
+    "art": "assets/images/cards/art/isolated-chapel.jpg",
+    "artist": "Richard Wright",
+    "scryfall": "https://scryfall.com/card/soc/382/isolated-chapel",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Smoldering Marsh",
+    "art": "assets/images/cards/art/smoldering-marsh.jpg",
+    "artist": "Shahab Alizadeh",
+    "scryfall": "https://scryfall.com/card/msc/266/smoldering-marsh",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Glacial Fortress",
+    "art": "assets/images/cards/art/glacial-fortress.jpg",
+    "artist": "Eugene Maslovski",
+    "scryfall": "https://scryfall.com/card/msc/248/glacial-fortress",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "City of Brass",
+    "art": "assets/images/cards/art/city-of-brass.jpg",
+    "artist": "Robin Olausson",
+    "scryfall": "https://scryfall.com/card/tmc/62/city-of-brass",
+    "set": "tmc",
+    "set_name": "Teenage Mutant Ninja Turtles Eternal",
+    "rarity": "rare"
+  },
+  {
+    "name": "Hinterland Harbor",
+    "art": "assets/images/cards/art/hinterland-harbor.jpg",
+    "artist": "Pace Wilder",
+    "scryfall": "https://scryfall.com/card/msc/250/hinterland-harbor",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Canopy Vista",
+    "art": "assets/images/cards/art/canopy-vista.jpg",
+    "artist": "Anthony Devine",
+    "scryfall": "https://scryfall.com/card/msc/227/canopy-vista",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Prairie Stream",
+    "art": "assets/images/cards/art/prairie-stream.jpg",
+    "artist": "Rockey Chen",
+    "scryfall": "https://scryfall.com/card/msc/257/prairie-stream",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Drowned Catacomb",
+    "art": "assets/images/cards/art/drowned-catacomb.jpg",
+    "artist": "Jonas De Ro",
+    "scryfall": "https://scryfall.com/card/msc/239/drowned-catacomb",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Cavern of Souls",
+    "art": "assets/images/cards/art/cavern-of-souls.jpg",
+    "artist": "Alayna Danner",
+    "scryfall": "https://scryfall.com/card/lci/269/cavern-of-souls",
+    "set": "lci",
+    "set_name": "The Lost Caverns of Ixalan",
+    "rarity": "mythic"
+  },
+  {
+    "name": "Woodland Cemetery",
+    "art": "assets/images/cards/art/woodland-cemetery.jpg",
+    "artist": "Christine Choi",
+    "scryfall": "https://scryfall.com/card/soc/424/woodland-cemetery",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Shivan Reef",
+    "art": "assets/images/cards/art/shivan-reef.jpg",
+    "artist": "Andrew Mar",
+    "scryfall": "https://scryfall.com/card/soc/404/shivan-reef",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Mana Confluence",
+    "art": "assets/images/cards/art/mana-confluence.jpg",
+    "artist": "Richard Wright",
+    "scryfall": "https://scryfall.com/card/jou/163/mana-confluence",
+    "set": "jou",
+    "set_name": "Journey into Nyx",
+    "rarity": "rare"
+  },
+  {
+    "name": "Urza's Saga",
+    "art": "assets/images/cards/art/urza-s-saga.jpg",
+    "artist": "Titus Lunter",
+    "scryfall": "https://scryfall.com/card/mh2/259/urzas-saga",
+    "set": "mh2",
+    "set_name": "Modern Horizons 2",
+    "rarity": "rare"
+  },
+  {
+    "name": "Battlefield Forge",
+    "art": "assets/images/cards/art/battlefield-forge.jpg",
+    "artist": "Thomas Stoop",
+    "scryfall": "https://scryfall.com/card/soc/362/battlefield-forge",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Caves of Koilos",
+    "art": "assets/images/cards/art/caves-of-koilos.jpg",
+    "artist": "Julian Kok Joon Wen",
+    "scryfall": "https://scryfall.com/card/soc/365/caves-of-koilos",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Rootbound Crag",
+    "art": "assets/images/cards/art/rootbound-crag.jpg",
+    "artist": "Eugene Maslovski",
+    "scryfall": "https://scryfall.com/card/msc/261/rootbound-crag",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Sunpetal Grove",
+    "art": "assets/images/cards/art/sunpetal-grove.jpg",
+    "artist": "Rafater",
+    "scryfall": "https://scryfall.com/card/msc/272/sunpetal-grove",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Yavimaya Coast",
+    "art": "assets/images/cards/art/yavimaya-coast.jpg",
+    "artist": "Jesper Ejsing",
+    "scryfall": "https://scryfall.com/card/soc/425/yavimaya-coast",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Llanowar Wastes",
+    "art": "assets/images/cards/art/llanowar-wastes.jpg",
+    "artist": "Lucas Graciano",
+    "scryfall": "https://scryfall.com/card/soc/383/llanowar-wastes",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Morphic Pool",
+    "art": "assets/images/cards/art/morphic-pool.jpg",
+    "artist": "Chris Ostrowski",
+    "scryfall": "https://scryfall.com/card/clb/357/morphic-pool",
+    "set": "clb",
+    "set_name": "Commander Legends: Battle for Baldur's Gate",
+    "rarity": "rare"
+  },
+  {
+    "name": "War Room",
+    "art": "assets/images/cards/art/war-room.jpg",
+    "artist": "Milivoj Ćeran",
+    "scryfall": "https://scryfall.com/card/soc/422/war-room",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Rejuvenating Springs",
+    "art": "assets/images/cards/art/rejuvenating-springs.jpg",
+    "artist": "Sveta Pikul",
+    "scryfall": "https://scryfall.com/card/msc/260/rejuvenating-springs",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Training Center",
+    "art": "assets/images/cards/art/training-center.jpg",
+    "artist": "Daniel Ljunggren",
+    "scryfall": "https://scryfall.com/card/cmm/434/training-center",
+    "set": "cmm",
+    "set_name": "Commander Masters",
+    "rarity": "rare"
+  },
+  {
+    "name": "Underground River",
+    "art": "assets/images/cards/art/underground-river.jpg",
+    "artist": "Volkan Baǵa",
+    "scryfall": "https://scryfall.com/card/dsc/321/underground-river",
+    "set": "dsc",
+    "set_name": "Duskmourn: House of Horror Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Adarkar Wastes",
+    "art": "assets/images/cards/art/adarkar-wastes.jpg",
+    "artist": "Piotr Dura",
+    "scryfall": "https://scryfall.com/card/eoc/147/adarkar-wastes",
+    "set": "eoc",
+    "set_name": "Edge of Eternities Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Sulfurous Springs",
+    "art": "assets/images/cards/art/sulfurous-springs.jpg",
+    "artist": "Bruce Brenneise",
+    "scryfall": "https://scryfall.com/card/eoc/185/sulfurous-springs",
+    "set": "eoc",
+    "set_name": "Edge of Eternities Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Luxury Suite",
+    "art": "assets/images/cards/art/luxury-suite.jpg",
+    "artist": "Leon Tukker",
+    "scryfall": "https://scryfall.com/card/msc/252/luxury-suite",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Sea of Clouds",
+    "art": "assets/images/cards/art/sea-of-clouds.jpg",
+    "artist": "Matt Gaser",
+    "scryfall": "https://scryfall.com/card/clb/360/sea-of-clouds",
+    "set": "clb",
+    "set_name": "Commander Legends: Battle for Baldur's Gate",
+    "rarity": "rare"
+  },
+  {
+    "name": "Nykthos, Shrine to Nyx",
+    "art": "assets/images/cards/art/nykthos-shrine-to-nyx.jpg",
+    "artist": "Jung Park",
+    "scryfall": "https://scryfall.com/card/ths/223/nykthos-shrine-to-nyx",
+    "set": "ths",
+    "set_name": "Theros",
+    "rarity": "rare"
+  },
+  {
+    "name": "Vault of Champions",
+    "art": "assets/images/cards/art/vault-of-champions.jpg",
+    "artist": "Cliff Childs",
+    "scryfall": "https://scryfall.com/card/cmm/436/vault-of-champions",
+    "set": "cmm",
+    "set_name": "Commander Masters",
+    "rarity": "rare"
+  },
+  {
+    "name": "Spectator Seating",
+    "art": "assets/images/cards/art/spectator-seating.jpg",
+    "artist": "Pablo Mendoza",
+    "scryfall": "https://scryfall.com/card/msc/268/spectator-seating",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Mystic Sanctuary",
+    "art": "assets/images/cards/art/mystic-sanctuary.jpg",
+    "artist": "Randy Vargas",
+    "scryfall": "https://scryfall.com/card/soc/388/mystic-sanctuary",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "common"
+  },
+  {
+    "name": "Reflecting Pool",
+    "art": "assets/images/cards/art/reflecting-pool.jpg",
+    "artist": "Alayna Danner",
+    "scryfall": "https://scryfall.com/card/clb/358/reflecting-pool",
+    "set": "clb",
+    "set_name": "Commander Legends: Battle for Baldur's Gate",
+    "rarity": "rare"
+  },
+  {
+    "name": "Undergrowth Stadium",
+    "art": "assets/images/cards/art/undergrowth-stadium.jpg",
+    "artist": "Gabriel Tanko",
+    "scryfall": "https://scryfall.com/card/tmc/80/undergrowth-stadium",
+    "set": "tmc",
+    "set_name": "Teenage Mutant Ninja Turtles Eternal",
+    "rarity": "rare"
+  },
+  {
+    "name": "Gemstone Caverns",
+    "art": "assets/images/cards/art/gemstone-caverns.jpg",
+    "artist": "Martina Pilcerova",
+    "scryfall": "https://scryfall.com/card/tsr/280/gemstone-caverns",
+    "set": "tsr",
+    "set_name": "Time Spiral Remastered",
+    "rarity": "mythic"
+  },
+  {
+    "name": "Three Tree City",
+    "art": "assets/images/cards/art/three-tree-city.jpg",
+    "artist": "Grady Frederick",
+    "scryfall": "https://scryfall.com/card/blb/260/three-tree-city",
+    "set": "blb",
+    "set_name": "Bloomburrow",
+    "rarity": "rare"
+  },
+  {
+    "name": "Dreamroot Cascade",
+    "art": "assets/images/cards/art/dreamroot-cascade.jpg",
+    "artist": "Marco Gorlei",
+    "scryfall": "https://scryfall.com/card/sos/254/dreamroot-cascade",
+    "set": "sos",
+    "set_name": "Secrets of Strixhaven",
+    "rarity": "rare"
+  },
+  {
+    "name": "Command Beacon",
+    "art": "assets/images/cards/art/command-beacon.jpg",
+    "artist": "Jonas De Ro",
+    "scryfall": "https://scryfall.com/card/otc/279/command-beacon",
+    "set": "otc",
+    "set_name": "Outlaws of Thunder Junction Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Spire Garden",
+    "art": "assets/images/cards/art/spire-garden.jpg",
+    "artist": "Salvatorre Zee Yazzie",
+    "scryfall": "https://scryfall.com/card/tmc/75/spire-garden",
+    "set": "tmc",
+    "set_name": "Teenage Mutant Ninja Turtles Eternal",
+    "rarity": "rare"
+  },
+  {
+    "name": "Cabal Coffers",
+    "art": "assets/images/cards/art/cabal-coffers.jpg",
+    "artist": "Don Hazeltine",
+    "scryfall": "https://scryfall.com/card/mh2/301/cabal-coffers",
+    "set": "mh2",
+    "set_name": "Modern Horizons 2",
+    "rarity": "mythic"
+  },
+  {
+    "name": "Stormcarved Coast",
+    "art": "assets/images/cards/art/stormcarved-coast.jpg",
+    "artist": "Leon Tukker",
+    "scryfall": "https://scryfall.com/card/sos/263/stormcarved-coast",
+    "set": "sos",
+    "set_name": "Secrets of Strixhaven",
+    "rarity": "rare"
+  },
+  {
+    "name": "Mosswort Bridge",
+    "art": "assets/images/cards/art/mosswort-bridge.jpg",
+    "artist": "Jeremy Jarvis",
+    "scryfall": "https://scryfall.com/card/dsc/288/mosswort-bridge",
+    "set": "dsc",
+    "set_name": "Duskmourn: House of Horror Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Buried Ruin",
+    "art": "assets/images/cards/art/buried-ruin.jpg",
+    "artist": "Franz Vohwinkel",
+    "scryfall": "https://scryfall.com/card/eoc/150/buried-ruin",
+    "set": "eoc",
+    "set_name": "Edge of Eternities Commander",
+    "rarity": "uncommon"
+  },
+  {
+    "name": "Ash Barrens",
+    "art": "assets/images/cards/art/ash-barrens.jpg",
+    "artist": "Lucas Staniec",
+    "scryfall": "https://scryfall.com/card/tmc/60/ash-barrens",
+    "set": "tmc",
+    "set_name": "Teenage Mutant Ninja Turtles Eternal",
+    "rarity": "common"
+  },
+  {
+    "name": "Prismatic Vista",
+    "art": "assets/images/cards/art/prismatic-vista.jpg",
+    "artist": "Sam Burley",
+    "scryfall": "https://scryfall.com/card/mh1/244/prismatic-vista",
+    "set": "mh1",
+    "set_name": "Modern Horizons",
+    "rarity": "rare"
+  },
+  {
+    "name": "Phyrexian Tower",
+    "art": "assets/images/cards/art/phyrexian-tower.jpg",
+    "artist": "Martin de Diego Sádaba",
+    "scryfall": "https://scryfall.com/card/mh3/303/phyrexian-tower",
+    "set": "mh3",
+    "set_name": "Modern Horizons 3",
+    "rarity": "mythic"
+  },
+  {
+    "name": "Karn's Bastion",
+    "art": "assets/images/cards/art/karn-s-bastion.jpg",
+    "artist": "Adam Paquette",
+    "scryfall": "https://scryfall.com/card/eoc/163/karns-bastion",
+    "set": "eoc",
+    "set_name": "Edge of Eternities Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Bountiful Promenade",
+    "art": "assets/images/cards/art/bountiful-promenade.jpg",
+    "artist": "Bastien Grivet",
+    "scryfall": "https://scryfall.com/card/msc/226/bountiful-promenade",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Rockfall Vale",
+    "art": "assets/images/cards/art/rockfall-vale.jpg",
+    "artist": "Muhammad Firdaus",
+    "scryfall": "https://scryfall.com/card/inr/282/rockfall-vale",
+    "set": "inr",
+    "set_name": "Innistrad Remastered",
+    "rarity": "rare"
+  },
+  {
+    "name": "Karplusan Forest",
+    "art": "assets/images/cards/art/karplusan-forest.jpg",
+    "artist": "Sam Burley",
+    "scryfall": "https://scryfall.com/card/eoc/164/karplusan-forest",
+    "set": "eoc",
+    "set_name": "Edge of Eternities Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Secluded Courtyard",
+    "art": "assets/images/cards/art/secluded-courtyard.jpg",
+    "artist": "Jonas De Ro",
+    "scryfall": "https://scryfall.com/card/msc/265/secluded-courtyard",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "uncommon"
+  },
+  {
+    "name": "Shipwreck Marsh",
+    "art": "assets/images/cards/art/shipwreck-marsh.jpg",
+    "artist": "Jonas De Ro",
+    "scryfall": "https://scryfall.com/card/inr/284/shipwreck-marsh",
+    "set": "inr",
+    "set_name": "Innistrad Remastered",
+    "rarity": "rare"
+  },
+  {
+    "name": "Brushland",
+    "art": "assets/images/cards/art/brushland.jpg",
+    "artist": "Thomas Stoop",
+    "scryfall": "https://scryfall.com/card/bro/259/brushland",
+    "set": "bro",
+    "set_name": "The Brothers' War",
+    "rarity": "rare"
+  },
+  {
+    "name": "Unclaimed Territory",
+    "art": "assets/images/cards/art/unclaimed-territory.jpg",
+    "artist": "Pavel Kolomeyets",
+    "scryfall": "https://scryfall.com/card/msc/275/unclaimed-territory",
+    "set": "msc",
+    "set_name": "Marvel Super Heroes Commander",
+    "rarity": "uncommon"
+  },
+  {
+    "name": "Takenuma, Abandoned Mire",
+    "art": "assets/images/cards/art/takenuma-abandoned-mire.jpg",
+    "artist": "Sam Burley",
+    "scryfall": "https://scryfall.com/card/neo/278/takenuma-abandoned-mire",
+    "set": "neo",
+    "set_name": "Kamigawa: Neon Dynasty",
+    "rarity": "rare"
+  },
+  {
+    "name": "Temple of Epiphany",
+    "art": "assets/images/cards/art/temple-of-epiphany.jpg",
+    "artist": "Adam Paquette",
+    "scryfall": "https://scryfall.com/card/soc/412/temple-of-epiphany",
+    "set": "soc",
+    "set_name": "Secrets of Strixhaven Commander",
+    "rarity": "rare"
+  },
+  {
+    "name": "Deserted Beach",
+    "art": "assets/images/cards/art/deserted-beach.jpg",
+    "artist": "Jonas De Ro",
+    "scryfall": "https://scryfall.com/card/inr/276/deserted-beach",
+    "set": "inr",
+    "set_name": "Innistrad Remastered",
+    "rarity": "rare"
+  },
+  {
+    "name": "Haunted Ridge",
+    "art": "assets/images/cards/art/haunted-ridge.jpg",
+    "artist": "Jonas De Ro",
+    "scryfall": "https://scryfall.com/card/inr/280/haunted-ridge",
+    "set": "inr",
+    "set_name": "Innistrad Remastered",
+    "rarity": "rare"
+  },
+  {
+    "name": "Inventors' Fair",
+    "art": "assets/images/cards/art/inventors-fair.jpg",
+    "artist": "Jonas De Ro",
+    "scryfall": "https://scryfall.com/card/kld/247/inventors-fair",
+    "set": "kld",
+    "set_name": "Kaladesh",
+    "rarity": "rare"
+  }
+]

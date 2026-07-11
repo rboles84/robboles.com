@@ -12,13 +12,15 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/mana.css">
+  <link rel="stylesheet" href="../assets/css/keyrune.css">
   <link rel="icon" href="../favicon.ico" sizes="any">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../feed.xml">
   <script defer src="../assets/js/site.js"></script>
 </head>
-<body data-root="../">
+<body data-root="../" data-lane="table-talk">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header" data-site-header>
     <div class="container nav-shell">
@@ -43,11 +45,20 @@
 
     <section class="page-hero">
       <div class="container">
-        <div class="breadcrumbs"><a href="../">~</a> / table-talk</div>
-        <h1>Table Talk</h1>
-        <p class="lede">Magic: The Gathering, thought through out loud. Commander decks, mana bases, teaching the game at my own kitchen table, and the systems hiding under the cards. Off the clock, same brain.</p>
+        <div class="tt-hero-copy">
+          <div class="breadcrumbs"><a href="../">~</a> / table-talk</div>
+          <p class="tt-eyebrow">Magic: The Gathering</p>
+          <h1>Table Talk</h1>
+          <p class="lede">Magic is the game I never grew out of. This is where I think about it out loud &mdash; Commander, mana bases, and teaching my kid to play &mdash; usually by asking the dumb question first and chasing it further than I probably should.</p>
+        </div>
+        <figure class="tt-art" hidden>
+          <a class="tt-art-frame" target="_blank" rel="noopener"><img alt=""></a>
+          <figcaption class="tt-art-cap"></figcaption>
+        </figure>
       </div>
     </section>
+
+    <div class="container"><div class="tt-rule"><span class="ms-cluster" aria-hidden="true"><i class="ms ms-w ms-cost"></i><i class="ms ms-u ms-cost"></i><i class="ms ms-b ms-cost"></i><i class="ms ms-r ms-cost"></i><i class="ms ms-g ms-cost"></i></span></div></div>
 
     <!-- Featured: Mana Base Codex -->
     <section class="section tight">
@@ -56,7 +67,6 @@
           <div style="display:flex;flex-direction:column;gap:14px;">
             <div class="featured-line">
               <span>reference artifact</span>
-              <span class="mana" aria-hidden="true"><span class="w"></span><span class="u"></span><span class="b"></span><span class="r"></span><span class="g"></span></span>
             </div>
             <h3>The Mana Base Codex</h3>
             <p>An interactive reference to Commander mana fixing &mdash; every fixing cycle cataloged, a consistency lab, and the full "Ages of Fixing" timeline. Built as a research project; now it anchors this lane.</p>

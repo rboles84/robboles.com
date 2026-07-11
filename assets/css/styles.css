@@ -439,13 +439,6 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   display: flex; align-items: center; gap: 10px;
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
 }
-.mana { display: inline-flex; gap: 5px; }
-.mana span { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
-.mana .w { background: #f3eecf; border: 1px solid #cdc7a8; }
-.mana .u { background: #3b7cc4; }
-.mana .b { background: #3a3833; border: 1px solid #555149; }
-.mana .r { background: #c0473a; }
-.mana .g { background: var(--accent); }
 .project-feature h3 { font-size: 30px; font-weight: 700; color: var(--dark-ink); }
 .project-feature p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--dark-muted); max-width: 48ch; }
 .stack-row { display: flex; flex-wrap: wrap; gap: 7px; }
@@ -791,3 +784,117 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
 }
 #cardpop .cp-nm { color: var(--muted); }
 #cardpop .cp-foot a { color: var(--accent); border-bottom: none; }
+
+/* ---- Table Talk lane theme ---------------------------------------------
+   Scoped to body[data-lane="table-talk"] so it never leaks into the QA or
+   Learning Lab pages. Gives the MTG lane its own flavor — a five-color WUBRG
+   ornament (real mana glyphs, see assets/css/mana.css) + gold trim + a faded,
+   randomized card-art hero — WITHOUT a redesign: interactive/link color stays
+   the green --accent for brand cohesion; WUBRG + gold is ornament only. Card
+   art is cached locally at authoring time (assets/images/cards/art/), so there
+   is no runtime third-party request. */
+body[data-lane="table-talk"] {
+  --tt-gold: #b9902e;
+}
+
+/* Five-color WUBRG bar across the top of the hero + a faded card-art layer
+   behind the hero text (art set by JS from assets/data/table-talk-cards.json;
+   the ::after gradient fades it into the paper so the copy stays legible). The
+   bar is a solid 6px band with a soft drop shadow so it reads as a deliberate
+   lane signature — the "white" segment is a warm parchment so it doesn't
+   vanish against the paper background. */
+body[data-lane="table-talk"] section.page-hero {
+  position: relative; border-bottom: none; padding-bottom: 26px;
+}
+body[data-lane="table-talk"] section.page-hero::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; z-index: 3;
+  background: linear-gradient(90deg,
+    #e7dba4 0 20%, #2f7cc4 20% 40%, #241f1c 40% 60%,
+    #c0473a 60% 80%, var(--accent) 80% 100%);
+  box-shadow: 0 1px 4px rgba(28, 27, 24, 0.28);
+}
+body[data-lane="table-talk"] section.page-hero > .container {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 44px;
+}
+body[data-lane="table-talk"] .tt-hero-copy { flex: 1 1 auto; min-width: 0; }
+/* Featured card art, shown CRISP and framed (not a cropped background) so the
+   illustration is properly displayed and the artist gets a real credit. The
+   whole art crop is shown (no cover-crop), floated to the right of the hero
+   copy; the caption names the card + the artist and links the artist to their
+   full gallery on Scryfall. Art is picked at random by JS from the locally
+   cached set. */
+.tt-art {
+  flex: 0 0 40%; max-width: 400px; margin: 0;
+}
+.tt-art-frame {
+  display: block; border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--line); background: var(--surface-2);
+  box-shadow: 0 14px 34px -20px rgba(28, 27, 24, 0.55);
+}
+.tt-art-frame img { display: block; width: 100%; height: auto; aspect-ratio: 626 / 457; object-fit: cover; }
+.tt-art-cap {
+  margin: 9px 2px 0; font-family: var(--mono); font-size: 11.5px; line-height: 1.55;
+  color: var(--faint); letter-spacing: 0.01em;
+}
+.tt-art-cap .nm { display: block; color: var(--muted); }
+.tt-art-cap .artist { color: var(--tt-gold); }
+.tt-art-cap a { border-bottom: 1px dotted var(--fainter); }
+.tt-art-cap a:hover { border-bottom-color: currentColor; }
+/* Set symbol (Keyrune glyph, assets/css/keyrune.css) + its visible set-name/
+   code text — the text is the accessible source of truth, the glyph is
+   aria-hidden. Keyrune's stock rarity colors are tuned for a light card face,
+   which matches this site's parchment surface, so they're used unmodified. */
+.tt-art-cap .tt-set { display: block; margin: 2px 0 1px; }
+.tt-art-cap .tt-set .ss { margin-right: 0.4em; font-size: 1.7em; }
+.tt-art-cap .tt-set-name { color: var(--faint); }
+@media (max-width: 760px) {
+  body[data-lane="table-talk"] section.page-hero > .container {
+    flex-direction: column; align-items: flex-start; gap: 24px;
+  }
+  .tt-art { flex-basis: auto; width: 100%; max-width: 420px; order: -1; }
+}
+
+/* Mana-glyph cluster (real WUBRG symbols from the mana font). The .ms-cost
+   pips are flex-centered here (the base rule leans on line-height, which sits
+   the glyph slightly high) and get a hairline ring so the pale "white" pip
+   still reads against the light paper background. */
+.ms-cluster { display: inline-flex; gap: 5px; vertical-align: middle; }
+.ms-cluster .ms-cost {
+  display: inline-flex; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 0 1px rgba(28, 27, 24, 0.20);
+}
+
+/* Lane eyebrow (text only — the mana glyphs live in the .tt-rule divider so
+   the page has a single pip moment, not three). */
+.tt-eyebrow {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--tt-gold); margin: 0 0 14px;
+}
+
+/* Section divider: a centered WUBRG glyph cluster flanked by hairlines. */
+.tt-rule { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 0; }
+.tt-rule::before, .tt-rule::after {
+  content: ""; flex: 1; height: 1px; background: var(--line);
+}
+.tt-rule .ms-cluster { font-size: 14px; }
+
+/* Table Talk post-cards: gold lane label + gold hover edge instead of green,
+   so the lane's card grid reads distinctly from the QA/Lab grids. */
+body[data-lane="table-talk"] .post-card .card-topline span:first-child { color: var(--tt-gold); }
+body[data-lane="table-talk"] .post-card:hover { border-color: var(--tt-gold); }
+
+/* Vox Mana project page only (.vm-hero is unique to projects/vox-mana/) — a
+   WUBRG hairline like Table Talk's, but its own rule so it can't bleed onto
+   the other (non-Magic) project pages and stays independent of the TT lane
+   rule above. Interactive links on this page stay the default site green;
+   this is ornament only, same restraint as the Table Talk treatment. */
+.vm-hero { position: relative; border-bottom: none; padding-bottom: 26px; }
+.vm-hero::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; z-index: 3;
+  background: linear-gradient(90deg,
+    #e7dba4 0 20%, #2f7cc4 20% 40%, #241f1c 40% 60%,
+    #c0473a 60% 80%, var(--accent) 80% 100%);
+  box-shadow: 0 1px 4px rgba(28, 27, 24, 0.28);
+}
+.vm-hero > .container { position: relative; z-index: 1; }

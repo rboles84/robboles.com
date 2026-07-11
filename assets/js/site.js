@@ -36,6 +36,59 @@
     });
   });
 
+  // Table Talk: a randomly-chosen piece of MTG card art, shown crisp and framed
+  // in the hero with a proper artist credit (the card name links to Scryfall,
+  // the artist links to their full gallery). The art list is cached locally at
+  // authoring time (assets/images/cards/art/, catalogued in
+  // assets/data/table-talk-cards.json) — no runtime third-party request. If the
+  // fetch fails or the file is missing, the figure stays hidden (graceful, per
+  // the site's "static doesn't mean safe" rule — no hard dependency).
+  //
+  // Set symbol: rendered from the locally-vendored Keyrune font
+  // (assets/css/keyrune.css, assets/fonts/keyrune.*) using the card's `set`/
+  // `rarity` fields, backfilled at authoring time from Scryfall. The set/code
+  // code text is the accessible source of truth; the glyph is aria-hidden and
+  // only ever rendered for a validated code — an unsupported or missing code
+  // renders no icon at all (never Keyrune's generic default glyph).
+  const KNOWN_RARITIES = ['common', 'uncommon', 'rare', 'mythic'];
+  const SET_CODE_RE = /^[a-z0-9-]+$/;
+  function setSymbolHtml(card) {
+    if (!card.set || !SET_CODE_RE.test(card.set) || !card.set_name) return '';
+    const rarityClass = KNOWN_RARITIES.indexOf(card.rarity) !== -1 ? ' ss-' + card.rarity : '';
+    return '<span class="tt-set">' +
+      '<i class="ss ss-' + card.set + rarityClass + '" aria-hidden="true"></i>' +
+      '<span class="tt-set-name">' + escapeHtml(card.set_name) + ' (' + card.set.toUpperCase() + ')</span>' +
+      '</span>';
+  }
+
+  const artFig = document.querySelector('.tt-art');
+  if (artFig && body.dataset.lane === 'table-talk') {
+    fetch(root + 'assets/data/table-talk-cards.json')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (cards) {
+        if (!cards || !cards.length) return;
+        const card = cards[Math.floor(Math.random() * cards.length)];
+        const img = artFig.querySelector('img');
+        const frame = artFig.querySelector('.tt-art-frame');
+        const cap = artFig.querySelector('.tt-art-cap');
+        img.onload = function () { artFig.hidden = false; };
+        img.alt = card.name + ' — art by ' + card.artist;
+        img.src = root + card.art;
+        if (frame) frame.href = card.scryfall;
+        if (cap && card.artist) {
+          const gallery = 'https://scryfall.com/search?q=' +
+            encodeURIComponent('artist:"' + card.artist + '"') + '&unique=art';
+          cap.innerHTML =
+            '<a class="nm" href="' + card.scryfall + '" target="_blank" rel="noopener">' +
+              escapeHtml(card.name) + '</a>' +
+            setSymbolHtml(card) +
+            'art by <a class="artist" href="' + gallery + '" target="_blank" rel="noopener">' +
+              escapeHtml(card.artist) + '</a>';
+        }
+      })
+      .catch(function () {});
+  }
+
   const filterButtons = document.querySelectorAll('[data-filter]');
   const filterInput = document.querySelector('[data-filter-input]');
   const cards = Array.from(document.querySelectorAll('[data-card]'));
