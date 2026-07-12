@@ -57,7 +57,7 @@ function decodeEntities(str) {
    path it should point to, or null if the link isn't a local file
    reference this checker can resolve (external, mailto:, bare anchor). */
 function resolveLocalTarget(href, fromFile) {
-  let clean = decodeEntities(href).split('#')[0];
+  let clean = decodeEntities(href).split('#')[0].split('?')[0];
   if (!clean) return null; // pure anchor link, e.g. href="#top"
   if (/^(https?:|mailto:|tel:|\/\/)/i.test(clean)) return null;
   const base = path.dirname(fromFile);

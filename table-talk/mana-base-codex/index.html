@@ -76,10 +76,11 @@
 
   /* shared pips */
   .pips{display:flex; gap:4px}
-  /* Color-identity glyph: a single Mana ms-ci-* pie-chart icon (one glyph per
-     2/3/4/5-color combo) replaces what used to be a row of flat CSS-color dots.
-     Sizing/filter below applies to it automatically since it also carries the
-     base `.ms` class. */
+  /* Color-identity glyph: a row of individual per-color manaSymbol() pips
+     (RBB-026 — replaced the combined ms-ci-* pie-chart icon, which read
+     poorly for 2-color guilds and was hard to read for 3-5 color combos).
+     Sizing/filter below applies to each pip automatically since they all
+     carry the base `.ms` class. */
   .res-id .pips .ms{width:1em; height:1em; font-size:20px; line-height:1; flex:0 0 auto;
     filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
   .lcard .top .pips .ms{width:1em; height:1em; font-size:14px; line-height:1; flex:0 0 auto;
@@ -181,7 +182,6 @@
   @container (min-width:720px){ .res-head{grid-template-columns:180px 1fr; align-items:center} }
   .res-sigil{justify-self:center}
   .res-sigil svg{width:170px; height:170px; display:block}
-  .res-id .pips .ms-ci{width:20px; height:20px; font-size:20px}
   .res-id h2{font-size:clamp(24px,4vw,36px); margin:10px 0 6px}
   .res-id .meta{font-family:var(--mono); font-size:12px; color:var(--bone-dim)}
   .res-id .meta b{color:var(--gold)}
@@ -1384,18 +1384,14 @@ const escAttr = s => String(s).replace(/"/g,'&quot;');
    look up on Scryfall / in the offline CARD_INFO table. */
 const cardName = nm => `<span class="cardname" tabindex="0" data-card="${escAttr(nm)}">${nm}</span>`;
 const manaSymbol = c => `<i class="ms ms-${c.toLowerCase()} ms-cost mana-symbol" aria-hidden="true"></i>`;
-/* Color-IDENTITY glyph (picker cards + result header): a single Mana
-   ms-ci-<letters> pie-chart icon, one glyph per 2+-color combo, instead of N
-   separate per-color manaSymbol() circles. Mono-color and colorless skip the
-   ms-ci system entirely and use manaSymbol() instead — Mana's ms-ci-w/u/b/r/g
-   are just a flat solid-color circle with no symbol drawn on top (the pie
-   split is what carries the glyph's meaning for 2+ colors; with only one
-   color there's no split to draw, so it'd render as a plain dot), whereas
-   manaSymbol() already shows the real per-color icon on a color-tuned badge
-   used everywhere else on this page. */
-const identityGlyph = cs =>
-  cs.length <= 1 ? manaSymbol(cs.length ? cs[0] : 'C')
-  : `<i class="ms ms-ci ms-ci-${cs.join('').toLowerCase()}" title="${cs.map(c=>CNAME[c]).join(' / ')}"></i>`;
+/* Color-IDENTITY glyph (picker cards + result header): a row of individual
+   per-color manaSymbol() pips, one per color in the identity — same pattern
+   as Table Talk's .tt-rule pip row (Rob's named gold standard), rather than
+   a single blended ms-ci-<letters> pie-chart icon. RBB-026: the combined
+   glyph read worse for 2-color guilds and was hard to read for 3-5 color
+   combos; individual pips read correctly at every arity. Colorless falls
+   back to a single manaSymbol('C'). */
+const identityGlyph = cs => (cs.length ? cs : ['C']).map(manaSymbol).join('');
 /* pairsOf/trisOf: given an identity's color list (e.g. ['W','U','B'] for
    Esper), return every 2-color / 3-color SUBSET as canonical pair/tri keys
    (key() applied to each combo) — e.g. pairsOf(['W','U','B']) => ['WU','WB','UB'].

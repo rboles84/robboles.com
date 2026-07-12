@@ -12,6 +12,42 @@
     });
   }
 
+  // Dark mode toggle (RBB-028): a single mana-pip button in the nav. Shows
+  // the pip for the theme a click will switch TO, not the current one (e.g.
+  // in dark mode it shows the white/light pip). System preference is the
+  // default (handled in CSS); a click here persists an explicit override to
+  // localStorage.
+  if (siteNav) {
+    const THEME_KEY = 'theme';
+    const stored = localStorage.getItem(THEME_KEY);
+    if (stored === 'dark' || stored === 'light') document.documentElement.dataset.theme = stored;
+
+    const themeBtn = document.createElement('button');
+    themeBtn.type = 'button';
+    themeBtn.className = 'theme-toggle';
+    siteNav.appendChild(themeBtn);
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    function isDark() {
+      return document.documentElement.dataset.theme
+        ? document.documentElement.dataset.theme === 'dark'
+        : prefersDark.matches;
+    }
+    function syncButton() {
+      const dark = isDark();
+      themeBtn.setAttribute('aria-pressed', String(dark));
+      themeBtn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+      themeBtn.innerHTML = '<i class="ms ' + (dark ? 'ms-w' : 'ms-b') + ' ms-cost" aria-hidden="true"></i>';
+    }
+    syncButton();
+    themeBtn.addEventListener('click', function () {
+      const next = isDark() ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem(THEME_KEY, next);
+      syncButton();
+    });
+  }
+
   const subscribeForm = document.querySelector('[data-subscribe-form]');
   const subscribeConfirm = document.querySelector('[data-subscribe-confirm]');
   if (subscribeForm && subscribeConfirm) {
