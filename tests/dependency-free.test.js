@@ -82,5 +82,8 @@ test('the Mana Base Codex specifically has zero runtime third-party calls', () =
     'Codex should not reference the mana-font CDN or the live Scryfall API'
   );
   // Its font must be self-hosted, not loaded from a CDN.
-  assert.match(text, /href="mana-local\.css"/, 'Codex should link its self-hosted mana-local.css');
+  assert.match(
+    text, /href="\.\.\/\.\.\/assets\/css\/mana\.css"/,
+    'Codex should link the shared self-hosted assets/css/mana.css'
+  );
 });

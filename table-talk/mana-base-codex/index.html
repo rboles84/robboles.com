@@ -9,9 +9,10 @@
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
-<!-- Mana Font: MTG mana-symbol icons used in the Cycle Catalog member pips.
-     Self-hosted subset (mana-local.css + mana.woff/ttf) so this page makes zero external requests. -->
-<link rel="stylesheet" href="mana-local.css">
+<!-- Mana Font: MTG mana-symbol + color-identity icons (member pips, identity glyphs).
+     Shared sitewide vendor file (assets/css/mana.css + assets/fonts/mana.*) — self-hosted, zero
+     external requests. Full upstream catalog; this page only exercises ms/ms-cost/ms-ci glyphs. -->
+<link rel="stylesheet" href="../../assets/css/mana.css">
 <style>
 /* ============================================================================
    THE MANA BASE CODEX  ·  Vox Mana
@@ -75,16 +76,10 @@
 
   /* shared pips */
   .pips{display:flex; gap:4px}
-  .pip{width:15px; height:15px; border-radius:50%; display:inline-block; border:1px solid rgba(0,0,0,.35);
-    box-shadow:inset 0 1px 2px rgba(255,255,255,.18)}
-  .pip.W{background:var(--W)} .pip.U{background:var(--U)} .pip.B{background:var(--B)}
-  .pip.R{background:var(--R)} .pip.G{background:var(--G)} .pip.C{background:var(--C)}
-  /* mini-pip: small color-identity dot used in dense lists (catalog rows, ledger cards).
-     Sized as a fixed flex-none box (not just width/height) so it never gets squeezed
-     or wrapped by a flex parent — spacing between pips is handled by the parent's
-     `gap`, not by margin, so it can never mismatch the space it actually occupies. */
-  .mini-pip{width:11px; height:11px; min-width:11px; flex:none; border-radius:50%;
-    display:inline-block; border:1px solid rgba(0,0,0,.4)}
+  /* Color-identity glyph: a single Mana ms-ci-* pie-chart icon (one glyph per
+     2/3/4/5-color combo) replaces what used to be a row of flat CSS-color dots.
+     Sizing/filter below applies to it automatically since it also carries the
+     base `.ms` class. */
   .res-id .pips .ms{width:1em; height:1em; font-size:20px; line-height:1; flex:0 0 auto;
     filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
   .lcard .top .pips .ms{width:1em; height:1em; font-size:14px; line-height:1; flex:0 0 auto;
@@ -186,7 +181,7 @@
   @container (min-width:720px){ .res-head{grid-template-columns:180px 1fr; align-items:center} }
   .res-sigil{justify-self:center}
   .res-sigil svg{width:170px; height:170px; display:block}
-  .res-id .pips .pip{width:20px;height:20px}
+  .res-id .pips .ms-ci{width:20px; height:20px; font-size:20px}
   .res-id h2{font-size:clamp(24px,4vw,36px); margin:10px 0 6px}
   .res-id .meta{font-family:var(--mono); font-size:12px; color:var(--bone-dim)}
   .res-id .meta b{color:var(--gold)}
@@ -633,7 +628,11 @@ table.ltable{max-width:760px; margin:6px 0 16px}
 }
 #pane-catalog .mem{
   display:grid;
-  grid-template-columns:64px minmax(0,1fr);
+  /* min-content (not a fixed px) lets this column shrink/grow to exactly fit
+     whatever the row's .mana-run pill needs — 1 pip (Vivid), 2 (a guild pair,
+     with its emblem), or 3 (a triome/wedge) — so the pill is never clipped or
+     pushed into the name column no matter how many mtg icons it holds. */
+  grid-template-columns:min-content minmax(0,1fr);
   align-items:center;
   gap:12px;
   min-height:40px;
@@ -654,7 +653,7 @@ table.ltable{max-width:760px; margin:6px 0 16px}
   justify-self:center;
   gap:7px;
   width:auto;
-  min-width:66px;
+  min-width:44px;
   height:28px;
   padding:0 10px;
   white-space:nowrap;
@@ -1056,6 +1055,15 @@ table.ltable{max-width:760px; margin:6px 0 16px}
    like cy.m[key(['U','W'])] always finds cy.m['WU']. */
 const ORDER = {W:0,U:1,B:2,R:3,G:4};
 const CNAME = {W:'White',U:'Blue',B:'Black',R:'Red',G:'Green',C:'Colorless'};
+/* Canonical Ravnica guild name for each of the 10 two-color pair keys — used
+   to attach a real Mana ms-guild-* emblem to each member row of a two-color
+   cycle in the Catalog (memberGrid, Section 7). Deliberately NOT extended to
+   3-color (tri) rows: Mana has real crest emblems for the 5 Tarkir wedges
+   (ms-clan-abzan/jeskai/sultai/mardu/temur) but none at all for the 5 Alara
+   shards (Bant/Esper/Grixis/Jund/Naya only exist as ms-ci-* gradient aliases,
+   not standalone crests) — showing a crest on half of the 10 tri rows and
+   nothing on the other half would look arbitrary, so tri rows stay pip-only. */
+const GUILD = {WU:'azorius',WB:'orzhov',WR:'boros',WG:'selesnya',UB:'dimir',UR:'izzet',UG:'simic',BR:'rakdos',BG:'golgari',RG:'gruul'};
 function key(cs){return cs.slice().sort((a,b)=>ORDER[a]-ORDER[b]).join('');}
 
 /* All 37 Commander color identities, grouped for the picker UI (`g`) and
@@ -1365,7 +1373,6 @@ const ERAS = [
    means there's exactly one implementation of "how do we draw a pip" or
    "how do we compute odds" to test and fix, not several copies.
 --------------------------------------------------------------------------- */
-const pip = c => `<span class="pip ${c}" title="${CNAME[c]}"></span>`;
 /* Escapes double-quotes so a card name can never break out of an HTML
    attribute (e.g. data-card="..."). Card names in this dataset don't
    currently contain quotes, but this makes that assumption unnecessary. */
@@ -1376,9 +1383,19 @@ const escAttr = s => String(s).replace(/"/g,'&quot;');
    just mouse hover), and `data-card` carries the exact name cardPop will
    look up on Scryfall / in the offline CARD_INFO table. */
 const cardName = nm => `<span class="cardname" tabindex="0" data-card="${escAttr(nm)}">${nm}</span>`;
-const minipip = c => `<span class="mini-pip" style="background:var(--${c})" title="${CNAME[c]}"></span>`;
 const manaSymbol = c => `<i class="ms ms-${c.toLowerCase()} ms-cost mana-symbol" aria-hidden="true"></i>`;
-const pipsHTML = cs => (cs && cs.length ? cs.map(pip).join('') : pip('C'));
+/* Color-IDENTITY glyph (picker cards + result header): a single Mana
+   ms-ci-<letters> pie-chart icon, one glyph per 2+-color combo, instead of N
+   separate per-color manaSymbol() circles. Mono-color and colorless skip the
+   ms-ci system entirely and use manaSymbol() instead — Mana's ms-ci-w/u/b/r/g
+   are just a flat solid-color circle with no symbol drawn on top (the pie
+   split is what carries the glyph's meaning for 2+ colors; with only one
+   color there's no split to draw, so it'd render as a plain dot), whereas
+   manaSymbol() already shows the real per-color icon on a color-tuned badge
+   used everywhere else on this page. */
+const identityGlyph = cs =>
+  cs.length <= 1 ? manaSymbol(cs.length ? cs[0] : 'C')
+  : `<i class="ms ms-ci ms-ci-${cs.join('').toLowerCase()}" title="${cs.map(c=>CNAME[c]).join(' / ')}"></i>`;
 /* pairsOf/trisOf: given an identity's color list (e.g. ['W','U','B'] for
    Esper), return every 2-color / 3-color SUBSET as canonical pair/tri keys
    (key() applied to each combo) — e.g. pairsOf(['W','U','B']) => ['WU','WB','UB'].
@@ -1490,7 +1507,7 @@ const picker=document.getElementById('picker');
       lastG=d.g; }
     html+=`<button class="idcard" role="button" aria-pressed="false" data-id="${d.id}">
         <div class="nm">${d.nm}</div><div class="sb">${d.sb}</div>
-        <div class="pips">${d.cs.length?d.cs.map(manaSymbol).join(''):manaSymbol('C')}</div></button>`;
+        <div class="pips">${identityGlyph(d.cs)}</div></button>`;
   });
   html+='</div></div>';
   picker.innerHTML=html;
@@ -1699,7 +1716,7 @@ function build(d){
 
   let out = `<div class="res-head">
       <div class="res-sigil">${sigil(cs)}</div>
-      <div class="res-id"><div class="pips" aria-label="${(cs.length?cs:['C']).map(c=>CNAME[c]).join(' / ')}">${cs.length ? cs.map(manaSymbol).join('') : manaSymbol('C')}</div>
+      <div class="res-id"><div class="pips" aria-label="${(cs.length?cs:['C']).map(c=>CNAME[c]).join(' / ')}">${identityGlyph(cs)}</div>
         <h2>${d.nm}</h2>
         <span class="meta"><b>${d.sb}</b>${twin}</span>
         <p class="blurb">${blurb}</p></div>
@@ -1871,7 +1888,11 @@ function memberGrid(m, kind){
             : kind==='mono' ? ['W','U','B','R','G']
             :                 ['WU','WB','WR','WG','UB','UR','UG','BR','BG','RG'];
   let g='';
-  ord.forEach(pk=>{ if(m[pk]) g+=`<div class="mem"><span class="mana-run" aria-label="${pk.split('').map(c=>CNAME[c]).join(' / ')} mana">${pk.split('').map(manaSymbol).join('')}</span><span class="mn">${cardName(m[pk])}</span></div>`; });
+  ord.forEach(pk=>{ if(!m[pk]) return;
+    const guild = kind==='pair' ? GUILD[pk] : null;
+    const guildMark = guild ? `<i class="ms ms-guild-${guild}" aria-hidden="true" title="${guild.charAt(0).toUpperCase()+guild.slice(1)}"></i>` : '';
+    g+=`<div class="mem"><span class="mana-run" aria-label="${pk.split('').map(c=>CNAME[c]).join(' / ')} mana${guild?', '+guild:''}">${pk.split('').map(manaSymbol).join('')}${guildMark}</span><span class="mn">${cardName(m[pk])}</span></div>`;
+  });
   return g;
 }
 /* All filter chips (Untapped/Tapped/Fetchable/Budget/Pinned) are AND'd
