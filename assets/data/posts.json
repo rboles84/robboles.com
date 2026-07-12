@@ -1,5 +1,35 @@
 [
   {
+    "slug": "your-precon-is-a-passport",
+    "title": "Your Precon Is a Passport",
+    "date": "2026-07-12",
+    "category": "Table Talk",
+    "lane": "Table Talk",
+    "tags": [
+      "Commander",
+      "Precons",
+      "New Players"
+    ],
+    "description": "A precon isn't a lesser deck you apologize for — it's the fastest legal way into a Commander game. The nerves aren't the problem. Not having four sentences ready is.",
+    "promise": "You bought a precon and now you don't know what to say about it. Here are the four sentences that fix that.",
+    "reading_minutes": 7
+  },
+  {
+    "slug": "izzet-vs-prismari",
+    "title": "Izzet and Prismari Are Both Blue-Red. They're Not the Same Deck.",
+    "date": "2026-07-12",
+    "category": "Table Talk",
+    "lane": "Table Talk",
+    "tags": [
+      "Izzet",
+      "Prismari",
+      "Color Identity"
+    ],
+    "description": "Same two colors, same color pie, completely different game. Izzet and Prismari prove that a color identity tells you the toolbox, not which tool gets picked up twice a turn.",
+    "promise": "Same wedge of the color wheel. Two different games underneath it.",
+    "reading_minutes": 5
+  },
+  {
     "slug": "quiz-evidence-not-vibes",
     "title": "A Quiz Can Be Evidence, Not Vibes",
     "date": "2026-07-09",
