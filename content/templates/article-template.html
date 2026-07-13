@@ -23,6 +23,7 @@
   {{PROFICIENCY}}     Beginner | Intermediate | Expert
   {{DEPENDENCIES}}    Tools/versions assumed, e.g. "Playwright 1.45, Node 20".
   {{PROMISE}}         The answer-first hook: problem -> stakes -> promise.
+  {{COPYRIGHT_YEAR}}  Year portion of DATE_PUBLISHED, e.g. 2026.
 
   ---- ANTI-SLOP REQUIREMENT (must score >= 7/9 before publishing) -----------
   Every flagship post MUST contain at least:
@@ -78,7 +79,10 @@
         "proficiencyLevel": "{{PROFICIENCY}}",
         "dependencies": "{{DEPENDENCIES}}",
         "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
-        "publisher": { "@type": "Person", "@id": "https://robboles.com/about/#person" }
+        "publisher": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightHolder": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightYear": "{{COPYRIGHT_YEAR}}",
+        "license": "https://robboles.com/about/#rights"
       },
       {
         "@type": "BreadcrumbList",
@@ -222,6 +226,7 @@ npx playwright test --grep @smoke --reporter=line</code></pre>
                 insurance — I've halved a regression cycle, built the QA governance teams run on,
                 and brought AI into test generation without losing the plot. Former Air Force lab
                 tech; I build side projects like Vox Mana on the weekend.</p>
+              <p class="bio-tagline">"I test things until they stop surprising me — then I go looking for what I missed."</p>
               <p class="bio-links">
                 <a href="../../about/">About &amp; full bio</a>
                 <!-- TODO: add real external identity links (GitHub, LinkedIn) for E-E-A-T -->
