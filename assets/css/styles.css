@@ -901,7 +901,7 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
   text-transform: uppercase; font-weight: 600; color: var(--accent); margin-bottom: 6px;
 }
-.kit-voice p { margin: 0; font-size: 15px; line-height: 1.65; color: #2a2823; }
+.kit-voice p { margin: 0; font-size: 15px; line-height: 1.65; color: var(--ink); }
 .kit-voice code { background: var(--surface-2); }
 
 .kit-back { margin-top: 32px; font-family: var(--mono); font-size: 13px; }

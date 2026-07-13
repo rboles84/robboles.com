@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>Your QA Dashboard Doesn't Need More Charts, It Needs Fewer Questions</title>
+    <link>https://robboles.com/posts/reclaiming-qa-dashboards-gqm/</link>
+    <guid>https://robboles.com/posts/reclaiming-qa-dashboards-gqm/</guid>
+    <pubDate>Sun, 12 Jul 2026 17:00:00 +0000</pubDate>
+    <description>Most QA dashboards get built bottom-up from whatever the tools export, which is how they end up full of vanity metrics nobody acts on. The Goal-Question-Metric framework flips the build order.</description>
+  </item>
+  <item>
     <title>Traceable Isn't the Same as True</title>
     <link>https://robboles.com/posts/traceable-is-not-true/</link>
     <guid>https://robboles.com/posts/traceable-is-not-true/</guid>

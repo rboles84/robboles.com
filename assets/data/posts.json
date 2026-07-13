@@ -1,5 +1,20 @@
 [
   {
+    "slug": "reclaiming-qa-dashboards-gqm",
+    "title": "Your QA Dashboard Doesn't Need More Charts, It Needs Fewer Questions",
+    "date": "2026-07-12",
+    "category": "QA Field Guide",
+    "lane": "Metrics & Reporting",
+    "tags": [
+      "Metrics",
+      "Dashboards",
+      "GQM"
+    ],
+    "description": "Most QA dashboards get built bottom-up from whatever the tools export, which is how they end up full of vanity metrics nobody acts on. The Goal-Question-Metric framework flips the build order.",
+    "promise": "No metric survives on the dashboard unless it traces back to a real goal. Everything else gets deleted.",
+    "reading_minutes": 6
+  },
+  {
     "slug": "your-precon-is-a-passport",
     "title": "Your Precon Is a Passport",
     "date": "2026-07-12",
