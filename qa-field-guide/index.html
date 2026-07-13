@@ -45,7 +45,24 @@
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
         <a class="nav-link" href="../">home</a>
-        <a class="nav-link is-active" href="../qa-field-guide/" aria-current="page">field guide</a>
+        <div class="nav-item nav-item--field-guide">
+        <div class="nav-item-primary">
+          <a class="nav-link is-active" href="../qa-field-guide/" aria-current="page">field guide</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="field-guide-links" aria-label="Field Guide destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--guide" href="../qa-field-guide/">
+            <strong>Explore the Field Guide</strong>
+            <span>Methods and lessons for reliable QA, AI, and software delivery.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--kit" href="../field-kit/">
+            <strong>Open the Field Kit</strong>
+            <span>Ready-to-use templates, checklists, worksheets, and tools.</span>
+          </a>
+        </div>
+      </div>
         <a class="nav-link" href="../learning-lab/">learning lab</a>
         <a class="nav-link" href="../table-talk/">table talk</a>
         <a class="nav-link" href="../projects/">projects</a>

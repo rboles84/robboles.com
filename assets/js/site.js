@@ -12,6 +12,103 @@
     });
   }
 
+  // Field Guide dropdown (nests Field Kit): a disclosure widget, not an
+  // ARIA menu — real links, plain document Tab order, no
+  // role="menu"/menuitem/aria-haspopup. "field guide" stays a direct link;
+  // a separate caret button toggles the two-destination panel. Hover-intent
+  // open is layered on top of click, gated to devices with real hover so
+  // touch never gets a synthetic open. The panel is `inert` while closed on
+  // desktop (never inert on mobile, where it renders as a static stacked
+  // link) so closed-panel links aren't reachable by Tab until disclosed.
+  (function initFieldGuideDropdown() {
+    const item = document.querySelector('.nav-item--field-guide');
+    if (!item) return;
+    const caret = item.querySelector('.nav-caret');
+    const panel = item.querySelector('.nav-dropdown');
+    if (!caret || !panel) return;
+
+    const fineHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const mobileLayout = window.matchMedia('(max-width: 900px)');
+    let hoverTimer = null;
+
+    function isOpen() { return panel.classList.contains('is-open'); }
+
+    function applyInert() {
+      panel.inert = !mobileLayout.matches && !isOpen();
+    }
+
+    function open() {
+      clearTimeout(hoverTimer);
+      panel.classList.add('is-open');
+      caret.setAttribute('aria-expanded', 'true');
+      caret.setAttribute('aria-label', 'Hide Field Guide links');
+      applyInert();
+    }
+
+    function close(opts) {
+      clearTimeout(hoverTimer);
+      panel.classList.remove('is-open');
+      caret.setAttribute('aria-expanded', 'false');
+      caret.setAttribute('aria-label', 'Show Field Guide links');
+      applyInert();
+      if (opts && opts.returnFocus) caret.focus();
+    }
+
+    close();
+
+    mobileLayout.addEventListener('change', function () {
+      close();
+    });
+
+    // Pointer-driven activation focuses the caret before the click event
+    // fires, so a naive focusin-opens-everything rule would have the click
+    // handler's toggle immediately re-close a panel that focus just opened.
+    // Suppress the focus-open for the one focusin caused by this pointer
+    // press, and let the click handler own the toggle instead — keyboard
+    // Tab (no preceding pointerdown) still opens on focus alone.
+    let suppressCaretFocusOpen = false;
+    caret.addEventListener('pointerdown', function () {
+      suppressCaretFocusOpen = true;
+    });
+    caret.addEventListener('click', function () {
+      if (isOpen()) close({ returnFocus: true });
+      else open();
+    });
+
+    if (fineHover.matches) {
+      item.addEventListener('mouseenter', function () {
+        clearTimeout(hoverTimer);
+        hoverTimer = setTimeout(open, 120);
+      });
+      item.addEventListener('mouseleave', function () {
+        clearTimeout(hoverTimer);
+        hoverTimer = setTimeout(close, 200);
+      });
+    }
+
+    item.addEventListener('focusin', function (event) {
+      if (mobileLayout.matches) return;
+      if (event.target === caret && suppressCaretFocusOpen) {
+        suppressCaretFocusOpen = false;
+        return;
+      }
+      open();
+    });
+    item.addEventListener('focusout', function (event) {
+      if (!item.contains(event.relatedTarget)) close();
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && isOpen()) close({ returnFocus: true });
+    });
+    document.addEventListener('click', function (event) {
+      if (isOpen() && !item.contains(event.target)) close();
+    });
+
+    // Opening the mobile hamburger normalizes any stray desktop state.
+    if (navToggle) navToggle.addEventListener('click', function () { close(); });
+  })();
+
   // Dark mode toggle (RBB-028): a single icon button in the nav. Shows the
   // icon for the theme a click will switch TO, not the current one (e.g. in
   // dark mode it shows the light-mode icon). System preference is the
