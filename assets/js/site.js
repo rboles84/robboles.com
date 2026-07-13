@@ -12,20 +12,29 @@
     });
   }
 
-  // Dark mode toggle (RBB-028): a single mana-pip button in the nav. Shows
-  // the pip for the theme a click will switch TO, not the current one (e.g.
-  // in dark mode it shows the white/light pip). System preference is the
+  // Dark mode toggle (RBB-028): a single icon button in the nav. Shows the
+  // icon for the theme a click will switch TO, not the current one (e.g. in
+  // dark mode it shows the light-mode icon). System preference is the
   // default (handled in CSS); a click here persists an explicit override to
   // localStorage.
+  //
+  // The icon itself is lane-aware (Rob doesn't want MTG imagery bleeding
+  // into non-MTG pages): Table Talk pages (body[data-lane="table-talk"])
+  // keep the mana-pip icon; every other page gets a plain sun/moon SVG.
   if (siteNav) {
     const THEME_KEY = 'theme';
     const stored = localStorage.getItem(THEME_KEY);
     if (stored === 'dark' || stored === 'light') document.documentElement.dataset.theme = stored;
 
+    const isMtgLane = body.dataset.lane === 'table-talk';
+
     const themeBtn = document.createElement('button');
     themeBtn.type = 'button';
     themeBtn.className = 'theme-toggle';
     siteNav.appendChild(themeBtn);
+
+    const SUN_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.6"/><g stroke-linecap="round"><path d="M12 2.5v3"/><path d="M12 18.5v3"/><path d="M4.5 12h-3"/><path d="M22.5 12h-3"/><path d="M6.3 6.3 4.2 4.2"/><path d="M19.8 19.8l-2.1-2.1"/><path d="M6.3 17.7 4.2 19.8"/><path d="M19.8 4.2l-2.1 2.1"/></g></svg>';
+    const MOON_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A9 9 0 1 1 9.4 3.5a7.2 7.2 0 0 0 11.1 11.1Z"/></svg>';
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     function isDark() {
@@ -37,7 +46,9 @@
       const dark = isDark();
       themeBtn.setAttribute('aria-pressed', String(dark));
       themeBtn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-      themeBtn.innerHTML = '<i class="ms ' + (dark ? 'ms-w' : 'ms-b') + ' ms-cost" aria-hidden="true"></i>';
+      themeBtn.innerHTML = isMtgLane
+        ? '<i class="ms ' + (dark ? 'ms-w' : 'ms-b') + ' ms-cost" aria-hidden="true"></i>'
+        : (dark ? SUN_ICON : MOON_ICON);
     }
     syncButton();
     themeBtn.addEventListener('click', function () {

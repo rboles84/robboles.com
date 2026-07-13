@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>Traceable Isn't the Same as True</title>
+    <link>https://robboles.com/posts/traceable-is-not-true/</link>
+    <guid>https://robboles.com/posts/traceable-is-not-true/</guid>
+    <pubDate>Sun, 12 Jul 2026 16:00:00 +0000</pubDate>
+    <description>A v1 launch scan on Vox Mana came back green — records existed, citations resolved, generated pages matched their source, regression passed. Exploratory testing found the checks were proving the wrong thing anyway. Here's the gap, and the rule I use to close it.</description>
+  </item>
+  <item>
     <title>Your Precon Is a Passport</title>
     <link>https://robboles.com/posts/your-precon-is-a-passport/</link>
     <guid>https://robboles.com/posts/your-precon-is-a-passport/</guid>

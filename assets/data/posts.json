@@ -30,6 +30,21 @@
     "reading_minutes": 5
   },
   {
+    "slug": "traceable-is-not-true",
+    "title": "Traceable Isn't the Same as True",
+    "date": "2026-07-12",
+    "category": "QA Field Guide",
+    "lane": "QA Authority",
+    "tags": [
+      "Evidence Quality",
+      "Exploratory Testing",
+      "AI-Assisted QA"
+    ],
+    "description": "A v1 launch scan on Vox Mana came back green — records existed, citations resolved, generated pages matched their source, regression passed. Exploratory testing found the checks were proving the wrong thing anyway. Here's the gap, and the rule I use to close it.",
+    "promise": "A green scan proves a build is consistent with its own data. It doesn't prove the data was ever true.",
+    "reading_minutes": 5
+  },
+  {
     "slug": "quiz-evidence-not-vibes",
     "title": "A Quiz Can Be Evidence, Not Vibes",
     "date": "2026-07-09",

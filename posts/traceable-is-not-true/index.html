@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Traceable Isn&#8217;t the Same as True &#8212; Robert Boles</title>
+  <meta name="description" content="A v1 launch scan on Vox Mana came back green &#8212; records existed, citations resolved, generated pages matched their source, regression passed. Exploratory testing found the checks were proving the wrong thing anyway. Here's the gap, and the rule I use to close it.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="Traceable Isn&#8217;t the Same as True &#8212; Robert Boles">
+  <meta property="og:description" content="A v1 launch scan came back green. Exploratory testing found the checks were proving the wrong thing anyway.">
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2026-07-12">
+  <meta property="article:modified_time" content="2026-07-12">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://robboles.com/posts/traceable-is-not-true/">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260712e">
+  <link rel="stylesheet" href="../../assets/css/mana.css">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js?v=20260712e"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": "https://robboles.com/posts/traceable-is-not-true/#article",
+        "isPartOf": { "@type": "WebPage", "@id": "https://robboles.com/posts/traceable-is-not-true/" },
+        "mainEntityOfPage": "https://robboles.com/posts/traceable-is-not-true/",
+        "headline": "Traceable Isn't the Same as True",
+        "description": "A v1 launch scan on Vox Mana came back green. Exploratory testing found the checks were proving the wrong thing anyway. Here's the gap, and the rule I use to close it.",
+        "inLanguage": "en-US",
+        "datePublished": "2026-07-12",
+        "dateModified": "2026-07-12",
+        "articleSection": "QA Field Guide",
+        "proficiencyLevel": "Intermediate",
+        "keywords": "Evidence Quality, Exploratory Testing, AI-Assisted QA, Release Readiness",
+        "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "publisher": { "@type": "Person", "@id": "https://robboles.com/about/#person" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://robboles.com/" },
+          { "@type": "ListItem", "position": 2, "name": "QA Field Guide", "item": "https://robboles.com/qa-field-guide/" },
+          { "@type": "ListItem", "position": 3, "name": "Traceable Isn't the Same as True", "item": "https://robboles.com/posts/traceable-is-not-true/" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-root="../../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <svg class="brand-mark" aria-hidden="true" viewBox="0 0 100 100">
+          <circle class="ring" cx="50" cy="50" r="30"/>
+          <circle class="core" cx="50" cy="50" r="16"/>
+        </svg>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+        <a class="nav-link" href="../../learning-lab/">learning lab</a>
+        <a class="nav-link" href="../../table-talk/">table talk</a>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container page-hero narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../../qa-field-guide/">QA Field Guide</a> / Traceable Isn't the Same as True</div>
+        <p class="eyebrow">QA Field Guide</p>
+        <h1>Traceable Isn't the Same as True</h1>
+        <p class="lede">A v1 launch scan on Vox Mana came back green &mdash; records existed, citations resolved, generated pages matched their source, regression passed. Exploratory testing found the checks were proving the wrong thing anyway. Here's the gap, and the rule I use to close it.</p>
+        <div class="article-meta"><span>Jul 12, 2026</span><span>5 min read</span><span>QA Field Guide</span></div>
+        <div class="tag-row"><span>Evidence Quality</span><span>Exploratory Testing</span><span>AI-Assisted QA</span></div>
+      </div>
+    </section>
+
+    <article class="article">
+      <div class="container article-grid">
+        <div class="article-body">
+
+          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 12, 2026</p>
+
+          <p class="promise">I wasn't looking for this. I was running a v1 launch scan on Vox Mana this weekend, mostly confirming what I already expected to be true, when exploratory testing turned up something the scan itself couldn't see: some of the claims on the site were citing evidence that didn't actually back them up.</p>
+
+          <p>Every automated check said the opposite. Records existed. Citations resolved to a real source. Generated pages matched what they were built from. Regression was clean. None of that was wrong &mdash; and none of it caught the problem, because it was never the kind of problem those checks look for.</p>
+
+          <h2 id="two-questions">Two different questions, one green board</h2>
+          <p>Records exist, references resolve, generated output matches source, tests pass &mdash; that's four checks asking the same question four ways: <em>is this internally consistent?</em> Useful. I run all four. They will not tell you whether a citation actually supports the sentence it's attached to.</p>
+          <p>That's a different question, and it only has one honest way to answer it: open what's cited and read it. On Vox Mana that meant clicking through the sourcing behind a handful of claims instead of trusting that &ldquo;has a citation&rdquo; meant &ldquo;is proven.&rdquo; Some of those citations were doing real work. A few were doing the shape of the work &mdash; present, formatted, linked, and not actually saying what the claim said it said. A research note taken while exploring an idea isn't the same thing as a conclusion, even when both get filed as &ldquo;source.&rdquo; Nothing structural distinguishes them. You have to read for it.</p>
+
+          <h2 id="what-caught-it">What exploratory testing caught that the scan missed</h2>
+          <p>The v1 scan was scripted: does the record exist, does the link resolve, does the build match the data behind it. It passed. I kept going anyway &mdash; clicking into the actual sourcing instead of trusting the green, the way I always end up doing, because I can't run a check without also wondering what it isn't checking.</p>
+          <p>That's where it turned up: one card, working through the Izzet/Prismari piece &mdash; a color-identity claim that didn't match what the card actually was. Everything downstream of it had done its job correctly: the build was faithful to the data, the data matched its recorded source, the tests confirmed nothing had drifted. Faithful reproduction of a claim that was never solid to begin with.</p>
+          <p>One instance isn't proof of a pattern, so I didn't just fix the card. I reverse-engineered a prompt from the miss &mdash; what made this claim wrong, in a form I could check for again &mdash; iterated on it until it caught that failure mode reliably, then ran it against the whole project: all 37 possible color-identity placements, checked the same way the first one should have been.</p>
+
+          <div class="callout tip">
+            <span class="callout-label">The rule under all of it</span>
+            <p>A green scan proves a build is consistent with its own data. It doesn't prove the data was ever true. Traceability tells you where a claim came from &mdash; it doesn't tell you the source backs it up.</p>
+          </div>
+
+          <h2 id="where-this-breaks">Where this breaks</h2>
+          <ul>
+            <li><strong>The first catch has to be manual.</strong> Nothing scripted was going to find that card &mdash; it took reading the claim against what the card actually was. You can't skip that step; it's what gives you something to build a check from.</li>
+            <li><strong>The check you build after is only as good as the one miss you built it from.</strong> A prompt reverse-engineered from a single instance can overfit to that instance and miss a different-shaped version of the same problem. Worth a second real example before you trust the scan to be complete.</li>
+            <li><strong>Don't turn this into an audit of everything.</strong> Most of the placements checked out clean. The fix is knowing which claims are worth the close read in the first place, not treating every line on the site with the same suspicion.</li>
+          </ul>
+          <div class="callout warn">
+            <span class="callout-label">Watch out</span>
+            <p>The instinct that finds the first miss is QA background showing up before it's a method &mdash; if it's wrong once, assume it's wrong elsewhere until you've actually checked. Skip that instinct and a green scan is all the confidence you get, which is exactly the confidence that missed this in the first place.</p>
+          </div>
+
+          <h2 id="rule-of-thumb">My rule of thumb</h2>
+          <p>A green scan proves a build is consistent with its own data. It doesn't prove the data was ever true. The first miss only shows up when someone reads a claim against its actual source instead of trusting the green &mdash; but once you've got that one real miss, reverse-engineer a check from it and scan for the pattern, not just the instance. Traceability tells you where a claim came from. It doesn't tell you the source backs it up, and finding that out starts as a human job even when the follow-up doesn't stay one.</p>
+          <p class="promise">Better tests. Better releases. Less theater.</p>
+
+          <div class="reusable-asset">
+            <p class="caption">// take this with you</p>
+            <p><strong>One miss is a pattern until proven otherwise &mdash; the process, not the prompt:</strong></p>
+            <ol>
+              <li>Find one real miss by reading, not scanning &mdash; the automated checks won't hand you this part.</li>
+              <li>Name exactly what made it wrong, specifically enough to describe a second instance without seeing it yet.</li>
+              <li>Turn that description into a repeatable check &mdash; a script, a prompt, a manual pass list, whatever fits the system.</li>
+              <li>Run it against the whole population, not just the neighborhood where you found the first one.</li>
+              <li>Treat the first check as provisional. No second real miss turned up? Ask whether the check tests the right thing before you call the project clean.</li>
+            </ol>
+            <p style="font-size:13.5px;color:var(--faint);margin:0;">Spinning this into a printable Field Kit card next.</p>
+          </div>
+
+          <h2 id="related">Related posts</h2>
+          <div class="two-grid">
+            <a class="article-nav-card" href="../../posts/how-i-run-ai-like-a-qa-system/"><strong>How I Run AI Like a QA System</strong><span>Learning Lab</span></a>
+            <a class="article-nav-card" href="../../posts/what-good-qa-actually-owns/"><strong>What Good QA Actually Owns</strong><span>QA Field Guide</span></a>
+          </div>
+
+          <div class="author-bio">
+            <div class="avatar" aria-hidden="true">RB</div>
+            <div>
+              <h2>Robert Boles</h2>
+              <p>Senior SDET and QA architect with 14 years in enterprise property &amp; casualty insurance &mdash; I've halved a regression cycle, built the QA governance teams run on, and brought AI into test generation without losing the plot. Former Air Force lab tech; I build side projects like Vox Mana on the weekend.</p>
+              <p class="bio-links">
+                <a href="../../about/">About &amp; full bio</a>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="article-aside">
+          <div class="note-card" data-toc>
+            <h2>On this page</h2>
+            <a href="#two-questions">Two different questions</a>
+            <a href="#what-caught-it">What exploratory testing caught</a>
+            <a href="#where-this-breaks">Where this breaks</a>
+            <a href="#rule-of-thumb">My rule of thumb</a>
+          </div>
+          <button class="button copy-link" type="button" data-copy-link>Copy article link</button>
+        </aside>
+      </div>
+    </article>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../field-kit/">Field Kit</a>
+        <a href="../../table-talk/">Table Talk</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="../../about/">About</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&#169; 2026 Robert Boles.</span>
+      <span>Built for GitHub Pages. No build step required.</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -218,6 +218,13 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
 }
 .theme-toggle:hover { border-color: var(--accent); }
 .theme-toggle .ms { font-size: 14px; }
+.theme-toggle svg {
+  width: 15px; height: 15px;
+  fill: none; stroke: var(--faint); stroke-width: 1.6; stroke-linejoin: round;
+}
+.theme-toggle svg path[d^="M20.5"] { fill: var(--faint); stroke: none; }
+.theme-toggle:hover svg { stroke: var(--accent); }
+.theme-toggle:hover svg path[d^="M20.5"] { fill: var(--accent); }
 
 .nav-toggle {
   display: none;
