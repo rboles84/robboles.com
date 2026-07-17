@@ -516,4 +516,33 @@
       return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]);
     });
   }
+
+  // Shelf: horizontal-scrolling card rows (Recommended Shelf, Open the Deck
+  // Box on table-talk/). The track is a plain overflow-x:auto region, so
+  // touch/trackpad/keyboard scrolling all work with zero JS — these
+  // prev/next buttons are progressive enhancement for a discoverable click
+  // target, and disable themselves at each scroll extreme.
+  (function initShelves() {
+    document.querySelectorAll('[data-shelf]').forEach(function (shelf) {
+      const track = shelf.querySelector('[data-shelf-track]');
+      const prev = shelf.querySelector('[data-shelf-prev]');
+      const next = shelf.querySelector('[data-shelf-next]');
+      if (!track || !prev || !next) return;
+      function update() {
+        const max = track.scrollWidth - track.clientWidth;
+        prev.disabled = track.scrollLeft <= 4;
+        next.disabled = max <= 4 || track.scrollLeft >= max - 4;
+      }
+      function scrollByCard(dir) {
+        const card = track.querySelector('.shelf-card');
+        const step = (card ? card.getBoundingClientRect().width : 258) + 16;
+        track.scrollBy({ left: dir * step, behavior: 'smooth' });
+      }
+      prev.addEventListener('click', function () { scrollByCard(-1); });
+      next.addEventListener('click', function () { scrollByCard(1); });
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    });
+  })();
 }());
