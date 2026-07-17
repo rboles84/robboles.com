@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>It's Not Your Automation Tool That's Broken — It's Your Process</title>
+    <link>https://robboles.com/posts/automation-tool-vs-process/</link>
+    <guid>https://robboles.com/posts/automation-tool-vs-process/</guid>
+    <pubDate>Mon, 13 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Teams blame the framework when nightly runs go red and tests get flaky. Most of the time the framework isn't the problem — nobody owns the suite. Here's what changes when you fix that instead of rewriting it.</description>
+  </item>
+  <item>
     <title>Your QA Dashboard Doesn't Need More Charts, It Needs Fewer Questions</title>
     <link>https://robboles.com/posts/reclaiming-qa-dashboards-gqm/</link>
     <guid>https://robboles.com/posts/reclaiming-qa-dashboards-gqm/</guid>

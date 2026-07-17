@@ -1,5 +1,20 @@
 [
   {
+    "slug": "automation-tool-vs-process",
+    "title": "It's Not Your Automation Tool That's Broken — It's Your Process",
+    "date": "2026-07-13",
+    "category": "QA Field Guide",
+    "lane": "Automation",
+    "tags": [
+      "Automation Ownership",
+      "Flaky Tests",
+      "CI/CD"
+    ],
+    "description": "Teams blame the framework when nightly runs go red and tests get flaky. Most of the time the framework isn't the problem — nobody owns the suite. Here's what changes when you fix that instead of rewriting it.",
+    "promise": "Blame the framework and the same rot follows you to the next one. Fix who owns the suite instead.",
+    "reading_minutes": 9
+  },
+  {
     "slug": "reclaiming-qa-dashboards-gqm",
     "title": "Your QA Dashboard Doesn't Need More Charts, It Needs Fewer Questions",
     "date": "2026-07-12",

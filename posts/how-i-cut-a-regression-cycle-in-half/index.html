@@ -14,13 +14,13 @@
   <meta property="article:modified_time" content="2026-07-10">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/">
-  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260712e">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260716a">
   <link rel="stylesheet" href="../../assets/css/mana.css">
   <link rel="icon" href="../../favicon.ico" sizes="any">
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
-  <script defer src="../../assets/js/site.js?v=20260712e"></script>
+  <script defer src="../../assets/js/site.js?v=20260716a"></script>
 
   <script type="application/ld+json">
   {
@@ -158,11 +158,12 @@
           <div class="cta-inline">
             <h3>One real workflow per email</h3>
             <p>If this was useful, I send one practical QA writeup like it when it's worth your time &mdash; a pattern, a gotcha, or a piece of the field kit I actually use. No roundups, no filler.</p>
-            <form data-subscribe-form action="#" method="post">
+            <form data-subscribe-form data-kit-form-id="YOUR_KIT_FORM_ID" action="#" method="post">
               <input type="email" name="email" placeholder="you@domain.com" aria-label="Email address" required>
               <button class="button" type="submit">subscribe &rarr;</button>
             </form>
             <div class="confirm is-hidden" data-subscribe-confirm>subscribed &mdash; check your inbox to confirm.</div>
+            <div class="error is-hidden" data-subscribe-error role="alert"></div>
           </div>
 
           <h2 id="where-this-breaks">Where this breaks</h2>

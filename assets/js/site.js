@@ -156,13 +156,51 @@
     });
   }
 
+  // Subscribe form: posts directly to Kit's (formerly ConvertKit) public
+  // form-submission endpoint — no server, no API key. The form ID lives in
+  // markup (data-kit-form-id) so it's a one-line edit, not a JS change.
   const subscribeForm = document.querySelector('[data-subscribe-form]');
   const subscribeConfirm = document.querySelector('[data-subscribe-confirm]');
+  const subscribeError = document.querySelector('[data-subscribe-error]');
   if (subscribeForm && subscribeConfirm) {
     subscribeForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      subscribeForm.classList.add('is-hidden');
-      subscribeConfirm.classList.remove('is-hidden');
+      const formId = subscribeForm.dataset.kitFormId;
+      const submitBtn = subscribeForm.querySelector('button[type="submit"]');
+      if (subscribeError) subscribeError.classList.add('is-hidden');
+      if (!formId) {
+        if (subscribeError) {
+          subscribeError.textContent = 'Subscribe form is not configured yet.';
+          subscribeError.classList.remove('is-hidden');
+        }
+        return;
+      }
+      if (submitBtn) submitBtn.disabled = true;
+      fetch('https://app.kit.com/forms/' + formId + '/subscriptions', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(subscribeForm)
+      })
+        .then(function (response) { return response.json().then(function (data) { return { ok: response.ok, data: data }; }); })
+        .then(function (result) {
+          // Kit returns HTTP 200 even on failure — success is status "success",
+          // not merely a non-error HTTP response. Failures use status "failed"
+          // with errors.messages (e.g. bad form ID, invalid/duplicate email).
+          if (result.ok && result.data && result.data.status === 'success') {
+            subscribeForm.classList.add('is-hidden');
+            subscribeConfirm.classList.remove('is-hidden');
+          } else {
+            const messages = result.data && result.data.errors && result.data.errors.messages;
+            throw new Error((messages && messages[0]) || 'Subscription failed');
+          }
+        })
+        .catch(function (err) {
+          if (submitBtn) submitBtn.disabled = false;
+          if (subscribeError) {
+            subscribeError.textContent = err.message || 'Something went wrong — please try again.';
+            subscribeError.classList.remove('is-hidden');
+          }
+        });
     });
   }
 
@@ -305,6 +343,26 @@
     let hoverTimer = null;
     let hideTimer = null;
     let current = null;
+    // Rarity edge + color-identity bar on the popup: same rarity hex values
+    // already used for the Keyrune set-symbol glyphs (Phase 2.5), and the
+    // same WUBRG hex values already used for the Table Talk hero hairline —
+    // reusing established colors rather than inventing a third palette.
+    // Both are optional per-card data (data-rarity / data-colors); missing
+    // either just falls back to the plain --line border/bar in styles.css.
+    const RARITY_COLOR = { uncommon: '#707883', rare: '#A58E4A', mythic: '#BF4427' };
+    const CI_ORDER = ['W', 'U', 'B', 'R', 'G'];
+    const CI_COLOR = { W: '#e7dba4', U: '#2f7cc4', B: '#241f1c', R: '#c0473a', G: 'var(--accent)', C: 'var(--faint)' };
+    function identityStyle(colors) {
+      let letters = (colors || 'C').toUpperCase().split('').filter(function (l) { return CI_COLOR[l]; });
+      if (!letters.length) letters = ['C'];
+      letters.sort(function (a, b) { return CI_ORDER.indexOf(a) - CI_ORDER.indexOf(b); });
+      if (letters.length === 1) return CI_COLOR[letters[0]];
+      const seg = 100 / letters.length;
+      const stops = letters.map(function (l, i) {
+        return CI_COLOR[l] + ' ' + (i * seg) + '% ' + ((i + 1) * seg) + '%';
+      });
+      return 'linear-gradient(90deg, ' + stops.join(', ') + ')';
+    }
     // hide() is delayed (not instant) so the pointer has time to travel from
     // the card name into the popup itself — entering the popup cancels the
     // pending hide, which is what makes the Scryfall link inside it clickable.
@@ -346,6 +404,9 @@
       p.innerHTML = (img ? '<img src="' + root + img + '" alt="' + escapeHtml(name) + '">' : '') +
         '<div class="cp-foot"><span class="cp-nm">' + escapeHtml(name) + '</span>' +
         '<a href="' + scryUrl + '" target="_blank" rel="noopener">Scryfall &#8599;</a></div>';
+      const rarity = el.dataset.rarity;
+      p.style.setProperty('--cp-rarity', RARITY_COLOR[rarity] || 'var(--line)');
+      p.style.setProperty('--cp-identity', identityStyle(el.dataset.colors));
       place(el);
       requestAnimationFrame(function () { p.classList.add('on'); });
     }

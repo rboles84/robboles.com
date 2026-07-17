@@ -11,13 +11,13 @@
   <meta property="og:description" content="QA systems, automation, and practical experiments from the field. Better tests. Better releases. Less theater.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260712e">
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260716a">
   <link rel="stylesheet" href="assets/css/mana.css">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="feed.xml">
-  <script defer src="assets/js/site.js?v=20260712e"></script>
+  <script defer src="assets/js/site.js?v=20260716a"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -136,6 +136,11 @@
           <span class="meta">~/posts · latest</span>
         </div>
         <div class="post-list">
+          <a class="post-row" href="posts/automation-tool-vs-process/">
+            <span class="date">2026.07.13</span>
+            <span class="mid"><span class="title">It&rsquo;s Not Your Automation Tool That&rsquo;s Broken &mdash; It&rsquo;s Your Process</span><span class="cat">qa-field-guide</span></span>
+            <span class="read">9 min</span>
+          </a>
           <a class="post-row" href="posts/reclaiming-qa-dashboards-gqm/">
             <span class="date">2026.07.12</span>
             <span class="mid"><span class="title">Your QA Dashboard Doesn&rsquo;t Need More Charts, It Needs Fewer Questions</span><span class="cat">qa-field-guide</span></span>
@@ -149,12 +154,12 @@
           <a class="post-row" href="posts/your-precon-is-a-passport/">
             <span class="date">2026.07.12</span>
             <span class="mid"><span class="title">Your Precon Is a Passport</span><span class="cat">table-talk</span></span>
-            <span class="read">7 min</span>
+            <span class="read">9 min</span>
           </a>
           <a class="post-row" href="posts/izzet-vs-prismari/">
             <span class="date">2026.07.12</span>
             <span class="mid"><span class="title">Izzet and Prismari Are Both Blue-Red. They&rsquo;re Not the Same Deck.</span><span class="cat">table-talk</span></span>
-            <span class="read">5 min</span>
+            <span class="read">7 min</span>
           </a>
           <a class="post-row" href="posts/quiz-evidence-not-vibes/">
             <span class="date">2026.07.09</span>
@@ -258,11 +263,12 @@
           <h2>Get new guides in your inbox</h2>
           <p>New field-guide entries, cookbook recipes, and build notes. No spam, no theater. Unsubscribe anytime.</p>
         </div>
-        <form data-subscribe-form action="#" method="post">
+        <form data-subscribe-form data-kit-form-id="YOUR_KIT_FORM_ID" action="#" method="post">
           <input type="email" name="email" placeholder="you@domain.com" aria-label="Email address" required>
           <button class="button" type="submit">subscribe →</button>
         </form>
         <div class="confirm is-hidden" data-subscribe-confirm>subscribed — check your inbox to confirm.</div>
+        <div class="error is-hidden" data-subscribe-error role="alert"></div>
       </div>
     </section>
 
