@@ -118,7 +118,7 @@
           <p class="promise">Somewhere on every QA team there's a dashboard nobody opens anymore &mdash; thirty tiles, a dozen colors, and not one of them tells a director whether it's safe to ship Friday. That's not a tooling problem, it's a build-order problem: most dashboards get built bottom-up from whatever the tools make easy to chart. The Goal-Question-Metric framework flips that order &mdash; no metric survives unless it answers a real question about a real goal.</p>
 
           <h2 id="why-this-matters">Why this matters</h2>
-          <p>I've watched the bottom-up version play out the way it always does: dashboards that became checkboxes, technically present, not telling anyone a real story, giving the team almost nothing to act on. A dashboard built bottom-up answers the question &ldquo;what can we count?&rdquo; instead of &ldquo;what do we need to know?&rdquo; That's how a team ends up tracking test-case counts, bug counts, and execution totals &mdash; numbers every tool exports for free, none of which say anything about release risk. Worse, once a number is on a dashboard leadership sees, it quietly becomes a target. That's Goodhart's Law showing up in a standup: measure raw bug count and testers start logging typos to keep the number moving. The dashboard didn't get more honest &mdash; it got gamed.</p>
+          <p>I've watched the bottom-up version play out the way it always does: dashboards that became checkboxes, technically present, not telling anyone a real story, giving the team almost nothing to act on. Built bottom-up, a dashboard answers the question &ldquo;what can we count?&rdquo; instead of &ldquo;what do we need to know?&rdquo; That's how a team ends up tracking test-case counts, bug counts, and execution totals &mdash; numbers every tool exports for free, none of which say anything about release risk. Worse, once a number is on a dashboard leadership sees, it quietly becomes a target. That's Goodhart's Law showing up in a standup: measure raw bug count and testers start logging typos to keep the number moving. The dashboard didn't get more honest &mdash; it got gamed.</p>
           <p>GQM works the other way. Goal first &mdash; what is the team actually trying to achieve this quarter? Question next &mdash; what would we need to know to tell if we're getting there? Metric last, and only last &mdash; what single data point actually answers that question. A metric that can't trace back through a question to a stated goal doesn't belong on the dashboard, full stop.</p>
 
           <div class="code-block">
@@ -147,7 +147,7 @@
             </thead>
             <tbody>
               <tr><td>Test cases created</td><td>Rewards writing thousands of shallow, brittle tests</td><td>Speed up deployment without sacrificing stability</td><td>Automated regression execution time vs. flakiness rate</td></tr>
-              <tr><td>Total bugs caught by QA</td><td>A high count might just mean dev shipped messy code, not that QA did great work</td><td>Ensure a seamless end-user experience</td><td>Production defect leakage rate</td></tr>
+              <tr><td>Total bugs caught by QA</td><td>A high count might just mean dev shipped messy code, not that QA did great work</td><td>Keep production stable for end users</td><td>Production defect leakage rate</td></tr>
             </tbody>
           </table>
           <p class="table-caption">Neither replacement is a bigger number to chase &mdash; both are the specific thing the goal actually needed answered.</p>

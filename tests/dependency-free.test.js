@@ -22,6 +22,7 @@ const ALLOWED_HOSTS = new Set([
   'scryfall.com', // static search links only, not fetched — see table-talk/mana-base-codex
   'schema.org',
   'www.w3.org',
+  'app.kit.com', // intentional: subscribe form POSTs directly to Kit's public API, no server — see site.js
 ]);
 
 function hostOf(url) {
