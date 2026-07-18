@@ -145,6 +145,26 @@
     "color_identity": []
   },
   {
+    "name": "Lion's Eye Diamond",
+    "scryfall": "https://scryfall.com/card/mir/307/lions-eye-diamond",
+    "art": "assets/images/cards/flavor/lions-eye-diamond.jpg",
+    "artist": "Margaret Organ-Kean",
+    "set": "mir",
+    "set_name": "Mirage",
+    "rarity": "rare",
+    "color_identity": []
+  },
+  {
+    "name": "Commander's Sphere",
+    "scryfall": "https://scryfall.com/card/c14/54/commanders-sphere",
+    "art": "assets/images/cards/flavor/commanders-sphere.jpg",
+    "artist": "Ryan Alexander Lee",
+    "set": "c14",
+    "set_name": "Commander 2014",
+    "rarity": "common",
+    "color_identity": []
+  },
+  {
     "name": "Elesh Norn, Mother of Machines",
     "scryfall": "https://scryfall.com/card/one/416/elesh-norn-mother-of-machines",
     "art": "assets/images/cards/flavor/elesh-norn-mother-of-machines.jpg",
