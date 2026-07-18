@@ -73,6 +73,12 @@
   --warn-ink: #5c4708;
   --warn-accent: #b5810c;
   --ss-common: #1a1718;
+  /* WUBRG "black" as a UI accent (shelf-card top edge/hover border, #cardpop
+     identity bar) — literal near-black reads fine on the light surface here,
+     but needs a dark-mode override for the same reason --ss-common does:
+     it nearly matches --dark-2 and effectively disappears. See site.js
+     CI_COLOR.B, which references this var instead of a literal hex. */
+  --ci-black: #241f1c;
 }
 
 /* ---- Dark mode (RBB-028) --------------------------------------------------
@@ -103,6 +109,7 @@
     --warn-ink: #e8d9b0;
     --warn-accent: #e0a83c;
     --ss-common: var(--dark-muted);
+    --ci-black: var(--dark-fainter);
   }
 }
 :root[data-theme="dark"] {
@@ -126,6 +133,7 @@
   --warn-ink: #e8d9b0;
   --warn-accent: #e0a83c;
   --ss-common: var(--dark-muted);
+  --ci-black: var(--dark-fainter);
 }
 
 /* ---- Reset / base ------------------------------------------------------- */
@@ -1122,26 +1130,79 @@ body[data-lane="table-talk"] .post-card:hover { border-color: var(--tt-gold); }
   padding: 20px 18px 16px; display: flex; flex-direction: column; gap: 10px;
   transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
 }
+/* A hairline ring (not just the flat color) so the bar stays visibly
+   separate from the card even when --sc-color is near-identical to the
+   surface — black (#241f1c) was nearly invisible against the dark-mode
+   card surface (--dark-2: #26241f) without this; the ring reads in both
+   themes since --line is already tuned to be visible on --surface in both. */
 .shelf-card::before {
   content: ""; position: absolute; top: -1px; left: -1px; right: -1px; height: 4px;
   border-radius: 8px 8px 0 0; background: var(--sc-color, var(--tt-gold));
-  box-shadow: 0 1px 3px rgba(28, 27, 24, 0.3);
+  box-shadow: 0 1px 3px rgba(28, 27, 24, 0.3), inset 0 0 0 1px rgba(127, 127, 127, 0.35);
 }
+/* Real card-art watermark (assets/js/site.js initFlavorCards() sets
+   --sc-art per card) — resting at 8% (visible but ambient), rising to 35%
+   on hover with a wider reveal area so the art is actually recognizable,
+   not just a texture change. ::after (not ::before, already the top-edge
+   bar) sits at inset:0 with border-radius:inherit, so it never needs
+   overflow:hidden on the card itself (which would also clip the top bar's
+   -1px offset/shadow above). No --sc-art set (JS off/fetch failed) =
+   background-image:none, a no-op. */
+.shelf-card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background-image: var(--sc-art, none); background-size: cover; background-position: center;
+  opacity: 0.08; transition: opacity .18s ease, mask-image .18s ease, -webkit-mask-image .18s ease;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(90% 90% at 100% 100%, #000 0%, transparent 55%);
+  mask-image: radial-gradient(90% 90% at 100% 100%, #000 0%, transparent 55%);
+}
+.shelf-card:hover::after, .shelf-card:focus-within::after {
+  opacity: 0.35;
+  -webkit-mask-image: radial-gradient(115% 115% at 100% 100%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(115% 115% at 100% 100%, #000 0%, transparent 75%);
+}
+/* --sc-edge (not --sc-color) for the hover border: identityStyle() can
+   return a gradient for multicolor cards, and border-color can't take one —
+   identitySolid() always returns a flat color (--tt-gold for multicolor,
+   same as how Magic players say "a gold card"). */
 .shelf-card:hover {
-  transform: translateY(-3px); border-color: var(--sc-color, var(--tt-gold));
+  transform: translateY(-3px); border-color: var(--sc-edge, var(--tt-gold));
   box-shadow: 0 14px 30px -20px rgba(28, 27, 24, 0.4);
 }
 .shelf-card-top {
-  display: flex; align-items: center; gap: 7px;
+  display: flex; align-items: center; gap: 7px; position: relative; z-index: 1;
   font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.03em; color: var(--faint);
 }
-.shelf-card-top .ms-cost { font-size: 12px; }
-.shelf-card h3 { font-size: 16px; font-weight: 600; line-height: 1.3; }
+.shelf-card h3 { position: relative; z-index: 1; font-size: 16px; font-weight: 600; line-height: 1.3; }
 .shelf-card h3 a { color: var(--ink); }
 .shelf-card h3 a:hover { color: var(--tt-gold); }
-.shelf-card p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--muted); flex: 1; }
-.shelf-num {
-  align-self: flex-end; font-family: var(--mono); font-size: 10px; color: var(--fainter);
+.shelf-card p { position: relative; z-index: 1; margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--muted); flex: 1; }
+
+/* Foot row: real Keyrune set-symbol badge (replaces the old invented "01/09"
+   number) + a hover-only caption naming the flavor card. Both are pure
+   decoration unrelated to the card's actual link/content, so the whole row
+   is aria-hidden — a screen reader hearing "Art: Lightning Bolt" on a card
+   titled "The Value of Pie" would be actively confusing, not helpful. */
+.shelf-card-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  position: relative; z-index: 1; margin-top: auto;
+}
+.shelf-flavor-badge .tt-set { display: flex; align-items: center; margin: 0; }
+.shelf-flavor-badge .tt-set .ss { font-size: 1.35em; }
+/* Same fix as .tt-art-cap .tt-set .ss-common above, ported to this new
+   context — Keyrune's stock common-rarity glyph color (near-black) was
+   only ever overridden for the hero-caption selector, so badges here for
+   any common-rarity card (most of the manifest) fell back to the raw
+   Keyrune default and were nearly invisible on the dark card surface. */
+.shelf-flavor-badge .tt-set .ss-common { color: var(--ss-common); }
+.shelf-flavor-badge .tt-set-name { display: none; }
+.shelf-flavor-caption {
+  font-family: var(--mono); font-size: 10px; color: var(--faint);
+  opacity: 0; transform: translateY(2px); transition: opacity .16s ease, transform .16s ease;
+  text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px;
+}
+.shelf-card:hover .shelf-flavor-caption, .shelf-card:focus-within .shelf-flavor-caption {
+  opacity: 1; transform: translateY(0);
 }
 
 .shelf-nav {

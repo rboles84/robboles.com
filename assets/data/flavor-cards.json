@@ -1,0 +1,207 @@
+[
+  {
+    "name": "Sol Ring",
+    "scryfall": "https://scryfall.com/card/otc/267/sol-ring",
+    "art": "assets/images/cards/flavor/sol-ring.jpg",
+    "artist": "Kekai Kotaki",
+    "set": "otc",
+    "set_name": "Outlaws of Thunder Junction Commander",
+    "rarity": "uncommon",
+    "color_identity": []
+  },
+  {
+    "name": "Swords to Plowshares",
+    "scryfall": "https://scryfall.com/card/ath/16/swords-to-plowshares",
+    "art": "assets/images/cards/flavor/swords-to-plowshares.jpg",
+    "artist": "Jeff A. Menges",
+    "set": "ath",
+    "set_name": "Anthologies",
+    "rarity": "uncommon",
+    "color_identity": [
+      "W"
+    ]
+  },
+  {
+    "name": "Counterspell",
+    "scryfall": "https://scryfall.com/card/7ed/67/counterspell",
+    "art": "assets/images/cards/flavor/counterspell.jpg",
+    "artist": "Mark Romanoski",
+    "set": "7ed",
+    "set_name": "Seventh Edition",
+    "rarity": "common",
+    "color_identity": [
+      "U"
+    ]
+  },
+  {
+    "name": "Toxic Deluge",
+    "scryfall": "https://scryfall.com/card/ema/108/toxic-deluge",
+    "art": "assets/images/cards/flavor/toxic-deluge.jpg",
+    "artist": "Svetlin Velinov",
+    "set": "ema",
+    "set_name": "Eternal Masters",
+    "rarity": "rare",
+    "color_identity": [
+      "B"
+    ]
+  },
+  {
+    "name": "Lightning Bolt",
+    "scryfall": "https://scryfall.com/card/m10/146/lightning-bolt",
+    "art": "assets/images/cards/flavor/lightning-bolt.jpg",
+    "artist": "Christopher Moeller",
+    "set": "m10",
+    "set_name": "Magic 2010",
+    "rarity": "common",
+    "color_identity": [
+      "R"
+    ]
+  },
+  {
+    "name": "Llanowar Elves",
+    "scryfall": "https://scryfall.com/card/10e/274/llanowar-elves",
+    "art": "assets/images/cards/flavor/llanowar-elves.jpg",
+    "artist": "Kev Walker",
+    "set": "10e",
+    "set_name": "Tenth Edition",
+    "rarity": "common",
+    "color_identity": [
+      "G"
+    ]
+  },
+  {
+    "name": "Smothering Tithe",
+    "scryfall": "https://scryfall.com/card/2x2/31/smothering-tithe",
+    "art": "assets/images/cards/flavor/smothering-tithe.jpg",
+    "artist": "Mark Behm",
+    "set": "2x2",
+    "set_name": "Double Masters 2022",
+    "rarity": "rare",
+    "color_identity": [
+      "W"
+    ]
+  },
+  {
+    "name": "Vraska, Golgari Queen",
+    "scryfall": "https://scryfall.com/card/grn/213/vraska-golgari-queen",
+    "art": "assets/images/cards/flavor/vraska-golgari-queen.jpg",
+    "artist": "Magali Villeneuve",
+    "set": "grn",
+    "set_name": "Guilds of Ravnica",
+    "rarity": "mythic",
+    "color_identity": [
+      "B",
+      "G"
+    ]
+  },
+  {
+    "name": "Command Tower",
+    "scryfall": "https://scryfall.com/card/cm1/2/command-tower",
+    "art": "assets/images/cards/flavor/command-tower.jpg",
+    "artist": "Adam Paquette",
+    "set": "cm1",
+    "set_name": "Commander's Arsenal",
+    "rarity": "common",
+    "color_identity": []
+  },
+  {
+    "name": "Mishra's Workshop",
+    "scryfall": "https://scryfall.com/card/atq/81/mishras-workshop",
+    "art": "assets/images/cards/flavor/mishras-workshop.jpg",
+    "artist": "Kaja Foglio",
+    "set": "atq",
+    "set_name": "Antiquities",
+    "rarity": "rare",
+    "color_identity": []
+  },
+  {
+    "name": "Skullclamp",
+    "scryfall": "https://scryfall.com/card/dst/140/skullclamp",
+    "art": "assets/images/cards/flavor/skullclamp.jpg",
+    "artist": "Luca Zontini",
+    "set": "dst",
+    "set_name": "Darksteel",
+    "rarity": "uncommon",
+    "color_identity": []
+  },
+  {
+    "name": "Arcane Signet",
+    "scryfall": "https://scryfall.com/card/tmc/57/arcane-signet",
+    "art": "assets/images/cards/flavor/arcane-signet.jpg",
+    "artist": "Jo Cordisco",
+    "set": "tmc",
+    "set_name": "Teenage Mutant Ninja Turtles Eternal",
+    "rarity": "uncommon",
+    "color_identity": []
+  },
+  {
+    "name": "Traveler's Amulet",
+    "scryfall": "https://scryfall.com/card/thb/240/travelers-amulet",
+    "art": "assets/images/cards/flavor/travelers-amulet.jpg",
+    "artist": "Cliff Childs",
+    "set": "thb",
+    "set_name": "Theros Beyond Death",
+    "rarity": "common",
+    "color_identity": []
+  },
+  {
+    "name": "Elesh Norn, Mother of Machines",
+    "scryfall": "https://scryfall.com/card/one/416/elesh-norn-mother-of-machines",
+    "art": "assets/images/cards/flavor/elesh-norn-mother-of-machines.jpg",
+    "artist": "Richard Whitters",
+    "set": "one",
+    "set_name": "Phyrexia: All Will Be One",
+    "rarity": "mythic",
+    "color_identity": [
+      "W"
+    ]
+  },
+  {
+    "name": "Rhystic Study",
+    "scryfall": "https://scryfall.com/card/pcy/45/rhystic-study",
+    "art": "assets/images/cards/flavor/rhystic-study.jpg",
+    "artist": "Terese Nielsen",
+    "set": "pcy",
+    "set_name": "Prophecy",
+    "rarity": "common",
+    "color_identity": [
+      "U"
+    ]
+  },
+  {
+    "name": "Damnation",
+    "scryfall": "https://scryfall.com/card/plc/85/damnation",
+    "art": "assets/images/cards/flavor/damnation.jpg",
+    "artist": "Kev Walker",
+    "set": "plc",
+    "set_name": "Planar Chaos",
+    "rarity": "rare",
+    "color_identity": [
+      "B"
+    ]
+  },
+  {
+    "name": "Craterhoof Behemoth",
+    "scryfall": "https://scryfall.com/card/avr/172/craterhoof-behemoth",
+    "art": "assets/images/cards/flavor/craterhoof-behemoth.jpg",
+    "artist": "Chris Rahn",
+    "set": "avr",
+    "set_name": "Avacyn Restored",
+    "rarity": "mythic",
+    "color_identity": [
+      "G"
+    ]
+  },
+  {
+    "name": "Chandra, Torch of Defiance",
+    "scryfall": "https://scryfall.com/card/kld/110/chandra-torch-of-defiance",
+    "art": "assets/images/cards/flavor/chandra-torch-of-defiance.jpg",
+    "artist": "Magali Villeneuve",
+    "set": "kld",
+    "set_name": "Kaladesh",
+    "rarity": "mythic",
+    "color_identity": [
+      "R"
+    ]
+  }
+]

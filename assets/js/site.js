@@ -3,6 +3,49 @@
   const body = document.body;
   const root = body ? body.dataset.root || '' : '';
 
+  // Shared MTG color vocabulary — rarity edge + WUBRG color-identity hex
+  // values, plus the gradient helper. Originally lived only inside the
+  // .cardname hover-popup block; hoisted to module scope so both #cardpop
+  // and initFlavorCards() (Recommended Shelf / Open the Deck Box) reuse the
+  // exact same palette rather than each defining its own copy.
+  const RARITY_COLOR = { uncommon: '#707883', rare: '#A58E4A', mythic: '#BF4427' };
+  const CI_ORDER = ['W', 'U', 'B', 'R', 'G'];
+  // B and G reference CSS vars, not literal hex — both need theme-aware
+  // values (B nearly matches the dark-mode card surface as a literal hex
+  // and disappears; --ci-black carries the dark-mode override, same
+  // pattern as --ss-common below).
+  const CI_COLOR = { W: '#e7dba4', U: '#2f7cc4', B: 'var(--ci-black)', R: '#c0473a', G: 'var(--accent)', C: 'var(--faint)' };
+  // Accepts either a color-identity array (["U","R"], the shape Scryfall/
+  // flavor-cards.json data uses) or a legacy string ("UR", the shape
+  // .cardname's data-colors attribute uses) — normalizes both to the same
+  // sorted letter array (WUBRG order), used by identityStyle/identitySolid.
+  function identityLetters(colors) {
+    const raw = Array.isArray(colors) ? colors : String(colors || 'C').split('');
+    let letters = raw.map(function (l) { return String(l).toUpperCase(); }).filter(function (l) { return CI_COLOR[l]; });
+    if (!letters.length) letters = ['C'];
+    letters.sort(function (a, b) { return CI_ORDER.indexOf(a) - CI_ORDER.indexOf(b); });
+    return letters;
+  }
+  // A flat color or (for 2+ colors) a left-to-right gradient — valid
+  // anywhere a `background`/`background-image` value is expected, but NOT
+  // valid for `border-color` (gradients aren't legal border colors).
+  function identityStyle(colors) {
+    const letters = identityLetters(colors);
+    if (letters.length === 1) return CI_COLOR[letters[0]];
+    const seg = 100 / letters.length;
+    const stops = letters.map(function (l, i) {
+      return CI_COLOR[l] + ' ' + (i * seg) + '% ' + ((i + 1) * seg) + '%';
+    });
+    return 'linear-gradient(90deg, ' + stops.join(', ') + ')';
+  }
+  // A single solid color, safe for border-color: the one color for mono/
+  // colorless identities, or --tt-gold for 2+ colors — echoing how Magic
+  // players actually talk about a multicolor card ("a gold card").
+  function identitySolid(colors) {
+    const letters = identityLetters(colors);
+    return letters.length === 1 ? CI_COLOR[letters[0]] : 'var(--tt-gold)';
+  }
+
   const navToggle = document.querySelector('[data-nav-toggle]');
   const siteNav = document.querySelector('[data-site-nav]');
   if (navToggle && siteNav) {
@@ -343,26 +386,11 @@
     let hoverTimer = null;
     let hideTimer = null;
     let current = null;
-    // Rarity edge + color-identity bar on the popup: same rarity hex values
-    // already used for the Keyrune set-symbol glyphs (Phase 2.5), and the
-    // same WUBRG hex values already used for the Table Talk hero hairline —
-    // reusing established colors rather than inventing a third palette.
-    // Both are optional per-card data (data-rarity / data-colors); missing
-    // either just falls back to the plain --line border/bar in styles.css.
-    const RARITY_COLOR = { uncommon: '#707883', rare: '#A58E4A', mythic: '#BF4427' };
-    const CI_ORDER = ['W', 'U', 'B', 'R', 'G'];
-    const CI_COLOR = { W: '#e7dba4', U: '#2f7cc4', B: '#241f1c', R: '#c0473a', G: 'var(--accent)', C: 'var(--faint)' };
-    function identityStyle(colors) {
-      let letters = (colors || 'C').toUpperCase().split('').filter(function (l) { return CI_COLOR[l]; });
-      if (!letters.length) letters = ['C'];
-      letters.sort(function (a, b) { return CI_ORDER.indexOf(a) - CI_ORDER.indexOf(b); });
-      if (letters.length === 1) return CI_COLOR[letters[0]];
-      const seg = 100 / letters.length;
-      const stops = letters.map(function (l, i) {
-        return CI_COLOR[l] + ' ' + (i * seg) + '% ' + ((i + 1) * seg) + '%';
-      });
-      return 'linear-gradient(90deg, ' + stops.join(', ') + ')';
-    }
+    // Rarity edge + color-identity bar on the popup: RARITY_COLOR/CI_COLOR/
+    // identityStyle are the shared MTG color helpers defined at the top of
+    // this file (also used by initFlavorCards()). Both are optional per-card
+    // data (data-rarity / data-colors); missing either just falls back to
+    // the plain --line border/bar in styles.css.
     // hide() is delayed (not instant) so the pointer has time to travel from
     // the card name into the popup itself — entering the popup cancels the
     // pending hide, which is what makes the Scryfall link inside it clickable.
@@ -544,5 +572,41 @@
       window.addEventListener('resize', update);
       update();
     });
+  })();
+
+  // Shelf-card flavor: a small curated pool of real MTG cards (varied types
+  // — creature/instant/sorcery/artifact/enchantment/planeswalker/land, not
+  // just lands — see assets/data/flavor-cards.json) assigned one per
+  // [data-flavor] element, in document order, deterministically (same card
+  // on every reload — no semantic tie to the linked article; this is
+  // decorative flavor, not content). Reuses the shared RARITY_COLOR/
+  // identityStyle/identitySolid helpers and setSymbolHtml() defined above
+  // rather than inventing new color/badge logic. If the fetch fails or JS
+  // is off, the cards just render plain — nothing here is load-bearing.
+  (function initFlavorCards() {
+    const targets = document.querySelectorAll('[data-flavor]');
+    if (!targets.length) return;
+    fetch(root + 'assets/data/flavor-cards.json')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (pool) {
+        if (!pool || !pool.length) return;
+        targets.forEach(function (el, i) {
+          const card = pool[i % pool.length];
+          el.style.setProperty('--sc-color', identityStyle(card.color_identity));
+          el.style.setProperty('--sc-edge', identitySolid(card.color_identity));
+          // Domain-absolute, not root-relative: a url() inside a custom
+          // property is resolved relative to the STYLESHEET that consumes
+          // it (assets/css/styles.css), not the document — root-relative
+          // paths here would double up the "assets/" segment. Safe because
+          // this site is served from the domain root (custom CNAME domain,
+          // not a GitHub project-page subpath).
+          el.style.setProperty('--sc-art', 'url("/' + card.art + '")');
+          const badge = el.querySelector('[data-flavor-badge]');
+          if (badge) badge.innerHTML = setSymbolHtml(card);
+          const caption = el.querySelector('[data-flavor-caption]');
+          if (caption) caption.textContent = 'Art: ' + card.name + ' · ' + card.set.toUpperCase();
+        });
+      })
+      .catch(function () {});
   })();
 }());
