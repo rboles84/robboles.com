@@ -382,6 +382,20 @@
   // Scryfall. Only runs if the page actually has .cardname spans.
   const cardnames = document.querySelectorAll('.cardname');
   if (cardnames.length) {
+    // Always-on identity styling — runs once here, independent of the
+    // hover/popup logic below: a solid underline colored by the span's
+    // real color identity (identitySolid — same gold-for-multicolor
+    // convention used elsewhere) plus a tiny real mana-glyph cluster
+    // prepended before the name, so a hoverable mention reads as distinct
+    // prose at rest, not just a plain dotted underline. Missing
+    // data-colors defaults to colorless, same as the popup's own bar.
+    cardnames.forEach(function (el) {
+      el.style.setProperty('--cn-color', identitySolid(el.dataset.colors));
+      const pips = identityLetters(el.dataset.colors).map(function (l) {
+        return '<i class="ms ms-' + l.toLowerCase() + ' ms-cost"></i>';
+      }).join('');
+      el.insertAdjacentHTML('afterbegin', '<span class="cardname-pips" aria-hidden="true">' + pips + '</span>');
+    });
     let pop = null;
     let hoverTimer = null;
     let hideTimer = null;

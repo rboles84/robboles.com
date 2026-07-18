@@ -969,11 +969,23 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
    fetched once at authoring time, not at runtime — so there is no live
    third-party request. The popup's outbound link still goes to Scryfall for
    whoever wants the current printing. See assets/js/site.js initCardHover(). */
+/* A colored solid underline (--cn-color, set by site.js from the span's
+   real data-colors via identitySolid() — the same "gold for multicolor"
+   convention as the shelf/post-card hover border, not a new palette) plus
+   a tiny real mana-glyph cluster prepended before the text (site.js
+   .cardname-pips, reusing the vendored mana font already used everywhere
+   else on the site). Both are always-on, not hover-only — the point is a
+   hoverable mention should look distinct from plain prose at rest, not
+   just carry a generic "this is a tooltip" cue. */
 .cardname {
-  border-bottom: 1px dotted var(--fainter);
-  cursor: help;
+  display: inline-flex; align-items: baseline; gap: 3px;
+  border-bottom: 2px solid var(--cn-color, var(--fainter));
+  padding-bottom: 1px; cursor: help;
+  transition: border-color .14s ease, color .14s ease;
 }
-.cardname:hover, .cardname:focus { border-bottom-color: var(--accent); color: var(--accent); }
+.cardname:hover, .cardname:focus { color: var(--accent); }
+.cardname-pips { display: inline-flex; gap: 2px; font-size: 0.78em; line-height: 1; }
+.cardname-pips .ms-cost { line-height: 1; }
 
 #cardpop {
   display: none; position: fixed; z-index: 60; width: 240px;
