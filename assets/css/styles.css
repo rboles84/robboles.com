@@ -1134,21 +1134,29 @@ body[data-lane="table-talk"] .post-card:hover { border-color: var(--tt-gold); }
    separate from the card even when --sc-color is near-identical to the
    surface — black (#241f1c) was nearly invisible against the dark-mode
    card surface (--dark-2: #26241f) without this; the ring reads in both
-   themes since --line is already tuned to be visible on --surface in both. */
-.shelf-card::before {
+   themes since --line is already tuned to be visible on --surface in both.
+   Shared with .post-card[data-flavor] (Table log articles, opted-in
+   individually via data-flavor — see docs/reference/table-talk-flavor-
+   cards.md) for the color/shadow logic; the radius differs per card type
+   (.post-card's own border-radius is 6px, not .shelf-card's 8px) so that's
+   a separate rule rather than one shared value. */
+.shelf-card::before, .post-card[data-flavor]::before {
   content: ""; position: absolute; top: -1px; left: -1px; right: -1px; height: 4px;
-  border-radius: 8px 8px 0 0; background: var(--sc-color, var(--tt-gold));
+  background: var(--sc-color, var(--tt-gold));
   box-shadow: 0 1px 3px rgba(28, 27, 24, 0.3), inset 0 0 0 1px rgba(127, 127, 127, 0.35);
 }
+.shelf-card::before { border-radius: 8px 8px 0 0; }
+.post-card[data-flavor]::before { border-radius: 6px 6px 0 0; }
 /* Real card-art watermark (assets/js/site.js initFlavorCards() sets
    --sc-art per card) — resting at 8% (visible but ambient), rising to 35%
    on hover with a wider reveal area so the art is actually recognizable,
    not just a texture change. ::after (not ::before, already the top-edge
-   bar) sits at inset:0 with border-radius:inherit, so it never needs
-   overflow:hidden on the card itself (which would also clip the top bar's
-   -1px offset/shadow above). No --sc-art set (JS off/fetch failed) =
+   bar) sits at inset:0 with border-radius:inherit — automatically correct
+   per card type without a split rule, unlike ::before above — so it never
+   needs overflow:hidden on the card itself (which would also clip the top
+   bar's -1px offset/shadow above). No --sc-art set (JS off/fetch failed) =
    background-image:none, a no-op. */
-.shelf-card::after {
+.shelf-card::after, .post-card[data-flavor]::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
   background-image: var(--sc-art, none); background-size: cover; background-position: center;
   opacity: 0.08; transition: opacity .18s ease, mask-image .18s ease, -webkit-mask-image .18s ease;
@@ -1156,7 +1164,8 @@ body[data-lane="table-talk"] .post-card:hover { border-color: var(--tt-gold); }
   -webkit-mask-image: radial-gradient(90% 90% at 100% 100%, #000 0%, transparent 55%);
   mask-image: radial-gradient(90% 90% at 100% 100%, #000 0%, transparent 55%);
 }
-.shelf-card:hover::after, .shelf-card:focus-within::after {
+.shelf-card:hover::after, .shelf-card:focus-within::after,
+.post-card[data-flavor]:hover::after, .post-card[data-flavor]:focus-within::after {
   opacity: 0.35;
   -webkit-mask-image: radial-gradient(115% 115% at 100% 100%, #000 0%, transparent 75%);
   mask-image: radial-gradient(115% 115% at 100% 100%, #000 0%, transparent 75%);
@@ -1164,8 +1173,12 @@ body[data-lane="table-talk"] .post-card:hover { border-color: var(--tt-gold); }
 /* --sc-edge (not --sc-color) for the hover border: identityStyle() can
    return a gradient for multicolor cards, and border-color can't take one —
    identitySolid() always returns a flat color (--tt-gold for multicolor,
-   same as how Magic players say "a gold card"). */
-.shelf-card:hover {
+   same as how Magic players say "a gold card"). .post-card[data-flavor] is
+   deliberately more specific than the plain .post-card:hover (green) and
+   body[data-lane="table-talk"] .post-card:hover (gold) rules elsewhere, so
+   a flavor'd Table log card's hover shows its own real color, not the
+   lane default — non-flavor'd post-cards anywhere else are unaffected. */
+.shelf-card:hover, .post-card[data-flavor]:hover {
   transform: translateY(-3px); border-color: var(--sc-edge, var(--tt-gold));
   box-shadow: 0 14px 30px -20px rgba(28, 27, 24, 0.4);
 }
@@ -1177,6 +1190,15 @@ body[data-lane="table-talk"] .post-card:hover { border-color: var(--tt-gold); }
 .shelf-card h3 a { color: var(--ink); }
 .shelf-card h3 a:hover { color: var(--tt-gold); }
 .shelf-card p { position: relative; z-index: 1; margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--muted); flex: 1; }
+/* .post-card[data-flavor]: same z-index-above-the-watermark treatment as
+   .shelf-card's h3/p above, plus position:relative on the card itself
+   (plain .post-card doesn't have it — needed as the anchor for ::before/
+   ::after). Font sizes/colors are deliberately NOT touched — .post-card's
+   existing 19px h3 / 14.5px p stay as they are elsewhere on the site. */
+.post-card[data-flavor] { position: relative; }
+.post-card[data-flavor] .card-topline,
+.post-card[data-flavor] h3,
+.post-card[data-flavor] p { position: relative; z-index: 1; }
 
 /* Foot row: real Keyrune set-symbol badge (replaces the old invented "01/09"
    number) + a hover-only caption naming the flavor card. Both are pure

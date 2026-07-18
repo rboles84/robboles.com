@@ -574,15 +574,24 @@
     });
   })();
 
-  // Shelf-card flavor: a small curated pool of real MTG cards (varied types
-  // — creature/instant/sorcery/artifact/enchantment/planeswalker/land, not
-  // just lands — see assets/data/flavor-cards.json) assigned one per
-  // [data-flavor] element, in document order, deterministically (same card
-  // on every reload — no semantic tie to the linked article; this is
-  // decorative flavor, not content). Reuses the shared RARITY_COLOR/
-  // identityStyle/identitySolid helpers and setSymbolHtml() defined above
-  // rather than inventing new color/badge logic. If the fetch fails or JS
-  // is off, the cards just render plain — nothing here is load-bearing.
+  // Card flavor: a small curated pool of real MTG cards (varied types —
+  // creature/instant/sorcery/artifact/enchantment/planeswalker/land, not
+  // just lands — see assets/data/flavor-cards.json). Two modes, both on the
+  // same [data-flavor] attribute:
+  //   - bare `data-flavor` (the Recommended Shelf / Open the Deck Box):
+  //     positional — assigned one per element, in document order, from a
+  //     counter that only advances for bare elements. Deterministic (same
+  //     card every reload), no semantic tie to the linked content.
+  //   - `data-flavor="Exact Card Name"` (Table log): that specific card by
+  //     name, looked up in the pool — used where the pairing is deliberate
+  //     (e.g. the precon post gets its own precon's actual commander).
+  // Named elements never consume the positional counter, so adding them
+  // anywhere in the page — including before the shelves in document order,
+  // as Table log is — can't shift the shelf's own assignments.
+  // Reuses the shared RARITY_COLOR/identityStyle/identitySolid helpers and
+  // setSymbolHtml() defined above rather than inventing new color/badge
+  // logic. If the fetch fails or JS is off, cards just render plain —
+  // nothing here is load-bearing.
   (function initFlavorCards() {
     const targets = document.querySelectorAll('[data-flavor]');
     if (!targets.length) return;
@@ -590,8 +599,12 @@
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (pool) {
         if (!pool || !pool.length) return;
-        targets.forEach(function (el, i) {
-          const card = pool[i % pool.length];
+        const byName = {};
+        pool.forEach(function (c) { byName[c.name] = c; });
+        let posIndex = 0;
+        targets.forEach(function (el) {
+          const named = el.dataset.flavor;
+          const card = (named && byName[named]) ? byName[named] : pool[(posIndex++) % pool.length];
           el.style.setProperty('--sc-color', identityStyle(card.color_identity));
           el.style.setProperty('--sc-edge', identitySolid(card.color_identity));
           // Domain-absolute, not root-relative: a url() inside a custom

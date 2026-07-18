@@ -223,5 +223,44 @@
     "color_identity": [
       "R"
     ]
+  },
+  {
+    "name": "Hakbal of the Surging Soul",
+    "scryfall": "https://scryfall.com/card/lcc/3/hakbal-of-the-surging-soul",
+    "art": "assets/images/cards/flavor/hakbal-of-the-surging-soul.jpg",
+    "artist": "Tyler Walpole",
+    "set": "lcc",
+    "set_name": "The Lost Caverns of Ixalan Commander",
+    "rarity": "mythic",
+    "color_identity": [
+      "G",
+      "U"
+    ]
+  },
+  {
+    "name": "Niv-Mizzet, Parun",
+    "scryfall": "https://scryfall.com/card/clb/851/niv-mizzet-parun",
+    "art": "assets/images/cards/flavor/niv-mizzet-parun.jpg",
+    "artist": "Svetlin Velinov",
+    "set": "clb",
+    "set_name": "Commander Legends: Battle for Baldur's Gate",
+    "rarity": "rare",
+    "color_identity": [
+      "R",
+      "U"
+    ]
+  },
+  {
+    "name": "Watery Grave",
+    "scryfall": "https://scryfall.com/card/rav/286/watery-grave",
+    "art": "assets/images/cards/flavor/watery-grave.jpg",
+    "artist": "Rob Alexander",
+    "set": "rav",
+    "set_name": "Ravnica: City of Guilds",
+    "rarity": "rare",
+    "color_identity": [
+      "B",
+      "U"
+    ]
   }
 ]
