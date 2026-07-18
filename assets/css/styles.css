@@ -972,11 +972,10 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
 /* A colored solid underline (--cn-color, set by site.js from the span's
    real data-colors via identitySolid() — the same "gold for multicolor"
    convention as the shelf/post-card hover border, not a new palette) plus
-   a tiny real mana-glyph cluster prepended before the text (site.js
-   .cardname-pips, reusing the vendored mana font already used everywhere
-   else on the site). Both are always-on, not hover-only — the point is a
-   hoverable mention should look distinct from plain prose at rest, not
-   just carry a generic "this is a tooltip" cue. */
+   a tiny real mana-glyph cluster prepended before the text. Both are
+   always-on, not hover-only — the point is a hoverable mention should look
+   distinct from plain prose at rest, not just carry a generic "this is a
+   tooltip" cue. */
 .cardname {
   display: inline-flex; align-items: baseline; gap: 3px;
   border-bottom: 2px solid var(--cn-color, var(--fainter));
@@ -984,8 +983,16 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   transition: border-color .14s ease, color .14s ease;
 }
 .cardname:hover, .cardname:focus { color: var(--accent); }
-.cardname-pips { display: inline-flex; gap: 2px; font-size: 0.78em; line-height: 1; }
-.cardname-pips .ms-cost { line-height: 1; }
+/* site.js marks the injected pip wrapper with .ms-cluster — the existing,
+   already-correct pip component (flex-centers each glyph and adds a
+   hairline ring so pale pips read against light paper — see its own
+   definition below). A bespoke wrapper class alone would have skipped all
+   of that, which is exactly the "icon sits slightly high, off-center" bug
+   Rob caught. This is only a size override on top of the inherited look —
+   scoped through the .cardname ancestor (not a bare .cardname-pips class)
+   so its higher specificity reliably beats .ms-cluster's own `gap: 5px`
+   regardless of which rule happens to come first in the file. */
+.cardname .ms-cluster { font-size: 0.78em; gap: 2px; }
 
 #cardpop {
   display: none; position: fixed; z-index: 60; width: 240px;

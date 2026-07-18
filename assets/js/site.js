@@ -394,7 +394,10 @@
       const pips = identityLetters(el.dataset.colors).map(function (l) {
         return '<i class="ms ms-' + l.toLowerCase() + ' ms-cost"></i>';
       }).join('');
-      el.insertAdjacentHTML('afterbegin', '<span class="cardname-pips" aria-hidden="true">' + pips + '</span>');
+      // .ms-cluster (not a bespoke class alone) — reuses the existing pip
+      // component's flex-centering + hairline ring instead of re-deriving
+      // it; a wrapper without that class rendered visibly off-center.
+      el.insertAdjacentHTML('afterbegin', '<span class="ms-cluster" aria-hidden="true">' + pips + '</span>');
     });
     let pop = null;
     let hoverTimer = null;
