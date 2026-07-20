@@ -11,7 +11,7 @@
   <meta property="og:description" content="How voxmana.io's placement quiz is built like an evidence model — signals, confidence, near-miss resolution — instead of a vibes-based personality sticker.">
   <meta property="og:type" content="article">
   <meta property="article:published_time" content="2026-07-09">
-  <meta property="article:modified_time" content="2026-07-09">
+  <meta property="article:modified_time" content="2026-07-20">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://robboles.com/posts/quiz-evidence-not-vibes/">
   <link rel="stylesheet" href="../../assets/css/styles.css?v=20260718c">
@@ -35,7 +35,7 @@
         "description": "How voxmana.io's placement quiz is built like an evidence model — signals, confidence, and near-miss resolution — instead of a vibes-based personality sticker.",
         "inLanguage": "en-US",
         "datePublished": "2026-07-09",
-        "dateModified": "2026-07-09",
+        "dateModified": "2026-07-20",
         "articleSection": "Learning Lab",
         "proficiencyLevel": "Intermediate",
         "keywords": "Evidence-Based Design, Classifiers, Quiz Design, Building in Public",
@@ -121,7 +121,7 @@
         <p class="eyebrow">Learning Lab</p>
         <h1>A Quiz Can Be Evidence, Not Vibes</h1>
         <p class="lede">Most fandom quizzes hand you a confident label and no receipts. Building voxmana.io&rsquo;s placement quiz, I built the other kind &mdash; one that tracks its evidence, resolves the near-miss, and refuses to call a vibe a fact.</p>
-        <div class="article-meta"><span>Jul 9, 2026</span><span>6 min read</span><span>Learning Lab</span></div>
+        <div class="article-meta"><span>Jul 9, 2026</span><span>7 min read</span><span>Learning Lab</span></div>
         <div class="tag-row"><span>Evidence-Based Design</span><span>Classifiers</span><span>Building in Public</span></div>
       </div>
     </section>
@@ -130,13 +130,13 @@
       <div class="container article-grid">
         <div class="article-body">
 
-          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 9, 2026</p>
+          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 20, 2026</p>
 
           <p class="promise">Every fandom quiz makes the same quiet promise: answer five questions and we&rsquo;ll tell you who you are.</p>
 
           <p>Fun, and completely unfalsifiable &mdash; a confident label with no receipts, no margin, no sense of what almost won instead. When I built the placement quiz for <a href="https://voxmana.io" target="_blank" rel="noopener">voxmana.io</a> &mdash; the part that reads how you like to play and places you in a Magic color and faction identity &mdash; I didn&rsquo;t want the Disney-princess version. I wanted one that could actually defend its answer.</p>
 
-          <p>So I spent more time on the questions than on the results. Not improvising them for vibes &mdash; borrowing from how serious disciplines get honest signal out of people: decision science, adaptive testing, the survey and marketing research that universities and marketing teams use to design questions that <em>discriminate</em> instead of flatter. The quiz is evidence from the questions up.</p>
+          <p>So I spent more time on the questions than on the results. Not improvising them for vibes &mdash; borrowing from disciplines that already know how to get honest signal out of people: item design built to <em>discriminate</em> rather than flatter, adaptive testing that picks its next question from what it still doesn&rsquo;t know, and survey research on the ways a question quietly steers its own answer. I borrowed the method, not the validation; <a href="#what-this-proves">the sources are below</a>, along with what they don&rsquo;t cover.</p>
 
           <p>A quiz can be evidence instead of vibes. It just has to do the things a vibe never does: ask questions built to discriminate, weigh answers as signals, track how sure it is, separate the close calls, show its work, and refuse to call a vibe a fact.</p>
 
@@ -147,7 +147,7 @@
               <tr><th>The vibes quiz</th><th>The evidence model</th></tr>
             </thead>
             <tbody>
-              <tr><td>questions picked to feel fun</td><td>questions designed to discriminate (adaptive, research-backed)</td></tr>
+              <tr><td>questions picked to feel fun</td><td>questions built to discriminate &mdash; adaptive, using published question-design methods</td></tr>
               <tr><td>five questions, one label</td><td>weighs each answer as a signal; asks what it still needs to know</td></tr>
               <tr><td>always 100% sure</td><td>carries a confidence, and says when it&rsquo;s close</td></tr>
               <tr><td>throws away the runner-up</td><td>names the near-miss and why it lost</td></tr>
@@ -158,10 +158,10 @@
 
           <h2 id="what-it-means">What &ldquo;evidence, not vibes&rdquo; actually means</h2>
           <ul>
-            <li><strong>Design the questions to discriminate, not to flatter.</strong> The questions aren&rsquo;t improvised. They&rsquo;re built from how real disciplines pull signal out of people &mdash; decision science, adaptive testing, survey and marketing research &mdash; so each one is chosen to actually separate identities, and the quiz adapts to ask what it still needs to learn instead of marching through a fixed list.</li>
+            <li><strong>Design the questions to discriminate, not to flatter.</strong> The questions aren&rsquo;t improvised. They&rsquo;re built from how assessment and survey research pull signal out of people &mdash; each one chosen for how much it separates one identity from another, and worded against the known ways a question flatters its way to a useless answer. The quiz adapts, too: it asks what it still needs to learn instead of marching through a fixed list.</li>
             <li><strong>Weigh signals, don&rsquo;t count votes.</strong> Each answer is a piece of evidence that moves the reading by some amount, not a ballot dropped in a box.</li>
             <li><strong>Track uncertainty out loud.</strong> The result carries a confidence. When two identities land within a hair of each other, it says so instead of picking one and pretending the coin never wobbled.</li>
-            <li><strong>Resolve the near-miss on purpose.</strong> When two options share colors and read alike &mdash; Izzet and Prismari, say &mdash; a generic quiz may collapse them into the same answer. This one keeps them as close neighbors, then asks targeted Hall or Crucible questions built to separate mechanism-first experimentation from expression-first performance &mdash; and it can show which answered signal broke the tie.</li>
+            <li><strong>Resolve the near-miss on purpose.</strong> When two options share colors and read alike &mdash; Izzet and Prismari, say &mdash; a generic quiz may collapse them into the same answer. This one keeps them as close neighbors, then asks targeted Hall or Crucible questions built to separate mechanism-first experimentation from expression-first performance &mdash; a split <a href="https://magic.wizards.com/en/news/making-magic/strixhaven-part-2-2021-04-05" target="_blank" rel="noopener">Wizards&rsquo; own Strixhaven design notes</a> describe as deliberate &mdash; and it can show which answered signal broke the tie.</li>
             <li><strong>Show a readable evidence trail.</strong> The reading comes with what it picked up, which nearby fits stayed close, and why the final path won. A result you can argue with is a result that respects you.</li>
             <li><strong>Label it honestly.</strong> It says, in plain text, what it is and isn&rsquo;t.</li>
           </ul>
@@ -173,13 +173,24 @@
           <h2 id="almost-wrong">The decision I almost got wrong</h2>
           <p>The honest version is less fun on the surface. A confident sticker gets shared; &ldquo;we&rsquo;re 71% on this, with a close second&rdquo; sounds like hedging. For a while I sat with the temptation to just ship the decisive label and let people enjoy it.</p>
           <p>What changed my mind is the instinct that runs the rest of my work: a confident output that can&rsquo;t show <em>why</em> it&rsquo;s confident isn&rsquo;t confidence &mdash; it&rsquo;s a costume. The same rule I&rsquo;d apply to a model that sounds sure of something it invented applies to a quiz that hands you a house with no evidence behind it. So the reading shows its confidence and its runner-up, on purpose.</p>
-          <p>My bet is that the honest version earns more trust, not less &mdash; because it&rsquo;s the first quiz that ever admitted the answer could be close.</p>
+          <p>My bet is that the honest version earns more trust, not less &mdash; because for most people it&rsquo;s the first quiz that ever admitted the answer could be close.</p>
 
           <h2 id="where-this-breaks">Where this breaks</h2>
           <ul>
-            <li><strong>Rigorous inside the model is not the same as true about you.</strong> The engine is validated for how it behaves &mdash; that key question paths are covered, that close look-alike identities route through tie-breakers, and that specific leakage classes are guarded against (overreach, off-scope copy, deckbuilder drift, internal model language slipping into player-facing text). That&rsquo;s real QA. It is <em>not</em> clinical personality measurement, and the post shouldn&rsquo;t pretend it is.</li>
+            <li><strong>Rigorous inside the model is not the same as true about you.</strong> The engine is tested for how it behaves &mdash; that key question paths are covered, that close look-alike identities route through tie-breakers, and that specific leakage classes are guarded against (overreach, off-scope copy, deckbuilder drift, internal model language slipping into player-facing text). That&rsquo;s real QA, and it&rsquo;s the only proof I have: it shows the machine does what I built it to do, which is a different question from whether the thing it&rsquo;s reading is real. It is <em>not</em> clinical personality measurement, and the post shouldn&rsquo;t pretend it is.</li>
             <li><strong>Showing uncertainty can rot into hedging mush.</strong> The discipline is to be definite inside the model and honest about the model&rsquo;s reach: &ldquo;best fit, here&rsquo;s the confidence,&rdquo; never &ldquo;eh, could be anything.&rdquo;</li>
             <li><strong>Coverage isn&rsquo;t the same as being right about a person.</strong> You can prove every path resolves and still be building an interpretation, not a fact. Naming that out loud is the point, not a weakness.</li>
+          </ul>
+
+          <h2 id="what-this-proves">What this does &mdash; and doesn&rsquo;t &mdash; prove</h2>
+          <p>Worth being exact about, since the whole post is a demand for receipts. Three things I can actually demonstrate: the design is traceable, the scoring is transparent, and every reading can show what moved it and what nearly won.</p>
+          <p>What it does not have is validation in the measurement sense. In the <a href="https://www.apa.org/science/programs/testing/standards" target="_blank" rel="noopener">Standards for Educational and Psychological Testing</a> &mdash; the joint AERA/APA/NCME reference the field actually runs on &mdash; validity isn&rsquo;t a badge an instrument earns once. It&rsquo;s accumulated evidence that one specific <em>interpretation</em> of a score holds up for one specific use. Nobody has gathered that evidence here: no reliability data across populations, no construct validity work, nothing predictive. A transparent classifier can still be wrong, and a traceable quiz can still be measuring nothing at all.</p>
+          <p>The methods underneath it are real, though, and worth the read if you&rsquo;re building something in this shape. Each one comes with the part it doesn&rsquo;t cover:</p>
+          <ul>
+            <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11040895/" target="_blank" rel="noopener">Item analysis: distractor efficiency, difficulty, and discrimination power</a> (Rezigalla et al., <em>BMC Medical Education</em>, 2024) &mdash; how &ldquo;does this question actually separate people?&rdquo; gets measured instead of assumed. Their discrimination index needs a correct answer to score against, and a play-style quiz has none, so I get the principle and not the number.</li>
+            <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5676016/" target="_blank" rel="noopener">Overview and current management of computerized adaptive testing</a> (Seo, <em>Journal of Educational Evaluation for Health Professions</em>, 2017) &mdash; the adaptive idea done properly: pick the item that tells you the most at the current estimate, answer it, re-estimate, repeat. Real adaptive testing runs on a calibrated item bank. Mine borrows the selection logic, not the psychometrics behind it.</li>
+            <li><a href="https://www.pewresearch.org/writing-survey-questions/" target="_blank" rel="noopener">Writing Survey Questions</a> (Pew Research Center) &mdash; the flattery problem, named and measured. Acquiescence bias, social desirability, and why offering a choice between two statements beats asking someone whether they agree with one.</li>
+            <li><a href="https://eric.ed.gov/?id=ED483399" target="_blank" rel="noopener">A Brief Introduction to Evidence-Centered Design</a> (Mislevy, Almond &amp; Lukas, CSE Report 632, 2004) &mdash; building an assessment as an evidentiary argument. This is the shape I was reaching for before I knew it had a name. Vox Mana isn&rsquo;t an implementation of it &mdash; it borrows the structure and skips the rigor.</li>
           </ul>
 
           <h2 id="rule-of-thumb">My rule of thumb</h2>
@@ -210,6 +221,7 @@
             <a href="#what-it-means">What &ldquo;evidence, not vibes&rdquo; means</a>
             <a href="#almost-wrong">The decision I almost got wrong</a>
             <a href="#where-this-breaks">Where this breaks</a>
+            <a href="#what-this-proves">What this does &mdash; and doesn&rsquo;t &mdash; prove</a>
             <a href="#rule-of-thumb">My rule of thumb</a>
           </div>
           <button class="button copy-link" type="button" data-copy-link>Copy article link</button>
