@@ -1,0 +1,1274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finish Him — How Commander Combos Actually End</title>
+<meta name="description" content="Across 15,107 documented lethal Commander combo variants, most don't end with one dramatic final move — they end with the game handing you a loop and saying: do it again. A Magic Math data story.">
+<meta name="author" content="Robert Boles">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Finish Him — How Commander Combos Actually End">
+<meta property="og:description" content="Most Commander combos don't end with one giant final move. They end with the game handing you a loop and saying: do it again.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://robboles.com/magic-math/finish-him/">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #07090c;
+  --bg2: #0d1115;
+  --panel: rgba(18, 22, 28, 0.9);
+  --panel-soft: rgba(18, 22, 28, 0.72);
+  --ink: #f3efe7;
+  --muted: #b5b0a4;
+  --gold: #e4c477;
+  --gold-soft: rgba(228,196,119,.16);
+  --line: rgba(228,196,119,.22);
+  --repeat: #d66658;
+  --nonrepeat: #6dcbb4;
+  --damage: #e58a55;
+  --cardspecific: #e4c477;
+  --poison: #86bd73;
+  --library: #7a9fdb;
+  --combat: #c97f5b;
+  --commander: #b97bdd;
+  --multiple: #d9d7cf;
+  --implicit: #8f8778;
+  --shadow: 0 24px 70px rgba(0,0,0,.34);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-width: 320px; background: var(--bg); color: var(--ink); }
+body {
+  background:
+    radial-gradient(circle at 12% 6%, rgba(109,203,180,.12), transparent 34rem),
+    radial-gradient(circle at 86% 0%, rgba(214,102,88,.15), transparent 36rem),
+    linear-gradient(180deg, var(--bg), var(--bg2) 28rem, var(--bg));
+}
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.skip-link {
+  position: absolute; left: -999px; top: 0; background: var(--gold); color: #1a140a;
+  padding: 8px 14px; border-radius: 6px; z-index: 100; font-family: inherit; font-size: 13px;
+  text-decoration: none;
+}
+.skip-link:focus { left: 12px; top: 12px; }
+:where(a, button, input, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px;
+}
+.back-link { margin: 0 0 16px; }
+.back-link a {
+  display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 18px;
+  border: 1px solid var(--line); border-radius: 999px; background: rgba(11,14,18,.55);
+  color: var(--muted); font-size: .85rem; font-weight: 600; letter-spacing: .02em; text-decoration: none;
+}
+.back-link a:hover, .back-link a:focus-visible { color: var(--gold); border-color: rgba(228,196,119,.45); background: var(--gold-soft); }
+.back-link.back-link-bottom { margin: 34px 0 0; text-align: center; }
+.shell { width: min(1380px, calc(100% - 32px)); margin-inline: auto; }
+header.hero { padding: 46px 0 30px; text-align: center; }
+.eyebrow {
+  margin: 0; color: var(--gold); font-size: .76rem; font-weight: 800;
+  letter-spacing: .18em; text-transform: uppercase;
+}
+.hero h1 {
+  margin: 12px 0 12px; font-family: Georgia, serif;
+  font-size: clamp(3.1rem, 7vw, 6.3rem); font-weight: 500; line-height: .95;
+}
+.hero .dek {
+  width: min(820px, 100%); margin: 0 auto; color: var(--muted);
+  font-size: 1.06rem; line-height: 1.7;
+}
+.hero .dek strong { color: var(--ink); }
+.hero-figure {
+  margin: 30px auto 0; max-width: 760px; padding: 28px 26px; text-align: center;
+  border: 1px solid var(--line); border-radius: 20px;
+  background: var(--panel-soft); box-shadow: var(--shadow);
+}
+.hero-figure .hf-pct { font-family: Georgia, serif; font-weight: 500; color: var(--gold); line-height: .88; font-size: clamp(4rem, 13vw, 7.4rem); }
+.hero-figure .hf-label { margin: 10px auto 0; max-width: 46ch; color: var(--ink); font-size: 1.05rem; line-height: 1.5; }
+.hero-figure .hf-bar { display: flex; height: 22px; margin-top: 20px; border-radius: 999px; overflow: hidden; border: 1px solid var(--line); background: rgba(255,255,255,.04); }
+.hero-figure .hf-bar span { display: block; height: 100%; }
+.hero-figure .hf-bar .seg-repeat { background: var(--repeat); }
+.hero-figure .hf-bar .seg-oneshot { background: var(--nonrepeat); }
+.hero-figure .hf-count { margin-top: 12px; color: var(--muted); font-size: .82rem; }
+
+.section-title { margin: 0 0 6px; font-family: Georgia, serif; font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 500; }
+.section-sub { margin: 14px 0 0; color: var(--muted); line-height: 1.65; max-width: 74ch; }
+.block {
+  margin-top: 26px; padding: 24px; border: 1px solid var(--line);
+  border-radius: 20px; background: var(--panel-soft); box-shadow: var(--shadow);
+  transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+}
+/* Same lift-and-glow the Table Talk "shelf" cards use on hover (transform +
+   gold border + soft shadow). Toggled by JS (mouseenter/leave + focus/blur on
+   the summary, see init below) rather than a `:has(> summary:hover)` selector
+   — so it only triggers for the clickable summary bar, not any interactive
+   content inside the section once it's open (search box, filters, record
+   cards, etc.), with no dependency on :has()-driven :hover invalidation. */
+.block.section-hover {
+  transform: translateY(-3px);
+  border-color: rgba(228,196,119,.5);
+  box-shadow: 0 14px 30px -20px rgba(0,0,0,.5);
+}
+.section-toggle-all { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.section-toggle-all button {
+  min-height: 44px; padding: 0 18px; border: 1px solid var(--line); border-radius: 999px;
+  background: rgba(11,14,18,.6); color: var(--muted); font-size: .8rem; font-weight: 600;
+}
+.section-toggle-all button:hover, .section-toggle-all button:focus-visible { color: var(--gold); border-color: rgba(228,196,119,.45); }
+/* Each top-level section is a native <details> so it can be collapsed —
+   the heading itself is the clickable toggle, with a custom chevron in
+   place of the browser's default disclosure marker. */
+.section-summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  cursor: pointer; list-style: none;
+}
+.section-summary::-webkit-details-marker { display: none; }
+.section-summary .section-title { margin: 0; }
+/* IMPORTANT: several direct children of these sections (grids, the gallery
+   controls, etc.) set their own `display` explicitly. Author CSS always
+   overrides the UA stylesheet regardless of which selector "should" win, so
+   without this rule those elements would defeat <details>'s native
+   hide-when-closed behavior and stay visible even while collapsed — same
+   class of bug as the Spellbook modal earlier on this page. This rule's
+   specificity (a class + :not(attr) + :not(type)) beats every such child
+   rule (each a single class), so it always wins regardless of source order. */
+.block:not([open]) > *:not(summary) { display: none; }
+.section-summary .section-chevron {
+  flex: none; width: 22px; height: 22px; color: var(--muted);
+  transition: transform .15s ease;
+}
+.block[open] > .section-summary .section-chevron { transform: rotate(180deg); }
+.section-summary:hover .section-chevron, .section-summary:focus-visible .section-chevron { color: var(--gold); }
+.icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; }
+
+/* ---- Section 1: repeat-vs-non-repeat comparison ------------------------- */
+.cmp-grid { display: grid; gap: 16px; margin-top: 20px; }
+.cmp-row { padding: 18px 20px; border: 1px solid var(--line); border-radius: 16px; background: rgba(11,14,18,.82); }
+.cmp-row.is-featured { border-color: rgba(228,196,119,.42); background: linear-gradient(180deg, rgba(228,196,119,.07), rgba(11,14,18,.82)); }
+.cmp-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.cmp-head h3 { margin: 0; font-family: Georgia, serif; font-weight: 500; font-size: 1.3rem; }
+.cmp-total { color: var(--gold); font-size: .82rem; font-weight: 700; white-space: nowrap; }
+.cmp-bar { display: flex; height: 26px; margin-top: 14px; border-radius: 999px; overflow: hidden; border: 1px solid var(--line); background: rgba(255,255,255,.04); }
+.cmp-bar span { display: block; height: 100%; }
+.cmp-bar .seg-repeat { background: var(--repeat); }
+.cmp-bar .seg-oneshot { background: var(--nonrepeat); }
+.cmp-values { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.cmp-val { font-size: .84rem; color: var(--ink); line-height: 1.45; }
+.cmp-val b { font-family: Georgia, serif; font-weight: 500; font-size: 1.2rem; margin-right: 5px; }
+.cmp-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.cmp-src { display: block; color: var(--muted); font-size: .7rem; margin-top: 2px; }
+.cmp-note { margin: 3px 0 0; color: var(--muted); font-size: .76rem; line-height: 1.4; }
+
+/* Behavioral tradeoff callout */
+.behavior-callout { margin-top: 18px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(180deg, rgba(228,196,119,.06), rgba(11,14,18,.82)); }
+.bc-head { display: flex; align-items: flex-start; gap: 12px; }
+.bc-icon { font-size: 26px; line-height: 1; color: var(--gold); flex: none; }
+.bc-head h3 { margin: 0; font-family: Georgia, serif; font-weight: 500; font-size: 1.28rem; line-height: 1.25; }
+.bc-lead { margin: 12px 0 0; color: var(--muted); line-height: 1.65; font-size: .92rem; max-width: 80ch; }
+.bc-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 8px 14px; margin-top: 16px; align-items: center; }
+.bc-col-head { font-size: .72rem; font-weight: 700; letter-spacing: .04em; color: var(--muted); padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+.bc-col-head.bc-rep { color: var(--repeat); }
+.bc-col-head.bc-non { color: var(--nonrepeat); }
+.bc-metric { color: var(--ink); font-size: .82rem; }
+.bc-val { font-family: Georgia, serif; font-size: 1.15rem; color: var(--muted); }
+.bc-val.bc-more { color: var(--ink); }
+.bc-val.bc-more::after { content: " ▲"; font-size: .6rem; vertical-align: middle; color: var(--gold); }
+.bc-caveat { margin: 14px 0 0; color: var(--muted); font-size: .74rem; line-height: 1.5; }
+
+/* ---- Section 2: cash-out categories ------------------------------------ */
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 18px; }
+.segmented { display: inline-flex; flex-wrap: wrap; gap: 8px; }
+.segmented button { min-height: 44px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: rgba(11,14,18,.82); }
+.segmented button.active { background: var(--gold-soft); border-color: rgba(228,196,119,.38); color: var(--ink); }
+.key-note { color: var(--muted); font-size: .78rem; }
+.cashout-grid { display: grid; gap: 14px; margin-top: 18px; }
+.cashout-card { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 15px 16px; border: 1px solid var(--line); border-left-width: 4px; border-radius: 14px; background: rgba(11,14,18,.82); }
+.cashout-icon { font-size: 26px; line-height: 1; padding-top: 3px; }
+.cashout-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.cashout-alias { font-family: Georgia, serif; font-size: 1.18rem; }
+.cashout-count { color: var(--gold); font-size: .82rem; font-weight: 700; white-space: nowrap; }
+.cashout-exact { color: var(--muted); font-size: .72rem; margin-top: 2px; }
+.cashout-explain { color: var(--muted); font-size: .84rem; line-height: 1.5; margin-top: 7px; }
+.cashout-track { height: 8px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.06); margin-top: 9px; }
+.cashout-fill { height: 100%; border-radius: inherit; }
+/* Tiered hierarchy: one dominant finish, one major alternative, a rare rail. */
+.cashout-dominant { padding: 24px 26px; border-left-width: 5px; background: linear-gradient(160deg, rgba(229,138,85,.12), rgba(11,14,18,.82)); }
+.cashout-dominant .cashout-icon { font-size: 42px; padding-top: 2px; }
+.cashout-dominant .cashout-alias { font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
+.cashout-dominant .cashout-count { font-size: 1.02rem; }
+.cashout-dominant .cashout-explain { font-size: .92rem; }
+.cashout-major { padding: 18px 20px; }
+.cashout-major .cashout-icon { font-size: 32px; }
+.cashout-major .cashout-alias { font-size: 1.4rem; }
+.cashout-context { padding: 2px 2px 4px; }
+.cashout-takeaway { margin: 0; font-family: Georgia, serif; font-size: 1.12rem; line-height: 1.4; color: var(--ink); }
+.cashout-denom { margin: 5px 0 0; color: var(--gold); font-size: .76rem; font-weight: 700; }
+.cashout-rail-label { margin: 6px 2px 0; color: var(--muted); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+.cashout-rail { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+.cashout-rail .cashout-card { padding: 13px 14px; }
+.cashout-rail .cashout-icon { font-size: 22px; }
+.cashout-rail .cashout-alias { font-size: 1rem; }
+
+/* ---- Section 3: story cards -------------------------------------------- */
+.story-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-top: 18px; }
+.story-card { display: flex; flex-direction: column; gap: 8px; padding: 20px 18px; border: 1px solid var(--line); border-radius: 16px; background: rgba(11,14,18,.82); position: relative; overflow: hidden; }
+.story-card .st-icon { font-size: 30px; line-height: 1; color: var(--gold); }
+.story-card .st-num { font-family: Georgia, serif; font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1; }
+.story-card .st-num.small { font-size: clamp(1.7rem, 3vw, 2.2rem); }
+.story-card .st-head { font-weight: 700; font-size: .98rem; line-height: 1.3; }
+.story-card .st-body { color: var(--muted); font-size: .82rem; line-height: 1.55; }
+.story-card .st-meter { height: 6px; border-radius: 999px; background: rgba(255,255,255,.07); overflow: hidden; margin-top: auto; }
+.story-card .st-meter i { display: block; height: 100%; background: var(--gold); border-radius: inherit; }
+.story-card .st-context { color: var(--muted); font-size: .72rem; }
+.st-contrast { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin: 4px 0 2px; }
+.st-c-col { text-align: center; }
+.st-c-col strong { display: block; font-family: Georgia, serif; font-size: clamp(1.6rem, 3.4vw, 2.2rem); line-height: 1; }
+.st-c-col span { display: block; margin-top: 4px; color: var(--muted); font-size: .68rem; }
+.st-c-rep strong { color: var(--repeat); }
+.st-c-non strong { color: var(--nonrepeat); }
+.st-c-vs { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+.st-pairbar { margin-top: 10px; }
+.st-pairbar-label { color: var(--muted); font-size: .68rem; font-weight: 700; letter-spacing: .04em; margin-bottom: 3px; }
+.st-pairbar-row { display: grid; grid-template-columns: 84px 1fr auto; align-items: center; gap: 7px; margin-top: 2px; }
+.st-pairbar-series { color: var(--muted); font-size: .64rem; }
+.st-pairbar-track { height: 6px; border-radius: 999px; background: rgba(255,255,255,.06); overflow: hidden; }
+.st-pairbar-track i { display: block; height: 100%; border-radius: inherit; }
+.st-pairbar-rep .st-pairbar-track i { background: var(--repeat); }
+.st-pairbar-non .st-pairbar-track i { background: var(--nonrepeat); }
+.st-pairbar-row b { min-width: 30px; text-align: right; color: var(--ink); font-weight: 600; font-size: .74rem; }
+
+/* ---- Section 3b: Most Popular Spellbook Lines -------------------------- */
+.ranking-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+.rank-group-title { margin: 0 0 10px; font-family: Georgia, serif; font-weight: 500; font-size: 1.2rem; color: var(--gold); }
+.rank-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.rank-item { display: grid; grid-template-columns: auto auto 1fr auto; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); border-left-width: 4px; border-radius: 12px; background: rgba(11,14,18,.82); }
+.rank-num { font-family: Georgia, serif; font-size: 1.5rem; color: var(--muted); width: 1.3rem; text-align: center; }
+.rank-thumbs { display: flex; gap: 4px; }
+.rank-thumb { width: 44px; height: 61px; border-radius: 4px; object-fit: cover; object-position: center top; border: 1px solid var(--line); background: rgba(255,255,255,.05); display: block; }
+.rank-body h4 { margin: 0; font-family: Georgia, serif; font-weight: 500; font-size: .95rem; line-height: 1.2; }
+.rank-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.rank-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.rank-pop { text-align: right; }
+.rank-pop strong { display: block; font-family: Georgia, serif; font-size: 1.05rem; color: var(--gold); line-height: 1; }
+.rank-pop span { display: block; color: var(--muted); font-size: .62rem; margin-top: 2px; }
+.rank-link { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 40px; padding: 6px 12px; border: 1px solid rgba(228,196,119,.5); border-radius: 9px; text-decoration: none; color: var(--ink); font-size: .74rem; white-space: nowrap; }
+.rank-link:hover, .rank-link:focus-visible { border-color: var(--gold); background: var(--gold-soft); }
+.rank-caveat { grid-column: 1 / -1; margin: 4px 0 0; color: var(--muted); font-size: .72rem; }
+
+/* ---- Section 4: real combo finishers ----------------------------------- */
+.gallery-controls { display: grid; grid-template-columns: 1fr 220px 220px auto; gap: 10px; margin-top: 18px; }
+.gallery-controls label { display: grid; gap: 6px; color: var(--muted); font-size: .76rem; }
+.gallery-controls input, .gallery-controls select, .gallery-controls button { min-height: 44px; width: 100%; padding: 8px 11px; border: 1px solid var(--line); border-radius: 10px; background: rgba(9,12,15,.92); }
+.gallery-controls button { width: auto; min-width: 88px; align-self: end; }
+.records { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; margin-top: 18px; }
+.record { padding: 16px; text-align: left; border: 1px solid var(--line); border-left: 4px solid var(--accent, var(--gold)); border-radius: 14px; background: rgba(11,14,18,.82); display: flex; flex-direction: column; gap: 10px; }
+.record:hover, .record:focus-visible { border-color: rgba(228,196,119,.45); outline: none; }
+.record[aria-selected="true"] { box-shadow: 0 0 0 3px rgba(228,196,119,.2); }
+.record .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .66rem; }
+.badge .icon { font-size: .9em; }
+.record h3 { margin: 0; font-family: Georgia, serif; font-weight: 500; font-size: 1.18rem; }
+.why-here { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; margin: 0; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--gold-soft); color: var(--gold); font-size: .72rem; font-weight: 700; }
+.why-here .icon { font-size: .95em; }
+.at-table-label { margin: 0; color: var(--muted); font-size: .64rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.record .finisher { margin: 0; color: var(--ink); font-size: .84rem; line-height: 1.55; }
+.record .result-line { margin: 0; color: var(--muted); font-size: .74rem; line-height: 1.4; }
+.thumb-strip { display: flex; gap: 8px; flex-wrap: wrap; }
+.card-thumb { width: 92px; height: 128px; border-radius: 6px; object-fit: cover; object-position: center top; background: rgba(255,255,255,.05); border: 1px solid var(--line); display: block; }
+/* Broken-image fallback: the <img> is replaced by a same-sized element
+   showing the card name, so a failed CDN load never leaves an empty slot. */
+.thumb-broken { display: inline-grid; place-items: center; text-align: center; font-size: .62rem; line-height: 1.25; color: var(--muted); padding: 6px; background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: 6px; box-sizing: border-box; object-fit: unset; }
+.record .metrics-row { display: flex; gap: 14px; color: var(--muted); font-size: .72rem; }
+.record .metrics-row b { color: var(--ink); font-weight: 600; }
+
+/* Inline dossier: full-width panel inserted right after the selected card's row. */
+.record-dossier { position: relative; grid-column: 1 / -1; margin: 2px 0; padding: 20px; border: 1px solid rgba(228,196,119,.4); border-radius: 16px; background: rgba(11,14,18,.9); box-shadow: 0 0 0 3px rgba(228,196,119,.12); scroll-margin-top: 16px; }
+.dossier-close {
+  position: absolute; top: 8px; right: 8px; z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--line); background: rgba(9,12,15,.8); color: var(--muted);
+  font-size: 1.3rem; line-height: 1;
+}
+.dossier-close:hover, .dossier-close:focus-visible { color: var(--gold); border-color: rgba(228,196,119,.5); }
+.record-dossier .detail-body h2 { scroll-margin-top: 16px; }
+.detail-body .at-table-label { margin: 14px 0 0; }
+.detail-top { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; }
+.detail-fan { display: flex; gap: 10px; flex-wrap: wrap; align-content: start; }
+.scry-card { display: flex; flex-direction: column; gap: 5px; text-decoration: none; width: 120px; }
+.scry-card img { width: 120px; height: 167px; border-radius: 8px; border: 1px solid var(--line); background: rgba(255,255,255,.05); display: block; }
+.scry-card .scry-name { color: var(--muted); font-size: .68rem; line-height: 1.3; display: inline-flex; align-items: center; gap: 4px; }
+.scry-card:hover .scry-name, .scry-card:focus-visible .scry-name { color: var(--gold); }
+.detail-body h2 { margin: 0 0 4px; font-family: Georgia, serif; font-weight: 500; font-size: 1.7rem; }
+.detail-body .finisher { margin: 10px 0 0; color: var(--ink); line-height: 1.65; font-size: .96rem; }
+.detail-body .result-line { margin: 8px 0 0; color: var(--muted); font-size: .8rem; }
+.detail-metrics { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-top: 16px; }
+.detail-metrics div { padding: 11px; border: 1px solid var(--line); border-radius: 10px; background: rgba(9,12,15,.92); }
+.detail-metrics strong, .detail-metrics span { display: block; }
+.detail-metrics strong { font-family: Georgia, serif; font-size: 1rem; }
+.detail-metrics span { margin-top: 4px; color: var(--muted); font-size: .66rem; }
+/* Scoped to .record-dossier: the only place a dossier renders — inline in the
+   grid, right after the selected card's row. */
+.record-dossier,
+.record-dossier details,
+.record-dossier details pre { min-width: 0; max-width: 100%; }
+.record-dossier details { margin-top: 16px; border: 1px solid var(--line); border-radius: 12px; background: rgba(9,12,15,.7); }
+.record-dossier details summary { padding: 12px 14px; cursor: pointer; font-size: .84rem; color: var(--gold); list-style: none; }
+.record-dossier details summary::-webkit-details-marker { display: none; }
+.record-dossier details summary::before { content: "▸ "; }
+.record-dossier details[open] summary::before { content: "▾ "; }
+.record-dossier details pre {
+  margin: 0; padding: 0 16px 14px; color: var(--muted); font: inherit; font-size: .82rem; line-height: 1.6;
+  white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal;
+  overflow-x: auto; /* last-resort safety net; should rarely trigger given overflow-wrap:anywhere */
+}
+.detail-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; align-items: center; }
+.spellbook-cta {
+  display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
+  padding: 13px 18px; border-radius: 12px;
+  border: 1px solid rgba(228,196,119,.5);
+  background: linear-gradient(160deg, rgba(228,196,119,.16), rgba(228,196,119,.04));
+  color: var(--ink);
+}
+.spellbook-cta:hover, .spellbook-cta:focus-visible { border-color: var(--gold); background: linear-gradient(160deg, rgba(228,196,119,.26), rgba(228,196,119,.08)); }
+.spellbook-cta .sb-icon { font-size: 22px; color: var(--gold); }
+.spellbook-cta strong { display: block; font-family: Georgia, serif; font-weight: 500; font-size: 1rem; }
+.spellbook-cta span { display: block; color: var(--muted); font-size: .72rem; margin-top: 2px; }
+.ext-cue { font-size: .78em; opacity: .8; }
+
+.empty-state { display: grid; min-height: 180px; place-items: center; text-align: center; padding: 20px; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; background: rgba(11,14,18,.5); }
+
+/* ---- Section 5: claim panels ------------------------------------------- */
+.claim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+.claim-panel { padding: 20px; border: 1px solid var(--line); border-radius: 16px; }
+.claim-panel.is-does { border-color: rgba(109,203,180,.4); background: linear-gradient(180deg, rgba(109,203,180,.07), rgba(11,14,18,.6)); }
+.claim-panel.is-doesnt { border-color: rgba(214,102,88,.4); background: linear-gradient(180deg, rgba(214,102,88,.07), rgba(11,14,18,.6)); }
+.claim-panel h3 { margin: 0 0 10px; font-family: Georgia, serif; font-weight: 500; display: flex; align-items: center; gap: 9px; }
+.claim-panel.is-does h3 .icon { color: var(--nonrepeat); }
+.claim-panel.is-doesnt h3 .icon { color: var(--repeat); }
+.claim-panel ul { margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.75; }
+.claim-foot { margin: 16px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.6; }
+.claim-foot em { color: var(--ink); font-style: normal; }
+
+footer { padding: 30px 0 54px; text-align: center; color: var(--muted); font-size: .8rem; line-height: 1.7; }
+footer a { color: var(--muted); }
+footer a:hover, footer a:focus-visible { color: var(--gold); }
+
+/* ---- In-page Commander Spellbook preview (progressive enhancement) ----- */
+/* IMPORTANT: `display` is scoped to [open] only. <dialog> is `display:none` by
+   default in the UA stylesheet when closed; an unconditional `display: grid`
+   here would override that (author rules always beat the UA stylesheet,
+   regardless of specificity) and leave a rendered "empty shell" sitting
+   inline in the page even while closed. */
+.sb-modal[open] {
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+}
+.sb-modal {
+  width: min(1100px, 92vw); height: min(900px, 85dvh);
+  padding: 0; margin: auto; overflow: hidden;
+  border: 1px solid var(--line); border-radius: 16px;
+  background: var(--panel); color: var(--ink); box-shadow: var(--shadow);
+}
+.sb-modal::backdrop { background: rgba(0,0,0,.6); }
+.sb-modal-bar {
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px; flex-wrap: wrap;
+  border-bottom: 1px solid rgba(228,196,119,.28);
+  background: linear-gradient(160deg, rgba(228,196,119,.1), rgba(228,196,119,.02));
+}
+.sb-modal-icon { width: 20px; height: 20px; flex: none; color: var(--gold); }
+.sb-modal-title { font-family: Georgia, serif; font-size: 1.05rem; margin-right: auto; }
+.sb-modal-open-tab {
+  display: inline-flex; align-items: center; gap: 5px; min-height: 36px; padding: 0 14px;
+  border: 1px solid var(--line); border-radius: 999px;
+  color: var(--muted); text-decoration: none; font-size: .8rem; white-space: nowrap;
+}
+.sb-modal-open-tab:hover, .sb-modal-open-tab:focus-visible { color: var(--gold); border-color: rgba(228,196,119,.45); }
+.sb-modal-close {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; flex: none; border-radius: 50%;
+  border: 1px solid var(--line); background: rgba(11,14,18,.6); color: var(--muted); padding: 0;
+}
+.sb-modal-close svg { width: 16px; height: 16px; display: block; }
+.sb-modal-close:hover, .sb-modal-close:focus-visible { color: var(--gold); border-color: rgba(228,196,119,.5); }
+.sb-modal-frame { width: 100%; height: 100%; min-height: 0; border: 0; display: block; background: #fff; }
+.sb-modal-frame[hidden] { display: none; }
+.sb-modal-status { min-height: 0; overflow: auto; padding: 40px; text-align: center; color: var(--muted); }
+.sb-modal-note { margin: 0; padding: 8px 16px; font-size: .78rem; color: var(--muted); border-top: 1px solid var(--line); }
+.sb-modal-note-link { color: var(--gold); }
+@media (max-width: 640px) {
+  .sb-modal { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; border-radius: 0; }
+}
+
+@media (max-width: 1100px) {
+  .detail-top { grid-template-columns: 1fr; }
+  .story-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .cashout-rail { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .detail-metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .gallery-controls { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 860px) {
+  .records { grid-template-columns: 1fr; }
+  .ranking-groups { grid-template-columns: 1fr; }
+  .bc-grid { grid-template-columns: 1.4fr 1fr 1fr; }
+}
+@media (max-width: 460px) {
+  /* Ranking rows reflow to two lines so nothing clips on a phone. */
+  .rank-item { grid-template-columns: auto 1fr; grid-template-areas: "num body" "thumbs right"; row-gap: 8px; }
+  .rank-num { grid-area: num; }
+  .rank-body { grid-area: body; }
+  .rank-thumbs { grid-area: thumbs; }
+  .rank-right { grid-area: right; flex-direction: row; align-items: center; justify-content: space-between; width: 100%; }
+}
+@media (max-width: 640px) {
+  .shell { width: min(100%, calc(100% - 20px)); }
+  header.hero { padding-top: 30px; }
+  .cmp-values { grid-template-columns: 1fr; }
+  .story-grid { grid-template-columns: 1fr 1fr; }
+  .cashout-rail { grid-template-columns: 1fr; }
+  .gallery-controls { grid-template-columns: 1fr; }
+  .gallery-controls button { width: 100%; }
+  .claim-grid { grid-template-columns: 1fr; }
+  /* Thumbnails scroll horizontally rather than shrinking illegibly. */
+  .thumb-strip { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+  .detail-fan { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; }
+}
+@media (max-width: 460px) {
+  .story-grid, .detail-metrics { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://robboles.com/magic-math/finish-him/",
+  "url": "https://robboles.com/magic-math/finish-him/",
+  "headline": "Finish Him — How Commander Combos Actually End",
+  "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+  "copyrightHolder": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+  "copyrightYear": "2026",
+  "license": "https://robboles.com/about/#rights"
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="hero shell">
+  <p class="back-link"><a href="../">&larr; back to Magic Math &middot; robboles.com</a></p>
+  <p class="eyebrow">Magic Math · Finish Him</p>
+  <h1 id="main">How Commander Combos Actually End</h1>
+  <p class="dek">Across <strong>15,107</strong> documented lethal Commander lines, most don't end with one giant finisher. They turn on an engine and repeat a sequence until the game is over. Here's how those lines finish — and what actually cashes them out.</p>
+
+  <div class="hero-figure" id="heroFigure"></div>
+</header>
+
+<main class="shell">
+  <div class="section-toggle-all">
+    <button type="button" id="expandAllSections">Expand all</button>
+    <button type="button" id="collapseAllSections">Collapse all</button>
+  </div>
+
+  <details class="block" id="ritual-split" open>
+    <summary class="section-summary"><h2 class="section-title">Most Combos End on Repeat</h2><svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+    <p class="section-sub">Some combos turn on an engine. Others close the game without repeating a loop. The difference gets dramatic when you separate explicit ending lines from damage and life-loss engines.</p>
+    <div class="cmp-grid" id="cmpGrid"></div>
+    <div class="behavior-callout" id="behaviorCallout"></div>
+  </details>
+
+  <details class="block" id="cash-out" open>
+    <summary class="section-summary"><h2 class="section-title">How These Combos Cash Out</h2><svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+    <p class="section-sub">Once the line closes, what actually ends the game? These are the ways lethal combos get the job done, in plain player terms — with the exact source label kept underneath each one. Filter by finish mode to see how the ending changes once a line becomes a loop. The uncertainty categories are shown on purpose, not swept away.</p>
+    <div class="controls">
+      <div class="segmented" id="terminalFilters" aria-label="Filter cash-out categories by finish mode"></div>
+      <div class="key-note">Filter by finish mode.</div>
+    </div>
+    <div class="cashout-grid" id="cashoutGrid"></div>
+  </details>
+
+  <details class="block" id="headlines" open>
+    <summary class="section-summary"><h2 class="section-title">Four Hidden Stories About Commander Combos</h2><svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+    <p class="section-sub">The four numbers worth carrying away from all of this.</p>
+    <div class="story-grid" id="storyGrid"></div>
+  </details>
+
+  <details class="block" id="most-seen" open>
+    <summary class="section-summary"><h2 class="section-title" id="mostSeenTitle">Most Popular Spellbook Lines</h2><svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+    <p class="section-sub" id="mostSeenSub">The lines players save most often, split by whether they carry an explicit ending. These are ranked separately from the ten curated finishers below.</p>
+    <div class="ranking-groups" id="rankingGroups"></div>
+  </details>
+
+  <details class="block" id="records" open>
+    <summary class="section-summary"><h2 class="section-title">Real Combo Finishers</h2><svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+    <p class="section-sub">Real lines from Commander Spellbook, one per category, so the pattern never floats away from actual cards. Search or filter, then pick one to see the full line, the cards, and a link to the Spellbook page.</p>
+    <div class="gallery-controls">
+      <label>Search these finishers
+        <input id="search" type="search" placeholder="Oracle, infect, Exquisite Blood…">
+      </label>
+      <label>How it ends
+        <select id="modeFilter">
+          <option value="all">Any ending</option>
+          <option value="Repeat-driven">Repeat-driven engine</option>
+          <option value="Non-repeat">Closes without a loop</option>
+        </select>
+      </label>
+      <label>How it cashes out
+        <select id="terminalFilter">
+          <option value="all">Any cash-out</option>
+        </select>
+      </label>
+      <button id="resetFilters" type="button">Reset</button>
+    </div>
+    <div class="records" id="recordsGrid"></div>
+  </details>
+
+  <details class="block" id="limits" open>
+    <summary class="section-summary"><h2 class="section-title">What This Does — and Doesn’t — Claim</h2><svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+    <p class="section-sub">Part of what makes this trustworthy is being clear about its edges.</p>
+    <div class="claim-grid">
+      <article class="claim-panel is-does">
+        <h3><span class="icon" data-icon="check"></span>What the data supports</h3>
+        <ul>
+          <li>Documented repeat versus non-repeat endings across all 15,107 lethal variants.</li>
+          <li>The cash-out conditions those lines are recorded as using.</li>
+          <li>Behavioral differences visible in the approved aggregates — mana, cards, and setup by finish mode.</li>
+          <li>Real Commander Spellbook examples behind every part of the pattern.</li>
+        </ul>
+      </article>
+      <article class="claim-panel is-doesnt">
+        <h3><span class="icon" data-icon="cross"></span>What it doesn't prove</h3>
+        <ul>
+          <li>Actual game win rates — none of this measures who wins.</li>
+          <li>Which combo is strongest, fastest, cheapest, most resilient, or easiest to assemble.</li>
+          <li>That one universal "final button" exists across every deck.</li>
+          <li>That the ten featured lines represent the complete population.</li>
+        </ul>
+      </article>
+    </div>
+    <p class="claim-foot">Uncertainty categories — <em>Source-implicit explicit terminal</em> and <em>Multiple terminal paths</em> — stay visible throughout, and the rejected action-parser reading is not used anywhere on this page.</p>
+  </details>
+
+  <p class="back-link back-link-bottom"><a href="../">&larr; back to Magic Math &middot; robboles.com</a></p>
+</main>
+
+<footer class="shell">
+  Finish Him · Magic Math · Studied set: 15,107 lethal combo variants<br>
+  Source: Commander Spellbook combo-variant research pack · Analysis current as of 2026-07-18<br>
+  Card images via <a href="https://scryfall.com/" target="_blank" rel="noopener noreferrer">Scryfall</a>. Combo pages via <a href="https://commanderspellbook.com/" target="_blank" rel="noopener noreferrer">Commander Spellbook</a>. Neither endorses this page.
+</footer>
+
+<dialog id="spellbookModal" class="sb-modal" aria-labelledby="spellbookModalTitle">
+  <div class="sb-modal-bar">
+    <svg class="sb-modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5z"/><path d="M9 8h6M9 11h5"/></svg>
+    <span id="spellbookModalTitle" class="sb-modal-title"></span>
+    <a class="sb-modal-open-tab" target="_blank" rel="noopener noreferrer">Open full page <span aria-hidden="true">↗</span></a>
+    <button type="button" class="sb-modal-close" aria-label="Close Commander Spellbook preview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="sb-modal-status" aria-live="polite">Loading Commander Spellbook preview…</div>
+  <iframe class="sb-modal-frame" title="Commander Spellbook combo preview" referrerpolicy="no-referrer" hidden></iframe>
+  <p class="sb-modal-note">Preview not appearing? <a class="sb-modal-note-link" target="_blank" rel="noopener noreferrer">Open the full Commander Spellbook page.</a></p>
+</dialog>
+
+<script id="data" type="application/json">{"total":15107,"headline":{"repeat_total":12301,"repeat_pct":81.43,"nonrepeat_total":2806,"nonrepeat_pct":18.57,"explicit_repeat":289,"explicit_total":2124,"explicit_repeat_pct":13.61,"damage_repeat":12012,"damage_total":12983,"damage_repeat_pct":92.52},"finish_by_class":[{"lethal_class":"Contains explicit terminal result","finish_mode":"Non-repeat","combo_count":1835,"share_of_all_lethal":12.15,"share_within_lethal_class":86.39},{"lethal_class":"Contains explicit terminal result","finish_mode":"Repeat-driven","combo_count":289,"share_of_all_lethal":1.91,"share_within_lethal_class":13.61},{"lethal_class":"Infinite damage or life loss without terminal label","finish_mode":"Non-repeat","combo_count":971,"share_of_all_lethal":6.43,"share_within_lethal_class":7.48},{"lethal_class":"Infinite damage or life loss without terminal label","finish_mode":"Repeat-driven","combo_count":12012,"share_of_all_lethal":79.51,"share_within_lethal_class":92.52}],"terminal_all":[{"terminal_condition":"Damage or life-total depletion","combo_count":13466,"share_of_all_lethal":89.14},{"terminal_condition":"Card-specific terminal condition","combo_count":997,"share_of_all_lethal":6.6},{"terminal_condition":"Poison or infect","combo_count":260,"share_of_all_lethal":1.72},{"terminal_condition":"Library depletion","combo_count":143,"share_of_all_lethal":0.95},{"terminal_condition":"Combat damage","combo_count":137,"share_of_all_lethal":0.91},{"terminal_condition":"Source-implicit explicit terminal","combo_count":73,"share_of_all_lethal":0.48},{"terminal_condition":"Multiple terminal paths","combo_count":23,"share_of_all_lethal":0.15},{"terminal_condition":"Commander damage","combo_count":8,"share_of_all_lethal":0.05}],"terminal_by_class":[{"lethal_class":"Contains explicit terminal result","terminal_condition":"Card-specific terminal condition","combo_count":974,"share_of_all_lethal":6.45,"share_within_lethal_class":45.86},{"lethal_class":"Contains explicit terminal result","terminal_condition":"Damage or life-total depletion","combo_count":661,"share_of_all_lethal":4.38,"share_within_lethal_class":31.12},{"lethal_class":"Contains explicit terminal result","terminal_condition":"Poison or infect","combo_count":250,"share_of_all_lethal":1.65,"share_within_lethal_class":11.77},{"lethal_class":"Contains explicit terminal result","terminal_condition":"Library depletion","combo_count":132,"share_of_all_lethal":0.87,"share_within_lethal_class":6.21},{"lethal_class":"Contains explicit terminal result","terminal_condition":"Source-implicit explicit terminal","combo_count":73,"share_of_all_lethal":0.48,"share_within_lethal_class":3.44},{"lethal_class":"Contains explicit terminal result","terminal_condition":"Multiple terminal paths","combo_count":23,"share_of_all_lethal":0.15,"share_within_lethal_class":1.08},{"lethal_class":"Contains explicit terminal result","terminal_condition":"Commander damage","combo_count":8,"share_of_all_lethal":0.05,"share_within_lethal_class":0.38},{"lethal_class":"Contains explicit terminal result","terminal_condition":"Combat damage","combo_count":3,"share_of_all_lethal":0.02,"share_within_lethal_class":0.14},{"lethal_class":"Infinite damage or life loss without terminal label","terminal_condition":"Damage or life-total depletion","combo_count":12805,"share_of_all_lethal":84.76,"share_within_lethal_class":98.63},{"lethal_class":"Infinite damage or life loss without terminal label","terminal_condition":"Combat damage","combo_count":134,"share_of_all_lethal":0.89,"share_within_lethal_class":1.03},{"lethal_class":"Infinite damage or life loss without terminal label","terminal_condition":"Card-specific terminal condition","combo_count":23,"share_of_all_lethal":0.15,"share_within_lethal_class":0.18},{"lethal_class":"Infinite damage or life loss without terminal label","terminal_condition":"Library depletion","combo_count":11,"share_of_all_lethal":0.07,"share_within_lethal_class":0.08},{"lethal_class":"Infinite damage or life loss without terminal label","terminal_condition":"Poison or infect","combo_count":10,"share_of_all_lethal":0.07,"share_within_lethal_class":0.08}],"records":[{"variant_id":"690-3966","display_title":"Sanguine Bond + Exquisite Blood","display_results":"Infinite lifegain triggers · Infinite lifeloss · Infinite lifegain","popularity":140886,"card_count":2,"approved_finish_mode":"Repeat-driven","terminal_condition":"Damage or life-total depletion","lethal_class":"Infinite damage or life loss without terminal label","combat_gate_flag":0,"delayed_gate_flag":0,"description":"Gain life.\nSanguine Bond triggers, causing an opponent to lose 1 life.\nExquisite Blood triggers, causing you to gain 1 life.\nRepeat from step 2."},{"variant_id":"742-1295","display_title":"Demonic Consultation + Thassa's Oracle","display_results":"Exile your library · Win the game","popularity":144831,"card_count":2,"approved_finish_mode":"Non-repeat","terminal_condition":"Card-specific terminal condition","lethal_class":"Contains explicit terminal result","combat_gate_flag":0,"delayed_gate_flag":0,"description":"Cast Demonic Consultation by paying {B}, naming Thassa's Oracle and thus exiling your library due to you not having a card named Thassa's Oracle in your library.\nCast Thassa's Oracle by paying {U}{U}.\nThassa's Oracle enters the battlefield, causing you to win the game."},{"variant_id":"1218-6714","display_title":"Super State + Tainted Strike","display_results":"Each opponent loses the game","popularity":1355,"card_count":2,"approved_finish_mode":"Non-repeat","terminal_condition":"Poison or infect","lethal_class":"Contains explicit terminal result","combat_gate_flag":1,"delayed_gate_flag":0,"description":"Cast Tainted Strike by paying {B}, giving the creature that has Super State attached +1/+0 and infect until end of turn.\nDeal combat damage using the creature that has Super State attached, causing the opponent it was attacking to get at least ten poison counters. The opponent loses the game as a state-based action due to having ten or more poison counters.\nSuper State triggers, causing the creature to cause each opponent to get at least ten poison counters. The opponents lose the game as a state-based action due to having ten or more poison counters."},{"variant_id":"2836-3093","display_title":"Tainted Pact + Laboratory Maniac","display_results":"Win the game","popularity":9437,"card_count":2,"approved_finish_mode":"Non-repeat","terminal_condition":"Library depletion","lethal_class":"Contains explicit terminal result","combat_gate_flag":0,"delayed_gate_flag":0,"description":"Cast Tainted Pact by paying {1}{B}, exiling your library.\nDraw a card, causing you to win the game due to drawing from an empty library."},{"variant_id":"1879-3259-7358","display_title":"Breath of Fury + Rising of the Day + Maestros Diabolist","display_results":"Infinite ETB · Infinite LTB · Infinite combat damage · Infinite combat phases · Infinite damage · Infinite death triggers · Infinite mana creatures you control can produce · Infinite sacrifice triggers · Infinite untap of creatures you control","popularity":143,"card_count":3,"approved_finish_mode":"Repeat-driven","terminal_condition":"Combat damage","lethal_class":"Infinite damage or life loss without terminal label","combat_gate_flag":1,"delayed_gate_flag":0,"description":"Declare the creature with Breath of Fury attached and Maestros Diabolist as attackers.\nMaestros Diabolist triggers, creating a creature token.\nDeal combat damage using the creature that has Breath of Fury attached. \nBreath of Fury triggers, causing you to sacrifice the creature it is attached to, then attach Breath of Fury to the creature token, then causing you to untap all creatures you control and to get an additional combat phase after this one.\nIf the sacrificed creature was a Devil token, it triggers when it dies, dealing 1 damage to any target.\nRepeat each combat phase."},{"variant_id":"1203-4567","display_title":"Greven, Predator Captain + Fire Covenant","display_results":"Target opponent loses the game","popularity":732,"card_count":2,"approved_finish_mode":"Non-repeat","terminal_condition":"Commander damage","lethal_class":"Contains explicit terminal result","combat_gate_flag":1,"delayed_gate_flag":0,"description":"Cast Fire Covenant by paying {1}{B}{R} and 16 life, dealing 16 damage divided among any number of creatures and causing Greven to become a 21/21 until end of turn due to its first ability.\nDeal combat damage to an opponent using Greven.\nThe opponent loses the game due to being dealt 21 combat damage from your commander."},{"variant_id":"6758-6804","display_title":"Requiem Monolith + Dawnsire, Sunstar Dreadnought","display_results":"Target opponent loses the game · Near-infinite lifeloss for target opponent","popularity":1043,"card_count":2,"approved_finish_mode":"Non-repeat","terminal_condition":"Multiple terminal paths","lethal_class":"Contains explicit terminal result","combat_gate_flag":1,"delayed_gate_flag":0,"description":"Activate Requiem Monolith by tapping it, targeting a creature an opponent controls with toughness 2 or greater.\nDeclare any creature as an attacker, triggering Dawnsire, dealing 100 damage to the creature targeted in step 1.\nThe creature triggers, causing their controller to draw 100 cards and lose 100 life, thus losing the game due to drawing from an empty library."},{"variant_id":"1561-5165","display_title":"Ob Nixilis, the Hate-Twisted + Peer into the Abyss","display_results":"Target player loses the game","popularity":16329,"card_count":2,"approved_finish_mode":"Non-repeat","terminal_condition":"Source-implicit explicit terminal","lethal_class":"Contains explicit terminal result","combat_gate_flag":0,"delayed_gate_flag":0,"description":"With Ob Nixilis, the Hate-Twisted on the battlefield, cast Peer into the Abyss targeting an opponent.\nPeer into the Abyss would resolve (with card draw and life loss rounded up in instances of odd number of cards or life), and then the static ability on Ob Nixilis, the Hate-Twisted dealing damage for each card drawn."},{"variant_id":"2199-4800","display_title":"Frenetic Efreet + Chance Encounter","display_results":"Win the game at the beginning of your next upkeep","popularity":5806,"card_count":2,"approved_finish_mode":"Repeat-driven","terminal_condition":"Source-implicit explicit terminal","lethal_class":"Contains explicit terminal result","combat_gate_flag":0,"delayed_gate_flag":1,"description":"Activate Frenetic Efreet's ability an arbitrarily large amount of times by paying a total of {0}.\nResolve the first Frenetic Efreet ability, flipping a coin and either sacrificing Frenetic Efreet or causing it to phase out.\nIf you win the flip, Chance Encounter triggers, putting a luck counter on it.\nResolve the next Frenetic Efreet ability, flipping a coin and not phasing out or sacrificing Frenetic Efreet due to it no longer being on the battlefield.\nRepeat from step 3."},{"variant_id":"3038-3858","display_title":"Mayael's Aria + Colossification","display_results":"Win the game at the beginning of your next upkeep","popularity":652,"card_count":2,"approved_finish_mode":"Non-repeat","terminal_condition":"Card-specific terminal condition","lethal_class":"Contains explicit terminal result","combat_gate_flag":0,"delayed_gate_flag":1,"description":"At the beginning of your upkeep, Mayael's Aria triggers, putting a +1/+1 counter on each creature you control, causing you to gain ten life and win the game."}],"terminal_by_finish_mode":{"Repeat-driven":[{"terminal_condition":"Damage or life-total depletion","combo_count":11944,"share_within_finish_mode":97.1},{"terminal_condition":"Combat damage","combo_count":132,"share_within_finish_mode":1.07},{"terminal_condition":"Poison or infect","combo_count":89,"share_within_finish_mode":0.72},{"terminal_condition":"Library depletion","combo_count":49,"share_within_finish_mode":0.4},{"terminal_condition":"Card-specific terminal condition","combo_count":48,"share_within_finish_mode":0.39},{"terminal_condition":"Multiple terminal paths","combo_count":22,"share_within_finish_mode":0.18},{"terminal_condition":"Source-implicit explicit terminal","combo_count":17,"share_within_finish_mode":0.14},{"terminal_condition":"Commander damage","combo_count":0,"share_within_finish_mode":0}],"Non-repeat":[{"terminal_condition":"Damage or life-total depletion","combo_count":1522,"share_within_finish_mode":54.24},{"terminal_condition":"Card-specific terminal condition","combo_count":949,"share_within_finish_mode":33.82},{"terminal_condition":"Poison or infect","combo_count":171,"share_within_finish_mode":6.09},{"terminal_condition":"Library depletion","combo_count":94,"share_within_finish_mode":3.35},{"terminal_condition":"Source-implicit explicit terminal","combo_count":56,"share_within_finish_mode":2},{"terminal_condition":"Commander damage","combo_count":8,"share_within_finish_mode":0.29},{"terminal_condition":"Combat damage","combo_count":5,"share_within_finish_mode":0.18},{"terminal_condition":"Multiple terminal paths","combo_count":1,"share_within_finish_mode":0.04}]},"finish_mode_totals":{"Repeat-driven":12301,"Non-repeat":2806,"all":15107},"behavior":{"Infinite damage or life loss without terminal label":{"Repeat-driven":{"combo_count":12012,"low_popularity_percentage":49.61,"average_card_count":3.67,"average_startup_mana":0.98,"average_visible_setup_pieces":3.31,"average_description_lines":6.93},"Non-repeat":{"combo_count":971,"low_popularity_percentage":29.05,"average_card_count":3.24,"average_startup_mana":3.22,"average_visible_setup_pieces":2.47,"average_description_lines":5.56}},"Contains explicit terminal result":{"Repeat-driven":{"combo_count":289,"low_popularity_percentage":32.19,"average_card_count":3.35,"average_startup_mana":4.23,"average_visible_setup_pieces":2.48,"average_description_lines":6.04},"Non-repeat":{"combo_count":1835,"low_popularity_percentage":26.27,"average_card_count":2.95,"average_startup_mana":4.71,"average_visible_setup_pieces":2.05,"average_description_lines":4.18}}},"ranking":{"label":"Most Popular Spellbook Lines","caveat":"Ranked by Commander Spellbook popularity within the validated audit sample.","explicit":[{"variant_id":"742-1295","popularity":144831,"finish_mode":"Non-repeat","terminal_condition":"Card-specific terminal condition"},{"variant_id":"1295-3093","popularity":128845,"finish_mode":"Non-repeat","terminal_condition":"Card-specific terminal condition"},{"variant_id":"1561-3862","popularity":44182,"finish_mode":"Non-repeat","terminal_condition":"Damage or life-total depletion"}],"damage":[{"variant_id":"690-3966","popularity":140886,"finish_mode":"Repeat-driven","terminal_condition":"Damage or life-total depletion"},{"variant_id":"314-3966","popularity":117348,"finish_mode":"Repeat-driven","terminal_condition":"Damage or life-total depletion"},{"variant_id":"314-6191","popularity":79315,"finish_mode":"Repeat-driven","terminal_condition":"Damage or life-total depletion"}]}}</script>
+<script id="cards" type="application/json">{"record_cards":{"690-3966":["Sanguine Bond","Exquisite Blood"],"742-1295":["Demonic Consultation","Thassa's Oracle"],"1218-6714":["Super State","Tainted Strike"],"2836-3093":["Tainted Pact","Laboratory Maniac"],"1879-3259-7358":["Breath of Fury","Rising of the Day","Maestros Diabolist"],"1203-4567":["Greven, Predator Captain","Fire Covenant"],"6758-6804":["Requiem Monolith","Dawnsire, Sunstar Dreadnought"],"1561-5165":["Ob Nixilis, the Hate-Twisted","Peer into the Abyss"],"2199-4800":["Frenetic Efreet","Chance Encounter"],"3038-3858":["Mayael's Aria","Colossification"]},"ranking_cards":{"742-1295":["Demonic Consultation","Thassa's Oracle"],"1295-3093":["Tainted Pact","Thassa's Oracle"],"1561-3862":["Orcish Bowmasters","Peer into the Abyss"],"690-3966":["Sanguine Bond","Exquisite Blood"],"314-3966":["Vito, Thorn of the Dusk Rose","Exquisite Blood"],"314-6191":["Vito, Thorn of the Dusk Rose","Bloodthirsty Conqueror"]},"cards":{"Sanguine Bond":{"name":"Sanguine Bond","scryfall_id":"ad4de9f1-7a39-45af-828e-c59234d9e9b9","oracle_id":"73089a39-a2f6-4aa2-a058-e6551475153d","scryfall_uri":"https://scryfall.com/card/c21/153/sanguine-bond","layout":"normal","mana_cost":"{3}{B}{B}","type_line":"Enchantment","image_small":"https://cards.scryfall.io/small/front/a/d/ad4de9f1-7a39-45af-828e-c59234d9e9b9.jpg?1783927550","image_normal":"https://cards.scryfall.io/normal/front/a/d/ad4de9f1-7a39-45af-828e-c59234d9e9b9.jpg?1783927550","image_art_crop":"https://cards.scryfall.io/art_crop/front/a/d/ad4de9f1-7a39-45af-828e-c59234d9e9b9.jpg?1783927550","face_used":null},"Exquisite Blood":{"name":"Exquisite Blood","scryfall_id":"0e8ccfa7-4178-476a-a155-0ca1c98556c9","oracle_id":"8f933fae-6c0c-42d7-a817-14760d8285cd","scryfall_uri":"https://scryfall.com/card/lcc/195/exquisite-blood","layout":"normal","mana_cost":"{4}{B}","type_line":"Enchantment","image_small":"https://cards.scryfall.io/small/front/0/e/0e8ccfa7-4178-476a-a155-0ca1c98556c9.jpg?1783913874","image_normal":"https://cards.scryfall.io/normal/front/0/e/0e8ccfa7-4178-476a-a155-0ca1c98556c9.jpg?1783913874","image_art_crop":"https://cards.scryfall.io/art_crop/front/0/e/0e8ccfa7-4178-476a-a155-0ca1c98556c9.jpg?1783913874","face_used":null},"Demonic Consultation":{"name":"Demonic Consultation","scryfall_id":"1d779f19-3068-4976-b96b-8f93d156900b","oracle_id":"9a1412db-45ad-46ea-8f12-a85d203113d8","scryfall_uri":"https://scryfall.com/card/me2/85/demonic-consultation","layout":"normal","mana_cost":"{B}","type_line":"Instant","image_small":"https://cards.scryfall.io/small/front/1/d/1d779f19-3068-4976-b96b-8f93d156900b.jpg?1783942624","image_normal":"https://cards.scryfall.io/normal/front/1/d/1d779f19-3068-4976-b96b-8f93d156900b.jpg?1783942624","image_art_crop":"https://cards.scryfall.io/art_crop/front/1/d/1d779f19-3068-4976-b96b-8f93d156900b.jpg?1783942624","face_used":null},"Thassa's Oracle":{"name":"Thassa's Oracle","scryfall_id":"726e8b29-13e9-4138-b6a9-d2a0d8188d1c","oracle_id":"1de1b591-a73f-4974-b507-8c63e07a0868","scryfall_uri":"https://scryfall.com/card/thb/73/thassas-oracle","layout":"normal","mana_cost":"{U}{U}","type_line":"Creature — Merfolk Wizard","image_small":"https://cards.scryfall.io/small/front/7/2/726e8b29-13e9-4138-b6a9-d2a0d8188d1c.jpg?1783931575","image_normal":"https://cards.scryfall.io/normal/front/7/2/726e8b29-13e9-4138-b6a9-d2a0d8188d1c.jpg?1783931575","image_art_crop":"https://cards.scryfall.io/art_crop/front/7/2/726e8b29-13e9-4138-b6a9-d2a0d8188d1c.jpg?1783931575","face_used":null},"Super State":{"name":"Super State","scryfall_id":"a6a39919-a521-4e96-a47a-e09ac4d783bf","oracle_id":"ab2dfe99-bd77-44d7-92be-81643ea901f0","scryfall_uri":"https://scryfall.com/card/sld/2081/super-state","layout":"normal","mana_cost":"{7}","type_line":"Legendary Enchantment — Aura","image_small":"https://cards.scryfall.io/small/front/a/6/a6a39919-a521-4e96-a47a-e09ac4d783bf.jpg?1783906091","image_normal":"https://cards.scryfall.io/normal/front/a/6/a6a39919-a521-4e96-a47a-e09ac4d783bf.jpg?1783906091","image_art_crop":"https://cards.scryfall.io/art_crop/front/a/6/a6a39919-a521-4e96-a47a-e09ac4d783bf.jpg?1783906091","face_used":null},"Tainted Strike":{"name":"Tainted Strike","scryfall_id":"d0f82007-99f6-4c6c-8182-ee631c33531f","oracle_id":"95a53dd7-76dc-46f1-8833-fafd02ba49c4","scryfall_uri":"https://scryfall.com/card/som/80/tainted-strike","layout":"normal","mana_cost":"{B}","type_line":"Instant","image_small":"https://cards.scryfall.io/small/front/d/0/d0f82007-99f6-4c6c-8182-ee631c33531f.jpg?1783941727","image_normal":"https://cards.scryfall.io/normal/front/d/0/d0f82007-99f6-4c6c-8182-ee631c33531f.jpg?1783941727","image_art_crop":"https://cards.scryfall.io/art_crop/front/d/0/d0f82007-99f6-4c6c-8182-ee631c33531f.jpg?1783941727","face_used":null},"Tainted Pact":{"name":"Tainted Pact","scryfall_id":"c513f51b-a0db-4c08-8acc-1e91060b93b7","oracle_id":"1a85ba2b-ae10-4917-954a-7709b75a9740","scryfall_uri":"https://scryfall.com/card/ody/164/tainted-pact","layout":"normal","mana_cost":"{1}{B}","type_line":"Instant","image_small":"https://cards.scryfall.io/small/front/c/5/c513f51b-a0db-4c08-8acc-1e91060b93b7.jpg?1783945239","image_normal":"https://cards.scryfall.io/normal/front/c/5/c513f51b-a0db-4c08-8acc-1e91060b93b7.jpg?1783945239","image_art_crop":"https://cards.scryfall.io/art_crop/front/c/5/c513f51b-a0db-4c08-8acc-1e91060b93b7.jpg?1783945239","face_used":null},"Laboratory Maniac":{"name":"Laboratory Maniac","scryfall_id":"7a5be94c-08b8-4964-a79d-e22ea6e94be8","oracle_id":"aa286dd5-aa19-446d-9003-684d81eb57ca","scryfall_uri":"https://scryfall.com/card/inr/71/laboratory-maniac","layout":"normal","mana_cost":"{2}{U}","type_line":"Creature — Human Wizard","image_small":"https://cards.scryfall.io/small/front/7/a/7a5be94c-08b8-4964-a79d-e22ea6e94be8.jpg?1783908162","image_normal":"https://cards.scryfall.io/normal/front/7/a/7a5be94c-08b8-4964-a79d-e22ea6e94be8.jpg?1783908162","image_art_crop":"https://cards.scryfall.io/art_crop/front/7/a/7a5be94c-08b8-4964-a79d-e22ea6e94be8.jpg?1783908162","face_used":null},"Breath of Fury":{"name":"Breath of Fury","scryfall_id":"a1fce58d-d754-4532-b4d0-4bb3cf108090","oracle_id":"fdaa0faf-e7ee-48b3-9330-de0fc3792ad3","scryfall_uri":"https://scryfall.com/card/c16/121/breath-of-fury","layout":"normal","mana_cost":"{2}{R}{R}","type_line":"Enchantment — Aura","image_small":"https://cards.scryfall.io/small/front/a/1/a1fce58d-d754-4532-b4d0-4bb3cf108090.jpg?1783937066","image_normal":"https://cards.scryfall.io/normal/front/a/1/a1fce58d-d754-4532-b4d0-4bb3cf108090.jpg?1783937066","image_art_crop":"https://cards.scryfall.io/art_crop/front/a/1/a1fce58d-d754-4532-b4d0-4bb3cf108090.jpg?1783937066","face_used":null},"Rising of the Day":{"name":"Rising of the Day","scryfall_id":"d4fbcac6-8ac9-44a8-9d1a-03d0799ac253","oracle_id":"434a20f8-3f87-4004-9155-0f196fc2257e","scryfall_uri":"https://scryfall.com/card/ltr/145/rising-of-the-day","layout":"normal","mana_cost":"{2}{R}","type_line":"Enchantment","image_small":"https://cards.scryfall.io/small/front/d/4/d4fbcac6-8ac9-44a8-9d1a-03d0799ac253.jpg?1783916282","image_normal":"https://cards.scryfall.io/normal/front/d/4/d4fbcac6-8ac9-44a8-9d1a-03d0799ac253.jpg?1783916282","image_art_crop":"https://cards.scryfall.io/art_crop/front/d/4/d4fbcac6-8ac9-44a8-9d1a-03d0799ac253.jpg?1783916282","face_used":null},"Maestros Diabolist":{"name":"Maestros Diabolist","scryfall_id":"7206db10-e248-420d-bf92-4d57bc72da56","oracle_id":"68d61090-a97f-47e9-bc64-7e5c7f8acbf7","scryfall_uri":"https://scryfall.com/card/snc/200/maestros-diabolist","layout":"normal","mana_cost":"{U}{B}{R}","type_line":"Creature — Vampire Warrior","image_small":"https://cards.scryfall.io/small/front/7/2/7206db10-e248-420d-bf92-4d57bc72da56.jpg?1783923079","image_normal":"https://cards.scryfall.io/normal/front/7/2/7206db10-e248-420d-bf92-4d57bc72da56.jpg?1783923079","image_art_crop":"https://cards.scryfall.io/art_crop/front/7/2/7206db10-e248-420d-bf92-4d57bc72da56.jpg?1783923079","face_used":null},"Greven, Predator Captain":{"name":"Greven, Predator Captain","scryfall_id":"bda22fc3-31a5-451a-9a8b-372884f7bc61","oracle_id":"b22f4797-c74f-4d95-9528-c16c2bc4c05b","scryfall_uri":"https://scryfall.com/card/c19/43/greven-predator-captain","layout":"normal","mana_cost":"{3}{B}{R}","type_line":"Legendary Creature — Phyrexian Human Warrior","image_small":"https://cards.scryfall.io/small/front/b/d/bda22fc3-31a5-451a-9a8b-372884f7bc61.jpg?1783932799","image_normal":"https://cards.scryfall.io/normal/front/b/d/bda22fc3-31a5-451a-9a8b-372884f7bc61.jpg?1783932799","image_art_crop":"https://cards.scryfall.io/art_crop/front/b/d/bda22fc3-31a5-451a-9a8b-372884f7bc61.jpg?1783932799","face_used":null},"Fire Covenant":{"name":"Fire Covenant","scryfall_id":"1a13437b-e0c7-4ca9-a0e2-b8cb1b5813ec","oracle_id":"025939a0-424a-41bf-8fc9-2ef9ea5485f7","scryfall_uri":"https://scryfall.com/card/ecc/54/fire-covenant","layout":"normal","mana_cost":"{1}{B}{R}","type_line":"Instant","image_small":"https://cards.scryfall.io/small/front/1/a/1a13437b-e0c7-4ca9-a0e2-b8cb1b5813ec.jpg?1783911521","image_normal":"https://cards.scryfall.io/normal/front/1/a/1a13437b-e0c7-4ca9-a0e2-b8cb1b5813ec.jpg?1783911521","image_art_crop":"https://cards.scryfall.io/art_crop/front/1/a/1a13437b-e0c7-4ca9-a0e2-b8cb1b5813ec.jpg?1783911521","face_used":null},"Requiem Monolith":{"name":"Requiem Monolith","scryfall_id":"837d710a-652f-4c60-a52d-d786231160a4","oracle_id":"13a8b19b-23bd-4e45-81ff-23371665e4fc","scryfall_uri":"https://scryfall.com/card/eoe/113/requiem-monolith","layout":"normal","mana_cost":"{2}{B}","type_line":"Artifact","image_small":"https://cards.scryfall.io/small/front/8/3/837d710a-652f-4c60-a52d-d786231160a4.jpg?1783905963","image_normal":"https://cards.scryfall.io/normal/front/8/3/837d710a-652f-4c60-a52d-d786231160a4.jpg?1783905963","image_art_crop":"https://cards.scryfall.io/art_crop/front/8/3/837d710a-652f-4c60-a52d-d786231160a4.jpg?1783905963","face_used":null},"Dawnsire, Sunstar Dreadnought":{"name":"Dawnsire, Sunstar Dreadnought","scryfall_id":"6133355c-3dcf-466a-b771-fe6c44d4fa4d","oracle_id":"afc9436b-8cad-4916-929d-ff33a37b42d5","scryfall_uri":"https://scryfall.com/card/eoe/238/dawnsire-sunstar-dreadnought","layout":"normal","mana_cost":"{5}","type_line":"Legendary Artifact — Spacecraft","image_small":"https://cards.scryfall.io/small/front/6/1/6133355c-3dcf-466a-b771-fe6c44d4fa4d.jpg?1783905921","image_normal":"https://cards.scryfall.io/normal/front/6/1/6133355c-3dcf-466a-b771-fe6c44d4fa4d.jpg?1783905921","image_art_crop":"https://cards.scryfall.io/art_crop/front/6/1/6133355c-3dcf-466a-b771-fe6c44d4fa4d.jpg?1783905921","face_used":null},"Ob Nixilis, the Hate-Twisted":{"name":"Ob Nixilis, the Hate-Twisted","scryfall_id":"14916e2d-73af-4747-a927-d2d4cb3e32db","oracle_id":"88cd12e5-ca89-4176-96fd-320fe2ccd087","scryfall_uri":"https://scryfall.com/card/war/100/ob-nixilis-the-hate-twisted","layout":"normal","mana_cost":"{3}{B}{B}","type_line":"Legendary Planeswalker — Nixilis","image_small":"https://cards.scryfall.io/small/front/1/4/14916e2d-73af-4747-a927-d2d4cb3e32db.jpg?1783933441","image_normal":"https://cards.scryfall.io/normal/front/1/4/14916e2d-73af-4747-a927-d2d4cb3e32db.jpg?1783933441","image_art_crop":"https://cards.scryfall.io/art_crop/front/1/4/14916e2d-73af-4747-a927-d2d4cb3e32db.jpg?1783933441","face_used":null},"Peer into the Abyss":{"name":"Peer into the Abyss","scryfall_id":"aac00055-640e-4749-8d23-d242e6d0b23a","oracle_id":"21fa2442-6eac-4dce-a9cc-76f0053fdb8f","scryfall_uri":"https://scryfall.com/card/m21/117/peer-into-the-abyss","layout":"normal","mana_cost":"{4}{B}{B}{B}","type_line":"Sorcery","image_small":"https://cards.scryfall.io/small/front/a/a/aac00055-640e-4749-8d23-d242e6d0b23a.jpg?1783930701","image_normal":"https://cards.scryfall.io/normal/front/a/a/aac00055-640e-4749-8d23-d242e6d0b23a.jpg?1783930701","image_art_crop":"https://cards.scryfall.io/art_crop/front/a/a/aac00055-640e-4749-8d23-d242e6d0b23a.jpg?1783930701","face_used":null},"Frenetic Efreet":{"name":"Frenetic Efreet","scryfall_id":"50d4468b-f7de-44fe-898a-4125d26d242f","oracle_id":"c21d3360-8be0-477e-a592-7e64a76570d3","scryfall_uri":"https://scryfall.com/card/mir/264/frenetic-efreet","layout":"normal","mana_cost":"{1}{U}{R}","type_line":"Creature — Efreet","image_small":"https://cards.scryfall.io/small/front/5/0/50d4468b-f7de-44fe-898a-4125d26d242f.jpg?1783947052","image_normal":"https://cards.scryfall.io/normal/front/5/0/50d4468b-f7de-44fe-898a-4125d26d242f.jpg?1783947052","image_art_crop":"https://cards.scryfall.io/art_crop/front/5/0/50d4468b-f7de-44fe-898a-4125d26d242f.jpg?1783947052","face_used":null},"Chance Encounter":{"name":"Chance Encounter","scryfall_id":"49a4b0c9-a35b-4b55-ab27-7246bbca0d16","oracle_id":"8bd33b5c-0777-41ef-9e17-fb30ce69ec25","scryfall_uri":"https://scryfall.com/card/mh2/277/chance-encounter","layout":"normal","mana_cost":"{2}{R}{R}","type_line":"Enchantment","image_small":"https://cards.scryfall.io/small/front/4/9/49a4b0c9-a35b-4b55-ab27-7246bbca0d16.jpg?1783926785","image_normal":"https://cards.scryfall.io/normal/front/4/9/49a4b0c9-a35b-4b55-ab27-7246bbca0d16.jpg?1783926785","image_art_crop":"https://cards.scryfall.io/art_crop/front/4/9/49a4b0c9-a35b-4b55-ab27-7246bbca0d16.jpg?1783926785","face_used":null},"Mayael's Aria":{"name":"Mayael's Aria","scryfall_id":"a53170fe-7f18-47ef-b501-1ed398306419","oracle_id":"6cb9ca93-e0bb-4758-bf0d-c9a8fce5f11f","scryfall_uri":"https://scryfall.com/card/2x2/253/mayaels-aria","layout":"normal","mana_cost":"{R}{G}{W}","type_line":"Enchantment","image_small":"https://cards.scryfall.io/small/front/a/5/a53170fe-7f18-47ef-b501-1ed398306419.jpg?1783921814","image_normal":"https://cards.scryfall.io/normal/front/a/5/a53170fe-7f18-47ef-b501-1ed398306419.jpg?1783921814","image_art_crop":"https://cards.scryfall.io/art_crop/front/a/5/a53170fe-7f18-47ef-b501-1ed398306419.jpg?1783921814","face_used":null},"Colossification":{"name":"Colossification","scryfall_id":"c2cad902-ffd2-4bab-b114-b4b6df2ac6b3","oracle_id":"05c5ee65-651b-4bfb-b57f-305026507135","scryfall_uri":"https://scryfall.com/card/blb/392/colossification","layout":"normal","mana_cost":"{5}{G}{G}","type_line":"Enchantment — Aura","image_small":"https://cards.scryfall.io/small/front/c/2/c2cad902-ffd2-4bab-b114-b4b6df2ac6b3.jpg?1783910740","image_normal":"https://cards.scryfall.io/normal/front/c/2/c2cad902-ffd2-4bab-b114-b4b6df2ac6b3.jpg?1783910740","image_art_crop":"https://cards.scryfall.io/art_crop/front/c/2/c2cad902-ffd2-4bab-b114-b4b6df2ac6b3.jpg?1783910740","face_used":null},"Orcish Bowmasters":{"name":"Orcish Bowmasters","scryfall_id":"7c024bae-5631-4e20-ac69-df392ac9e109","oracle_id":"ea5103f5-27e0-4eb1-902c-7f34652d6bf3","scryfall_uri":"https://scryfall.com/card/ltr/103/orcish-bowmasters","layout":"normal","mana_cost":"{1}{B}","type_line":"Creature — Orc Archer","image_small":"https://cards.scryfall.io/small/front/7/c/7c024bae-5631-4e20-ac69-df392ac9e109.jpg?1783916299","image_normal":"https://cards.scryfall.io/normal/front/7/c/7c024bae-5631-4e20-ac69-df392ac9e109.jpg?1783916299","image_art_crop":"https://cards.scryfall.io/art_crop/front/7/c/7c024bae-5631-4e20-ac69-df392ac9e109.jpg?1783916299","face_used":null},"Vito, Thorn of the Dusk Rose":{"name":"Vito, Thorn of the Dusk Rose","scryfall_id":"0fe79ee4-c3f3-4a6b-a967-203ca3b70ee5","oracle_id":"7336a541-3ae9-4ab2-acb8-f574c0a5b3a9","scryfall_uri":"https://scryfall.com/card/m21/127/vito-thorn-of-the-dusk-rose","layout":"normal","mana_cost":"{2}{B}","type_line":"Legendary Creature — Vampire Cleric","image_small":"https://cards.scryfall.io/small/front/0/f/0fe79ee4-c3f3-4a6b-a967-203ca3b70ee5.jpg?1783930698","image_normal":"https://cards.scryfall.io/normal/front/0/f/0fe79ee4-c3f3-4a6b-a967-203ca3b70ee5.jpg?1783930698","image_art_crop":"https://cards.scryfall.io/art_crop/front/0/f/0fe79ee4-c3f3-4a6b-a967-203ca3b70ee5.jpg?1783930698","face_used":null},"Bloodthirsty Conqueror":{"name":"Bloodthirsty Conqueror","scryfall_id":"ce860ed4-a5bd-4347-9eab-dd716ea84db1","oracle_id":"fd505c02-c59e-476d-8e88-35da862ddc23","scryfall_uri":"https://scryfall.com/card/fdn/58/bloodthirsty-conqueror","layout":"normal","mana_cost":"{3}{B}{B}","type_line":"Creature — Vampire Knight","image_small":"https://cards.scryfall.io/small/front/c/e/ce860ed4-a5bd-4347-9eab-dd716ea84db1.jpg?1783909112","image_normal":"https://cards.scryfall.io/normal/front/c/e/ce860ed4-a5bd-4347-9eab-dd716ea84db1.jpg?1783909112","image_art_crop":"https://cards.scryfall.io/art_crop/front/c/e/ce860ed4-a5bd-4347-9eab-dd716ea84db1.jpg?1783909112","face_used":null}}}</script>
+<script>
+(() => {
+  const data = JSON.parse(document.getElementById("data").textContent);
+  const cardData = JSON.parse(document.getElementById("cards").textContent);
+  const CARDS = cardData.cards || {};
+  const RECORD_CARDS = cardData.record_cards || {};
+  const RANKING_CARDS = cardData.ranking_cards || {};
+
+  // --- Player-facing vocabulary layered over the exact source labels -------
+  const finishAlias = { "Repeat-driven": "Repeat-driven engine", "Non-repeat": "Closes without a loop" };
+  const cashoutAlias = {
+    "Damage or life-total depletion": "Drain or Burn Them Out",
+    "Card-specific terminal condition": "The Card Says You Win",
+    "Poison or infect": "Poison Gets There",
+    "Library depletion": "Deck Them",
+    "Combat damage": "Win in Combat",
+    "Commander damage": "21 From the Commander",
+    "Multiple terminal paths": "More Than One Way Out",
+    "Source-implicit explicit terminal": "Source-Implicit Finish",
+  };
+  const cashoutExplain = {
+    "Damage or life-total depletion": "A life total hits zero — the bread-and-butter way lethal combos actually end.",
+    "Card-specific terminal condition": "A card's own text just hands you the game.",
+    "Poison or infect": "Ten poison counters get there, no life total required.",
+    "Library depletion": "The deck runs dry and the next draw is lethal.",
+    "Combat damage": "The finish has to connect on the battlefield.",
+    "Commander damage": "The 21-commander-damage rule closes it out.",
+    "Multiple terminal paths": "The line can end through more than one condition at once.",
+    "Source-implicit explicit terminal": "The source says someone loses — it just doesn't spell out the exact mechanism.",
+  };
+
+  // Per-combo, player-facing "what it feels like at the table" summary.
+  // Authored copy, grounded in each record's own source steps + current Oracle text.
+  const finishers = {
+    "690-3966": "One point of gained life turns the engine on: Sanguine Bond drains an opponent for it, Exquisite Blood pays you back the same amount, and the two enchantments keep feeding each other until an opponent's life total is gone.",
+    "742-1295": "Name a card you'll never find, let Demonic Consultation exile your whole library chasing it, then cast Thassa's Oracle into an empty deck — its enter trigger simply says you win the game.",
+    "1218-6714": "Give the enchanted attacker infect for the turn, connect once, and ten poison counters end the game — Super State copies that same lethal hit onto every other opponent at the same time.",
+    "2836-3093": "Tainted Pact exiles your deck one card at a time until nothing's left, so your next draw should lose you the game — but Laboratory Maniac quietly rewrites that into a win instead.",
+    "1879-3259-7358": "Every time the enchanted attacker connects, Breath of Fury hops onto a fresh body and hands you another combat phase; Maestros Diabolist keeps minting the attackers and Rising of the Day keeps them hasty, so the combats — and the damage — never stop.",
+    "1203-4567": "Pay 16 life to Fire Covenant and Greven swells to a 21/21 off all that lost life — then one unblocked swing is 21 commander damage, which is game over by itself.",
+    "6758-6804": "Requiem Monolith turns an opponent's creature into a liability — any damage it takes makes its controller draw and lose that many — then Dawnsire hits it for 100, decking and draining that player in the same instant, so it can close more than one way.",
+    "1561-5165": "Aim Peer into the Abyss at an opponent and they draw half their library while losing half their life; Ob Nixilis pings them once more for every one of those drawn cards, and between the draws and the life loss the game is over.",
+    "2199-4800": "Flip Frenetic Efreet's free coin as many times as you like — every win drops a luck counter on Chance Encounter, and once ten of them have landed, Chance Encounter hands you the game at your next upkeep.",
+    "3038-3858": "Colossification bolts +20/+20 onto a creature, and at your next upkeep Mayael's Aria looks at the board — a single creature with power 20 or more is all it needs to win you the game.",
+  };
+
+  // "Why it's here" — one concise, classification-grounded reason each record was
+  // chosen. Derived only from approved finish mode + terminal condition + flags;
+  // no mechanics are inferred beyond those labels.
+  const whyHere = {
+    "690-3966": "Classic repeat-driven drain engine",
+    "742-1295": "Clean card-text win",
+    "1218-6714": "Rare poison finish",
+    "2836-3093": "Library-depletion card-text win",
+    "1879-3259-7358": "Combat-loop example",
+    "1203-4567": "Rare commander-damage finish",
+    "6758-6804": "Multiple ways to close the game",
+    "1561-5165": "Source-implicit finish",
+    "2199-4800": "Repeat-driven, delayed source-implicit finish",
+    "3038-3858": "Delayed card-text win",
+  };
+
+  // --- Inline SVG icon set (no external assets) ----------------------------
+  const svg = (inner, opts) => `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"${opts || ''}>${inner}</svg>`;
+  const icons = {
+    repeat: svg('<path d="M4 9a8 8 0 0 1 13.4-3.4L20 8"/><path d="M20 3v5h-5"/><path d="M20 15a8 8 0 0 1-13.4 3.4L4 16"/><path d="M4 21v-5h5"/>'),
+    oneshot: svg('<path d="M13 2 4 14h6l-1 8 10-13h-7z" fill="currentColor" stroke="none"/>'),
+    check: svg('<path d="M20 6 9 17l-5-5"/>'),
+    cross: svg('<path d="M18 6 6 18M6 6l12 12"/>'),
+    "Damage or life-total depletion": svg('<path d="M12 3c2.2 3 5 4.6 5 8.5A5 5 0 0 1 7 12c0-1.6.8-2.8 1.8-3.6.2 1.6 1 2.4 1.7 2.6C10.6 8.8 10 6.6 12 3z" fill="currentColor" stroke="none"/>'),
+    "Card-specific terminal condition": svg('<path d="M7 4h10v3a5 5 0 0 1-10 0z"/><path d="M7 5H5a2 2 0 0 0 2.4 3M17 5h2a2 2 0 0 1-2.4 3"/><path d="M12 12v3M9 20h6M9.5 20l.5-3h4l.5 3"/>'),
+    "Poison or infect": svg('<path d="M12 3s5.5 6.4 5.5 10a5.5 5.5 0 0 1-11 0C6.5 9.4 12 3 12 3z"/>'),
+    "Library depletion": svg('<rect x="5" y="4" width="9" height="12" rx="1"/><path d="M14 6h5v14H8v-3"/>'),
+    "Combat damage": svg('<path d="M4 5l10 10M5 4l10 10"/><path d="M20 4l-4 4M14 14l4 4-2 2-4-4"/>'),
+    "Commander damage": svg('<path d="M4 8l3.5 9h9L20 8l-4.5 3.5L12 5 8.5 11.5z"/>'),
+    "Multiple terminal paths": svg('<path d="M12 21v-6"/><path d="M12 15c0-4-5-3-5-7V4M12 15c0-4 5-3 5-7V4"/><circle cx="7" cy="4" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="4" r="1.4" fill="currentColor" stroke="none"/>'),
+    "Source-implicit explicit terminal": svg('<circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5a2.5 2.5 0 0 1 4 1.9c0 1.6-2 1.7-2 3.1"/><circle cx="11.5" cy="17.4" r=".7" fill="currentColor" stroke="none"/>'),
+    spellbook: svg('<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5z"/><path d="M9 8h6M9 11h5"/>'),
+    external: svg('<path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/>'),
+    compare: svg('<path d="M12 3v18"/><path d="M8 20h8"/><path d="M5 4l-2.5 5h5zM2.5 9a2.5 2.5 0 0 0 5 0"/><path d="M19 4l-2.5 5h5zM16.5 9a2.5 2.5 0 0 0 5 0"/><path d="M6 4h12"/>'),
+    tally: svg('<path d="M4 5v14M9 5v14M14 5v14M19 5v14"/><path d="M2 12h20"/>'),
+  };
+  const cashoutColorVar = {
+    "Damage or life-total depletion": "--damage",
+    "Card-specific terminal condition": "--cardspecific",
+    "Poison or infect": "--poison",
+    "Library depletion": "--library",
+    "Combat damage": "--combat",
+    "Commander damage": "--commander",
+    "Multiple terminal paths": "--multiple",
+    "Source-implicit explicit terminal": "--implicit",
+  };
+
+  const el = id => document.getElementById(id);
+  const heroFigure = el("heroFigure"), cmpGrid = el("cmpGrid"), behaviorCallout = el("behaviorCallout"), terminalFilters = el("terminalFilters"),
+    cashoutGrid = el("cashoutGrid"), storyGrid = el("storyGrid"), rankingGroups = el("rankingGroups"), recordsGrid = el("recordsGrid"),
+    search = el("search"), modeFilter = el("modeFilter"),
+    terminalFilter = el("terminalFilter"), resetFilters = el("resetFilters");
+
+  // --- In-page Commander Spellbook preview (progressive enhancement) -------
+  const spellbookModal = el("spellbookModal"), spellbookModalTitle = el("spellbookModalTitle"),
+    spellbookModalOpenTab = document.querySelector(".sb-modal-open-tab"),
+    spellbookModalClose = document.querySelector(".sb-modal-close"),
+    spellbookModalNoteLink = document.querySelector(".sb-modal-note-link"),
+    spellbookFrame = document.querySelector(".sb-modal-frame"),
+    spellbookStatus = document.querySelector(".sb-modal-status");
+  let sbTriggerEl = null;
+
+  function openSpellbookPreview(variantId, title, triggerEl) {
+    const url = spellbookUrl(variantId);
+    if (!url) return; // malformed IDs never reach the iframe or the modal (defensive guard; embedded data is always valid)
+
+    sbTriggerEl = triggerEl || null;
+    spellbookModalTitle.textContent = title;
+    spellbookFrame.title = "Commander Spellbook preview: " + title;
+    [spellbookModalOpenTab, spellbookModalNoteLink].forEach(a => { a.href = url; });
+    spellbookFrame.hidden = true;
+    spellbookStatus.hidden = false;
+    // Open the dialog BEFORE assigning src — a fast/cached response could
+    // otherwise fire 'load' before spellbookModal.open is true, and the load
+    // handler's guard below would then keep it hidden.
+    spellbookModal.showModal();
+    spellbookFrame.src = url;
+  }
+  spellbookFrame.addEventListener("load", () => {
+    // The about:blank reset on close fires its own 'load' event — ignore it,
+    // and ignore any load landing after the dialog has already closed.
+    if (!spellbookModal.open || spellbookFrame.getAttribute("src") === "about:blank") return;
+    spellbookStatus.hidden = true;
+    spellbookFrame.hidden = false;
+  });
+  function cleanupSpellbookModal() {
+    spellbookFrame.src = "about:blank"; // stop the embedded page, prevent a stale flash on next open
+    spellbookFrame.hidden = true;
+    spellbookStatus.hidden = false;
+    sbTriggerEl?.focus(); // restore focus to whatever opened it
+  }
+  // Wired both ways: the 'close' event covers Escape-key dismissal, and the
+  // close button calls the same cleanup directly rather than trusting the
+  // event alone (idempotent either way — running it twice is harmless).
+  spellbookModal.addEventListener("close", cleanupSpellbookModal);
+  spellbookModalClose.addEventListener("click", () => { spellbookModal.close(); cleanupSpellbookModal(); });
+
+  // Cash-out is now filtered by finish mode (the interesting behavioral cut),
+  // not by lethal class. Each filter carries its own denominator + takeaway.
+  const finishFilters = {
+    all: { label: "All finishes", denomLabel: "all 15,107 lethal lines",
+      takeaway: "Every documented lethal line, grouped by how it actually ends." },
+    "Repeat-driven": { label: "Repeat-driven engines", denomLabel: "12,301 repeat-driven lines",
+      takeaway: "Once a line becomes a loop, it almost always grinds down a life total." },
+    "Non-repeat": { label: "Closes without a loop", denomLabel: "2,806 non-repeat lines",
+      takeaway: "Alternative endings live outside the loop. One-third of non-repeat finishes come from a card-specific win or loss condition, compared with almost none of the repeat-driven population." },
+  };
+
+  let activeView = "all";
+  // No record is selected on load — the detail panel starts in its prompt state
+  // and only opens once the reader chooses a finisher.
+  let selectedRecord = null;
+
+  const getCss = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt = n => Number(n).toLocaleString();
+  const pct = n => Number(n).toFixed(2) + "%";
+  const esc = v => String(v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const cashColor = t => getCss(cashoutColorVar[t] || "--gold");
+
+  function spellbookUrl(id) {
+    // Fail closed, no throw: IDs come from trusted embedded records, not user
+    // input, but this stays defensive without ever creating an uncaught
+    // exception (would violate the zero-console-error bar).
+    if (!/^\d+(?:-\d+)*$/.test(id)) return null;
+    return "https://commanderspellbook.com/combo/" + id + "/";
+  }
+  function recordCardNames(id) {
+    if (RECORD_CARDS[id]) return RECORD_CARDS[id];
+    if (RANKING_CARDS[id]) return RANKING_CARDS[id];
+    const r = data.records.find(x => x.variant_id === id);
+    return r ? r.display_title.split(" + ") : [];
+  }
+
+  // --- Hero: the one dominant 81.43% figure --------------------------------
+  function renderHeroFigure() {
+    const h = data.headline;
+    heroFigure.innerHTML = `
+      <div class="hf-pct">${pct(h.repeat_pct)}</div>
+      <div class="hf-label">of documented lethal lines end on repeat — an engine, not one final move.</div>
+      <div class="hf-bar" role="img" aria-label="Repeat-driven engine ${pct(h.repeat_pct)}, closes without a loop ${pct(h.nonrepeat_pct)}">
+        <span class="seg-repeat" style="width:${h.repeat_pct}%"></span>
+        <span class="seg-oneshot" style="width:${h.nonrepeat_pct}%"></span>
+      </div>
+      <div class="hf-count">${fmt(h.repeat_total)} of ${fmt(data.total)} documented lethal variants</div>`;
+  }
+
+  // --- Section 1: the one complete repeat-vs-non-repeat comparison ----------
+  function renderComparison() {
+    const h = data.headline;
+    const fbc = data.finish_by_class;
+    const pair = klass => {
+      const rep = fbc.find(r => r.lethal_class === klass && r.finish_mode === "Repeat-driven");
+      const non = fbc.find(r => r.lethal_class === klass && r.finish_mode === "Non-repeat");
+      return {
+        total: Number(rep.combo_count) + Number(non.combo_count),
+        repPct: rep.share_within_lethal_class, repCount: rep.combo_count,
+        nonPct: non.share_within_lethal_class, nonCount: non.combo_count,
+      };
+    };
+    const rows = [
+      { name: "All lethal lines", featured: true,
+        total: data.total, repPct: h.repeat_pct, repCount: h.repeat_total,
+        nonPct: h.nonrepeat_pct, nonCount: h.nonrepeat_total },
+      { name: "Explicit Ending Lines", note: "These records explicitly say that someone wins or loses.",
+        ...pair("Contains explicit terminal result") },
+      { name: "Damage & life-loss lines", ...pair("Infinite damage or life loss without terminal label") },
+    ];
+    cmpGrid.innerHTML = rows.map(r => `
+      <article class="cmp-row${r.featured ? " is-featured" : ""}">
+        <div class="cmp-head">
+          <div>
+            <h3>${esc(r.name)}</h3>
+            ${r.note ? `<p class="cmp-note">${esc(r.note)}</p>` : ""}
+          </div>
+          <span class="cmp-total">${fmt(r.total)} combos</span>
+        </div>
+        <div class="cmp-bar" role="img" aria-label="${esc(r.name)}: repeat-driven engine ${pct(r.repPct)}, closes without a loop ${pct(r.nonPct)}">
+          <span class="seg-repeat" style="width:${r.repPct}%"></span>
+          <span class="seg-oneshot" style="width:${r.nonPct}%"></span>
+        </div>
+        <div class="cmp-values">
+          <div class="cmp-val">
+            <span class="cmp-dot" style="background:${getCss("--repeat")}"></span><b>${pct(r.repPct)}</b>Repeat-driven engine
+            <span class="cmp-src">source: Repeat-driven · ${fmt(r.repCount)} combos</span>
+          </div>
+          <div class="cmp-val">
+            <span class="cmp-dot" style="background:${getCss("--nonrepeat")}"></span><b>${pct(r.nonPct)}</b>Closes without a loop
+            <span class="cmp-src">source: Non-repeat · ${fmt(r.nonCount)} combos</span>
+          </div>
+        </div>
+      </article>`).join("");
+  }
+
+  // --- Section 1b: behavioral tradeoff callout (damage/life-loss lines) -----
+  function renderBehaviorCallout() {
+    const b = data.behavior["Infinite damage or life loss without terminal label"];
+    const rep = b["Repeat-driven"], non = b["Non-repeat"];
+    // Descriptive tradeoff only — no causal claim. Each metric shows which mode
+    // carries "more" so the reader sees the setup bill, not a single score.
+    const metrics = [
+      { label: "Startup mana from the documented state", rep: rep.average_startup_mana, non: non.average_startup_mana, more: "non", fmt: v => v.toFixed(2) },
+      { label: "Cards in the combo", rep: rep.average_card_count, non: non.average_card_count, more: "rep", fmt: v => v.toFixed(2) },
+      { label: "Visible setup pieces", rep: rep.average_visible_setup_pieces, non: non.average_visible_setup_pieces, more: "rep", fmt: v => v.toFixed(2) },
+      { label: "Description lines (procedure length)", rep: rep.average_description_lines, non: non.average_description_lines, more: "rep", fmt: v => v.toFixed(2) },
+    ];
+    behaviorCallout.innerHTML = `
+      <div class="bc-head">
+        <span class="bc-icon">${icons.compare}</span>
+        <h3>The loop is cheaper to start because more of the machine is already built.</h3>
+      </div>
+      <p class="bc-lead">Repeat-driven damage engines need less mana from the documented starting state, but they usually ask for more cards, more visible setup, and a longer procedure. The final activation looks cheap because the setup bill was already paid.</p>
+      <div class="bc-grid">
+        <div class="bc-col-head"></div>
+        <div class="bc-col-head bc-rep">Repeat-driven engine</div>
+        <div class="bc-col-head bc-non">Closes without a loop</div>
+        ${metrics.map(m => `
+          <div class="bc-metric">${esc(m.label)}</div>
+          <div class="bc-val${m.more === "rep" ? " bc-more" : ""}">${m.fmt(m.rep)}</div>
+          <div class="bc-val${m.more === "non" ? " bc-more" : ""}">${m.fmt(m.non)}</div>`).join("")}
+        <div class="bc-metric">Popularity at 0 or 1 deck</div>
+        <div class="bc-val">${pct(rep.low_popularity_percentage)}</div>
+        <div class="bc-val">${pct(non.low_popularity_percentage)}</div>
+      </div>
+      <p class="bc-caveat">Startup mana is measured from the documented starting state, not from an empty battlefield. These are averages across ${fmt(rep.combo_count)} repeat-driven and ${fmt(non.combo_count)} non-repeat damage/life-loss lines; the arrows describe a tradeoff, not a cause.</p>`;
+  }
+
+  // --- Section 2: cash-out categories -------------------------------------
+  function renderFilters() {
+    terminalFilters.innerHTML = "";
+    Object.keys(finishFilters).forEach(k => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = k === activeView ? "active" : "";
+      b.setAttribute("aria-pressed", String(k === activeView));
+      b.textContent = finishFilters[k].label;
+      b.addEventListener("click", () => { activeView = k; renderFilters(); renderCashout(); });
+      terminalFilters.appendChild(b);
+    });
+  }
+  function cashoutRows() {
+    if (activeView === "all") return data.terminal_all;
+    return data.terminal_by_finish_mode[activeView];
+  }
+  function cashoutCardHTML(r, tier, max) {
+    const t = r.terminal_condition;
+    const share = activeView === "all" ? r.share_of_all_lethal : r.share_within_finish_mode;
+    const color = cashColor(t);
+    return `
+      <article class="cashout-card cashout-${tier}" style="border-left-color:${color}">
+        <div class="cashout-icon" style="color:${color}">${icons[t] || icons["Source-implicit explicit terminal"]}</div>
+        <div>
+          <div class="cashout-head">
+            <div>
+              <div class="cashout-alias">${esc(cashoutAlias[t] || t)}</div>
+              <div class="cashout-exact">source label: ${esc(t)}</div>
+            </div>
+            <div class="cashout-count">${fmt(r.combo_count)} · ${pct(share)}</div>
+          </div>
+          <p class="cashout-explain">${esc(cashoutExplain[t] || "")}</p>
+          <div class="cashout-track"><div class="cashout-fill" style="width:${(Number(r.combo_count) / max) * 100}%; background:${color}"></div></div>
+        </div>
+      </article>`;
+  }
+  function renderCashout() {
+    // Sorted by size so tier follows the data: rank 0 = dominant finish,
+    // rank 1 = major alternative, everything else = a compact rare rail.
+    // Zero-count categories are kept so a reader can see one vanish under a filter.
+    const cfg = finishFilters[activeView];
+    const rows = cashoutRows().slice().sort((a, b) => b.combo_count - a.combo_count);
+    const max = Math.max(1, ...rows.map(r => Number(r.combo_count)));
+    const dominant = rows[0] ? cashoutCardHTML(rows[0], "dominant", max) : "";
+    const major = rows[1] ? cashoutCardHTML(rows[1], "major", max) : "";
+    const rare = rows.slice(2).map(r => cashoutCardHTML(r, "rare", max)).join("");
+    const context = `<div class="cashout-context">
+        <p class="cashout-takeaway">${esc(cfg.takeaway)}</p>
+        <p class="cashout-denom">Percentages are shares of ${esc(cfg.denomLabel)}.</p>
+      </div>`;
+    cashoutGrid.innerHTML = context + `${dominant}${major}` +
+      (rare ? `<p class="cashout-rail-label">Rare finishes</p><div class="cashout-rail">${rare}</div>` : "");
+  }
+
+  // --- Section 3: story cards ---------------------------------------------
+  // Four genuinely different hidden stories — a share, a behavioral tradeoff,
+  // a mode-vs-mode contrast, and an edge case. No repeat of 81.43/92.52/86.39,
+  // and no artificial 997-vs-548 grouping.
+  // Each sub-metric gets its own shared scale (not summed to 100%, which would
+  // read as a false part-to-whole share) and a visible text label per series —
+  // not color alone — so the comparison survives grayscale and reaches screen readers.
+  function pairBarHTML(label, repVal, nonVal) {
+    const maximum = Math.max(repVal, nonVal) || 1;
+    const repWidth = (repVal / maximum) * 100;
+    const nonWidth = (nonVal / maximum) * 100;
+    return `
+      <div class="st-pairbar">
+        <div class="st-pairbar-label">${esc(label)}</div>
+        <div class="st-pairbar-row st-pairbar-rep">
+          <span class="st-pairbar-series">Repeat-driven</span>
+          <span class="st-pairbar-track" aria-hidden="true"><i style="width:${repWidth}%"></i></span>
+          <b>${repVal.toFixed(2)}</b>
+        </div>
+        <div class="st-pairbar-row st-pairbar-non">
+          <span class="st-pairbar-series">Closes without a loop</span>
+          <span class="st-pairbar-track" aria-hidden="true"><i style="width:${nonWidth}%"></i></span>
+          <b>${nonVal.toFixed(2)}</b>
+        </div>
+      </div>`;
+  }
+
+  function renderStoryCards() {
+    const total = data.total;
+    const commander = Number(data.terminal_all.find(r => r.terminal_condition === "Commander damage").combo_count); // 8
+    const explicitTotal = data.headline.explicit_total;              // 2,124
+    const explicitPct = 100 * explicitTotal / total;                 // 14.06
+    const dmg = data.behavior["Infinite damage or life loss without terminal label"];
+    const rep = dmg["Repeat-driven"], non = dmg["Non-repeat"];
+    const tbf = data.terminal_by_finish_mode;
+    const cs = mode => tbf[mode].find(r => r.terminal_condition === "Card-specific terminal condition").share_within_finish_mode;
+
+    const cards = [
+      { type: "single", icon: icons["Card-specific terminal condition"], num: pct(explicitPct), meter: explicitPct,
+        head: "Only about one in seven lethal lines has an explicit ending.",
+        body: "Most lethal records describe what the engine produces rather than separately saying that someone wins or loses.",
+        context: fmt(explicitTotal) + " of " + fmt(total) + " documented lethal variants" },
+      { type: "contrast", icon: icons.compare,
+        head: "Loops look cheap because the machine is already built.",
+        repVal: rep.average_startup_mana.toFixed(2), nonVal: non.average_startup_mana.toFixed(2), unit: "mana",
+        subrows: [
+          ["Cards involved", rep.average_card_count, non.average_card_count],
+          ["Visible setup pieces", rep.average_visible_setup_pieces, non.average_visible_setup_pieces],
+          ["Description lines", rep.average_description_lines, non.average_description_lines],
+        ],
+        body: "The loop needs less remaining mana, but more of its setup is already sitting on the table.",
+        context: "Damage & life-loss lines · startup mana from the documented state" },
+      { type: "contrast", icon: icons["Card-specific terminal condition"],
+        head: "Card-text wins live outside the loop.",
+        repVal: pct(cs("Repeat-driven")), nonVal: pct(cs("Non-repeat")), unit: "",
+        body: "Alternative “the card says you win” endings are mostly clean conclusions, not recursive engines.",
+        context: "Card-specific terminal conditions, as a share of each finish mode" },
+      { type: "single", icon: icons["Commander damage"], num: fmt(commander) + " variants", meter: 4, small: true,
+        head: "Commander damage barely appears as the recorded finish.",
+        body: "The 21-damage rule is a tiny, memorable edge case in this lethal-combo population.",
+        context: fmt(commander) + " of " + fmt(total) + " variants" },
+    ];
+    storyGrid.innerHTML = "";
+    cards.forEach(c => {
+      const a = document.createElement("article");
+      a.className = "story-card";
+      if (c.type === "single") {
+        a.innerHTML = `
+          <span class="st-icon">${c.icon}</span>
+          <div class="st-num${c.small ? " small" : ""}">${c.num}</div>
+          <div class="st-head">${c.head}</div>
+          <div class="st-body">${c.body}</div>
+          <div class="st-context">${c.context}</div>
+          <div class="st-meter" role="img" aria-label="${c.num}"><i style="width:${Math.max(4, c.meter)}%"></i></div>`;
+      } else {
+        const u = c.unit ? " " + c.unit : "";
+        a.innerHTML = `
+          <span class="st-icon">${c.icon}</span>
+          <div class="st-head">${c.head}</div>
+          <div class="st-contrast" role="img" aria-label="Repeat-driven ${c.repVal}${u} versus non-repeat ${c.nonVal}${u}">
+            <div class="st-c-col st-c-rep"><strong>${c.repVal}</strong><span>Repeat-driven${u}</span></div>
+            <div class="st-c-vs">vs</div>
+            <div class="st-c-col st-c-non"><strong>${c.nonVal}</strong><span>Non-repeat${u}</span></div>
+          </div>
+          ${c.subrows ? c.subrows.map(([label, repN, nonN]) => pairBarHTML(label, repN, nonN)).join("") : ""}
+          <div class="st-body">${c.body}</div>
+          <div class="st-context">${c.context}</div>`;
+      }
+      storyGrid.appendChild(a);
+    });
+  }
+
+  // --- Section 3b: Most Popular Spellbook Lines ---------------------------
+  function rankingRowHTML(row, rank) {
+    const title = recordCardNames(row.variant_id).join(" + ");
+    const color = cashColor(row.terminal_condition);
+    return `
+      <li class="rank-item" style="border-left-color:${color}">
+        <span class="rank-num">${rank}</span>
+        <div class="rank-thumbs">${thumbStrip(row.variant_id, "rank-thumb", 44, 61)}</div>
+        <div class="rank-body">
+          <h4>${esc(title)}</h4>
+          <div class="rank-meta">
+            <span class="badge">${icons[row.finish_mode === "Repeat-driven" ? "repeat" : "oneshot"]} ${esc(finishAlias[row.finish_mode])}</span>
+            <span class="badge">${icons[row.terminal_condition] || ""} ${esc(cashoutAlias[row.terminal_condition] || row.terminal_condition)}</span>
+          </div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-pop"><strong>${fmt(row.popularity)}</strong><span>Spellbook popularity</span></div>
+          <a class="rank-link spellbook-preview-link" data-variant-id="${esc(row.variant_id)}" data-title="${esc(title)}" href="${esc(spellbookUrl(row.variant_id) || "")}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(title)} on Commander Spellbook in a new tab">Spellbook <span class="ext-cue">${icons.external}</span></a>
+        </div>
+      </li>`;
+  }
+  function wireSpellbookPreviewLinks(scope) {
+    // Progressive enhancement: keep the real <a> (native middle-click,
+    // Ctrl/Cmd-click, long-press-to-copy, right-click all keep working) and
+    // only intercept a plain, unmodified left click to open the in-page preview.
+    scope.querySelectorAll(".spellbook-preview-link[data-variant-id]").forEach(link => {
+      link.addEventListener("click", (e) => {
+        const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
+        if (modified) return;
+        e.preventDefault();
+        openSpellbookPreview(link.getAttribute("data-variant-id"), link.getAttribute("data-title"), link);
+      });
+    });
+  }
+  function renderRanking() {
+    const r = data.ranking;
+    const groups = [
+      { name: "Explicit ending lines", rows: r.explicit },
+      { name: "Damage & life-loss lines", rows: r.damage },
+    ];
+    rankingGroups.innerHTML = groups.map(g => `
+      <div class="rank-group">
+        <h3 class="rank-group-title">${esc(g.name)}</h3>
+        <ol class="rank-list">${g.rows.map((row, i) => rankingRowHTML(row, i + 1)).join("")}</ol>
+      </div>`).join("") + `<p class="rank-caveat">${esc(r.caveat)}</p>`;
+    wireImageFallbacks(rankingGroups);
+    wireSpellbookPreviewLinks(rankingGroups);
+  }
+
+  // --- Section 4: records --------------------------------------------------
+  function accentFor(r) { return cashColor(r.terminal_condition); }
+
+  function thumbStrip(id, cls, w, hgt) {
+    return recordCardNames(id).map(name => {
+      const c = CARDS[name];
+      const src = c && c.image_small ? c.image_small : "";
+      return `<img class="${cls}" src="${esc(src)}" width="${w}" height="${hgt}" loading="lazy" alt="${esc(name)}" data-cardname="${esc(name)}">`;
+    }).join("");
+  }
+  function scryFan(id) {
+    return recordCardNames(id).map(name => {
+      const c = CARDS[name];
+      const src = c && c.image_normal ? c.image_normal : "";
+      const uri = c && c.scryfall_uri ? c.scryfall_uri : "https://scryfall.com/search?q=" + encodeURIComponent("!\"" + name + "\"");
+      // The link carries the full accessible name; the image sits next to a
+      // visible card-name label, so its alt is empty to avoid a screen reader
+      // announcing the same card name twice.
+      return `<a class="scry-card" href="${esc(uri)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(name)} on Scryfall in a new tab">
+        <img src="${esc(src)}" width="120" height="167" loading="lazy" alt="" data-cardname="${esc(name)}">
+        <span class="scry-name">${esc(name)} <span class="ext-cue">${icons.external}</span></span>
+      </a>`;
+    }).join("");
+  }
+
+  function filteredRecords() {
+    const q = search.value.trim().toLowerCase();
+    const mode = modeFilter.value, term = terminalFilter.value;
+    return data.records.filter(r => {
+      const hay = `${r.display_title} ${r.display_results} ${r.terminal_condition} ${cashoutAlias[r.terminal_condition] || ""} ${finishers[r.variant_id] || ""}`.toLowerCase();
+      return (!q || hay.includes(q)) && (mode === "all" || r.approved_finish_mode === mode) && (term === "all" || r.terminal_condition === term);
+    });
+  }
+
+  function wireImageFallbacks(scope) {
+    scope.querySelectorAll("img[data-cardname]").forEach(img => {
+      img.addEventListener("error", function handler() {
+        img.removeEventListener("error", handler);
+        // <img> can't hold text, so swap it for a same-sized element that
+        // shows the card name — keeps layout stable and stays readable.
+        const ph = document.createElement("span");
+        ph.className = (img.className ? img.className + " " : "") + "thumb-broken";
+        ph.style.width = img.getAttribute("width") + "px";
+        ph.style.height = img.getAttribute("height") + "px";
+        ph.textContent = img.getAttribute("data-cardname") + " (image unavailable)";
+        img.replaceWith(ph);
+      });
+    });
+  }
+
+  // How many columns the records grid currently renders (2 desktop, 1 mobile).
+  function columnsInGrid(gridEl) {
+    return Math.max(1, getComputedStyle(gridEl).gridTemplateColumns.split(" ").filter(Boolean).length);
+  }
+  let pendingDossierScroll = false;
+
+  function closeDossier() {
+    const previousId = selectedRecord;
+    selectedRecord = null;
+    renderRecords(); // rebuilds the DOM synchronously — the card is already focusable by the time this returns
+    // Return keyboard focus to the card that was open, rather than dropping
+    // it to <body> once the dossier (and its close button) are removed.
+    document.querySelector(`[data-variant-id="${CSS.escape(previousId)}"]`)?.focus();
+  }
+
+  function renderRecords() {
+    const rows = filteredRecords();
+    recordsGrid.innerHTML = "";
+    if (!rows.length) {
+      selectedRecord = null;
+      recordsGrid.innerHTML = `<div class="empty-state"><div><strong>No finishers matched</strong><p>Clear the search or reset the filters.</p></div></div>`;
+      return;
+    }
+    // If a filter removed the selected record, drop back to the prompt state
+    // rather than silently jumping the selection to a different combo.
+    if (selectedRecord && !rows.some(r => r.variant_id === selectedRecord)) selectedRecord = null;
+
+    rows.forEach(r => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "record";
+      b.style.setProperty("--accent", accentFor(r));
+      b.setAttribute("aria-selected", String(r.variant_id === selectedRecord));
+      b.setAttribute("data-variant-id", r.variant_id);
+      b.innerHTML = `
+        <div class="badges">
+          <span class="badge">${icons[r.approved_finish_mode === "Repeat-driven" ? "repeat" : "oneshot"]} ${esc(finishAlias[r.approved_finish_mode])}</span>
+          <span class="badge">${icons[r.terminal_condition] || ""} ${esc(cashoutAlias[r.terminal_condition] || r.terminal_condition)}</span>
+          ${Number(r.delayed_gate_flag) ? '<span class="badge">Delayed</span>' : ''}
+          ${Number(r.combat_gate_flag) ? '<span class="badge">Combat</span>' : ''}
+        </div>
+        <div class="thumb-strip">${thumbStrip(r.variant_id, "card-thumb", 92, 128)}</div>
+        <h3>${esc(r.display_title)}</h3>
+        <p class="why-here">${icons.check}${esc(whyHere[r.variant_id] || "")}</p>
+        <p class="at-table-label">At the table</p>
+        <p class="finisher">${esc(finishers[r.variant_id] || r.display_results)}</p>`;
+      b.addEventListener("click", () => { selectedRecord = r.variant_id; pendingDossierScroll = true; renderRecords(); });
+      recordsGrid.appendChild(b);
+    });
+    wireImageFallbacks(recordsGrid);
+
+    // Inline dossier: insert it right after the selected card's row so the
+    // reader never has to scroll past the whole grid to reach the detail.
+    // Nothing renders here when unselected — the grid itself is self-explanatory.
+    if (selectedRecord) insertInlineDossier(rows);
+  }
+
+  function insertInlineDossier(rows) {
+    const selIdx = rows.findIndex(r => r.variant_id === selectedRecord);
+    if (selIdx < 0) return;
+    const cardEls = [...recordsGrid.querySelectorAll(".record")];
+    const cols = columnsInGrid(recordsGrid);
+    const rowEnd = Math.min(rows.length - 1, selIdx - (selIdx % cols) + (cols - 1));
+    const dossier = document.createElement("div");
+    dossier.className = "record-dossier";
+    dossier.innerHTML = dossierInnerHTML(rows[selIdx]);
+    cardEls[rowEnd].after(dossier);
+    wireImageFallbacks(dossier);
+    wireSpellbookPreviewLinks(dossier);
+    dossier.querySelector(".dossier-close").addEventListener("click", closeDossier);
+    if (pendingDossierScroll) {
+      pendingDossierScroll = false;
+      const h = dossier.querySelector("h2");
+      if (h) {
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        h.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+      }
+    }
+  }
+
+  function dossierInnerHTML(r) {
+    return `
+      <button type="button" class="dossier-close" aria-label="Close details for this combo"><span aria-hidden="true">×</span></button>
+      <div class="detail-top">
+        <div class="detail-fan">${scryFan(r.variant_id)}</div>
+        <div class="detail-body">
+          <p class="eyebrow" style="text-align:left">${esc(finishAlias[r.approved_finish_mode])} · ${esc(cashoutAlias[r.terminal_condition] || r.terminal_condition)}</p>
+          <h2>${esc(r.display_title)}</h2>
+          <p class="why-here">${icons.check}${esc(whyHere[r.variant_id] || "")}</p>
+          <p class="at-table-label">At the table</p>
+          <p class="finisher">${esc(finishers[r.variant_id] || "")}</p>
+          <p class="result-line"><strong style="color:var(--gold)">Result:</strong> ${esc(r.display_results)}</p>
+          <div class="detail-metrics">
+            <div><strong>${fmt(r.popularity)}</strong><span>Spellbook popularity</span></div>
+            <div><strong>${r.card_count}</strong><span>Cards in the combo</span></div>
+            <div><strong>${esc(cashoutAlias[r.terminal_condition] || r.terminal_condition)}</strong><span>${esc(r.terminal_condition)}</span></div>
+            <div><strong>${Number(r.delayed_gate_flag) ? "Delayed" : Number(r.combat_gate_flag) ? "Combat" : "Immediate"}</strong><span>Timing note</span></div>
+          </div>
+          <details>
+            <summary>Show the full combo line (Commander Spellbook source text)</summary>
+            <pre>${esc(r.description)}</pre>
+          </details>
+          <div class="detail-actions">
+            <a class="spellbook-cta spellbook-preview-link" data-variant-id="${esc(r.variant_id)}" data-title="${esc(r.display_title)}" href="${esc(spellbookUrl(r.variant_id) || "")}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(r.display_title)} on Commander Spellbook (opens in a new tab)">
+              <span class="sb-icon">${icons.spellbook}</span>
+              <span><strong>Open the Spellbook <span class="ext-cue">${icons.external}</span></strong><span>Full steps, prerequisites, results, and metadata</span></span>
+            </a>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function fillTerminalRecordFilter() {
+    [...new Set(data.records.map(r => r.terminal_condition))].forEach(v => {
+      const o = document.createElement("option");
+      o.value = v;
+      o.textContent = (cashoutAlias[v] || v);
+      terminalFilter.appendChild(o);
+    });
+  }
+  function resetRecordFilters() {
+    search.value = ""; modeFilter.value = "all"; terminalFilter.value = "all";
+    selectedRecord = null;
+    renderRecords();
+  }
+
+  fillTerminalRecordFilter();
+  renderHeroFigure();
+  renderComparison();
+  renderBehaviorCallout();
+  renderFilters();
+  renderCashout();
+  renderStoryCards();
+  renderRanking();
+  renderRecords();
+
+  // static claim-panel icons
+  document.querySelectorAll('.claim-panel [data-icon]').forEach(s => { s.innerHTML = icons[s.getAttribute('data-icon')] || ''; });
+
+  search.addEventListener("input", renderRecords);
+  modeFilter.addEventListener("change", renderRecords);
+  terminalFilter.addEventListener("change", renderRecords);
+  resetFilters.addEventListener("click", resetRecordFilters);
+
+  const allSectionBlocks = () => [...document.querySelectorAll("main > details.block")];
+  document.getElementById("expandAllSections").addEventListener("click", () => {
+    allSectionBlocks().forEach(d => { d.open = true; });
+  });
+  document.getElementById("collapseAllSections").addEventListener("click", () => {
+    allSectionBlocks().forEach(d => { d.open = false; });
+  });
+
+  // Shelf-card-style hover lift on each section's summary bar, driven by JS
+  // rather than a `:has(> summary:hover)` selector so it doesn't depend on
+  // that relational-hover invalidation working correctly everywhere.
+  allSectionBlocks().forEach(block => {
+    const summary = block.querySelector(":scope > summary");
+    const on = () => block.classList.add("section-hover");
+    const off = () => block.classList.remove("section-hover");
+    summary.addEventListener("mouseenter", on);
+    summary.addEventListener("mouseleave", off);
+    summary.addEventListener("focus", on);
+    summary.addEventListener("blur", off);
+  });
+
+  // Reposition the inline dossier when the column count changes on resize.
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { if (selectedRecord) renderRecords(); }, 150);
+  });
+})();
+</script>
+</body>
+</html>

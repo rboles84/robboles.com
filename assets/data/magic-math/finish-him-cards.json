@@ -1,0 +1,395 @@
+{
+  "_meta": {
+    "source": "Scryfall API (api.scryfall.com/cards/named?exact=...)",
+    "retrieved": "2026-07-19",
+    "unique_cards": 24,
+    "matched": 24,
+    "failures": [],
+    "dfc_split_fallbacks": [],
+    "note": "Runtime uses image_small/image_normal from the Scryfall image CDN; no runtime API calls. Rerun this script and re-embed into magic-math/finish-him/index.html to refresh.",
+    "ranking_cards_note": "ranking_cards + 3 added card entries (Orcish Bowmasters, Vito Thorn of the Dusk Rose, Bloodthirsty Conqueror) support the Most Popular Spellbook Lines strip; not part of the 10 analytical representative records."
+  },
+  "record_cards": {
+    "690-3966": [
+      "Sanguine Bond",
+      "Exquisite Blood"
+    ],
+    "742-1295": [
+      "Demonic Consultation",
+      "Thassa's Oracle"
+    ],
+    "1218-6714": [
+      "Super State",
+      "Tainted Strike"
+    ],
+    "2836-3093": [
+      "Tainted Pact",
+      "Laboratory Maniac"
+    ],
+    "1879-3259-7358": [
+      "Breath of Fury",
+      "Rising of the Day",
+      "Maestros Diabolist"
+    ],
+    "1203-4567": [
+      "Greven, Predator Captain",
+      "Fire Covenant"
+    ],
+    "6758-6804": [
+      "Requiem Monolith",
+      "Dawnsire, Sunstar Dreadnought"
+    ],
+    "1561-5165": [
+      "Ob Nixilis, the Hate-Twisted",
+      "Peer into the Abyss"
+    ],
+    "2199-4800": [
+      "Frenetic Efreet",
+      "Chance Encounter"
+    ],
+    "3038-3858": [
+      "Mayael's Aria",
+      "Colossification"
+    ]
+  },
+  "cards": {
+    "Sanguine Bond": {
+      "name": "Sanguine Bond",
+      "scryfall_id": "ad4de9f1-7a39-45af-828e-c59234d9e9b9",
+      "oracle_id": "73089a39-a2f6-4aa2-a058-e6551475153d",
+      "scryfall_uri": "https://scryfall.com/card/c21/153/sanguine-bond",
+      "layout": "normal",
+      "mana_cost": "{3}{B}{B}",
+      "type_line": "Enchantment",
+      "image_small": "https://cards.scryfall.io/small/front/a/d/ad4de9f1-7a39-45af-828e-c59234d9e9b9.jpg?1783927550",
+      "image_normal": "https://cards.scryfall.io/normal/front/a/d/ad4de9f1-7a39-45af-828e-c59234d9e9b9.jpg?1783927550",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/a/d/ad4de9f1-7a39-45af-828e-c59234d9e9b9.jpg?1783927550",
+      "face_used": null
+    },
+    "Exquisite Blood": {
+      "name": "Exquisite Blood",
+      "scryfall_id": "0e8ccfa7-4178-476a-a155-0ca1c98556c9",
+      "oracle_id": "8f933fae-6c0c-42d7-a817-14760d8285cd",
+      "scryfall_uri": "https://scryfall.com/card/lcc/195/exquisite-blood",
+      "layout": "normal",
+      "mana_cost": "{4}{B}",
+      "type_line": "Enchantment",
+      "image_small": "https://cards.scryfall.io/small/front/0/e/0e8ccfa7-4178-476a-a155-0ca1c98556c9.jpg?1783913874",
+      "image_normal": "https://cards.scryfall.io/normal/front/0/e/0e8ccfa7-4178-476a-a155-0ca1c98556c9.jpg?1783913874",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/0/e/0e8ccfa7-4178-476a-a155-0ca1c98556c9.jpg?1783913874",
+      "face_used": null
+    },
+    "Demonic Consultation": {
+      "name": "Demonic Consultation",
+      "scryfall_id": "1d779f19-3068-4976-b96b-8f93d156900b",
+      "oracle_id": "9a1412db-45ad-46ea-8f12-a85d203113d8",
+      "scryfall_uri": "https://scryfall.com/card/me2/85/demonic-consultation",
+      "layout": "normal",
+      "mana_cost": "{B}",
+      "type_line": "Instant",
+      "image_small": "https://cards.scryfall.io/small/front/1/d/1d779f19-3068-4976-b96b-8f93d156900b.jpg?1783942624",
+      "image_normal": "https://cards.scryfall.io/normal/front/1/d/1d779f19-3068-4976-b96b-8f93d156900b.jpg?1783942624",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/1/d/1d779f19-3068-4976-b96b-8f93d156900b.jpg?1783942624",
+      "face_used": null
+    },
+    "Thassa's Oracle": {
+      "name": "Thassa's Oracle",
+      "scryfall_id": "726e8b29-13e9-4138-b6a9-d2a0d8188d1c",
+      "oracle_id": "1de1b591-a73f-4974-b507-8c63e07a0868",
+      "scryfall_uri": "https://scryfall.com/card/thb/73/thassas-oracle",
+      "layout": "normal",
+      "mana_cost": "{U}{U}",
+      "type_line": "Creature — Merfolk Wizard",
+      "image_small": "https://cards.scryfall.io/small/front/7/2/726e8b29-13e9-4138-b6a9-d2a0d8188d1c.jpg?1783931575",
+      "image_normal": "https://cards.scryfall.io/normal/front/7/2/726e8b29-13e9-4138-b6a9-d2a0d8188d1c.jpg?1783931575",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/7/2/726e8b29-13e9-4138-b6a9-d2a0d8188d1c.jpg?1783931575",
+      "face_used": null
+    },
+    "Super State": {
+      "name": "Super State",
+      "scryfall_id": "a6a39919-a521-4e96-a47a-e09ac4d783bf",
+      "oracle_id": "ab2dfe99-bd77-44d7-92be-81643ea901f0",
+      "scryfall_uri": "https://scryfall.com/card/sld/2081/super-state",
+      "layout": "normal",
+      "mana_cost": "{7}",
+      "type_line": "Legendary Enchantment — Aura",
+      "image_small": "https://cards.scryfall.io/small/front/a/6/a6a39919-a521-4e96-a47a-e09ac4d783bf.jpg?1783906091",
+      "image_normal": "https://cards.scryfall.io/normal/front/a/6/a6a39919-a521-4e96-a47a-e09ac4d783bf.jpg?1783906091",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/a/6/a6a39919-a521-4e96-a47a-e09ac4d783bf.jpg?1783906091",
+      "face_used": null
+    },
+    "Tainted Strike": {
+      "name": "Tainted Strike",
+      "scryfall_id": "d0f82007-99f6-4c6c-8182-ee631c33531f",
+      "oracle_id": "95a53dd7-76dc-46f1-8833-fafd02ba49c4",
+      "scryfall_uri": "https://scryfall.com/card/som/80/tainted-strike",
+      "layout": "normal",
+      "mana_cost": "{B}",
+      "type_line": "Instant",
+      "image_small": "https://cards.scryfall.io/small/front/d/0/d0f82007-99f6-4c6c-8182-ee631c33531f.jpg?1783941727",
+      "image_normal": "https://cards.scryfall.io/normal/front/d/0/d0f82007-99f6-4c6c-8182-ee631c33531f.jpg?1783941727",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/d/0/d0f82007-99f6-4c6c-8182-ee631c33531f.jpg?1783941727",
+      "face_used": null
+    },
+    "Tainted Pact": {
+      "name": "Tainted Pact",
+      "scryfall_id": "c513f51b-a0db-4c08-8acc-1e91060b93b7",
+      "oracle_id": "1a85ba2b-ae10-4917-954a-7709b75a9740",
+      "scryfall_uri": "https://scryfall.com/card/ody/164/tainted-pact",
+      "layout": "normal",
+      "mana_cost": "{1}{B}",
+      "type_line": "Instant",
+      "image_small": "https://cards.scryfall.io/small/front/c/5/c513f51b-a0db-4c08-8acc-1e91060b93b7.jpg?1783945239",
+      "image_normal": "https://cards.scryfall.io/normal/front/c/5/c513f51b-a0db-4c08-8acc-1e91060b93b7.jpg?1783945239",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/c/5/c513f51b-a0db-4c08-8acc-1e91060b93b7.jpg?1783945239",
+      "face_used": null
+    },
+    "Laboratory Maniac": {
+      "name": "Laboratory Maniac",
+      "scryfall_id": "7a5be94c-08b8-4964-a79d-e22ea6e94be8",
+      "oracle_id": "aa286dd5-aa19-446d-9003-684d81eb57ca",
+      "scryfall_uri": "https://scryfall.com/card/inr/71/laboratory-maniac",
+      "layout": "normal",
+      "mana_cost": "{2}{U}",
+      "type_line": "Creature — Human Wizard",
+      "image_small": "https://cards.scryfall.io/small/front/7/a/7a5be94c-08b8-4964-a79d-e22ea6e94be8.jpg?1783908162",
+      "image_normal": "https://cards.scryfall.io/normal/front/7/a/7a5be94c-08b8-4964-a79d-e22ea6e94be8.jpg?1783908162",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/7/a/7a5be94c-08b8-4964-a79d-e22ea6e94be8.jpg?1783908162",
+      "face_used": null
+    },
+    "Breath of Fury": {
+      "name": "Breath of Fury",
+      "scryfall_id": "a1fce58d-d754-4532-b4d0-4bb3cf108090",
+      "oracle_id": "fdaa0faf-e7ee-48b3-9330-de0fc3792ad3",
+      "scryfall_uri": "https://scryfall.com/card/c16/121/breath-of-fury",
+      "layout": "normal",
+      "mana_cost": "{2}{R}{R}",
+      "type_line": "Enchantment — Aura",
+      "image_small": "https://cards.scryfall.io/small/front/a/1/a1fce58d-d754-4532-b4d0-4bb3cf108090.jpg?1783937066",
+      "image_normal": "https://cards.scryfall.io/normal/front/a/1/a1fce58d-d754-4532-b4d0-4bb3cf108090.jpg?1783937066",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/a/1/a1fce58d-d754-4532-b4d0-4bb3cf108090.jpg?1783937066",
+      "face_used": null
+    },
+    "Rising of the Day": {
+      "name": "Rising of the Day",
+      "scryfall_id": "d4fbcac6-8ac9-44a8-9d1a-03d0799ac253",
+      "oracle_id": "434a20f8-3f87-4004-9155-0f196fc2257e",
+      "scryfall_uri": "https://scryfall.com/card/ltr/145/rising-of-the-day",
+      "layout": "normal",
+      "mana_cost": "{2}{R}",
+      "type_line": "Enchantment",
+      "image_small": "https://cards.scryfall.io/small/front/d/4/d4fbcac6-8ac9-44a8-9d1a-03d0799ac253.jpg?1783916282",
+      "image_normal": "https://cards.scryfall.io/normal/front/d/4/d4fbcac6-8ac9-44a8-9d1a-03d0799ac253.jpg?1783916282",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/d/4/d4fbcac6-8ac9-44a8-9d1a-03d0799ac253.jpg?1783916282",
+      "face_used": null
+    },
+    "Maestros Diabolist": {
+      "name": "Maestros Diabolist",
+      "scryfall_id": "7206db10-e248-420d-bf92-4d57bc72da56",
+      "oracle_id": "68d61090-a97f-47e9-bc64-7e5c7f8acbf7",
+      "scryfall_uri": "https://scryfall.com/card/snc/200/maestros-diabolist",
+      "layout": "normal",
+      "mana_cost": "{U}{B}{R}",
+      "type_line": "Creature — Vampire Warrior",
+      "image_small": "https://cards.scryfall.io/small/front/7/2/7206db10-e248-420d-bf92-4d57bc72da56.jpg?1783923079",
+      "image_normal": "https://cards.scryfall.io/normal/front/7/2/7206db10-e248-420d-bf92-4d57bc72da56.jpg?1783923079",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/7/2/7206db10-e248-420d-bf92-4d57bc72da56.jpg?1783923079",
+      "face_used": null
+    },
+    "Greven, Predator Captain": {
+      "name": "Greven, Predator Captain",
+      "scryfall_id": "bda22fc3-31a5-451a-9a8b-372884f7bc61",
+      "oracle_id": "b22f4797-c74f-4d95-9528-c16c2bc4c05b",
+      "scryfall_uri": "https://scryfall.com/card/c19/43/greven-predator-captain",
+      "layout": "normal",
+      "mana_cost": "{3}{B}{R}",
+      "type_line": "Legendary Creature — Phyrexian Human Warrior",
+      "image_small": "https://cards.scryfall.io/small/front/b/d/bda22fc3-31a5-451a-9a8b-372884f7bc61.jpg?1783932799",
+      "image_normal": "https://cards.scryfall.io/normal/front/b/d/bda22fc3-31a5-451a-9a8b-372884f7bc61.jpg?1783932799",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/b/d/bda22fc3-31a5-451a-9a8b-372884f7bc61.jpg?1783932799",
+      "face_used": null
+    },
+    "Fire Covenant": {
+      "name": "Fire Covenant",
+      "scryfall_id": "1a13437b-e0c7-4ca9-a0e2-b8cb1b5813ec",
+      "oracle_id": "025939a0-424a-41bf-8fc9-2ef9ea5485f7",
+      "scryfall_uri": "https://scryfall.com/card/ecc/54/fire-covenant",
+      "layout": "normal",
+      "mana_cost": "{1}{B}{R}",
+      "type_line": "Instant",
+      "image_small": "https://cards.scryfall.io/small/front/1/a/1a13437b-e0c7-4ca9-a0e2-b8cb1b5813ec.jpg?1783911521",
+      "image_normal": "https://cards.scryfall.io/normal/front/1/a/1a13437b-e0c7-4ca9-a0e2-b8cb1b5813ec.jpg?1783911521",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/1/a/1a13437b-e0c7-4ca9-a0e2-b8cb1b5813ec.jpg?1783911521",
+      "face_used": null
+    },
+    "Requiem Monolith": {
+      "name": "Requiem Monolith",
+      "scryfall_id": "837d710a-652f-4c60-a52d-d786231160a4",
+      "oracle_id": "13a8b19b-23bd-4e45-81ff-23371665e4fc",
+      "scryfall_uri": "https://scryfall.com/card/eoe/113/requiem-monolith",
+      "layout": "normal",
+      "mana_cost": "{2}{B}",
+      "type_line": "Artifact",
+      "image_small": "https://cards.scryfall.io/small/front/8/3/837d710a-652f-4c60-a52d-d786231160a4.jpg?1783905963",
+      "image_normal": "https://cards.scryfall.io/normal/front/8/3/837d710a-652f-4c60-a52d-d786231160a4.jpg?1783905963",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/8/3/837d710a-652f-4c60-a52d-d786231160a4.jpg?1783905963",
+      "face_used": null
+    },
+    "Dawnsire, Sunstar Dreadnought": {
+      "name": "Dawnsire, Sunstar Dreadnought",
+      "scryfall_id": "6133355c-3dcf-466a-b771-fe6c44d4fa4d",
+      "oracle_id": "afc9436b-8cad-4916-929d-ff33a37b42d5",
+      "scryfall_uri": "https://scryfall.com/card/eoe/238/dawnsire-sunstar-dreadnought",
+      "layout": "normal",
+      "mana_cost": "{5}",
+      "type_line": "Legendary Artifact — Spacecraft",
+      "image_small": "https://cards.scryfall.io/small/front/6/1/6133355c-3dcf-466a-b771-fe6c44d4fa4d.jpg?1783905921",
+      "image_normal": "https://cards.scryfall.io/normal/front/6/1/6133355c-3dcf-466a-b771-fe6c44d4fa4d.jpg?1783905921",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/6/1/6133355c-3dcf-466a-b771-fe6c44d4fa4d.jpg?1783905921",
+      "face_used": null
+    },
+    "Ob Nixilis, the Hate-Twisted": {
+      "name": "Ob Nixilis, the Hate-Twisted",
+      "scryfall_id": "14916e2d-73af-4747-a927-d2d4cb3e32db",
+      "oracle_id": "88cd12e5-ca89-4176-96fd-320fe2ccd087",
+      "scryfall_uri": "https://scryfall.com/card/war/100/ob-nixilis-the-hate-twisted",
+      "layout": "normal",
+      "mana_cost": "{3}{B}{B}",
+      "type_line": "Legendary Planeswalker — Nixilis",
+      "image_small": "https://cards.scryfall.io/small/front/1/4/14916e2d-73af-4747-a927-d2d4cb3e32db.jpg?1783933441",
+      "image_normal": "https://cards.scryfall.io/normal/front/1/4/14916e2d-73af-4747-a927-d2d4cb3e32db.jpg?1783933441",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/1/4/14916e2d-73af-4747-a927-d2d4cb3e32db.jpg?1783933441",
+      "face_used": null
+    },
+    "Peer into the Abyss": {
+      "name": "Peer into the Abyss",
+      "scryfall_id": "aac00055-640e-4749-8d23-d242e6d0b23a",
+      "oracle_id": "21fa2442-6eac-4dce-a9cc-76f0053fdb8f",
+      "scryfall_uri": "https://scryfall.com/card/m21/117/peer-into-the-abyss",
+      "layout": "normal",
+      "mana_cost": "{4}{B}{B}{B}",
+      "type_line": "Sorcery",
+      "image_small": "https://cards.scryfall.io/small/front/a/a/aac00055-640e-4749-8d23-d242e6d0b23a.jpg?1783930701",
+      "image_normal": "https://cards.scryfall.io/normal/front/a/a/aac00055-640e-4749-8d23-d242e6d0b23a.jpg?1783930701",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/a/a/aac00055-640e-4749-8d23-d242e6d0b23a.jpg?1783930701",
+      "face_used": null
+    },
+    "Frenetic Efreet": {
+      "name": "Frenetic Efreet",
+      "scryfall_id": "50d4468b-f7de-44fe-898a-4125d26d242f",
+      "oracle_id": "c21d3360-8be0-477e-a592-7e64a76570d3",
+      "scryfall_uri": "https://scryfall.com/card/mir/264/frenetic-efreet",
+      "layout": "normal",
+      "mana_cost": "{1}{U}{R}",
+      "type_line": "Creature — Efreet",
+      "image_small": "https://cards.scryfall.io/small/front/5/0/50d4468b-f7de-44fe-898a-4125d26d242f.jpg?1783947052",
+      "image_normal": "https://cards.scryfall.io/normal/front/5/0/50d4468b-f7de-44fe-898a-4125d26d242f.jpg?1783947052",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/5/0/50d4468b-f7de-44fe-898a-4125d26d242f.jpg?1783947052",
+      "face_used": null
+    },
+    "Chance Encounter": {
+      "name": "Chance Encounter",
+      "scryfall_id": "49a4b0c9-a35b-4b55-ab27-7246bbca0d16",
+      "oracle_id": "8bd33b5c-0777-41ef-9e17-fb30ce69ec25",
+      "scryfall_uri": "https://scryfall.com/card/mh2/277/chance-encounter",
+      "layout": "normal",
+      "mana_cost": "{2}{R}{R}",
+      "type_line": "Enchantment",
+      "image_small": "https://cards.scryfall.io/small/front/4/9/49a4b0c9-a35b-4b55-ab27-7246bbca0d16.jpg?1783926785",
+      "image_normal": "https://cards.scryfall.io/normal/front/4/9/49a4b0c9-a35b-4b55-ab27-7246bbca0d16.jpg?1783926785",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/4/9/49a4b0c9-a35b-4b55-ab27-7246bbca0d16.jpg?1783926785",
+      "face_used": null
+    },
+    "Mayael's Aria": {
+      "name": "Mayael's Aria",
+      "scryfall_id": "a53170fe-7f18-47ef-b501-1ed398306419",
+      "oracle_id": "6cb9ca93-e0bb-4758-bf0d-c9a8fce5f11f",
+      "scryfall_uri": "https://scryfall.com/card/2x2/253/mayaels-aria",
+      "layout": "normal",
+      "mana_cost": "{R}{G}{W}",
+      "type_line": "Enchantment",
+      "image_small": "https://cards.scryfall.io/small/front/a/5/a53170fe-7f18-47ef-b501-1ed398306419.jpg?1783921814",
+      "image_normal": "https://cards.scryfall.io/normal/front/a/5/a53170fe-7f18-47ef-b501-1ed398306419.jpg?1783921814",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/a/5/a53170fe-7f18-47ef-b501-1ed398306419.jpg?1783921814",
+      "face_used": null
+    },
+    "Colossification": {
+      "name": "Colossification",
+      "scryfall_id": "c2cad902-ffd2-4bab-b114-b4b6df2ac6b3",
+      "oracle_id": "05c5ee65-651b-4bfb-b57f-305026507135",
+      "scryfall_uri": "https://scryfall.com/card/blb/392/colossification",
+      "layout": "normal",
+      "mana_cost": "{5}{G}{G}",
+      "type_line": "Enchantment — Aura",
+      "image_small": "https://cards.scryfall.io/small/front/c/2/c2cad902-ffd2-4bab-b114-b4b6df2ac6b3.jpg?1783910740",
+      "image_normal": "https://cards.scryfall.io/normal/front/c/2/c2cad902-ffd2-4bab-b114-b4b6df2ac6b3.jpg?1783910740",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/c/2/c2cad902-ffd2-4bab-b114-b4b6df2ac6b3.jpg?1783910740",
+      "face_used": null
+    },
+    "Orcish Bowmasters": {
+      "name": "Orcish Bowmasters",
+      "scryfall_id": "7c024bae-5631-4e20-ac69-df392ac9e109",
+      "oracle_id": "ea5103f5-27e0-4eb1-902c-7f34652d6bf3",
+      "scryfall_uri": "https://scryfall.com/card/ltr/103/orcish-bowmasters",
+      "layout": "normal",
+      "mana_cost": "{1}{B}",
+      "type_line": "Creature — Orc Archer",
+      "image_small": "https://cards.scryfall.io/small/front/7/c/7c024bae-5631-4e20-ac69-df392ac9e109.jpg?1783916299",
+      "image_normal": "https://cards.scryfall.io/normal/front/7/c/7c024bae-5631-4e20-ac69-df392ac9e109.jpg?1783916299",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/7/c/7c024bae-5631-4e20-ac69-df392ac9e109.jpg?1783916299",
+      "face_used": null
+    },
+    "Vito, Thorn of the Dusk Rose": {
+      "name": "Vito, Thorn of the Dusk Rose",
+      "scryfall_id": "0fe79ee4-c3f3-4a6b-a967-203ca3b70ee5",
+      "oracle_id": "7336a541-3ae9-4ab2-acb8-f574c0a5b3a9",
+      "scryfall_uri": "https://scryfall.com/card/m21/127/vito-thorn-of-the-dusk-rose",
+      "layout": "normal",
+      "mana_cost": "{2}{B}",
+      "type_line": "Legendary Creature — Vampire Cleric",
+      "image_small": "https://cards.scryfall.io/small/front/0/f/0fe79ee4-c3f3-4a6b-a967-203ca3b70ee5.jpg?1783930698",
+      "image_normal": "https://cards.scryfall.io/normal/front/0/f/0fe79ee4-c3f3-4a6b-a967-203ca3b70ee5.jpg?1783930698",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/0/f/0fe79ee4-c3f3-4a6b-a967-203ca3b70ee5.jpg?1783930698",
+      "face_used": null
+    },
+    "Bloodthirsty Conqueror": {
+      "name": "Bloodthirsty Conqueror",
+      "scryfall_id": "ce860ed4-a5bd-4347-9eab-dd716ea84db1",
+      "oracle_id": "fd505c02-c59e-476d-8e88-35da862ddc23",
+      "scryfall_uri": "https://scryfall.com/card/fdn/58/bloodthirsty-conqueror",
+      "layout": "normal",
+      "mana_cost": "{3}{B}{B}",
+      "type_line": "Creature — Vampire Knight",
+      "image_small": "https://cards.scryfall.io/small/front/c/e/ce860ed4-a5bd-4347-9eab-dd716ea84db1.jpg?1783909112",
+      "image_normal": "https://cards.scryfall.io/normal/front/c/e/ce860ed4-a5bd-4347-9eab-dd716ea84db1.jpg?1783909112",
+      "image_art_crop": "https://cards.scryfall.io/art_crop/front/c/e/ce860ed4-a5bd-4347-9eab-dd716ea84db1.jpg?1783909112",
+      "face_used": null
+    }
+  },
+  "ranking_cards": {
+    "742-1295": [
+      "Demonic Consultation",
+      "Thassa's Oracle"
+    ],
+    "1295-3093": [
+      "Tainted Pact",
+      "Thassa's Oracle"
+    ],
+    "1561-3862": [
+      "Orcish Bowmasters",
+      "Peer into the Abyss"
+    ],
+    "690-3966": [
+      "Sanguine Bond",
+      "Exquisite Blood"
+    ],
+    "314-3966": [
+      "Vito, Thorn of the Dusk Rose",
+      "Exquisite Blood"
+    ],
+    "314-6191": [
+      "Vito, Thorn of the Dusk Rose",
+      "Bloodthirsty Conqueror"
+    ]
+  }
+}

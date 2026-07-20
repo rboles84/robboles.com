@@ -11,13 +11,13 @@
   <meta property="og:description" content="Search the Robert Boles QA knowledge base.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
-  <link rel="stylesheet" href="../assets/css/styles.css?v=20260717f">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=20260718c">
   <link rel="stylesheet" href="../assets/css/mana.css">
   <link rel="icon" href="../favicon.ico" sizes="any">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../feed.xml">
-  <script defer src="../assets/js/site.js?v=20260717f"></script>
+  <script defer src="../assets/js/site.js?v=20260718c"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -45,7 +45,7 @@
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
         <a class="nav-link" href="../">home</a>
-        <div class="nav-item nav-item--field-guide">
+        <div class="nav-item nav-item--field-guide nav-item--dropdown" data-nav-dropdown data-dropdown-name="Field Guide">
         <div class="nav-item-primary">
           <a class="nav-link" href="../qa-field-guide/">field guide</a>
           <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
@@ -64,7 +64,24 @@
         </div>
       </div>
         <a class="nav-link" href="../learning-lab/">learning lab</a>
-        <a class="nav-link" href="../table-talk/">table talk</a>
+        <div class="nav-item nav-item--table-talk nav-item--dropdown" data-nav-dropdown data-dropdown-name="Table Talk">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../table-talk/">table talk</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="table-talk-links" aria-label="Show Table Talk links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="table-talk-links" aria-label="Table Talk destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="../table-talk/">
+            <strong>Explore Table Talk</strong>
+            <span>Commander, mana bases, and the game I never grew out of.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="../magic-math/">
+            <strong>Open Magic Math</strong>
+            <span>Finding hidden stories in the numbers.</span>
+          </a>
+        </div>
+      </div>
         <a class="nav-link" href="../projects/">projects</a>
         <a class="nav-link nav-search is-active" href="../search/" aria-current="page">search</a>
       </nav>

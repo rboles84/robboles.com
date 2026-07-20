@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Ashnod's Altar",
+    "art": "assets/images/cards/art/ashnods-altar.jpg",
+    "artist": "Greg Staples",
+    "scryfall": "https://scryfall.com/card/cmm/368/ashnods-altar",
+    "set": "cmm",
+    "set_name": "Commander Masters",
+    "rarity": "uncommon",
+    "type_line": "Artifact"
+  },
+  {
+    "name": "Sensei's Divining Top",
+    "art": "assets/images/cards/art/senseis-divining-top.jpg",
+    "artist": "Michael Sutfin",
+    "scryfall": "https://scryfall.com/card/2x2/314/senseis-divining-top",
+    "set": "2x2",
+    "set_name": "Double Masters 2022",
+    "rarity": "rare",
+    "type_line": "Artifact"
+  },
+  {
+    "name": "Kiki-Jiki, Mirror Breaker",
+    "art": "assets/images/cards/art/kiki-jiki-mirror-breaker.jpg",
+    "artist": "Steven Belledin",
+    "scryfall": "https://scryfall.com/card/ima/136/kiki-jiki-mirror-breaker",
+    "set": "ima",
+    "set_name": "Iconic Masters",
+    "rarity": "mythic",
+    "type_line": "Legendary Creature — Goblin Shaman"
+  },
+  {
+    "name": "Splinter Twin",
+    "art": "assets/images/cards/art/splinter-twin.jpg",
+    "artist": "Goran Josic",
+    "scryfall": "https://scryfall.com/card/mm2/129/splinter-twin",
+    "set": "mm2",
+    "set_name": "Modern Masters 2015",
+    "rarity": "rare",
+    "type_line": "Enchantment — Aura"
+  },
+  {
+    "name": "Isochron Scepter",
+    "art": "assets/images/cards/art/isochron-scepter.jpg",
+    "artist": "Mark Harrison",
+    "scryfall": "https://scryfall.com/card/2xm/264/isochron-scepter",
+    "set": "2xm",
+    "set_name": "Double Masters",
+    "rarity": "rare",
+    "type_line": "Artifact"
+  },
+  {
+    "name": "Dramatic Reversal",
+    "art": "assets/images/cards/art/dramatic-reversal.jpg",
+    "artist": "Maël Ollivier-Henry",
+    "scryfall": "https://scryfall.com/card/tle/158/dramatic-reversal",
+    "set": "tle",
+    "set_name": "Avatar: The Last Airbender Eternal",
+    "rarity": "common",
+    "type_line": "Instant"
+  },
+  {
+    "name": "Deadeye Navigator",
+    "art": "assets/images/cards/art/deadeye-navigator.jpg",
+    "artist": "Lie Setiawan",
+    "scryfall": "https://scryfall.com/card/inr/59/deadeye-navigator",
+    "set": "inr",
+    "set_name": "Innistrad Remastered",
+    "rarity": "rare",
+    "type_line": "Creature — Spirit"
+  },
+  {
+    "name": "Peregrine Drake",
+    "art": "assets/images/cards/art/peregrine-drake.jpg",
+    "artist": "Mike Bierek",
+    "scryfall": "https://scryfall.com/card/dmr/65/peregrine-drake",
+    "set": "dmr",
+    "set_name": "Dominaria Remastered",
+    "rarity": "common",
+    "type_line": "Creature — Drake"
+  },
+  {
+    "name": "Food Chain",
+    "art": "assets/images/cards/art/food-chain.jpg",
+    "artist": "Daarken",
+    "scryfall": "https://scryfall.com/card/2x2/147/food-chain",
+    "set": "2x2",
+    "set_name": "Double Masters 2022",
+    "rarity": "mythic",
+    "type_line": "Enchantment"
+  },
+  {
+    "name": "Basalt Monolith",
+    "art": "assets/images/cards/art/basalt-monolith.jpg",
+    "artist": "Yeong-Hao Han",
+    "scryfall": "https://scryfall.com/card/2xm/232/basalt-monolith",
+    "set": "2xm",
+    "set_name": "Double Masters",
+    "rarity": "uncommon",
+    "type_line": "Artifact"
+  },
+  {
+    "name": "Zirda, the Dawnwaker",
+    "art": "assets/images/cards/art/zirda-the-dawnwaker.jpg",
+    "artist": "Jesper Ejsing",
+    "scryfall": "https://scryfall.com/card/iko/233/zirda-the-dawnwaker",
+    "set": "iko",
+    "set_name": "Ikoria: Lair of Behemoths",
+    "rarity": "rare",
+    "type_line": "Legendary Creature — Elemental Fox"
+  },
+  {
+    "name": "Chatterfang, Squirrel General",
+    "art": "assets/images/cards/art/chatterfang-squirrel-general.jpg",
+    "artist": "Jason A. Engle",
+    "scryfall": "https://scryfall.com/card/mh2/151/chatterfang-squirrel-general",
+    "set": "mh2",
+    "set_name": "Modern Horizons 2",
+    "rarity": "mythic",
+    "type_line": "Legendary Creature — Squirrel Warrior"
+  }
+]

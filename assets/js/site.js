@@ -55,101 +55,129 @@
     });
   }
 
-  // Field Guide dropdown (nests Field Kit): a disclosure widget, not an
-  // ARIA menu — real links, plain document Tab order, no
-  // role="menu"/menuitem/aria-haspopup. "field guide" stays a direct link;
-  // a separate caret button toggles the two-destination panel. Hover-intent
-  // open is layered on top of click, gated to devices with real hover so
-  // touch never gets a synthetic open. The panel is `inert` while closed on
-  // desktop (never inert on mobile, where it renders as a static stacked
-  // link) so closed-panel links aren't reachable by Tab until disclosed.
-  (function initFieldGuideDropdown() {
-    const item = document.querySelector('.nav-item--field-guide');
-    if (!item) return;
-    const caret = item.querySelector('.nav-caret');
-    const panel = item.querySelector('.nav-dropdown');
-    if (!caret || !panel) return;
+  // Nav dropdowns (Field Guide -> Field Kit, Table Talk -> Magic Math, and
+  // any future pair): each `[data-nav-dropdown]` nav item is a disclosure
+  // widget, not an ARIA menu — real links, plain document Tab order, no
+  // role="menu"/menuitem/aria-haspopup. The primary link stays a direct
+  // link; a separate caret button toggles a two-destination panel.
+  // Hover-intent open is layered on top of click, gated to devices with
+  // real hover so touch never gets a synthetic open. Each panel is `inert`
+  // while closed on desktop (never inert on mobile, where it renders as a
+  // static stacked link) so closed-panel links aren't reachable by Tab
+  // until disclosed. Instances are wired independently (own ARIA/focus/
+  // inert state) but coordinate at the group level: opening one closes any
+  // other currently-open instance so panels never stack.
+  (function initNavDropdowns() {
+    const items = document.querySelectorAll('[data-nav-dropdown]');
+    if (!items.length) return;
 
     const fineHover = window.matchMedia('(hover: hover) and (pointer: fine)');
     const mobileLayout = window.matchMedia('(max-width: 900px)');
-    let hoverTimer = null;
+    const instances = [];
 
-    function isOpen() { return panel.classList.contains('is-open'); }
+    items.forEach(function (item) {
+      const caret = item.querySelector('.nav-caret');
+      const panel = item.querySelector('.nav-dropdown');
+      if (!caret || !panel) return;
+      const name = item.dataset.dropdownName || 'links';
+      let hoverTimer = null;
 
-    function applyInert() {
-      panel.inert = !mobileLayout.matches && !isOpen();
-    }
+      function isOpen() { return panel.classList.contains('is-open'); }
 
-    function open() {
-      clearTimeout(hoverTimer);
-      panel.classList.add('is-open');
-      caret.setAttribute('aria-expanded', 'true');
-      caret.setAttribute('aria-label', 'Hide Field Guide links');
-      applyInert();
-    }
-
-    function close(opts) {
-      clearTimeout(hoverTimer);
-      panel.classList.remove('is-open');
-      caret.setAttribute('aria-expanded', 'false');
-      caret.setAttribute('aria-label', 'Show Field Guide links');
-      applyInert();
-      if (opts && opts.returnFocus) caret.focus();
-    }
-
-    close();
-
-    mobileLayout.addEventListener('change', function () {
-      close();
-    });
-
-    // Pointer-driven activation focuses the caret before the click event
-    // fires, so a naive focusin-opens-everything rule would have the click
-    // handler's toggle immediately re-close a panel that focus just opened.
-    // Suppress the focus-open for the one focusin caused by this pointer
-    // press, and let the click handler own the toggle instead — keyboard
-    // Tab (no preceding pointerdown) still opens on focus alone.
-    let suppressCaretFocusOpen = false;
-    caret.addEventListener('pointerdown', function () {
-      suppressCaretFocusOpen = true;
-    });
-    caret.addEventListener('click', function () {
-      if (isOpen()) close({ returnFocus: true });
-      else open();
-    });
-
-    if (fineHover.matches) {
-      item.addEventListener('mouseenter', function () {
-        clearTimeout(hoverTimer);
-        hoverTimer = setTimeout(open, 120);
-      });
-      item.addEventListener('mouseleave', function () {
-        clearTimeout(hoverTimer);
-        hoverTimer = setTimeout(close, 200);
-      });
-    }
-
-    item.addEventListener('focusin', function (event) {
-      if (mobileLayout.matches) return;
-      if (event.target === caret && suppressCaretFocusOpen) {
-        suppressCaretFocusOpen = false;
-        return;
+      function applyInert() {
+        panel.inert = !mobileLayout.matches && !isOpen();
       }
-      open();
-    });
-    item.addEventListener('focusout', function (event) {
-      if (!item.contains(event.relatedTarget)) close();
+
+      function open() {
+        clearTimeout(hoverTimer);
+        // Mutual exclusivity: opening this instance closes every other
+        // open instance without touching its own ARIA/focus/inert state.
+        instances.forEach(function (other) {
+          if (other.item !== item && other.isOpen()) other.close();
+        });
+        panel.classList.add('is-open');
+        caret.setAttribute('aria-expanded', 'true');
+        caret.setAttribute('aria-label', 'Hide ' + name + ' links');
+        applyInert();
+      }
+
+      function close(opts) {
+        clearTimeout(hoverTimer);
+        panel.classList.remove('is-open');
+        caret.setAttribute('aria-expanded', 'false');
+        caret.setAttribute('aria-label', 'Show ' + name + ' links');
+        applyInert();
+        if (opts && opts.returnFocus) caret.focus();
+      }
+
+      close();
+
+      mobileLayout.addEventListener('change', function () {
+        close();
+      });
+
+      // Pointer-driven activation focuses the caret before the click event
+      // fires, so a naive focusin-opens-everything rule would have the click
+      // handler's toggle immediately re-close a panel that focus just opened.
+      // Suppress the focus-open for the one focusin caused by this pointer
+      // press, and let the click handler own the toggle instead — keyboard
+      // Tab (no preceding pointerdown) still opens on focus alone.
+      let suppressCaretFocusOpen = false;
+      caret.addEventListener('pointerdown', function () {
+        suppressCaretFocusOpen = true;
+      });
+      caret.addEventListener('click', function () {
+        if (isOpen()) close({ returnFocus: true });
+        else open();
+      });
+
+      if (fineHover.matches) {
+        item.addEventListener('mouseenter', function () {
+          clearTimeout(hoverTimer);
+          hoverTimer = setTimeout(open, 120);
+        });
+        item.addEventListener('mouseleave', function () {
+          clearTimeout(hoverTimer);
+          hoverTimer = setTimeout(close, 200);
+        });
+      }
+
+      item.addEventListener('focusin', function (event) {
+        if (mobileLayout.matches) return;
+        if (event.target === caret && suppressCaretFocusOpen) {
+          suppressCaretFocusOpen = false;
+          return;
+        }
+        open();
+      });
+      item.addEventListener('focusout', function (event) {
+        if (!item.contains(event.relatedTarget)) close();
+      });
+
+      instances.push({ item: item, isOpen: isOpen, close: close });
     });
 
+    if (!instances.length) return;
+
+    // Escape closes only the currently active instance (at most one, given
+    // mutual exclusivity above); outside-click closes any instance whose
+    // panel is open and wasn't the click target.
     document.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape' && isOpen()) close({ returnFocus: true });
+      if (event.key !== 'Escape') return;
+      instances.forEach(function (inst) {
+        if (inst.isOpen()) inst.close({ returnFocus: true });
+      });
     });
     document.addEventListener('click', function (event) {
-      if (isOpen() && !item.contains(event.target)) close();
+      instances.forEach(function (inst) {
+        if (inst.isOpen() && !inst.item.contains(event.target)) inst.close();
+      });
     });
 
     // Opening the mobile hamburger normalizes any stray desktop state.
-    if (navToggle) navToggle.addEventListener('click', function () { close(); });
+    if (navToggle) navToggle.addEventListener('click', function () {
+      instances.forEach(function (inst) { inst.close(); });
+    });
   })();
 
   // Dark mode toggle (RBB-028): a single icon button in the nav. Shows the
@@ -288,7 +316,12 @@
 
   const artFig = document.querySelector('.tt-art');
   if (artFig && body.dataset.lane === 'table-talk') {
-    fetch(root + 'assets/data/table-talk-cards.json')
+    // Defaults to the Table Talk pool for backward compatibility; a page
+    // can point at a different, thematically-appropriate pool via
+    // data-art-source (e.g. magic-math/index.html uses a real-card mix
+    // instead of Table Talk's lands-only Mana Base Codex pool).
+    const artSource = artFig.dataset.artSource || 'table-talk-cards.json';
+    fetch(root + 'assets/data/' + artSource)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (cards) {
         if (!cards || !cards.length) return;

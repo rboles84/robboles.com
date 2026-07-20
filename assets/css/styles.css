@@ -264,7 +264,7 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
 .nav-dropdown-card:hover, .nav-dropdown-card:focus-visible { background: var(--surface-2); color: var(--ink); }
 .nav-dropdown-card strong { font-family: var(--display); font-size: 14.5px; font-weight: 600; }
 .nav-dropdown-card span { font-family: var(--sans); font-size: 12.5px; line-height: 1.4; color: var(--muted); }
-.nav-dropdown-card--kit strong { color: var(--accent); }
+.nav-dropdown-card--kit strong, .nav-dropdown-card--magic-math strong { color: var(--accent); }
 .nav-caret:focus-visible, .nav-dropdown-card:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 2px;
 }
@@ -730,9 +730,12 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   .nav-link { padding: 12px 4px; font-size: 13px; }
   .nav-link.is-active::after { display: none; }
 
-  /* Field Guide dropdown collapses into the stacked mobile panel: no
-     floating card, no caret, no duplicate "field guide" destination —
-     just one subordinate Field Kit link beneath the existing link. */
+  /* Every [data-nav-dropdown] instance collapses into the stacked mobile
+     panel the same way: no floating card, no caret, no duplicate
+     destination — just one subordinate link beneath the existing primary
+     link. Field Guide -> Field Kit and Table Talk -> Magic Math both
+     follow this shape (RBB-039 generalized RBB-037's Field Guide-only
+     rules to cover both). */
   .nav-item { flex-direction: column; align-items: stretch; }
   .nav-caret { display: none; }
   .nav-dropdown {
@@ -740,15 +743,16 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
     background: none; border: none; box-shadow: none; display: block;
     opacity: 1; visibility: visible; pointer-events: auto; transform: none;
   }
-  .nav-dropdown-card--guide { display: none; }
-  .nav-dropdown-card--kit {
+  .nav-dropdown-card--guide, .nav-dropdown-card--table-talk { display: none; }
+  .nav-dropdown-card--kit, .nav-dropdown-card--magic-math {
     display: flex; align-items: center; min-height: 44px;
     padding: 12px 4px 12px 18px;
     font-family: var(--mono); font-size: 13px; letter-spacing: 0.03em; color: var(--muted);
   }
-  .nav-dropdown-card--kit:hover, .nav-dropdown-card--kit:focus-visible { color: var(--ink); background: none; }
-  .nav-dropdown-card--kit strong { font: inherit; }
-  .nav-dropdown-card--kit span { display: none; }
+  .nav-dropdown-card--kit:hover, .nav-dropdown-card--kit:focus-visible,
+  .nav-dropdown-card--magic-math:hover, .nav-dropdown-card--magic-math:focus-visible { color: var(--ink); background: none; }
+  .nav-dropdown-card--kit strong, .nav-dropdown-card--magic-math strong { font: inherit; }
+  .nav-dropdown-card--kit span, .nav-dropdown-card--magic-math span { display: none; }
 }
 
 /* ---- Filter buttons (article library) ----------------------------------- */
