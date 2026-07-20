@@ -11,7 +11,7 @@
   <meta property="og:description" content="A static site has no server to crash — which is exactly why its release risks hide in the seams. Where a 'static' side project still bites, and how to make it visible.">
   <meta property="og:type" content="article">
   <meta property="article:published_time" content="2026-07-09">
-  <meta property="article:modified_time" content="2026-07-09">
+  <meta property="article:modified_time" content="2026-07-20">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://robboles.com/posts/static-site-release-risk/">
   <link rel="stylesheet" href="../../assets/css/styles.css?v=20260718c">
@@ -35,7 +35,7 @@
         "description": "A static site has no server to crash — which is exactly why its release risks hide in the seams. Where a static side project still bites, and how to make it visible.",
         "inLanguage": "en-US",
         "datePublished": "2026-07-09",
-        "dateModified": "2026-07-09",
+        "dateModified": "2026-07-20",
         "articleSection": "Learning Lab",
         "proficiencyLevel": "Intermediate",
         "keywords": "Static Sites, Release Readiness, Building in Public, Static Site QA",
@@ -130,7 +130,7 @@
       <div class="container article-grid">
         <div class="article-body">
 
-          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 9, 2026</p>
+          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 20, 2026</p>
 
           <p class="promise">The last thing I took <em>out</em> of <a href="https://voxmana.io" target="_blank" rel="noopener">voxmana.io</a> before I was happy calling it done was a feature that worked perfectly.</p>
 
@@ -161,7 +161,7 @@
             <li><strong>Data that drifts from the page.</strong> The thing on screen is generated; the truth lives in the source. Let those two fall out of sync and the page looks authoritative while it&rsquo;s subtly wrong. Most of the QA discipline underneath voxmana.io exists to keep the displayed thing honest to its source.</li>
             <li><strong>Client code that only fails in the field.</strong> Hover-card previews, hash deep-links, the mana-symbol font &mdash; all of it works in my editor&rsquo;s preview and can still behave differently on the deployed page or a cold cache. Static pages still run code; the runtime is just the visitor&rsquo;s browser, which I don&rsquo;t get to control.</li>
           </ul>
-          <p>It wasn&rsquo;t only the side project, either. On this blog, the subscribe form validates your email, flashes a friendly confirmation, and captures nothing &mdash; a front-end demo I hadn&rsquo;t wired to a real service yet. It passes every glance and fails every person who trusts it. Same trap, different repo.</p>
+          <p>It wasn&rsquo;t only the side project, either. On this blog, the subscribe form used to validate your email, flash a friendly confirmation, and capture nothing &mdash; a front-end demo I hadn&rsquo;t wired to a real service yet. It passed every glance and failed every person who trusted it. Same trap, different repo. It posts to a real provider now; what made it worth writing down is that nothing on the page ever looked wrong.</p>
 
           <h2 id="almost-wrong">The decision I almost got wrong</h2>
           <p>Back to the Codex, because it&rsquo;s the cleanest version of the lesson.</p>

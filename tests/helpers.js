@@ -60,7 +60,13 @@ function resolveLocalTarget(href, fromFile) {
   let clean = decodeEntities(href).split('#')[0].split('?')[0];
   if (!clean) return null; // pure anchor link, e.g. href="#top"
   if (/^(https?:|mailto:|tel:|\/\/)/i.test(clean)) return null;
-  const base = path.dirname(fromFile);
+  // Root-relative ("/assets/...") is site-root-relative, not filesystem-absolute:
+  // resolve it against ROOT, not the containing directory. Without this,
+  // path.resolve() would read the leading slash as a drive-root path
+  // (C:\assets\...) and report every such link as broken. Used by 404.html,
+  // which is served at arbitrary URL depths and so cannot use relative paths.
+  const base = clean.startsWith('/') ? ROOT : path.dirname(fromFile);
+  if (clean.startsWith('/')) clean = '.' + clean;
   let target = path.resolve(base, clean);
   if (clean.endsWith('/')) target = path.join(target, 'index.html');
   else if (fs.existsSync(target) && fs.statSync(target).isDirectory()) {

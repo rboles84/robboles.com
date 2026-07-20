@@ -11,19 +11,24 @@
   <meta property="og:description" content="Page not found.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260718c">
-  <link rel="stylesheet" href="assets/css/mana.css">
-  <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="feed.xml">
-  <script defer src="assets/js/site.js?v=20260718c"></script>
+  <!-- Every path on this page is root-relative on purpose. GitHub Pages serves
+       404.html for a missing URL at ANY depth (/foo/, /foo/bar/baz/) without
+       redirecting, so the browser's base URL is the missing path — relative
+       paths would resolve against it and 404, leaving an unstyled page with
+       dead navigation. Keep these absolute; do not "tidy" them back. -->
+  <link rel="stylesheet" href="/assets/css/styles.css?v=20260718c">
+  <link rel="stylesheet" href="/assets/css/mana.css">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="/feed.xml">
+  <script defer src="/assets/js/site.js?v=20260718c"></script>
 </head>
-<body data-root="" class="">
+<body data-root="/" class="">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header" data-site-header>
     <div class="container nav-shell">
-      <a class="brand" href="./" aria-label="Robert Boles home">
+      <a class="brand" href="/" aria-label="Robert Boles home">
         <svg class="brand-mark" aria-hidden="true" viewBox="0 0 100 100">
           <circle class="ring" cx="50" cy="50" r="30"/>
           <circle class="core" cx="50" cy="50" r="16"/>
@@ -32,46 +37,46 @@
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
-        <a class="nav-link" href="./">home</a>
+        <a class="nav-link" href="/">home</a>
         <div class="nav-item nav-item--field-guide nav-item--dropdown" data-nav-dropdown data-dropdown-name="Field Guide">
         <div class="nav-item-primary">
-          <a class="nav-link" href="qa-field-guide/">field guide</a>
+          <a class="nav-link" href="/qa-field-guide/">field guide</a>
           <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
             <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
           </button>
         </div>
         <div class="nav-dropdown" id="field-guide-links" aria-label="Field Guide destinations">
-          <a class="nav-dropdown-card nav-dropdown-card--guide" href="qa-field-guide/">
+          <a class="nav-dropdown-card nav-dropdown-card--guide" href="/qa-field-guide/">
             <strong>Explore the Field Guide</strong>
             <span>Methods and lessons for reliable QA, AI, and software delivery.</span>
           </a>
-          <a class="nav-dropdown-card nav-dropdown-card--kit" href="field-kit/">
+          <a class="nav-dropdown-card nav-dropdown-card--kit" href="/field-kit/">
             <strong>Open the Field Kit</strong>
             <span>Ready-to-use templates, checklists, worksheets, and tools.</span>
           </a>
         </div>
       </div>
-        <a class="nav-link" href="learning-lab/">learning lab</a>
+        <a class="nav-link" href="/learning-lab/">learning lab</a>
         <div class="nav-item nav-item--table-talk nav-item--dropdown" data-nav-dropdown data-dropdown-name="Table Talk">
         <div class="nav-item-primary">
-          <a class="nav-link" href="table-talk/">table talk</a>
+          <a class="nav-link" href="/table-talk/">table talk</a>
           <button class="nav-caret" type="button" aria-expanded="false" aria-controls="table-talk-links" aria-label="Show Table Talk links">
             <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
           </button>
         </div>
         <div class="nav-dropdown" id="table-talk-links" aria-label="Table Talk destinations">
-          <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="table-talk/">
+          <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="/table-talk/">
             <strong>Explore Table Talk</strong>
             <span>Commander, mana bases, and the game I never grew out of.</span>
           </a>
-          <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="magic-math/">
+          <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="/magic-math/">
             <strong>Open Magic Math</strong>
             <span>Finding hidden stories in the numbers.</span>
           </a>
         </div>
       </div>
-        <a class="nav-link" href="projects/">projects</a>
-        <a class="nav-link nav-search" href="search/">search</a>
+        <a class="nav-link" href="/projects/">projects</a>
+        <a class="nav-link nav-search" href="/search/">search</a>
       </nav>
     </div>
   </header>
@@ -82,7 +87,7 @@
         <p class="eyebrow">404</p>
         <h1>Page not found.</h1>
         <p class="lede">The page may have moved. Start from the home page or search the article library.</p>
-        <div class="hero-actions"><a class="button primary" href="./">Go home</a><a class="button" href="search/">Search</a></div>
+        <div class="hero-actions"><a class="button primary" href="/">Go home</a><a class="button" href="/search/">Search</a></div>
       </div>
     </section>
 
@@ -90,23 +95,23 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <a class="footer-brand" href="./">Robert Boles</a>
+        <a class="footer-brand" href="/">Robert Boles</a>
         <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
       </div>
       <div>
         <h2>Explore</h2>
-        <a href="qa-field-guide/">QA Field Guide</a>
-        <a href="automation-cookbook/">Automation Cookbook</a>
-        <a href="learning-lab/">Learning Lab</a>
-        <a href="field-kit/">Field Kit</a>
-        <a href="table-talk/">Table Talk</a>
-        <a href="projects/">Projects</a>
+        <a href="/qa-field-guide/">QA Field Guide</a>
+        <a href="/automation-cookbook/">Automation Cookbook</a>
+        <a href="/learning-lab/">Learning Lab</a>
+        <a href="/field-kit/">Field Kit</a>
+        <a href="/table-talk/">Table Talk</a>
+        <a href="/projects/">Projects</a>
       </div>
       <div>
         <h2>Follow</h2>
-        <a href="feed.xml">RSS feed</a>
-        <a href="search/">Search the site</a>
-        <a href="about/">About</a>
+        <a href="/feed.xml">RSS feed</a>
+        <a href="/search/">Search the site</a>
+        <a href="/about/">About</a>
         <a href="mailto:hello@robboles.com">Contact</a>
       </div>
     </div>
