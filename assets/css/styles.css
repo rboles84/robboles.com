@@ -406,6 +406,8 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
 .post-card h3 a { color: var(--ink); }
 .post-card h3 a:hover { color: var(--accent); }
 .post-card p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--muted); flex: 1; }
+.post-card .card-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+.post-card .card-actions .button { font-size: 11px; padding: 8px 10px; }
 
 /* Project card */
 .project-card {

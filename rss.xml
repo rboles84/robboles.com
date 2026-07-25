@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>Your Test Pyramid Is an Umbrella — and It Is Costing You</title>
+    <link>https://robboles.com/posts/your-test-pyramid-is-an-umbrella/</link>
+    <guid>https://robboles.com/posts/your-test-pyramid-is-an-umbrella/</guid>
+    <pubDate>Sat, 25 Jul 2026 12:00:00 +0000</pubDate>
+    <description>An 87% UI automation portfolio does not prove strong coverage. It proves the slowest, most expensive layer is carrying work that should be split across API, contract, component, and unit checks.</description>
+  </item>
+  <item>
     <title>Finish Him — How Commander Combos Actually End</title>
     <link>https://robboles.com/magic-math/finish-him/</link>
     <guid>https://robboles.com/magic-math/finish-him/</guid>

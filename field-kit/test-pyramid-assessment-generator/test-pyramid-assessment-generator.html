@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Pyramid Assessment Generator</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121c2e;
+      --panel-2: #17243a;
+      --text: #eef4ff;
+      --muted: #9fb0c7;
+      --border: #2a3b55;
+      --accent: #5fd0c8;
+      --accent-2: #e3b765;
+      --danger: #ee7b7b;
+      --warning: #f0c36a;
+      --success: #72d3a0;
+      --shadow: 0 18px 45px rgba(0,0,0,.28);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(95,208,200,.10), transparent 28rem),
+        radial-gradient(circle at 95% 10%, rgba(227,183,101,.08), transparent 24rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    button, input, select, textarea { font: inherit; }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .78rem;
+    }
+
+    h1, h2, h3 { margin: 0; line-height: 1.15; }
+    h1 { font-size: clamp(2rem, 4vw, 3.4rem); max-width: 900px; }
+    h2 { font-size: 1.35rem; }
+    h3 { font-size: 1rem; }
+
+    .lede {
+      max-width: 900px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .privacy {
+      border: 1px solid var(--border);
+      background: rgba(18,28,46,.78);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: var(--muted);
+    }
+
+    .privacy strong { color: var(--text); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(340px, .9fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .stack { display: grid; gap: 18px; }
+
+    .card {
+      background: linear-gradient(180deg, rgba(23,36,58,.96), rgba(18,28,46,.98));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .card-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      color: var(--text);
+      font-weight: 650;
+      font-size: .92rem;
+    }
+
+    .help {
+      color: var(--muted);
+      font-weight: 400;
+      font-size: .8rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #0e1727;
+      color: var(--text);
+      border-radius: 11px;
+      padding: 11px 12px;
+      outline: none;
+    }
+
+    textarea { min-height: 92px; resize: vertical; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(95,208,200,.12);
+    }
+
+    .question-list { display: grid; gap: 12px; }
+
+    .question {
+      display: grid;
+      grid-template-columns: 1fr 150px;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(42,59,85,.65);
+    }
+
+    .question:last-child { border-bottom: 0; }
+
+    .question span {
+      color: var(--text);
+      font-size: .94rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 11px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: 750;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #07201e;
+    }
+
+    .secondary {
+      background: #22334d;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    button:hover { filter: brightness(1.06); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    .sticky {
+      position: sticky;
+      top: 18px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+      margin: 14px 0 18px;
+    }
+
+    .metric {
+      border: 1px solid var(--border);
+      background: #0e1727;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .metric .value {
+      margin-top: 4px;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .shape-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(95,208,200,.12);
+      color: var(--accent);
+      border: 1px solid rgba(95,208,200,.35);
+      font-weight: 800;
+      font-size: .85rem;
+    }
+
+    .shape-visual {
+      margin: 18px 0 16px;
+      border: 1px solid var(--border);
+      background: #0e1727;
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 286px;
+      display: grid;
+      align-items: center;
+    }
+
+    .shape-visual svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .shape-empty,
+    .shape-result-svg {
+      width: 100%;
+    }
+
+    .shape-layer {
+      fill: url(#shapeGradient);
+      stroke: rgba(238,244,255,.34);
+      stroke-width: 1.2;
+      transition: x .35s ease, width .35s ease, opacity .2s ease;
+    }
+
+    .shape-side-label {
+      fill: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      dominant-baseline: middle;
+    }
+
+    .shape-side-percent {
+      fill: var(--text);
+      font-size: 12px;
+      font-weight: 800;
+      text-anchor: end;
+      dominant-baseline: middle;
+    }
+
+    .shape-caption {
+      color: var(--muted);
+      font-size: .8rem;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .pyramid {
+      display: grid;
+      gap: 8px;
+      margin: 18px 0 20px;
+    }
+
+    .layer {
+      display: grid;
+      grid-template-columns: 130px 1fr 58px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .layer-name {
+      color: var(--muted);
+      font-size: .87rem;
+    }
+
+    .track {
+      height: 18px;
+      border-radius: 999px;
+      background: #0e1727;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width .35s ease;
+    }
+
+    .layer-value {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+    }
+
+    .report-preview {
+      background: #0a111d;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      color: #dce7f7;
+      white-space: pre-wrap;
+      max-height: 520px;
+      overflow: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .84rem;
+    }
+
+    .empty {
+      color: var(--muted);
+      padding: 26px 6px 8px;
+      text-align: center;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: .82rem;
+      margin-top: 10px;
+    }
+
+    .warning {
+      color: var(--warning);
+      font-size: .88rem;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .sticky { position: static; }
+    }
+
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 20px, 1180px); padding-top: 20px; }
+      .form-grid, .summary-grid { grid-template-columns: 1fr; }
+      .question { grid-template-columns: 1fr; }
+      .layer { grid-template-columns: 100px 1fr 50px; }
+    }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      .shell { width: 100%; padding: 0; }
+      .hero, .left-column, .actions, .privacy { display: none !important; }
+      .grid { display: block; }
+      .card { box-shadow: none; border-color: #ccc; background: #fff; }
+      .sticky { position: static; }
+      .report-preview { max-height: none; overflow: visible; color: #111; background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">QA Field Kit</div>
+      <h1>Test Pyramid Assessment Generator</h1>
+      <p class="lede">
+        Assess the shape of your automated test portfolio, surface likely risks, and generate a practical Markdown or text report you can keep, edit, share, or use to plan next steps.
+      </p>
+      <div class="privacy">
+        <strong>Private by design.</strong> This file runs entirely in your browser. Your answers are not uploaded, transmitted, or stored by the tool.
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="stack left-column">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>1. Assessment context</h2>
+              <p>Optional identifiers for your downloaded report.</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="projectName">Project or team name</label>
+              <input id="projectName" type="text" placeholder="Example: Checkout Platform" />
+            </div>
+            <div class="field">
+              <label for="assessor">Assessor or owner</label>
+              <input id="assessor" type="text" placeholder="Optional" />
+            </div>
+            <div class="field full">
+              <label for="notes">Context notes</label>
+              <textarea id="notes" placeholder="Architecture, release cadence, known constraints, or anything that affects interpretation."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>2. Test inventory</h2>
+              <p>Enter the current number of automated tests at each level.</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="uiCount">UI / E2E tests <span class="help">Browser or app-level workflows</span></label>
+              <input id="uiCount" type="number" min="0" value="0" />
+            </div>
+            <div class="field">
+              <label for="apiCount">API / service tests <span class="help">Functional service-level validation</span></label>
+              <input id="apiCount" type="number" min="0" value="0" />
+            </div>
+            <div class="field">
+              <label for="contractCount">Contract tests <span class="help">Producer-consumer compatibility</span></label>
+              <input id="contractCount" type="number" min="0" value="0" />
+            </div>
+            <div class="field">
+              <label for="componentCount">Component / integration tests <span class="help">Components isolated with real or test doubles</span></label>
+              <input id="componentCount" type="number" min="0" value="0" />
+            </div>
+            <div class="field">
+              <label for="unitCount">Unit tests <span class="help">Smallest testable units</span></label>
+              <input id="unitCount" type="number" min="0" value="0" />
+            </div>
+            <div class="field">
+              <label for="manualCount">Manual regression cases <span class="help">Optional context only</span></label>
+              <input id="manualCount" type="number" min="0" value="0" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>3. Execution and stability</h2>
+              <p>Approximate values are acceptable. Use your best available evidence.</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="regressionHours">Full regression duration (hours)</label>
+              <input id="regressionHours" type="number" min="0" step="0.1" value="0" />
+            </div>
+            <div class="field">
+              <label for="smokeMinutes">UI smoke duration (minutes)</label>
+              <input id="smokeMinutes" type="number" min="0" value="0" />
+            </div>
+            <div class="field">
+              <label for="uiFlake">Approximate UI flake rate (%)</label>
+              <input id="uiFlake" type="number" min="0" max="100" step="0.1" value="0" />
+            </div>
+            <div class="field">
+              <label for="apiFlake">Approximate API flake rate (%)</label>
+              <input id="apiFlake" type="number" min="0" max="100" step="0.1" value="0" />
+            </div>
+            <div class="field">
+              <label for="repairHours">Automation repair hours per week</label>
+              <input id="repairHours" type="number" min="0" step="0.5" value="0" />
+            </div>
+            <div class="field">
+              <label for="failedInvestigations">Failed run investigations per week</label>
+              <input id="failedInvestigations" type="number" min="0" value="0" />
+            </div>
+            <div class="field">
+              <label for="releaseBlocker">Which layer most often blocks releases?</label>
+              <select id="releaseBlocker">
+                <option value="Unknown">Unknown</option>
+                <option value="UI">UI / E2E</option>
+                <option value="API">API / service</option>
+                <option value="Contract">Contract</option>
+                <option value="Component">Component / integration</option>
+                <option value="Unit">Unit</option>
+                <option value="None">No automated layer regularly blocks releases</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="feedbackStage">Earliest meaningful automated feedback</label>
+              <select id="feedbackStage">
+                <option value="Unknown">Unknown</option>
+                <option value="Local">Local development</option>
+                <option value="Pull request">Pull request</option>
+                <option value="Merge">After merge</option>
+                <option value="Test environment">Deployed test environment</option>
+                <option value="Pre-production">Pre-production</option>
+                <option value="Production">Production only</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>4. Diagnostic questions</h2>
+              <p>These questions provide context that raw percentages cannot.</p>
+            </div>
+          </div>
+          <div id="questions" class="question-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>5. Generate</h2>
+              <p>Create the assessment and export it locally.</p>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="primary" id="generateBtn" type="button">Generate assessment</button>
+            <button class="secondary" id="sampleBtn" type="button">Load sample data</button>
+            <button class="ghost" id="resetBtn" type="button">Reset</button>
+          </div>
+          <div class="small-note">
+            The tool is directional. It does not prescribe a universal target ratio and should not be used as a substitute for architecture, risk, or incident analysis.
+          </div>
+        </div>
+      </section>
+
+      <aside class="stack sticky">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>Assessment result</h2>
+              <p>Your current portfolio summary.</p>
+            </div>
+            <span id="shapeBadge" class="shape-badge">Awaiting data</span>
+          </div>
+
+          <div class="summary-grid">
+            <div class="metric">
+              <div class="label">Automated tests</div>
+              <div class="value" id="totalTests">0</div>
+            </div>
+            <div class="metric">
+              <div class="label">UI share</div>
+              <div class="value" id="uiShare">0%</div>
+            </div>
+            <div class="metric">
+              <div class="label">Health score</div>
+              <div class="value" id="healthScore">—</div>
+            </div>
+          </div>
+
+          <div class="shape-visual">
+            <div id="shapeEmpty" class="shape-empty">
+              <svg viewBox="0 0 420 270" role="img" aria-label="Empty test portfolio placeholder">
+                <path d="M210 28 L355 238 L65 238 Z" fill="none" stroke="rgba(159,176,199,.38)" stroke-width="2" stroke-dasharray="7 7"></path>
+                <line x1="110" y1="196" x2="310" y2="196" stroke="rgba(159,176,199,.28)" stroke-width="1.5"></line>
+                <line x1="135" y1="154" x2="285" y2="154" stroke="rgba(159,176,199,.28)" stroke-width="1.5"></line>
+                <line x1="160" y1="112" x2="260" y2="112" stroke="rgba(159,176,199,.28)" stroke-width="1.5"></line>
+                <line x1="185" y1="70" x2="235" y2="70" stroke="rgba(159,176,199,.28)" stroke-width="1.5"></line>
+                <text x="210" y="128" text-anchor="middle" fill="var(--text)" font-size="17" font-weight="800">Enter your test inventory</text>
+                <text x="210" y="151" text-anchor="middle" fill="var(--muted)" font-size="12">Generate an assessment to visualize the portfolio shape.</text>
+              </svg>
+            </div>
+
+            <svg id="shapeSvg" class="shape-result-svg" viewBox="0 0 460 320" role="img" aria-labelledby="shapeTitle shapeDesc" hidden>
+              <title id="shapeTitle">Automated test portfolio shape</title>
+              <desc id="shapeDesc">Five centered layers whose widths represent the percentage share of UI, API, contract, component, and unit tests.</desc>
+              <defs>
+                <linearGradient id="shapeGradient" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#5fd0c8"></stop>
+                  <stop offset="100%" stop-color="#e3b765"></stop>
+                </linearGradient>
+              </defs>
+
+              <line x1="230" y1="20" x2="230" y2="292" stroke="rgba(159,176,199,.18)" stroke-width="1"></line>
+
+              <text class="shape-side-label" x="22" y="48">UI / E2E</text>
+              <rect id="shape-ui" class="shape-layer" x="226" y="28" width="8" height="38" rx="8"></rect>
+              <text id="shape-ui-pct" class="shape-side-percent" x="438" y="48">0%</text>
+
+              <text class="shape-side-label" x="22" y="104">API / service</text>
+              <rect id="shape-api" class="shape-layer" x="226" y="84" width="8" height="38" rx="8"></rect>
+              <text id="shape-api-pct" class="shape-side-percent" x="438" y="104">0%</text>
+
+              <text class="shape-side-label" x="22" y="160">Contract</text>
+              <rect id="shape-contract" class="shape-layer" x="226" y="140" width="8" height="38" rx="8"></rect>
+              <text id="shape-contract-pct" class="shape-side-percent" x="438" y="160">0%</text>
+
+              <text class="shape-side-label" x="22" y="216">Component</text>
+              <rect id="shape-component" class="shape-layer" x="226" y="196" width="8" height="38" rx="8"></rect>
+              <text id="shape-component-pct" class="shape-side-percent" x="438" y="216">0%</text>
+
+              <text class="shape-side-label" x="22" y="272">Unit</text>
+              <rect id="shape-unit" class="shape-layer" x="226" y="252" width="8" height="38" rx="8"></rect>
+              <text id="shape-unit-pct" class="shape-side-percent" x="438" y="272">0%</text>
+            </svg>
+
+            <div id="shapeCaption" class="shape-caption" hidden>
+              Width uses the actual percentage of the automated portfolio. Thin layers remain visible without being exaggerated.
+            </div>
+          </div>
+
+          <div class="pyramid" aria-label="Test portfolio distribution">
+            <div class="layer">
+              <div class="layer-name">UI / E2E</div>
+              <div class="track"><div class="fill" id="bar-ui"></div></div>
+              <div class="layer-value" id="pct-ui">0%</div>
+            </div>
+            <div class="layer">
+              <div class="layer-name">API / service</div>
+              <div class="track"><div class="fill" id="bar-api"></div></div>
+              <div class="layer-value" id="pct-api">0%</div>
+            </div>
+            <div class="layer">
+              <div class="layer-name">Contract</div>
+              <div class="track"><div class="fill" id="bar-contract"></div></div>
+              <div class="layer-value" id="pct-contract">0%</div>
+            </div>
+            <div class="layer">
+              <div class="layer-name">Component</div>
+              <div class="track"><div class="fill" id="bar-component"></div></div>
+              <div class="layer-value" id="pct-component">0%</div>
+            </div>
+            <div class="layer">
+              <div class="layer-name">Unit</div>
+              <div class="track"><div class="fill" id="bar-unit"></div></div>
+              <div class="layer-value" id="pct-unit">0%</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="secondary" id="downloadMdBtn" type="button" disabled>Download Markdown</button>
+            <button class="secondary" id="downloadTxtBtn" type="button" disabled>Download Text</button>
+            <button class="ghost" id="printBtn" type="button" disabled>Print</button>
+          </div>
+          <div id="validationMessage" class="warning" aria-live="polite"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2>Report preview</h2>
+              <p>Edit the downloaded file after export if needed.</p>
+            </div>
+          </div>
+          <div id="reportPreview" class="report-preview"><div class="empty">Complete the assessment and select “Generate assessment.”</div></div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const questionConfig = [
+      ["criticalJourneys", "Are critical user journeys explicitly identified and reviewed?"],
+      ["businessRulesAtUi", "Are most business-rule permutations currently tested through the UI?"],
+      ["contractValidation", "Are API producers and consumers validated independently with contract tests?"],
+      ["componentIsolation", "Can important components be tested without deploying the full system?"],
+      ["preMergeFeedback", "Do developers receive meaningful automated feedback before code is merged?"],
+      ["duplicateUi", "Does the UI suite contain duplicate or near-duplicate workflow coverage?"],
+      ["obsoleteRemoval", "Are obsolete tests reviewed and removed on a regular cadence?"],
+      ["failureIsolation", "Can most failures be isolated quickly to a specific layer?"],
+      ["incidentFeedback", "Are production incidents used to update test priorities and coverage?"],
+      ["sharedOwnership", "Is automated quality ownership shared across development and QA?"],
+      ["trustedResults", "Are regression results trusted without routine reruns?"],
+      ["dataEnvironmentFailures", "Do test data or environment issues frequently cause failures?"]
+    ];
+
+    const answerOptions = [
+      ["Unknown", "Unknown / not measured"],
+      ["Yes", "Yes"],
+      ["Partly", "Partly"],
+      ["No", "No"]
+    ];
+
+    const questionsEl = document.getElementById("questions");
+    questionConfig.forEach(([id, text]) => {
+      const row = document.createElement("div");
+      row.className = "question";
+      row.innerHTML = `
+        <span>${text}</span>
+        <select id="${id}">
+          ${answerOptions.map(([value,label]) => `<option value="${value}">${label}</option>`).join("")}
+        </select>
+      `;
+      questionsEl.appendChild(row);
+    });
+
+    const getNum = id => Math.max(0, Number(document.getElementById(id).value) || 0);
+    const getVal = id => document.getElementById(id).value.trim();
+    const pct = (n, total) => total > 0 ? (n / total) * 100 : 0;
+    const round1 = n => Math.round(n * 10) / 10;
+    let generatedReport = "";
+
+    function classifyShape(p) {
+      const { ui, api, contract, component, unit, total } = p;
+      if (total === 0) return "Insufficient data";
+      const lower = unit + component + contract;
+      const mid = api + contract + component;
+      if (ui >= 70 && lower <= 20) return "Umbrella-shaped";
+      if (ui >= 55 && unit <= 15) return "Ice-cream-cone shaped";
+      if (ui >= 35 && unit >= 35 && mid <= 20) return "Hourglass-shaped";
+      if (unit + component >= 60 && ui <= 15) return "Lower-level heavy";
+      if (ui <= 35 && unit + component + contract >= 40) return "Balanced for current context";
+      return "UI-heavy";
+    }
+
+    function answer(id) {
+      return document.getElementById(id).value;
+    }
+
+    function buildAssessment() {
+      const counts = {
+        ui: getNum("uiCount"),
+        api: getNum("apiCount"),
+        contract: getNum("contractCount"),
+        component: getNum("componentCount"),
+        unit: getNum("unitCount")
+      };
+      const total = Object.values(counts).reduce((a,b) => a+b, 0);
+      const p = {
+        ...Object.fromEntries(Object.entries(counts).map(([k,v]) => [k, pct(v,total)])),
+        total
+      };
+      const shape = classifyShape(p);
+
+      const findings = [];
+      const risks = [];
+      const questions = [];
+      const actions30 = [];
+      const actions90 = [];
+      const longer = [];
+
+      if (p.ui >= 70) {
+        findings.push(`UI / E2E tests represent ${round1(p.ui)}% of the automated portfolio.`);
+        risks.push("Release confidence may depend too heavily on the slowest and most environment-dependent layer.");
+        questions.push("Which UI tests validate deterministic rules that could be moved to API, component, contract, or unit coverage?");
+        actions30.push("Inventory the UI suite by business risk and identify duplicate, obsolete, and lower-level candidates.");
+      } else if (p.ui >= 45) {
+        findings.push(`The portfolio is UI-heavy, with ${round1(p.ui)}% of automated tests executing through the UI.`);
+        questions.push("Which UI scenarios provide unique end-to-end value, and which repeat lower-level behavior?");
+      }
+
+      if (p.api < 15 && counts.ui > 0) {
+        findings.push("API / service coverage appears limited relative to UI coverage.");
+        actions90.push("Expand API regression for business rules, error handling, and deterministic service behavior.");
+      }
+
+      if (counts.contract === 0) {
+        findings.push("No contract tests were reported.");
+        risks.push("Producer-consumer compatibility may only be discovered in deployed environments.");
+        questions.push("Where do interface changes between services or consumers create recurring failures?");
+        actions90.push("Pilot contract testing at one high-change or high-failure service boundary.");
+      }
+
+      if (counts.component === 0) {
+        findings.push("No component or isolated integration tests were reported.");
+        questions.push("Which components could be tested without deploying the entire system?");
+        actions90.push("Identify one component that can be isolated with realistic dependencies or test doubles.");
+      }
+
+      if (p.unit < 10) {
+        findings.push(`Unit tests represent only ${round1(p.unit)}% of the reported automated portfolio.`);
+        questions.push("Are meaningful unit tests absent, undercounted, or maintained outside the current inventory?");
+      }
+
+      const uiFlake = getNum("uiFlake");
+      const apiFlake = getNum("apiFlake");
+      const regressionHours = getNum("regressionHours");
+      const repairHours = getNum("repairHours");
+      const investigations = getNum("failedInvestigations");
+
+      if (uiFlake >= 5) {
+        risks.push(`The reported UI flake rate of ${uiFlake}% is high enough to reduce trust and increase reruns.`);
+        actions30.push("Classify UI failures by product, test, data, environment, dependency, and infrastructure cause.");
+      } else if (uiFlake > 0) {
+        findings.push(`The reported UI flake rate is ${uiFlake}%.`);
+      }
+
+      if (apiFlake >= 3) {
+        risks.push(`The reported API flake rate of ${apiFlake}% warrants investigation into data, dependencies, and environment stability.`);
+      }
+
+      if (regressionHours >= 4) {
+        risks.push(`The full regression duration of ${regressionHours} hours may delay feedback and encourage selective execution.`);
+        actions30.push("Define a small trusted release-blocking smoke suite with a clear runtime target.");
+      }
+
+      if (repairHours >= 8) {
+        risks.push(`${repairHours} hours per week are spent repairing automation, indicating substantial maintenance load.`);
+        actions30.push("Measure maintenance work by failing layer and recurring root cause.");
+      }
+
+      if (investigations >= 5) {
+        risks.push(`${investigations} failed-run investigations per week may be consuming significant QA and engineering capacity.`);
+      }
+
+      if (answer("businessRulesAtUi") === "Yes") {
+        findings.push("Most business-rule permutations are reportedly tested through the UI.");
+        actions90.push("Move deterministic business-rule permutations to faster lower-level tests while retaining critical UI journeys.");
+      }
+
+      if (answer("duplicateUi") === "Yes") {
+        findings.push("Duplicate or near-duplicate UI workflow coverage was reported.");
+        actions30.push("Consolidate duplicated UI scenarios and preserve only unique risk coverage.");
+      }
+
+      if (answer("failureIsolation") === "No") {
+        risks.push("Failures cannot usually be isolated quickly to a specific layer.");
+        actions30.push("Add clearer failure classification, ownership, logging, and layer-specific diagnostics.");
+      }
+
+      if (answer("preMergeFeedback") === "No") {
+        risks.push("Meaningful automated feedback arrives after code is merged.");
+        actions90.push("Move reliable unit, component, contract, or API checks into pull-request or merge validation.");
+      }
+
+      if (answer("trustedResults") === "No") {
+        risks.push("Regression results are not trusted without reruns.");
+        actions30.push("Track rerun rate and distinguish product failures from automation, data, and environment failures.");
+      }
+
+      if (answer("dataEnvironmentFailures") === "Yes") {
+        risks.push("Test data or environment instability frequently affects execution.");
+        actions30.push("Separate environment-readiness checks from product validation and standardize test-data prerequisites.");
+      }
+
+      if (answer("incidentFeedback") === "No") {
+        actions90.push("Review recent production incidents and map each one to the earliest test level that could reasonably detect it.");
+      }
+
+      if (answer("obsoleteRemoval") === "No") {
+        actions30.push("Establish a regular review for obsolete, duplicate, and low-value tests.");
+      }
+
+      if (answer("sharedOwnership") === "No") {
+        longer.push("Clarify shared quality ownership across development and QA rather than assigning all automated validation to one team.");
+      }
+
+      actions30.push("Identify the critical user journeys that must remain at UI / E2E level.");
+      longer.push("Define a project-specific target portfolio based on architecture, business risk, incident history, and feedback needs.");
+      longer.push("Track confidence, feedback speed, maintenance effort, and escaped defects instead of test count alone.");
+
+      const unique = arr => [...new Set(arr)];
+      const f = unique(findings);
+      const r = unique(risks);
+      const q = unique(questions);
+      const a30 = unique(actions30);
+      const a90 = unique(actions90);
+      const al = unique(longer);
+
+      let score = 100;
+      score -= Math.max(0, p.ui - 35) * 0.35;
+      score -= Math.max(0, 10 - p.unit) * 0.5;
+      score -= counts.contract === 0 ? 7 : 0;
+      score -= counts.component === 0 ? 5 : 0;
+      score -= Math.min(20, uiFlake * 1.2);
+      score -= Math.min(10, apiFlake);
+      score -= regressionHours >= 8 ? 10 : regressionHours >= 4 ? 5 : 0;
+      score -= repairHours >= 8 ? 8 : repairHours >= 4 ? 4 : 0;
+      score -= answer("trustedResults") === "No" ? 8 : 0;
+      score -= answer("failureIsolation") === "No" ? 6 : 0;
+      score -= answer("preMergeFeedback") === "No" ? 6 : 0;
+      score = Math.max(0, Math.min(100, Math.round(score)));
+
+      return { counts, p, total, shape, findings: f, risks: r, questions: q, actions30: a30, actions90: a90, longer: al, score };
+    }
+
+    function list(items) {
+      if (!items.length) return "- No major issue was identified from the available answers.";
+      return items.map(x => `- ${x}`).join("\n");
+    }
+
+    function generateReport() {
+      const result = buildAssessment();
+      const message = document.getElementById("validationMessage");
+
+      if (result.total === 0) {
+        message.textContent = "Enter at least one automated test count before generating the assessment.";
+        return;
+      }
+
+      message.textContent = "";
+      const project = getVal("projectName") || "Unnamed project or team";
+      const assessor = getVal("assessor") || "Not provided";
+      const notes = getVal("notes") || "None provided";
+      const date = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+      const blocker = document.getElementById("releaseBlocker").value;
+      const feedback = document.getElementById("feedbackStage").value;
+      const manual = getNum("manualCount");
+
+      const observed = `The current automated test portfolio appears ${result.shape.toLowerCase()}, with ${round1(result.p.ui)}% of tests at UI / E2E level, ${round1(result.p.api)}% at API / service level, ${round1(result.p.contract)}% at contract level, ${round1(result.p.component)}% at component / integration level, and ${round1(result.p.unit)}% at unit level. This classification is directional and should be interpreted alongside architecture, risk, incident history, execution behavior, and ownership.`;
+
+      generatedReport = `# Test Pyramid Assessment
+
+## Assessment context
+
+- **Project or team:** ${project}
+- **Assessor or owner:** ${assessor}
+- **Date generated:** ${date}
+- **Manual regression cases reported:** ${manual}
+- **Layer most likely to block releases:** ${blocker}
+- **Earliest meaningful automated feedback:** ${feedback}
+
+### Context notes
+
+${notes}
+
+> This assessment is directional. It does not prescribe a universal test ratio and should not be treated as a scientific measure of software quality.
+
+## Current distribution
+
+| Test level | Count | Percentage |
+|---|---:|---:|
+| UI / E2E | ${result.counts.ui} | ${round1(result.p.ui)}% |
+| API / service | ${result.counts.api} | ${round1(result.p.api)}% |
+| Contract | ${result.counts.contract} | ${round1(result.p.contract)}% |
+| Component / integration | ${result.counts.component} | ${round1(result.p.component)}% |
+| Unit | ${result.counts.unit} | ${round1(result.p.unit)}% |
+| **Total automated** | **${result.total}** | **100%** |
+
+## Observed shape
+
+**${result.shape}**
+
+${observed}
+
+## Directional health score
+
+**${result.score} / 100**
+
+The score summarizes the reported distribution, stability, feedback timing, maintainability, and diagnostic characteristics. It should be used to guide investigation, not to compare teams or establish compliance.
+
+## Key findings
+
+${list(result.findings)}
+
+## Likely risks and constraints
+
+${list(result.risks)}
+
+## Questions to investigate
+
+${list(result.questions)}
+
+## Suggested next actions
+
+### First 30 days
+
+${list(result.actions30)}
+
+### Next 60–90 days
+
+${list(result.actions90)}
+
+### Longer-term
+
+${list(result.longer)}
+
+## Metrics to watch
+
+- Time to meaningful feedback
+- UI suite execution duration
+- Smoke suite execution duration
+- Flake and rerun rate by layer
+- Mean time to identify the failing layer
+- Weekly automation maintenance effort
+- Failed-run investigations per week
+- Defects detected by test level
+- Escaped defects by originating layer
+- Percentage of critical journeys covered
+- Duplicate or obsolete tests removed
+
+## Interpretation guidance
+
+A large UI layer is not automatically a failure, and a visually balanced pyramid is not automatically healthy. The objective is to validate each important risk at the earliest, fastest, and most reliable level capable of proving it while retaining end-to-end coverage for the user journeys and cross-system outcomes that genuinely require it.
+
+---
+
+Generated locally with the QA Field Kit Test Pyramid Assessment Generator.
+`;
+
+      updateResult(result);
+      document.getElementById("reportPreview").textContent = generatedReport;
+      document.getElementById("downloadMdBtn").disabled = false;
+      document.getElementById("downloadTxtBtn").disabled = false;
+      document.getElementById("printBtn").disabled = false;
+    }
+
+    function updateResult(result) {
+      document.getElementById("shapeBadge").textContent = result.shape;
+      document.getElementById("totalTests").textContent = result.total.toLocaleString();
+      document.getElementById("uiShare").textContent = `${round1(result.p.ui)}%`;
+      document.getElementById("healthScore").textContent = `${result.score}/100`;
+
+      const levels = ["ui","api","contract","component","unit"];
+      const svgCenter = 230;
+      const maxSvgWidth = 330;
+      const minVisibleWidth = 8;
+
+      document.getElementById("shapeEmpty").hidden = true;
+      document.getElementById("shapeSvg").hidden = false;
+      document.getElementById("shapeCaption").hidden = false;
+
+      levels.forEach(k => {
+        const actualPct = result.p[k];
+        document.getElementById(`bar-${k}`).style.width = `${actualPct}%`;
+        document.getElementById(`pct-${k}`).textContent = `${round1(actualPct)}%`;
+
+        const rawWidth = actualPct > 0
+          ? Math.max(minVisibleWidth, (actualPct / 100) * maxSvgWidth)
+          : 0;
+        const rect = document.getElementById(`shape-${k}`);
+        rect.setAttribute("width", rawWidth);
+        rect.setAttribute("x", svgCenter - rawWidth / 2);
+        rect.style.opacity = actualPct > 0 ? "1" : ".15";
+
+        document.getElementById(`shape-${k}-pct`).textContent = `${round1(actualPct)}%`;
+      });
+
+      document.getElementById("shapeDesc").textContent =
+        `Portfolio classified as ${result.shape}. UI ${round1(result.p.ui)}%, API ${round1(result.p.api)}%, contract ${round1(result.p.contract)}%, component ${round1(result.p.component)}%, and unit ${round1(result.p.unit)}%.`;
+    }
+
+    function downloadReport(ext) {
+      if (!generatedReport) return;
+      const project = (getVal("projectName") || "test-pyramid-assessment")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+      const blob = new Blob([generatedReport], { type: ext === "md" ? "text/markdown;charset=utf-8" : "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${project || "test-pyramid-assessment"}.${ext}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function loadSample() {
+      document.getElementById("projectName").value = "Example Commerce Platform";
+      document.getElementById("assessor").value = "Sample assessment";
+      document.getElementById("notes").value = "Illustrative data only. The portfolio supports a customer-facing web application and several backend services.";
+      document.getElementById("uiCount").value = 850;
+      document.getElementById("apiCount").value = 120;
+      document.getElementById("contractCount").value = 10;
+      document.getElementById("componentCount").value = 0;
+      document.getElementById("unitCount").value = 20;
+      document.getElementById("manualCount").value = 600;
+      document.getElementById("regressionHours").value = 8;
+      document.getElementById("smokeMinutes").value = 35;
+      document.getElementById("uiFlake").value = 7;
+      document.getElementById("apiFlake").value = 1;
+      document.getElementById("repairHours").value = 10;
+      document.getElementById("failedInvestigations").value = 8;
+      document.getElementById("releaseBlocker").value = "UI";
+      document.getElementById("feedbackStage").value = "Test environment";
+
+      const sampleAnswers = {
+        criticalJourneys: "Partly",
+        businessRulesAtUi: "Yes",
+        contractValidation: "No",
+        componentIsolation: "No",
+        preMergeFeedback: "No",
+        duplicateUi: "Yes",
+        obsoleteRemoval: "No",
+        failureIsolation: "No",
+        incidentFeedback: "Partly",
+        sharedOwnership: "No",
+        trustedResults: "No",
+        dataEnvironmentFailures: "Yes"
+      };
+      Object.entries(sampleAnswers).forEach(([id,val]) => document.getElementById(id).value = val);
+      generateReport();
+    }
+
+    function resetAll() {
+      document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = "");
+      document.querySelectorAll('input[type="number"]').forEach(el => el.value = 0);
+      document.querySelectorAll("select").forEach(el => el.selectedIndex = 0);
+      generatedReport = "";
+      document.getElementById("reportPreview").innerHTML = '<div class="empty">Complete the assessment and select “Generate assessment.”</div>';
+      document.getElementById("shapeBadge").textContent = "Awaiting data";
+      document.getElementById("totalTests").textContent = "0";
+      document.getElementById("uiShare").textContent = "0%";
+      document.getElementById("healthScore").textContent = "—";
+      ["ui","api","contract","component","unit"].forEach(k => {
+        document.getElementById(`bar-${k}`).style.width = "0%";
+        document.getElementById(`pct-${k}`).textContent = "0%";
+        const rect = document.getElementById(`shape-${k}`);
+        rect.setAttribute("x", "226");
+        rect.setAttribute("width", "8");
+        rect.style.opacity = ".15";
+        document.getElementById(`shape-${k}-pct`).textContent = "0%";
+      });
+      document.getElementById("shapeEmpty").hidden = false;
+      document.getElementById("shapeSvg").hidden = true;
+      document.getElementById("shapeCaption").hidden = true;
+      document.getElementById("downloadMdBtn").disabled = true;
+      document.getElementById("downloadTxtBtn").disabled = true;
+      document.getElementById("printBtn").disabled = true;
+      document.getElementById("validationMessage").textContent = "";
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", generateReport);
+    document.getElementById("sampleBtn").addEventListener("click", loadSample);
+    document.getElementById("resetBtn").addEventListener("click", resetAll);
+    document.getElementById("downloadMdBtn").addEventListener("click", () => downloadReport("md"));
+    document.getElementById("downloadTxtBtn").addEventListener("click", () => downloadReport("txt"));
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+  </script>
+</body>
+</html>

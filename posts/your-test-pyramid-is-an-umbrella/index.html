@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Test Pyramid Is an Umbrella &#8212; and It Is Costing You &#8212; Robert Boles</title>
+  <meta name="description" content="An 87% UI automation portfolio does not prove strong coverage. It proves the slowest, most expensive layer is carrying work that should be split across API, contract, component, and unit checks.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="Your Test Pyramid Is an Umbrella &#8212; and It Is Costing You &#8212; Robert Boles">
+  <meta property="og:description" content="An 87% UI automation portfolio does not prove strong coverage. It proves the slowest, most expensive layer is carrying work that should be split across API, contract, component, and unit checks.">
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2026-07-25">
+  <meta property="article:modified_time" content="2026-07-25">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://robboles.com/posts/your-test-pyramid-is-an-umbrella/">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260718c">
+  <link rel="stylesheet" href="../../assets/css/mana.css">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js?v=20260718c"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": "https://robboles.com/posts/your-test-pyramid-is-an-umbrella/#article",
+        "isPartOf": { "@type": "WebPage", "@id": "https://robboles.com/posts/your-test-pyramid-is-an-umbrella/" },
+        "mainEntityOfPage": "https://robboles.com/posts/your-test-pyramid-is-an-umbrella/",
+        "headline": "Your Test Pyramid Is an Umbrella — and It Is Costing You",
+        "description": "An 87% UI automation portfolio does not prove strong coverage. It proves the slowest, most expensive layer is carrying work that should be split across API, contract, component, and unit checks.",
+        "inLanguage": "en-US",
+        "datePublished": "2026-07-25",
+        "dateModified": "2026-07-25",
+        "articleSection": "QA Field Guide",
+        "proficiencyLevel": "Intermediate",
+        "dependencies": "none (framework-agnostic; examples apply to UI, service, contract, component, and unit automation)",
+        "keywords": "Test Automation, Test Pyramid, Release Confidence",
+        "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "publisher": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightHolder": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightYear": "2026",
+        "license": "https://robboles.com/about/#rights"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://robboles.com/" },
+          { "@type": "ListItem", "position": 2, "name": "QA Field Guide", "item": "https://robboles.com/qa-field-guide/" },
+          { "@type": "ListItem", "position": 3, "name": "Your Test Pyramid Is an Umbrella — and It Is Costing You", "item": "https://robboles.com/posts/your-test-pyramid-is-an-umbrella/" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-root="../../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <svg class="brand-mark" aria-hidden="true" viewBox="0 0 100 100">
+          <circle class="ring" cx="50" cy="50" r="30"/>
+          <circle class="core" cx="50" cy="50" r="16"/>
+        </svg>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <div class="nav-item nav-item--field-guide nav-item--dropdown" data-nav-dropdown data-dropdown-name="Field Guide">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="field-guide-links" aria-label="Field Guide destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--guide" href="../../qa-field-guide/">
+            <strong>Explore the Field Guide</strong>
+            <span>Methods and lessons for reliable QA, AI, and software delivery.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--kit" href="../../field-kit/">
+            <strong>Open the Field Kit</strong>
+            <span>Ready-to-use templates, checklists, worksheets, and tools.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../learning-lab/">learning lab</a>
+        <div class="nav-item nav-item--table-talk nav-item--dropdown" data-nav-dropdown data-dropdown-name="Table Talk">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../table-talk/">table talk</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="table-talk-links" aria-label="Show Table Talk links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="table-talk-links" aria-label="Table Talk destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="../../table-talk/">
+            <strong>Explore Table Talk</strong>
+            <span>Commander, mana bases, and the game I never grew out of.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="../../magic-math/">
+            <strong>Open Magic Math</strong>
+            <span>Finding hidden stories in the numbers.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container page-hero narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../../qa-field-guide/">QA Field Guide</a> / Your Test Pyramid Is an Umbrella</div>
+        <p class="eyebrow">QA Field Guide</p>
+        <h1>Your Test Pyramid Is an Umbrella — and It Is Costing You</h1>
+        <p class="lede">When 87% of your automated tests sit at the UI layer, you do not have a pyramid. You have an umbrella: broad at the top, narrow underneath, and expensive every time the weather changes.</p>
+        <div class="article-meta"><span>Jul 25, 2026</span><span>8 min read</span><span>QA Field Guide</span></div>
+        <div class="tag-row"><span>Test Automation</span><span>Test Pyramid</span><span>Release Confidence</span></div>
+      </div>
+    </section>
+
+    <article class="article">
+      <div class="container article-grid">
+        <div class="article-body">
+
+          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 25, 2026</p>
+
+          <p class="promise">The test pyramid is supposed to make feedback cheaper as you move down the stack: a few UI journeys, more service and integration checks, and a wide base of fast unit-level proof. Imagine a portfolio shaped the other way: 87% UI, 10% service, 3% unit. That number does not automatically mean the suite is bad. It does mean the slowest, most fragile layer is carrying most of the release argument.</p>
+
+          <p>I have seen the pyramid framed a lot of ways in conference sessions, public testing guidance, and my day job. The version that finally stuck for me was not the diagram itself; it was putting real counts next to it. The moment the current shape is visible, the conversation changes from &ldquo;we need more automation&rdquo; to &ldquo;what kind of risk are we proving, and why are we proving so much of it through the browser?&rdquo;</p>
+
+          <p>If you want the classic public framing, Martin Fowler's <a href="https://martinfowler.com/articles/practical-test-pyramid.html" target="_blank" rel="noopener">Practical Test Pyramid</a> is still the clean reference point. This article is the field version: what to do when the picture on the slide is not the shape in the repo.</p>
+
+          <h2 id="actual-shape">The shape we actually have</h2>
+          <p>The trouble starts when automation gets counted as one pile. &ldquo;We have 900 automated tests&rdquo; sounds healthy until the layer split shows where the proof lives. A portfolio can be large and still be brittle if most of the checks depend on a browser, test data, deployed services, third-party seams, and timing all behaving at once.</p>
+
+          <table>
+            <thead>
+              <tr><th>Layer</th><th>Share</th><th>What it usually means</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>UI / end-to-end</td><td>87%</td><td>The browser is proving too many business rules, edge cases, and integration details.</td></tr>
+              <tr><td>Service / API</td><td>10%</td><td>Some behavior is checked below the UI, but not enough to carry fast confidence.</td></tr>
+              <tr><td>Unit / component</td><td>3%</td><td>The cheapest feedback layer is barely participating in the release argument.</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">The issue is not that UI tests exist. The issue is that they are doing work the lower layers should have already proven.</p>
+
+          <p>That is why I call this shape an umbrella instead of an inverted pyramid. An inverted pyramid still sounds like the same model turned upside down. Umbrella is closer to the operational truth: a huge canopy at the top, a thin handle underneath, and everybody trying to stand under it when the release weather gets ugly.</p>
+
+          <h2 id="how-it-happens">How teams end up with an umbrella</h2>
+          <p>Teams rarely choose this shape on purpose. It usually grows from reasonable local decisions that never get governed as a portfolio.</p>
+
+          <p><strong>The UI is easiest to explain.</strong> A browser test looks like the product. Product owners understand it, demos are easy, and a recorded journey feels persuasive. That makes UI automation a natural starting point, especially when the team is trying to prove visible progress.</p>
+
+          <p><strong>Manual regression gets automated path by path.</strong> If the manual checklist is the source of automation ideas, the suite inherits the checklist's shape. It becomes a set of scripted user journeys instead of a layered model of risk.</p>
+
+          <p><strong>API and unit coverage are harder to negotiate across team seams.</strong> Lower-layer checks need engineering ownership, stable contracts, useful test data, and agreement about what belongs where. The browser is slower, but it is politically simpler: point it at the app and make it click.</p>
+
+          <p><strong>Test count becomes the success metric.</strong> If the automation program is rewarded for more tests, the layer mix gets ignored. Fifty new UI tests can look more impressive than five service checks that delete the need for forty of them.</p>
+
+          <div class="callout warn">
+            <span class="callout-label">Watch out</span>
+            <p>A high UI percentage is often a governance smell before it is a tooling smell. The question is not &ldquo;why did QA write so many UI tests?&rdquo; It is &ldquo;why did the portfolio allow the browser to become the default proof layer?&rdquo;</p>
+          </div>
+
+          <h2 id="costs">What the umbrella costs</h2>
+          <p>An umbrella-shaped portfolio gets expensive in three ways: runtime, diagnosis, and trust.</p>
+
+          <p><strong>Runtime cost</strong> is the obvious one. Browser suites are slower than service and unit checks, especially once setup, login, navigation, data creation, cleanup, retries, screenshots, videos, and reporting are included. Ten seconds here and thirty seconds there become a release gate people stop running locally.</p>
+
+          <p><strong>Diagnosis cost</strong> is worse. When a UI test fails, the failure could be a product bug, locator drift, bad test data, a timing problem, environment noise, a downstream service issue, a permissions problem, or a real integration break. That ambiguity means the suite can be red and still not be informative.</p>
+
+          <p><strong>Trust cost</strong> is the one that hurts the release. Once the team learns that red does not always mean risk and green does not always mean enough coverage, automation becomes theater. People wait for a human read anyway. The suite keeps running, but the decision makers stop letting it decide anything.</p>
+
+          <h2 id="what-it-proves">What 87% UI does and does not prove</h2>
+          <p>An 87% UI portfolio can still prove valuable things. It can prove that critical journeys work through the actual product shell. It can catch broken routing, permission mistakes, analytics collisions, data-binding issues, accessibility regressions, and cross-service seams that lower layers miss.</p>
+
+          <p>What it does not prove is that the team has strong layered confidence. A browser-heavy suite may be covering the same happy paths over and over while thin or missing checks leave rules, boundaries, calculations, contracts, error states, and edge cases under-tested.</p>
+
+          <table>
+            <thead>
+              <tr><th>Question</th><th>If the answer is yes</th><th>Better home</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Is this mostly a calculation or business rule?</td><td>The browser is probably too high a layer.</td><td>Unit or component</td></tr>
+              <tr><td>Is this about request/response behavior?</td><td>The UI is adding cost without adding much signal.</td><td>Service or contract</td></tr>
+              <tr><td>Is this about a cross-system user journey?</td><td>The UI may be the right layer, but keep it scarce.</td><td>End-to-end</td></tr>
+              <tr><td>Is this about visual state, navigation, or permissions?</td><td>The UI may be earning its place.</td><td>UI / E2E</td></tr>
+            </tbody>
+          </table>
+
+          <p>The audit move is simple: do not start by deleting tests. Start by asking what each UI test is actually proving, then whether a cheaper layer could prove the same thing with less ambiguity.</p>
+
+          <h2 id="do-not-invert">Do not invert the pyramid blindly</h2>
+          <p>The fastest way to make this worse is to turn the pyramid into a quota. &ldquo;We need 70% unit, 20% service, 10% UI&rdquo; sounds disciplined, but it can create a different kind of theater if the product does not support that split yet.</p>
+
+          <p>Some systems really do need more UI coverage than others. Legacy apps with thin APIs, heavy workflow behavior, or vendor-owned internals may not offer clean lower-layer seams at first. Some teams have inherited automation without the engineering support needed to move checks down immediately. Pretending those constraints are not real just turns strategy into scolding.</p>
+
+          <p>The better move is to set a direction, not a purity score. Every new test should earn its layer. Every UI failure should create a classification trail. Every repeated UI pattern should raise the question: can we retire this journey once a lower-layer check exists?</p>
+
+          <h2 id="target-state">Build the target state from the delta</h2>
+          <p>The target state is not a prettier diagram. It is a migration path from the current suite to a cheaper release argument.</p>
+
+          <p><strong>Step one: count the portfolio.</strong> Count tests by layer, not just total tests. If the team disagrees about the layer, that is useful. It means the taxonomy was implicit, and implicit taxonomies are where automation strategy goes to hide.</p>
+
+          <p><strong>Step two: classify the UI suite.</strong> For each UI test, mark the dominant reason it exists: journey proof, business rule, service behavior, visual state, permission check, regression for a past defect, or unknown. The unknown bucket matters. It is the pile of automation nobody can defend yet.</p>
+
+          <p><strong>Step three: identify movable checks.</strong> A movable check is a UI test whose main assertion can be proven lower in the stack. You do not have to delete it today. You do have to stop pretending the browser is its natural home.</p>
+
+          <p><strong>Step four: replace before removing.</strong> Move one family of checks at a time. Add the API, contract, component, or unit proof first. Then decide whether the old UI journey becomes a smoke check, gets narrowed to one path, or gets retired.</p>
+
+          <p><strong>Step five: protect the new shape.</strong> Add a review question to every automation pull request: why this layer? That one question prevents the umbrella from growing back quietly.</p>
+
+          <div class="reusable-asset">
+            <p class="caption">// take this with you</p>
+            <p>The Test Pyramid Assessment Generator turns raw layer counts into a portfolio shape, flags likely risk, and exports a Markdown or text report you can bring to a strategy review. It runs entirely in the browser: no network calls, no storage, no upload.</p>
+            <a class="button" href="../../field-kit/test-pyramid-assessment-generator/">Open the generator &rarr;</a>
+            <a class="button ghost" href="../../field-kit/test-pyramid-assessment-generator/test-pyramid-assessment-generator.html" download="test-pyramid-assessment-generator.html">Download the standalone HTML</a>
+          </div>
+
+          <h2 id="measure-improvement">Measure improvement correctly</h2>
+          <p>The win is not &ldquo;we deleted UI tests.&rdquo; Deleting tests is easy. Preserving or increasing confidence while lowering cost is the actual win.</p>
+
+          <p>Track four numbers together: layer mix, runtime, failure classification, and escaped defects. Layer mix tells you whether the shape is changing. Runtime tells you whether the feedback is getting cheaper. Failure classification tells you whether red is becoming more informative. Escaped defects tell you whether the strategy still protects the product.</p>
+
+          <p>If UI percentage drops from 87% to 55% but escaped defects rise, you did not improve the strategy. You just moved risk out of sight. If UI percentage drops, runtime improves, failure triage gets clearer, and escaped defects stay flat or improve, then the portfolio is becoming healthier.</p>
+
+          <h2 id="where-breaks">Where this breaks</h2>
+          <p>This breaks when the team treats lower-layer tests as somebody else's job. QA cannot wish a service contract into existence from outside the codebase. Engineers cannot claim the pyramid matters and then leave every release question to the browser. The shape is a team artifact, not a QA decoration.</p>
+
+          <p>It also breaks when the product has no stable seams. If the only reliable interface is the UI, the first architecture task may be testability itself: stable APIs, predictable data setup, contract ownership, component boundaries, or observable service behavior. That is not an excuse to keep the umbrella forever. It is the reason the first roadmap item may be a seam, not a test.</p>
+
+          <p>And it breaks when leadership wants the confidence of a mature automation portfolio without funding the maintenance work. A better pyramid is not created by moving boxes on a slide. It is created by reviewing tests, writing lower-layer checks, retiring redundant journeys, and defending the shape sprint after sprint.</p>
+
+          <h2 id="takeaway">My rule of thumb</h2>
+          <p>If most of your automation is UI, assume the suite is paying a browser tax until proven otherwise. Some of that tax is worth paying; critical journeys deserve end-to-end proof. But every UI test should have to answer the same question: what risk do you prove that a cheaper layer cannot?</p>
+
+          <p>When 87% of the portfolio lives at the top, the problem is not too many tests. The problem is where release confidence is forced to arrive.</p>
+
+          <p>Better tests. Better releases. Less weather.</p>
+
+          <h2 id="related">Related posts</h2>
+          <div class="two-grid">
+            <a class="article-nav-card" href="../../posts/automation-tool-vs-process/"><strong>It's Not Your Automation Tool That's Broken — It's Your Process</strong><span>QA Field Guide</span></a>
+            <a class="article-nav-card" href="../../posts/how-i-cut-a-regression-cycle-in-half/"><strong>How I Cut a Regression Cycle in Half</strong><span>QA Field Guide</span></a>
+            <a class="article-nav-card" href="../../posts/reclaiming-qa-dashboards-gqm/"><strong>Your QA Dashboard Doesn't Need More Charts, It Needs Fewer Questions</strong><span>QA Field Guide</span></a>
+          </div>
+
+          <div class="author-bio">
+            <div class="avatar" aria-hidden="true">RB</div>
+            <div>
+              <h2>Robert Boles</h2>
+              <p>Senior SDET and QA architect with 14 years in enterprise property &amp; casualty insurance &mdash; I've halved a regression cycle, built the QA governance teams run on, and brought AI into test generation without losing the plot. Former Air Force lab tech; I build side projects like Vox Mana on the weekend.</p>
+              <p class="bio-tagline">"I test things until they stop surprising me &mdash; then I go looking for what I missed."</p>
+              <p class="bio-links">
+                <a href="../../about/">About &amp; full bio</a>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="article-aside">
+          <div class="note-card" data-toc>
+            <h2>On this page</h2>
+            <a href="#actual-shape">The shape we actually have</a>
+            <a href="#how-it-happens">How teams end up with an umbrella</a>
+            <a href="#costs">What the umbrella costs</a>
+            <a href="#what-it-proves">What 87% UI proves</a>
+            <a href="#do-not-invert">Do not invert blindly</a>
+            <a href="#target-state">Build the target state</a>
+            <a href="#measure-improvement">Measure improvement correctly</a>
+            <a href="#where-breaks">Where this breaks</a>
+            <a href="#takeaway">My rule of thumb</a>
+            <a href="#related">Related posts</a>
+          </div>
+          <button class="button copy-link" type="button" data-copy-link>Copy article link</button>
+        </aside>
+      </div>
+    </article>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../field-kit/">Field Kit</a>
+        <a href="../../table-talk/">Table Talk</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="../../about/">About</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+        <a href="https://www.linkedin.com/in/robert-boles-qa/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/rboles84" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&#169; 2026 Robert Boles.</span>
+      <span class="fingerprint-tag">"I test things until they stop surprising me &mdash; then I go looking for what I missed."</span>
+      <span>Built for GitHub Pages. No build step required.</span>
+    </div>
+  </footer>
+</body>
+</html>

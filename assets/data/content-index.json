@@ -6,6 +6,24 @@
   },
   "records": [
     {
+      "id": "post:your-test-pyramid-is-an-umbrella",
+      "content_type": "post",
+      "title": "Your Test Pyramid Is an Umbrella — and It Is Costing You",
+      "description": "An 87% UI automation portfolio does not prove strong coverage. It proves the slowest, most expensive layer is carrying work that should be split across API, contract, component, and unit checks.",
+      "route": "/posts/your-test-pyramid-is-an-umbrella/",
+      "published_date": "2026-07-25",
+      "reading_minutes": 8,
+      "tags": [
+        "Test Automation",
+        "Test Pyramid",
+        "Release Confidence"
+      ],
+      "section": "QA Field Guide",
+      "editorial_promise": "If 87% of the portfolio is UI automation, the problem is not too many tests. The problem is where release confidence is forced to arrive.",
+      "status": "published",
+      "subsection": "Automation"
+    },
+    {
       "id": "post:automation-tool-vs-process",
       "content_type": "post",
       "title": "It's Not Your Automation Tool That's Broken — It's Your Process",
@@ -285,6 +303,20 @@
         "Product Strategy"
       ],
       "section": "Projects",
+      "status": "published"
+    },
+    {
+      "id": "kit:test-pyramid-assessment-generator",
+      "content_type": "field_kit",
+      "title": "Test Pyramid Assessment Generator",
+      "description": "An offline browser tool for assessing automated test portfolio shape, surfacing likely risks, and exporting a Markdown or text report for a test-strategy review.",
+      "route": "/field-kit/test-pyramid-assessment-generator/",
+      "tags": [
+        "test pyramid",
+        "automation strategy",
+        "release confidence"
+      ],
+      "section": "Field Kit",
       "status": "published"
     },
     {

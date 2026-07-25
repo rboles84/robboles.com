@@ -90,6 +90,22 @@
       "published_date": null
     },
     {
+      "id": "kit:test-pyramid-assessment-generator",
+      "type": "field_kit",
+      "title": "Test Pyramid Assessment Generator",
+      "description": "An offline browser tool for assessing automated test portfolio shape, surfacing likely risks, and exporting a Markdown or text report for a test-strategy review.",
+      "route": "/field-kit/test-pyramid-assessment-generator/",
+      "section": "Field Kit",
+      "tags": [
+        "test pyramid",
+        "automation strategy",
+        "release confidence"
+      ],
+      "keywords": [],
+      "reading_minutes": null,
+      "published_date": null
+    },
+    {
       "id": "post:automation-tool-vs-process",
       "type": "post",
       "title": "It's Not Your Automation Tool That's Broken — It's Your Process",
@@ -272,6 +288,22 @@
       "keywords": [],
       "reading_minutes": 9,
       "published_date": "2026-07-12"
+    },
+    {
+      "id": "post:your-test-pyramid-is-an-umbrella",
+      "type": "post",
+      "title": "Your Test Pyramid Is an Umbrella — and It Is Costing You",
+      "description": "An 87% UI automation portfolio does not prove strong coverage. It proves the slowest, most expensive layer is carrying work that should be split across API, contract, component, and unit checks.",
+      "route": "/posts/your-test-pyramid-is-an-umbrella/",
+      "section": "QA Field Guide",
+      "tags": [
+        "Test Automation",
+        "Test Pyramid",
+        "Release Confidence"
+      ],
+      "keywords": [],
+      "reading_minutes": 8,
+      "published_date": "2026-07-25"
     },
     {
       "id": "project:mtg-store-inventory-app-concept",

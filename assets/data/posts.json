@@ -1,5 +1,20 @@
 [
   {
+    "slug": "your-test-pyramid-is-an-umbrella",
+    "title": "Your Test Pyramid Is an Umbrella — and It Is Costing You",
+    "date": "2026-07-25",
+    "category": "QA Field Guide",
+    "lane": "Automation",
+    "tags": [
+      "Test Automation",
+      "Test Pyramid",
+      "Release Confidence"
+    ],
+    "description": "An 87% UI automation portfolio does not prove strong coverage. It proves the slowest, most expensive layer is carrying work that should be split across API, contract, component, and unit checks.",
+    "promise": "If 87% of the portfolio is UI automation, the problem is not too many tests. The problem is where release confidence is forced to arrive.",
+    "reading_minutes": 8
+  },
+  {
     "slug": "automation-tool-vs-process",
     "title": "It's Not Your Automation Tool That's Broken — It's Your Process",
     "date": "2026-07-13",

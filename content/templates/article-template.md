@@ -23,9 +23,12 @@ Draft in this file, then port the prose into `article-template.html`
 - Proficiency: Beginner | Intermediate | Expert
 - Dependencies: <!-- tools + versions assumed, e.g. Playwright 1.45, Node 20 -->
 - Read time: <!-- minutes -->
-- Description: <!-- one sentence; becomes the meta + search snippet -->
+- Description: <!-- one sentence for content-index.json; drives listings/search/feeds. If page SEO wording differs, add seo_description in the manifest and keep page meta/OG/JSON-LD aligned. -->
 
-## Anti-slop checklist (must hit >= 7/9 before publishing)
+## Drafting substance prompts
+
+These are drafting aids, not the publish gate. Before `status: published`, the post must pass
+`docs/voice/voice-and-publish-checklist.md`; that checklist is the single stop sign.
 
 - [ ] Original screenshot or log (real UI / real failure, version or date visible)
 - [ ] Code or config artifact the reader can lift
