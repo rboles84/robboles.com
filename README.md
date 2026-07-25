@@ -1,102 +1,122 @@
-robboles.com
+# robboles.com
 
-Professional portfolio, technical publication platform, and software engineering laboratory by Robert Boles.
+Professional portfolio, technical publication platform, and software engineering laboratory by **Robert Boles**.
 
-Live site: https://robboles.com
+**Live Site:** https://robboles.com
 
-Overview
+---
 
-This repository powers robboles.com, a static website focused on software quality, automation, engineering leadership, and independent product development.
+## Overview
 
-The site combines long-form technical writing, interactive resources, case studies, and production-quality engineering practices without relying on a traditional CMS or backend.
+This repository powers **robboles.com**, a static website dedicated to software quality, automation, engineering leadership, and independent product development.
 
-What You'll Find
-QA Field Guide
+The site combines long-form technical writing, practical engineering resources, project case studies, and production-quality frontend engineering into a fast, dependency-light experience built for developers, QA professionals, and technical leaders.
 
-Practical guidance on:
+---
 
-QA strategy
-Release readiness
-Risk-based testing
-Automation
-Metrics
-Engineering leadership
-Learning Lab
+## Featured Sections
 
-Evergreen notes, experiments, and technical deep dives covering software engineering and quality.
+### QA Field Guide
 
-Automation Cookbook
+A practical reference covering:
 
-Patterns, examples, and reusable techniques for building maintainable automation systems.
+- QA strategy
+- Risk-based testing
+- Release readiness
+- Test automation
+- Metrics and reporting
+- Engineering leadership
 
-Projects
+### Automation Cookbook
 
-Engineering case studies including:
+Reusable automation patterns, implementation examples, and practical engineering techniques.
 
-Vox Mana
-Test Case Generator
-Additional independent software projects
-Search
+### Learning Lab
 
-A dependency-free search experience powered by a local JSON index.
+Research notes, experiments, technical deep dives, and ongoing engineering explorations.
 
-Technical Highlights
-Static HTML, CSS, and JavaScript
-No server-side code
-No database
-No CMS
-Accessible, responsive design
-GitHub Pages deployment
-Local search
-RSS and Atom feeds
-XML sitemap
-Structured metadata
-Automated validation and regression tests
-Local Development
+### Projects
 
-Clone the repository and start a local server:
+Case studies and independent software projects including:
 
-python -m http.server 8080
+- Vox Mana
+- Test Case Generator
+- Additional software and research projects
+
+### Search
+
+A dependency-free search experience powered entirely by a local JSON search index.
+
+---
+
+## Technical Highlights
+
+- Static HTML, CSS, and JavaScript
+- No backend or server-side code
+- No CMS
+- GitHub Pages deployment
+- Responsive and accessible design
+- Local JSON search
+- RSS and Atom feeds
+- XML sitemap
+- Structured metadata
+- Automated validation and regression testing
+
+---
+
+## Repository Structure
+
+    about/
+    articles/
+    assets/
+    automation-cookbook/
+    content/
+    field-kit/
+    learning-lab/
+    magic-math/
+    posts/
+    projects/
+    qa-field-guide/
+    scripts/
+    search/
+    table-talk/
+    tests/
+
+---
+
+## Local Development
+
+Start a local development server:
+
+    python -m http.server 8080
 
 Open:
 
-http://localhost:8080
-Repository Structure
-about/
-articles/
-assets/
-automation-cookbook/
-field-kit/
-learning-lab/
-magic-math/
-posts/
-projects/
-qa-field-guide/
-search/
-tests/
-Testing
+    http://localhost:8080
+
+---
+
+## Testing
 
 Run the automated validation suite:
 
-npm test
-Design Goals
+    npm test
 
-The site emphasizes:
+---
 
-Fast loading
-Accessibility
-Searchability
-Long-term maintainability
-Static deployment
-Clear technical communication
-Live Website
+## Design Goals
+
+This project emphasizes:
+
+- Fast loading
+- Accessibility
+- Searchability
+- Long-term maintainability
+- Static deployment
+- Clear technical communication
+
+---
+
+## Live Website
 
 https://robboles.com
-
-License
-
-Commit Authorship
-
-Robert Boles is the sole author. Do not add `Co-authored-by:` trailers to commits.
-
-Run `npm run install-hooks` after cloning to enable the tracked commit-message hook. The hook rejects every co-author trailer before Git creates the commit.
