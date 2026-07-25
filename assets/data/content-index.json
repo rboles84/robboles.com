@@ -6,6 +6,24 @@
   },
   "records": [
     {
+      "id": "post:test-data-is-infrastructure-not-setup",
+      "content_type": "post",
+      "title": "Test Data Is Infrastructure, Not Setup",
+      "description": "When dev, QA, UAT, and upper non-prod environments do not share reliable test data, teams engineer around data instead of testing the product. The cost shows up as dynamic setup, stale records, duplicate data sets, junk-filled environments, and red runs people learn to ignore.",
+      "route": "/posts/test-data-is-infrastructure-not-setup/",
+      "published_date": "2026-07-25",
+      "reading_minutes": 8,
+      "tags": [
+        "Test Data",
+        "E2E Testing",
+        "Environment Readiness"
+      ],
+      "section": "QA Field Guide",
+      "editorial_promise": "Bad test data does not stay a setup problem.",
+      "status": "published",
+      "subsection": "E2E Testing"
+    },
+    {
       "id": "post:your-e2e-suite-is-testing-the-organization",
       "content_type": "post",
       "title": "Your E2E Suite Is Testing the Organization, Not Just the Product",
@@ -321,6 +339,20 @@
         "Product Strategy"
       ],
       "section": "Projects",
+      "status": "published"
+    },
+    {
+      "id": "kit:test-data-readiness-worksheet",
+      "content_type": "field_kit",
+      "title": "Test Data Readiness Worksheet",
+      "description": "A fillable worksheet for naming the source, owner, refresh cadence, reset path, safe-to-mutate records, cleanup rules, and smoke-test data for one critical journey.",
+      "route": "/field-kit/test-data-readiness-worksheet/",
+      "tags": [
+        "test data",
+        "E2E testing",
+        "environment readiness"
+      ],
+      "section": "Field Kit",
       "status": "published"
     },
     {

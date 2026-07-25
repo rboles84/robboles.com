@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>Test Data Is Infrastructure, Not Setup</title>
+    <link>https://robboles.com/posts/test-data-is-infrastructure-not-setup/</link>
+    <guid>https://robboles.com/posts/test-data-is-infrastructure-not-setup/</guid>
+    <pubDate>Sat, 25 Jul 2026 12:00:00 +0000</pubDate>
+    <description>When dev, QA, UAT, and upper non-prod environments do not share reliable test data, teams engineer around data instead of testing the product. The cost shows up as dynamic setup, stale records, duplicate data sets, junk-filled environments, and red runs people learn to ignore.</description>
+  </item>
+  <item>
     <title>Your E2E Suite Is Testing the Organization, Not Just the Product</title>
     <link>https://robboles.com/posts/your-e2e-suite-is-testing-the-organization/</link>
     <guid>https://robboles.com/posts/your-e2e-suite-is-testing-the-organization/</guid>

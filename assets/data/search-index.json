@@ -106,6 +106,22 @@
       "published_date": null
     },
     {
+      "id": "kit:test-data-readiness-worksheet",
+      "type": "field_kit",
+      "title": "Test Data Readiness Worksheet",
+      "description": "A fillable worksheet for naming the source, owner, refresh cadence, reset path, safe-to-mutate records, cleanup rules, and smoke-test data for one critical journey.",
+      "route": "/field-kit/test-data-readiness-worksheet/",
+      "section": "Field Kit",
+      "tags": [
+        "test data",
+        "E2E testing",
+        "environment readiness"
+      ],
+      "keywords": [],
+      "reading_minutes": null,
+      "published_date": null
+    },
+    {
       "id": "kit:test-pyramid-assessment-generator",
       "type": "field_kit",
       "title": "Test Pyramid Assessment Generator",
@@ -237,6 +253,22 @@
       "keywords": [],
       "reading_minutes": 6,
       "published_date": "2026-07-09"
+    },
+    {
+      "id": "post:test-data-is-infrastructure-not-setup",
+      "type": "post",
+      "title": "Test Data Is Infrastructure, Not Setup",
+      "description": "When dev, QA, UAT, and upper non-prod environments do not share reliable test data, teams engineer around data instead of testing the product. The cost shows up as dynamic setup, stale records, duplicate data sets, junk-filled environments, and red runs people learn to ignore.",
+      "route": "/posts/test-data-is-infrastructure-not-setup/",
+      "section": "QA Field Guide",
+      "tags": [
+        "Test Data",
+        "E2E Testing",
+        "Environment Readiness"
+      ],
+      "keywords": [],
+      "reading_minutes": 8,
+      "published_date": "2026-07-25"
     },
     {
       "id": "post:traceable-is-not-true",

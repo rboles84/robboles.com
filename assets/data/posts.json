@@ -1,5 +1,20 @@
 [
   {
+    "slug": "test-data-is-infrastructure-not-setup",
+    "title": "Test Data Is Infrastructure, Not Setup",
+    "date": "2026-07-25",
+    "category": "QA Field Guide",
+    "lane": "E2E Testing",
+    "tags": [
+      "Test Data",
+      "E2E Testing",
+      "Environment Readiness"
+    ],
+    "description": "When dev, QA, UAT, and upper non-prod environments do not share reliable test data, teams engineer around data instead of testing the product. The cost shows up as dynamic setup, stale records, duplicate data sets, junk-filled environments, and red runs people learn to ignore.",
+    "promise": "Bad test data does not stay a setup problem.",
+    "reading_minutes": 8
+  },
+  {
     "slug": "your-e2e-suite-is-testing-the-organization",
     "title": "Your E2E Suite Is Testing the Organization, Not Just the Product",
     "date": "2026-07-25",

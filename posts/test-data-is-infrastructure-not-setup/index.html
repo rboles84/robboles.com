@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Data Is Infrastructure, Not Setup &#8212; Robert Boles</title>
+  <meta name="description" content="When dev, QA, UAT, and upper non-prod environments do not share reliable test data, teams engineer around data instead of testing the product. The cost shows up as dynamic setup, stale records, duplicate data sets, junk-filled environments, and red runs people learn to ignore.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="Test Data Is Infrastructure, Not Setup &#8212; Robert Boles">
+  <meta property="og:description" content="When dev, QA, UAT, and upper non-prod environments do not share reliable test data, teams engineer around data instead of testing the product. The cost shows up as dynamic setup, stale records, duplicate data sets, junk-filled environments, and red runs people learn to ignore.">
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2026-07-25">
+  <meta property="article:modified_time" content="2026-07-25">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://robboles.com/posts/test-data-is-infrastructure-not-setup/">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260718c">
+  <link rel="stylesheet" href="../../assets/css/mana.css">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js?v=20260718c"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": "https://robboles.com/posts/test-data-is-infrastructure-not-setup/#article",
+        "isPartOf": { "@type": "WebPage", "@id": "https://robboles.com/posts/test-data-is-infrastructure-not-setup/" },
+        "mainEntityOfPage": "https://robboles.com/posts/test-data-is-infrastructure-not-setup/",
+        "headline": "Test Data Is Infrastructure, Not Setup",
+        "description": "When dev, QA, UAT, and upper non-prod environments do not share reliable test data, teams engineer around data instead of testing the product. The cost shows up as dynamic setup, stale records, duplicate data sets, junk-filled environments, and red runs people learn to ignore.",
+        "inLanguage": "en-US",
+        "datePublished": "2026-07-25",
+        "dateModified": "2026-07-25",
+        "articleSection": "QA Field Guide",
+        "proficiencyLevel": "Intermediate",
+        "dependencies": "none (framework-agnostic; examples apply to E2E testing, smoke tests, non-prod environments, and test data ownership)",
+        "keywords": "Test Data, E2E Testing, Environment Readiness",
+        "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "publisher": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightHolder": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightYear": "2026",
+        "license": "https://robboles.com/about/#rights"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://robboles.com/" },
+          { "@type": "ListItem", "position": 2, "name": "QA Field Guide", "item": "https://robboles.com/qa-field-guide/" },
+          { "@type": "ListItem", "position": 3, "name": "Test Data Is Infrastructure, Not Setup", "item": "https://robboles.com/posts/test-data-is-infrastructure-not-setup/" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-root="../../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <svg class="brand-mark" aria-hidden="true" viewBox="0 0 100 100">
+          <circle class="ring" cx="50" cy="50" r="30"/>
+          <circle class="core" cx="50" cy="50" r="16"/>
+        </svg>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <div class="nav-item nav-item--field-guide nav-item--dropdown" data-nav-dropdown data-dropdown-name="Field Guide">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="field-guide-links" aria-label="Field Guide destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--guide" href="../../qa-field-guide/">
+            <strong>Explore the Field Guide</strong>
+            <span>Methods and lessons for reliable QA, AI, and software delivery.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--kit" href="../../field-kit/">
+            <strong>Open the Field Kit</strong>
+            <span>Ready-to-use templates, checklists, worksheets, and tools.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../learning-lab/">learning lab</a>
+        <div class="nav-item nav-item--table-talk nav-item--dropdown" data-nav-dropdown data-dropdown-name="Table Talk">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../table-talk/">table talk</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="table-talk-links" aria-label="Show Table Talk links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="table-talk-links" aria-label="Table Talk destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="../../table-talk/">
+            <strong>Explore Table Talk</strong>
+            <span>Commander, mana bases, and the game I never grew out of.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="../../magic-math/">
+            <strong>Open Magic Math</strong>
+            <span>Finding hidden stories in the numbers.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container page-hero narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../../qa-field-guide/">QA Field Guide</a> / Test Data Is Infrastructure</div>
+        <p class="eyebrow">QA Field Guide</p>
+        <h1>Test Data Is Infrastructure, Not Setup</h1>
+        <p class="lede">A smoke test should not need a scavenger hunt before it can tell you whether the build is alive. If the first problem is always finding an account, a policy, an order, a user, or a state that exists in this environment but not that one, the team is not testing the product yet. It is testing the data situation.</p>
+        <div class="article-meta"><span>Jul 25, 2026</span><span>8 min read</span><span>QA Field Guide</span></div>
+        <div class="tag-row"><span>Test Data</span><span>E2E Testing</span><span>Environment Readiness</span></div>
+      </div>
+    </section>
+
+    <article class="article">
+      <div class="container article-grid">
+        <div class="article-body">
+
+          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 25, 2026</p>
+
+          <p class="promise">Bad test data does not stay a setup problem. It becomes automation architecture, smoke-test instability, duplicate maintenance, stale environments, and eventually a culture where people see red and assume the data is wrong before they ask whether the product is.</p>
+
+          <p>The expensive part is not always the missing record. Missing records are annoying, but they are visible. The harder cost is what teams build around them. When dev, QA, UAT, and upper non-prod environments all carry their own disconnected data sets, every test becomes a little survival machine. First it discovers what world it woke up in. Then it creates or repairs prerequisites. After that it dodges old junk, stale states, and environment-specific versions of the same idea.</p>
+
+          <p>That work can be valid. Dynamic test data is useful. But if every smoke test has to dynamically manufacture its own ground before it can take one step, the data model has become part of the automation burden.</p>
+
+          <h2 id="disjointed-data">Disjointed data turns tests into engineers</h2>
+          <p>In a clean setup, non-prod environments share a reliable data source where they reasonably can, or they at least share a well-owned data contract. A known user exists. A known account exists. The business state can be created, refreshed, or reset without a person spelunking through old records.</p>
+
+          <p>In the messy version, dev has one set of data, QA has another, UAT has a third, and the upper environments have whatever survived the last refresh, import, manual test, hotfix rehearsal, or demo. Nobody means to create chaos. It just accumulates.</p>
+
+          <p>The automation feels that immediately:</p>
+
+          <ul>
+            <li>A test that works in QA cannot run in UAT because the account state is different.</li>
+            <li>A smoke test needs environment-specific selectors, users, records, or setup branches.</li>
+            <li>The same scenario needs multiple copies of the same data, each maintained separately.</li>
+            <li>Data slowly goes stale because nothing owns the refresh cadence.</li>
+            <li>Non-prod fills with junk records from years of manual testing and failed automation runs.</li>
+          </ul>
+
+          <p>The suite still looks like automation. Underneath, it is doing data engineering with test assertions attached.</p>
+
+          <h2 id="dynamic-data">Dynamic data is useful, but it is not free</h2>
+          <p>I like dynamic test data when it is solving the right problem. If a test can create a clean record, exercise the journey, and clean up after itself, that is often better than depending on one sacred account that fifty tests and three teams all mutate. Dynamic setup can make tests more independent and less brittle.</p>
+
+          <p>But dynamic data becomes expensive when it exists because nobody trusts the environments. That is a different problem. Now the test has to carry setup logic, retry logic, cleanup logic, account-selection logic, collision handling, environment-specific rules, and a growing pile of "if this environment, then that data shape" decisions.</p>
+
+          <p>That overhead does not show up as a single defect. It shows up as slower builds, longer maintenance, confused triage, and automation code that is harder to understand than the product workflow it is supposed to validate.</p>
+
+          <table>
+            <thead>
+              <tr><th>Data problem</th><th>Automation cost</th><th>Release signal risk</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Each environment has different seed data</td><td>Environment-specific branches and fixtures</td><td>A pass in one environment does not mean much in another</td></tr>
+              <tr><td>Data has no owner or refresh cadence</td><td>Manual repair before runs</td><td>Failures get dismissed as "just data"</td></tr>
+              <tr><td>Tests mutate shared records</td><td>Order-dependent and collision-prone suites</td><td>One run can poison the next run</td></tr>
+              <tr><td>Junk data accumulates over time</td><td>More filtering, searching, and defensive setup</td><td>Tests validate around noise instead of through a known path</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">Dynamic data is a tool. It should not be a permanent workaround for unowned data infrastructure.</p>
+
+          <h2 id="smoke-tests">A smoke test needs known-good ground</h2>
+          <p>A smoke test has a small job: tell the team whether the build and environment are basically alive. It should be fast, boring, and trusted. If the smoke test spends most of its time fighting data, it stops being a smoke test. It becomes a data-provisioning test with a product check at the end.</p>
+
+          <p>That distinction matters because smoke tests usually sit close to release pressure. When they fail, people are already asking whether the deployment can move forward. If the first answer is "maybe, but we need to see whether the test account exists in this environment," the test is not giving release confidence. It is exposing a readiness gap.</p>
+
+          <p>The fix is not always to freeze one perfect golden record forever. Golden records become their own trap when everybody touches them. The fix is to decide what the smoke path needs and treat that data as a maintained capability:</p>
+
+          <ul>
+            <li>known-good records for read-only validation;</li>
+            <li>safe-to-mutate records for workflows that change state;</li>
+            <li>creation paths for tests that must generate fresh data;</li>
+            <li>reset rules for records that need to return to a baseline;</li>
+            <li>cleanup rules for records automation creates and abandons.</li>
+          </ul>
+
+          <p>That is infrastructure work. Not glamorous. Very real.</p>
+
+          <h2 id="duplicate-data">Multiple data sets multiply maintenance</h2>
+          <p>Disjointed environments create a quiet duplicate-maintenance tax. The same user type has to exist in dev, QA, UAT, and sometimes more than one upper non-prod environment. The same business state has to be recreated. The same edge case has to be preserved. The same account has to avoid the same accidental mutation.</p>
+
+          <p>At first, people remember the differences. Then somebody leaves, a refresh changes one environment, a cleanup deletes a record, a test mutates the wrong state, or a manual run adds a "temporary" workaround that becomes permanent because nobody knows whether it is safe to remove.</p>
+
+          <p>Eventually the test data is not a system. It is folklore.</p>
+
+          <p>That is when teams start building tests that know too much. The script does not just know the journey. It knows that QA uses one account pattern, UAT uses another, the demo environment has stale addresses, and one upper environment needs a special reset because the old seed data was created before a rule changed. Every one of those details may be understandable. Together, they make the test suite fragile in a way that has nothing to do with the feature.</p>
+
+          <h2 id="stale-data">Stale data creates apathy</h2>
+          <p>The worst failure mode is not technical. It is emotional.</p>
+
+          <p>People get tired of being fooled. If enough red runs turn out to be missing data, stale data, duplicate data, dirty data, or an environment-specific account problem, the team learns a dangerous reflex: ignore the first failure. Wait for QA to rerun. Wait for someone to fix the data. Wait for tomorrow's build. Assume it is noise.</p>
+
+          <p>That reflex protects people from wasting time, which is why it spreads. But it also creates a hiding place for real defects. A legitimate product bug can sit inside the same red pattern that everyone has already learned to discount.</p>
+
+          <div class="callout warn">
+            <span class="callout-label">Watch out</span>
+            <p>The most expensive data problem is the one that teaches the team not to believe the suite. Once that happens, fixing a record is easy. Rebuilding trust is the actual work.</p>
+          </div>
+
+          <h2 id="junk-data">Junk data is not harmless</h2>
+          <p>Non-prod environments collect junk the way closets collect cables. Manual tests create records. Automation creates records. Debugging creates records. Demo prep creates records. Half-failed runs leave records in weird states. Nobody wants to delete something important, so the safest choice in the moment is to leave it alone.</p>
+
+          <p>That is how junk becomes terrain. Tests have to filter around it. People have to remember which records are safe. Searches return too much. Setup scripts get more defensive. Data refreshes become scary because nobody knows what hidden dependency will disappear.</p>
+
+          <p>Junk data also blurs diagnosis. Did the feature fail, or did the test find an old record shaped like a valid one? Did the workflow break, or did a previous run leave the account halfway through the process? Did the build regress, or did we finally hit the garbage pile at the edge of the environment?</p>
+
+          <p>If those questions keep coming up, data cleanup is not housekeeping. It is signal repair.</p>
+
+          <h2 id="ownership">Test data needs ownership</h2>
+          <p>"QA owns the test data" is usually too small. QA may know what the tests need, but the data itself crosses systems, environments, refreshes, business rules, privacy constraints, and deployment timing. If the data is shared infrastructure, the ownership model has to look like infrastructure ownership.</p>
+
+          <p>At minimum, each critical data set needs answers to boring questions:</p>
+
+          <ul>
+            <li>Where does the data come from?</li>
+            <li>Which environments should share the same source or same contract?</li>
+            <li>Who owns refreshes?</li>
+            <li>Who can reset a broken record?</li>
+            <li>Which records are safe to mutate?</li>
+            <li>Which records must remain read-only?</li>
+            <li>How do we clean up data created by automation?</li>
+            <li>How do we know the data is stale before the suite fails?</li>
+          </ul>
+
+          <p>If those answers live only in one tester's head, the system is fragile. If they live in a worksheet, a data contract, a seeded fixture process, or a monitored refresh job, the system starts becoming trustworthy.</p>
+
+          <div class="reusable-asset">
+            <p class="caption">// take this with you</p>
+            <p>The Test Data Readiness Worksheet turns a vague "data problem" into named source, owner, refresh, reset, mutation, cleanup, and smoke-path decisions for one critical journey.</p>
+            <a class="button" href="../../field-kit/test-data-readiness-worksheet/">Open the worksheet &rarr;</a>
+            <a class="button ghost" href="../../field-kit/test-data-readiness-worksheet/test-data-readiness-worksheet.html" download="test-data-readiness-worksheet.html">Download fillable HTML</a>
+          </div>
+
+          <h2 id="where-breaks">Where this breaks</h2>
+          <p>This breaks if "shared data source" becomes a magic phrase. Some environments should not share everything. Some data has privacy, compliance, integration, or business-state reasons to be isolated. Some tests should create their own data every time. Some upper environments need to behave differently because they exist for different decisions.</p>
+
+          <p>The point is not sameness for its own sake. The point is intentionality. If the environments differ, the team should know why. If the data is dynamic, the setup should be owned. If the records are shared, mutation rules should be explicit. If data is stale, the suite should not be the first system to notice.</p>
+
+          <h2 id="takeaway">My rule of thumb</h2>
+          <p>If every important test has to ask, "What data do I have in this environment today?" before it can ask, "Does the product work?" the data is not setup anymore. It is part of the system.</p>
+
+          <p>Treat it that way.</p>
+
+          <p>Better tests. Better releases. Less theater.</p>
+
+          <h2 id="related">Related posts</h2>
+          <div class="two-grid">
+            <a class="article-nav-card" href="../../posts/your-e2e-suite-is-testing-the-organization/"><strong>Your E2E Suite Is Testing the Organization, Not Just the Product</strong><span>QA Field Guide</span></a>
+            <a class="article-nav-card" href="../../posts/your-test-pyramid-is-an-umbrella/"><strong>Your Test Pyramid Is an Umbrella — and It Is Costing You</strong><span>QA Field Guide</span></a>
+            <a class="article-nav-card" href="../../posts/automation-tool-vs-process/"><strong>It's Not Your Automation Tool That's Broken — It's Your Process</strong><span>QA Field Guide</span></a>
+          </div>
+
+          <div class="author-bio">
+            <div class="avatar" aria-hidden="true">RB</div>
+            <div>
+              <h2>Robert Boles</h2>
+              <p>Senior SDET and QA architect with 14 years in enterprise property &amp; casualty insurance — I've halved a regression cycle, built the QA governance teams run on, and brought AI into test generation without losing the plot. Former Air Force lab tech; I build side projects like Vox Mana on the weekend.</p>
+              <p class="bio-tagline">"I test things until they stop surprising me — then I go looking for what I missed."</p>
+              <p class="bio-links">
+                <a href="../../about/">About &amp; full bio</a>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="article-aside">
+          <div class="note-card" data-toc>
+            <h2>On this page</h2>
+            <a href="#disjointed-data">Disjointed data</a>
+            <a href="#dynamic-data">Dynamic data is not free</a>
+            <a href="#smoke-tests">Smoke tests need ground</a>
+            <a href="#duplicate-data">Duplicate data maintenance</a>
+            <a href="#stale-data">Stale data creates apathy</a>
+            <a href="#junk-data">Junk data is not harmless</a>
+            <a href="#ownership">Data needs ownership</a>
+            <a href="#where-breaks">Where this breaks</a>
+            <a href="#takeaway">My rule of thumb</a>
+            <a href="#related">Related posts</a>
+          </div>
+          <button class="button copy-link" type="button" data-copy-link>Copy article link</button>
+        </aside>
+      </div>
+    </article>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../field-kit/">Field Kit</a>
+        <a href="../../table-talk/">Table Talk</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="../../about/">About</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+        <a href="https://www.linkedin.com/in/robert-boles-qa/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/rboles84" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&#169; 2026 Robert Boles.</span>
+      <span class="fingerprint-tag">"I test things until they stop surprising me — then I go looking for what I missed."</span>
+      <span>Built for GitHub Pages. No build step required.</span>
+    </div>
+  </footer>
+</body>
+</html>
