@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>Coverage Is Not Confidence</title>
+    <link>https://robboles.com/posts/coverage-is-not-confidence/</link>
+    <guid>https://robboles.com/posts/coverage-is-not-confidence/</guid>
+    <pubDate>Sat, 25 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Coverage tells you how much testing touched the product. Release confidence comes from knowing which business outcomes were protected, where risk is concentrated, and what decision the evidence supports.</description>
+  </item>
+  <item>
     <title>Human in Command, Not Human in the Loop</title>
     <link>https://robboles.com/posts/human-in-command-not-human-in-the-loop/</link>
     <guid>https://robboles.com/posts/human-in-command-not-human-in-the-loop/</guid>

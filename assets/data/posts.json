@@ -1,5 +1,20 @@
 [
   {
+    "slug": "coverage-is-not-confidence",
+    "title": "Coverage Is Not Confidence",
+    "date": "2026-07-25",
+    "category": "QA Field Guide",
+    "lane": "Metrics & Reporting",
+    "tags": [
+      "Metrics",
+      "Release Confidence",
+      "Risk-Based Testing"
+    ],
+    "description": "Coverage tells you how much testing touched the product. Release confidence comes from knowing which business outcomes were protected, where risk is concentrated, and what decision the evidence supports.",
+    "promise": "Coverage is an inventory signal. Confidence is a decision signal.",
+    "reading_minutes": 7
+  },
+  {
     "slug": "human-in-command-not-human-in-the-loop",
     "title": "Human in Command, Not Human in the Loop",
     "date": "2026-07-25",

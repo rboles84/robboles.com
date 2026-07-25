@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Release Confidence Signal Map</title>
+  <style>
+    :root {
+      --bg: #f7f2e8;
+      --paper: #fffaf0;
+      --ink: #201d18;
+      --muted: #5f594f;
+      --line: #d8cbb9;
+      --accent: #0d7a62;
+      --accent-soft: #e3f2ec;
+      --warn: #7a520d;
+      --warn-soft: #fff1c7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1040px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 38px 0 52px;
+    }
+
+    header, section {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--paper);
+      padding: clamp(22px, 5vw, 38px);
+      margin-bottom: 18px;
+      box-shadow: 0 18px 40px rgba(32, 29, 24, .08);
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 { line-height: 1.12; margin: 0; }
+    h1 { font-size: clamp(2rem, 5vw, 3.3rem); max-width: 820px; }
+    h2 { font-size: 1.45rem; }
+    h3 { font-size: 1rem; }
+
+    p { margin: 12px 0 0; }
+    .lede { max-width: 820px; color: var(--muted); font-size: 1.08rem; }
+    .helper { color: var(--muted); font-size: .95rem; }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    button {
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font: inherit;
+      font-weight: 800;
+      padding: 10px 16px;
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+      color: var(--ink);
+      font: inherit;
+      padding: 10px 12px;
+    }
+
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    .signal-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .signal-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fffdf7;
+      padding: 16px;
+      break-inside: avoid;
+    }
+
+    .signal-item h3 { margin-bottom: 6px; }
+    .signal-item .prompt { color: var(--muted); margin-top: 0; }
+
+    .signal-fields {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(160px, 1fr) minmax(190px, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: .95rem;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--accent-soft);
+      color: #114436;
+    }
+
+    .note {
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 14px 16px;
+      margin-top: 18px;
+      border-radius: 12px;
+    }
+
+    .warn {
+      border-left-color: var(--warn);
+      background: var(--warn-soft);
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 860px) {
+      .meta-grid, .signal-fields { grid-template-columns: 1fr; }
+      table, thead, tbody, tr, th, td { display: block; }
+      thead { display: none; }
+      tr { border: 1px solid var(--line); border-radius: 14px; margin-top: 12px; overflow: hidden; }
+      td { border: 0; border-top: 1px solid var(--line); }
+      td:first-child { border-top: 0; font-weight: 800; background: var(--accent-soft); }
+      td::before { display: block; color: var(--muted); font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; }
+      td:nth-child(2)::before { content: "What to write"; }
+      td:nth-child(3)::before { content: "Common trap"; }
+    }
+
+    @media print {
+      body { background: white; }
+      main { width: 100%; padding: 0; }
+      header, section { box-shadow: none; break-inside: avoid; }
+      .action-row { display: none; }
+      input, textarea, select {
+        border-color: #999;
+        background: white;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      textarea { min-height: 64px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">QA Field Kit Â· worksheet</p>
+      <h1>Release Confidence Signal Map</h1>
+      <p class="lede">Use this when a pass rate, coverage number, or dashboard tile is about to stand in for release confidence. Map the signals that support the actual release decision.</p>
+      <p class="helper">Type into the fields, then print or save as PDF. The buttons disappear from the printed copy. This file does not save your answers after you close the tab.</p>
+      <div class="action-row">
+        <button type="button" onclick="window.print()">Print / save this completed map</button>
+        <button class="secondary" type="button" onclick="if (confirm('Clear all fields in this worksheet?')) document.querySelectorAll('input, textarea, select').forEach((field) => field.value = '')">Clear fields</button>
+      </div>
+    </header>
+
+    <section>
+      <h2>Release context</h2>
+      <div class="meta-grid">
+        <label>Release / change <input type="text" placeholder="Example: July release, payment patch, platform upgrade"></label>
+        <label>Prepared by <input type="text" placeholder="Name or team"></label>
+        <label>Date <input type="text" placeholder="YYYY-MM-DD"></label>
+      </div>
+      <div class="meta-grid">
+        <label>Decision needed
+          <select>
+            <option value="">Choose one</option>
+            <option>Ship</option>
+            <option>Hold</option>
+            <option>Ship with accepted risk</option>
+            <option>Investigate before deciding</option>
+          </select>
+        </label>
+        <label>Decision owner <input type="text" placeholder="Name, role, or group"></label>
+        <label>Decision deadline <input type="text" placeholder="Example: before Friday release gate"></label>
+      </div>
+    </section>
+
+    <section>
+      <h2>Signal map</h2>
+      <p>Fill this from evidence, not vibes. If a signal cannot be answered, leave the gap visible and name the owner.</p>
+
+      <div class="signal-list">
+        <div class="signal-item">
+          <h3>Critical journey health</h3>
+          <p class="prompt">Which business-critical journeys were protected, degraded, blocked, or not meaningfully tested?</p>
+          <div class="signal-fields">
+            <label>Evidence / summary <textarea placeholder="Name the journeys and current status."></textarea></label>
+            <label>Status
+              <select><option></option><option>Strong</option><option>Watch</option><option>Blocked</option><option>Unknown</option></select>
+            </label>
+            <label>Owner / next action <textarea></textarea></label>
+          </div>
+        </div>
+
+        <div class="signal-item">
+          <h3>Change-risk coverage</h3>
+          <p class="prompt">Did testing exercise the areas this release can realistically break?</p>
+          <div class="signal-fields">
+            <label>Evidence / summary <textarea></textarea></label>
+            <label>Status
+              <select><option></option><option>Strong</option><option>Watch</option><option>Blocked</option><option>Unknown</option></select>
+            </label>
+            <label>Owner / next action <textarea></textarea></label>
+          </div>
+        </div>
+
+        <div class="signal-item">
+          <h3>Failure classification</h3>
+          <p class="prompt">What failed, and how much of it is product defect, test defect, data, environment, dependency, or accepted known risk?</p>
+          <div class="signal-fields">
+            <label>Evidence / summary <textarea></textarea></label>
+            <label>Status
+              <select><option></option><option>Strong</option><option>Watch</option><option>Blocked</option><option>Unknown</option></select>
+            </label>
+            <label>Owner / next action <textarea></textarea></label>
+          </div>
+        </div>
+
+        <div class="signal-item">
+          <h3>Data and environment trust</h3>
+          <p class="prompt">Is the test result about the product, or about stale data, missing setup, unstable environments, or invalid run conditions?</p>
+          <div class="signal-fields">
+            <label>Evidence / summary <textarea></textarea></label>
+            <label>Status
+              <select><option></option><option>Strong</option><option>Watch</option><option>Blocked</option><option>Unknown</option></select>
+            </label>
+            <label>Owner / next action <textarea></textarea></label>
+          </div>
+        </div>
+
+        <div class="signal-item">
+          <h3>Integration and dependency stability</h3>
+          <p class="prompt">Are internal services, jobs, queues, external services, feeds, or vendors stable enough for the result to mean something?</p>
+          <div class="signal-fields">
+            <label>Evidence / summary <textarea></textarea></label>
+            <label>Status
+              <select><option></option><option>Strong</option><option>Watch</option><option>Blocked</option><option>Unknown</option></select>
+            </label>
+            <label>Owner / next action <textarea></textarea></label>
+          </div>
+        </div>
+
+        <div class="signal-item">
+          <h3>Open defects and accepted risk</h3>
+          <p class="prompt">Which open items affect the release decision, which are accepted, and who owns that acceptance?</p>
+          <div class="signal-fields">
+            <label>Evidence / summary <textarea></textarea></label>
+            <label>Status
+              <select><option></option><option>Strong</option><option>Watch</option><option>Blocked</option><option>Unknown</option></select>
+            </label>
+            <label>Owner / next action <textarea></textarea></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Recommendation</h2>
+      <label>Release confidence statement
+        <textarea placeholder="Example: Recommend ship with accepted risk. Critical journeys are green, change-risk coverage is complete, one medium-impact defect remains with owner and workaround, and data/environment signals are stable."></textarea>
+      </label>
+
+      <div class="note">
+        <strong>Use this sentence shape:</strong>
+        <p>Recommend <em>[ship / hold / ship with accepted risk / investigate]</em> because <em>[critical signals]</em>. The remaining risk is <em>[risk]</em>, owned by <em>[owner]</em>, with <em>[next action]</em>.</p>
+      </div>
+
+      <div class="note warn">
+        <strong>Watch out</strong>
+        <p>Do not hide uncertainty behind a score. If a signal is unknown, say it is unknown and name the decision it blocks.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Fast interpretation guide</h2>
+      <table>
+        <thead>
+          <tr><th>Signal</th><th>What to write</th><th>Common trap</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Coverage</td><td>What areas were exercised and what important paths remain thin.</td><td>Treating percentage covered as percentage safe.</td></tr>
+          <tr><td>Pass rate</td><td>What failed, how it was classified, and whether it affects critical journeys.</td><td>Averaging critical and low-risk failures together.</td></tr>
+          <tr><td>Data / environment</td><td>Whether non-prod conditions are reliable enough for the evidence to count.</td><td>Calling invalid runs product risk or calling product risk "flaky."</td></tr>
+          <tr><td>Open defects</td><td>Severity, impact, owner, workaround, and release implication.</td><td>Counting defects without explaining business consequence.</td></tr>
+        </tbody>
+      </table>
+      <p class="footer-note">Gut-check: if the metric cannot help someone decide what to do next, it is not a confidence signal yet.</p>
+    </section>
+  </main>
+
+  <script>
+    function syncTextareaHeights() {
+      document.querySelectorAll('textarea').forEach((field) => {
+        field.style.height = 'auto';
+        field.style.height = `${field.scrollHeight + 2}px`;
+      });
+    }
+    document.addEventListener('input', (event) => {
+      if (event.target.matches('textarea')) syncTextareaHeights();
+    });
+    window.addEventListener('beforeprint', syncTextareaHeights);
+  </script>
+</body>
+</html>

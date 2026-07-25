@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Release Confidence Signal Map &#8212; Field Kit &#8212; Robert Boles</title>
+  <meta name="description" content="A fillable worksheet for turning coverage, pass rate, failure classification, data reliability, dependency health, and open defects into a release recommendation.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="Release Confidence Signal Map &#8212; Field Kit">
+  <meta property="og:description" content="Turn coverage, pass rate, failure classification, data reliability, dependency health, and open defects into a release recommendation someone can defend.">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://robboles.com/field-kit/release-confidence-signal-map/">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260718c">
+  <link rel="stylesheet" href="../../assets/css/mana.css">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js?v=20260718c"></script>
+  <style>
+    .signal-kit-preview { display: grid; gap: 34px; }
+    .signal-kit-preview h2 { margin: 0; }
+    .signal-kit-preview h2 + p { margin-top: 10px; max-width: 780px; }
+    .preview-grid { display: grid; gap: 14px; margin-top: 22px; }
+    .preview-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(95,208,200,.08), rgba(227,183,101,.04)), var(--panel);
+    }
+    .preview-card h3 {
+      display: grid;
+      gap: 6px;
+      margin: 0 0 10px;
+      font-size: 1.02rem;
+      letter-spacing: -.01em;
+    }
+    .step-pill {
+      display: inline-block;
+      width: fit-content;
+      border-radius: 999px;
+      border: 1px solid rgba(95,208,200,.32);
+      background: rgba(95,208,200,.08);
+      color: var(--accent);
+      font-size: .68rem;
+      line-height: 1;
+      padding: 6px 9px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+    .preview-card p { margin: 0; color: var(--muted); max-width: 760px; }
+    .signal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+    .signal-card {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: var(--panel);
+      color: var(--muted);
+    }
+    .signal-card strong { display: block; color: var(--text); margin-bottom: 5px; font-size: 1rem; }
+    @media (max-width: 700px) {
+      .signal-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-root="../../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <svg class="brand-mark" aria-hidden="true" viewBox="0 0 100 100">
+          <circle class="ring" cx="50" cy="50" r="30"/>
+          <circle class="core" cx="50" cy="50" r="16"/>
+        </svg>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <div class="nav-item nav-item--field-guide nav-item--dropdown" data-nav-dropdown data-dropdown-name="Field Guide">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="field-guide-links" aria-label="Field Guide destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--guide" href="../../qa-field-guide/">
+            <strong>Explore the Field Guide</strong>
+            <span>Methods and lessons for reliable QA, AI, and software delivery.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--kit is-active" href="../../field-kit/">
+            <strong>Open the Field Kit</strong>
+            <span>Ready-to-use templates, checklists, worksheets, and tools.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../learning-lab/">learning lab</a>
+        <div class="nav-item nav-item--table-talk nav-item--dropdown" data-nav-dropdown data-dropdown-name="Table Talk">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../table-talk/">table talk</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="table-talk-links" aria-label="Show Table Talk links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="table-talk-links" aria-label="Table Talk destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="../../table-talk/">
+            <strong>Explore Table Talk</strong>
+            <span>Commander, mana bases, and the game I never grew out of.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="../../magic-math/">
+            <strong>Open Magic Math</strong>
+            <span>Finding hidden stories in the numbers.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../">Field Kit</a> / Release Confidence Signal Map</div>
+        <p class="eyebrow">Field Kit &middot; worksheet</p>
+        <h1>Release Confidence Signal Map</h1>
+        <p class="lede">Use this when a pass rate, coverage number, or dashboard tile is about to stand in for release confidence. The goal is to map the signals that actually support the decision.</p>
+        <div class="kit-actions">
+          <a class="button secondary" href="release-confidence-signal-map.html" download="release-confidence-signal-map.html">Download fillable HTML</a>
+          <a class="button ghost" href="../../posts/coverage-is-not-confidence/">Read the post this came from &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container narrow signal-kit-preview">
+        <div>
+          <h2>How to use it</h2>
+          <p>This page is the quick read. Download the fillable version when a release report says "green," "covered," or "94% passing" and the team still needs to explain what that means for the business.</p>
+
+          <div class="preview-grid">
+            <div class="preview-card">
+              <h3><span class="step-pill">Step 1</span>Name the decision</h3>
+              <p>Start with the release call, gate decision, risk acceptance, or next action the evidence is supposed to support.</p>
+            </div>
+            <div class="preview-card">
+              <h3><span class="step-pill">Step 2</span>Map the critical journeys</h3>
+              <p>List the business paths that matter most, then summarize their health instead of averaging them into the full test inventory.</p>
+            </div>
+            <div class="preview-card">
+              <h3><span class="step-pill">Step 3</span>Classify the noise</h3>
+              <p>Separate product defects from test defects, data gaps, environment issues, dependency instability, and accepted known risk.</p>
+            </div>
+            <div class="preview-card">
+              <h3><span class="step-pill">Step 4</span>Write the recommendation</h3>
+              <p>Turn the signal map into a sentence someone can defend: ship, hold, ship with accepted risk, or investigate before deciding.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2>Signals to map</h2>
+          <p>Use these to keep coverage and pass rate at the right altitude.</p>
+          <div class="signal-grid">
+            <div class="signal-card"><strong>Critical journey health</strong>Which customer or business paths are protected, degraded, blocked, or untested?</div>
+            <div class="signal-card"><strong>Change-risk coverage</strong>Did the run exercise the areas this release can realistically break?</div>
+            <div class="signal-card"><strong>Failure classification</strong>What is product risk, and what is test, data, environment, dependency, or accepted noise?</div>
+            <div class="signal-card"><strong>Data and environment trust</strong>Is the result about the product, or about a non-prod setup nobody trusts?</div>
+            <div class="signal-card"><strong>Dependency stability</strong>Are external services, feeds, jobs, and integrations stable enough for the signal to mean something?</div>
+            <div class="signal-card"><strong>Owner and next action</strong>Who owns each unresolved risk, and what decision does it affect?</div>
+          </div>
+        </div>
+
+        <div>
+          <h2>The gut-check line</h2>
+          <p>If you cannot explain what decision the metric supports, it is not a confidence signal yet. It is just another number waiting for a meeting.</p>
+
+          <div class="callout warn">
+            <span class="callout-label">Watch out</span>
+            <p>Do not let the score become the product. Keep the inputs visible so people can challenge the recommendation instead of managing a number.</p>
+          </div>
+
+          <p class="kit-back"><a href="../">&larr; Back to the Field Kit</a></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../field-kit/">Field Kit</a>
+        <a href="../../table-talk/">Table Talk</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="../../about/">About</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+        <a href="https://www.linkedin.com/in/robert-boles-qa/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/rboles84" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -6,6 +6,24 @@
   },
   "records": [
     {
+      "id": "post:coverage-is-not-confidence",
+      "content_type": "post",
+      "title": "Coverage Is Not Confidence",
+      "description": "Coverage tells you how much testing touched the product. Release confidence comes from knowing which business outcomes were protected, where risk is concentrated, and what decision the evidence supports.",
+      "route": "/posts/coverage-is-not-confidence/",
+      "published_date": "2026-07-25",
+      "reading_minutes": 7,
+      "tags": [
+        "Metrics",
+        "Release Confidence",
+        "Risk-Based Testing"
+      ],
+      "section": "QA Field Guide",
+      "editorial_promise": "Coverage is an inventory signal. Confidence is a decision signal.",
+      "status": "published",
+      "subsection": "Metrics & Reporting"
+    },
+    {
       "id": "post:human-in-command-not-human-in-the-loop",
       "content_type": "post",
       "title": "Human in Command, Not Human in the Loop",
@@ -357,6 +375,20 @@
         "Product Strategy"
       ],
       "section": "Projects",
+      "status": "published"
+    },
+    {
+      "id": "kit:release-confidence-signal-map",
+      "content_type": "field_kit",
+      "title": "Release Confidence Signal Map",
+      "description": "A fillable worksheet for turning coverage, pass rate, failure classification, data reliability, dependency health, and open defects into a release recommendation someone can defend.",
+      "route": "/field-kit/release-confidence-signal-map/",
+      "tags": [
+        "metrics",
+        "release confidence",
+        "risk-based testing"
+      ],
+      "section": "Field Kit",
       "status": "published"
     },
     {

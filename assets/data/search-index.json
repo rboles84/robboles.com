@@ -90,6 +90,22 @@
       "published_date": null
     },
     {
+      "id": "kit:release-confidence-signal-map",
+      "type": "field_kit",
+      "title": "Release Confidence Signal Map",
+      "description": "A fillable worksheet for turning coverage, pass rate, failure classification, data reliability, dependency health, and open defects into a release recommendation someone can defend.",
+      "route": "/field-kit/release-confidence-signal-map/",
+      "section": "Field Kit",
+      "tags": [
+        "metrics",
+        "release confidence",
+        "risk-based testing"
+      ],
+      "keywords": [],
+      "reading_minutes": null,
+      "published_date": null
+    },
+    {
       "id": "kit:risk-based-regression-triage-sheet",
       "type": "field_kit",
       "title": "Risk-Based Regression Triage Sheet",
@@ -168,6 +184,22 @@
       "keywords": [],
       "reading_minutes": 9,
       "published_date": "2026-07-13"
+    },
+    {
+      "id": "post:coverage-is-not-confidence",
+      "type": "post",
+      "title": "Coverage Is Not Confidence",
+      "description": "Coverage tells you how much testing touched the product. Release confidence comes from knowing which business outcomes were protected, where risk is concentrated, and what decision the evidence supports.",
+      "route": "/posts/coverage-is-not-confidence/",
+      "section": "QA Field Guide",
+      "tags": [
+        "Metrics",
+        "Release Confidence",
+        "Risk-Based Testing"
+      ],
+      "keywords": [],
+      "reading_minutes": 7,
+      "published_date": "2026-07-25"
     },
     {
       "id": "post:how-i-cut-a-regression-cycle-in-half",
