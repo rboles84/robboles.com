@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>Your E2E Suite Is Testing the Organization, Not Just the Product</title>
+    <link>https://robboles.com/posts/your-e2e-suite-is-testing-the-organization/</link>
+    <guid>https://robboles.com/posts/your-e2e-suite-is-testing-the-organization/</guid>
+    <pubDate>Sat, 25 Jul 2026 12:00:00 +0000</pubDate>
+    <description>An end-to-end test does not isolate a feature. It exercises the whole delivery chain: services, data, environments, releases, ownership, and communication. That is why E2E failures are so useful when teams classify them honestly.</description>
+  </item>
+  <item>
     <title>Your Test Pyramid Is an Umbrella — and It Is Costing You</title>
     <link>https://robboles.com/posts/your-test-pyramid-is-an-umbrella/</link>
     <guid>https://robboles.com/posts/your-test-pyramid-is-an-umbrella/</guid>

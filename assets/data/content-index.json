@@ -6,6 +6,24 @@
   },
   "records": [
     {
+      "id": "post:your-e2e-suite-is-testing-the-organization",
+      "content_type": "post",
+      "title": "Your E2E Suite Is Testing the Organization, Not Just the Product",
+      "description": "An end-to-end test does not isolate a feature. It exercises the whole delivery chain: services, data, environments, releases, ownership, and communication. That is why E2E failures are so useful when teams classify them honestly.",
+      "route": "/posts/your-e2e-suite-is-testing-the-organization/",
+      "published_date": "2026-07-25",
+      "reading_minutes": 8,
+      "tags": [
+        "E2E Testing",
+        "Release Readiness",
+        "Test Ownership"
+      ],
+      "section": "QA Field Guide",
+      "editorial_promise": "A unit test can isolate code. An end-to-end test cannot isolate the organization.",
+      "status": "published",
+      "subsection": "E2E Testing"
+    },
+    {
       "id": "post:your-test-pyramid-is-an-umbrella",
       "content_type": "post",
       "title": "Your Test Pyramid Is an Umbrella — and It Is Costing You",
@@ -303,6 +321,20 @@
         "Product Strategy"
       ],
       "section": "Projects",
+      "status": "published"
+    },
+    {
+      "id": "kit:e2e-readiness-ownership-checklist",
+      "content_type": "field_kit",
+      "title": "E2E Readiness and Ownership Checklist",
+      "description": "A one-page checklist for critical end-to-end journeys: name the owner, participating systems, required data, environment status, dependency owners, routing rules, rerun criteria, and escalation path before the suite runs.",
+      "route": "/field-kit/e2e-readiness-ownership-checklist/",
+      "tags": [
+        "E2E testing",
+        "readiness",
+        "ownership"
+      ],
+      "section": "Field Kit",
       "status": "published"
     },
     {

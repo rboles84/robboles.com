@@ -26,6 +26,22 @@
       "published_date": "2026-07-08"
     },
     {
+      "id": "kit:e2e-readiness-ownership-checklist",
+      "type": "field_kit",
+      "title": "E2E Readiness and Ownership Checklist",
+      "description": "A one-page checklist for critical end-to-end journeys: name the owner, participating systems, required data, environment status, dependency owners, routing rules, rerun criteria, and escalation path before the suite runs.",
+      "route": "/field-kit/e2e-readiness-ownership-checklist/",
+      "section": "Field Kit",
+      "tags": [
+        "E2E testing",
+        "readiness",
+        "ownership"
+      ],
+      "keywords": [],
+      "reading_minutes": null,
+      "published_date": null
+    },
+    {
       "id": "kit:gqm-mapping-worksheet",
       "type": "field_kit",
       "title": "GQM Goal-Question-Metric Mapping Worksheet",
@@ -271,6 +287,22 @@
       "keywords": [],
       "reading_minutes": 9,
       "published_date": "2026-07-08"
+    },
+    {
+      "id": "post:your-e2e-suite-is-testing-the-organization",
+      "type": "post",
+      "title": "Your E2E Suite Is Testing the Organization, Not Just the Product",
+      "description": "An end-to-end test does not isolate a feature. It exercises the whole delivery chain: services, data, environments, releases, ownership, and communication. That is why E2E failures are so useful when teams classify them honestly.",
+      "route": "/posts/your-e2e-suite-is-testing-the-organization/",
+      "section": "QA Field Guide",
+      "tags": [
+        "E2E Testing",
+        "Release Readiness",
+        "Test Ownership"
+      ],
+      "keywords": [],
+      "reading_minutes": 8,
+      "published_date": "2026-07-25"
     },
     {
       "id": "post:your-precon-is-a-passport",

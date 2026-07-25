@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>E2E Readiness and Ownership Checklist &#8212; Field Kit &#8212; Robert Boles</title>
+  <meta name="description" content="A one-page checklist for critical end-to-end journeys: name the owner, systems, data, environment, dependencies, routing rules, rerun criteria, and escalation path before the suite runs.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="E2E Readiness and Ownership Checklist &#8212; Field Kit">
+  <meta property="og:description" content="Name the owner, systems, data, environment, dependencies, routing rules, rerun criteria, and escalation path before the suite runs.">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://robboles.com/field-kit/e2e-readiness-ownership-checklist/">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260718c">
+  <link rel="stylesheet" href="../../assets/css/mana.css">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js?v=20260718c"></script>
+  <style>
+    .e2e-kit-preview { display: grid; gap: 34px; }
+    .e2e-kit-preview h2 { margin: 0; }
+    .e2e-kit-preview h2 + p { margin-top: 10px; max-width: 780px; }
+    .checklist-preview { display: grid; gap: 14px; margin-top: 22px; }
+    .checklist-item {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(95,208,200,.08), rgba(227,183,101,.04)), var(--panel);
+    }
+    .checklist-item h3 {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 0 0 8px;
+      font-size: 1.02rem;
+      letter-spacing: -.01em;
+    }
+    .step-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: rgba(95,208,200,.16);
+      color: var(--accent);
+      font-size: .82rem;
+      flex: 0 0 auto;
+    }
+    .checklist-item p { margin: 0 0 0 38px; color: var(--muted); max-width: 760px; }
+    .classification-list { display: grid; gap: 12px; margin-top: 18px; }
+    .classification-list div {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: var(--panel);
+      color: var(--muted);
+    }
+    .classification-list strong { display: block; color: var(--text); margin-bottom: 5px; font-size: 1rem; }
+    @media (max-width: 640px) {
+      .checklist-item p { margin-left: 0; }
+    }
+  </style>
+</head>
+<body data-root="../../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <svg class="brand-mark" aria-hidden="true" viewBox="0 0 100 100">
+          <circle class="ring" cx="50" cy="50" r="30"/>
+          <circle class="core" cx="50" cy="50" r="16"/>
+        </svg>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <div class="nav-item nav-item--field-guide nav-item--dropdown" data-nav-dropdown data-dropdown-name="Field Guide">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="field-guide-links" aria-label="Field Guide destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--guide" href="../../qa-field-guide/">
+            <strong>Explore the Field Guide</strong>
+            <span>Methods and lessons for reliable QA, AI, and software delivery.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--kit is-active" href="../../field-kit/">
+            <strong>Open the Field Kit</strong>
+            <span>Ready-to-use templates, checklists, worksheets, and tools.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../learning-lab/">learning lab</a>
+        <div class="nav-item nav-item--table-talk nav-item--dropdown" data-nav-dropdown data-dropdown-name="Table Talk">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../table-talk/">table talk</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="table-talk-links" aria-label="Show Table Talk links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="table-talk-links" aria-label="Table Talk destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="../../table-talk/">
+            <strong>Explore Table Talk</strong>
+            <span>Commander, mana bases, and the game I never grew out of.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="../../magic-math/">
+            <strong>Open Magic Math</strong>
+            <span>Finding hidden stories in the numbers.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../">Field Kit</a> / E2E Readiness and Ownership Checklist</div>
+        <p class="eyebrow">Field Kit &middot; checklist</p>
+        <h1>E2E Readiness and Ownership Checklist</h1>
+        <p class="lede">Use this before a critical end-to-end suite runs. The goal is not to make the run perfect; it is to know whether the result will mean anything and who owns the first move when it fails.</p>
+        <div class="kit-actions">
+          <a class="button secondary" href="e2e-readiness-ownership-checklist.html" download="e2e-readiness-ownership-checklist.html">Download fillable HTML</a>
+          <a class="button ghost" href="../../posts/your-e2e-suite-is-testing-the-organization/">Read the post this came from &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container narrow e2e-kit-preview">
+        <div>
+        <h2>How to use it</h2>
+        <p>This page is the quick read. The useful artifact is the fillable download: open it, type into it with the team, then print or save the completed worksheet without the site navigation.</p>
+
+        <div class="checklist-preview">
+          <div class="checklist-item">
+            <h3><span class="step-pill">1</span>Name one critical journey</h3>
+            <p>Do not fill this out for the whole application. Pick one user or business journey that matters to release confidence.</p>
+          </div>
+          <div class="checklist-item">
+            <h3><span class="step-pill">2</span>Map the real path</h3>
+            <p>Name the apps, APIs, databases, queues, jobs, external services, vendors, sandboxes, callbacks, and teams in the chain.</p>
+          </div>
+          <div class="checklist-item">
+            <h3><span class="step-pill">3</span>Prove readiness before execution</h3>
+            <p>Confirm the environment, versions, data, dependencies, and observability are good enough for the result to mean something.</p>
+          </div>
+          <div class="checklist-item">
+            <h3><span class="step-pill">4</span>Decide failure routing up front</h3>
+            <p>Agree who looks first, what evidence they need, when a rerun is valid, and who decides whether the result blocks release confidence.</p>
+          </div>
+        </div>
+        </div>
+
+        <div>
+        <h2>Failure classification</h2>
+        <p>Do not let every failure become either &ldquo;the app is broken&rdquo; or &ldquo;automation is flaky.&rdquo; Classify the failure before arguing about it.</p>
+        <div class="classification-list">
+          <div><strong>Product defect</strong>The user journey is genuinely broken. Open a defect with impact and evidence.</div>
+          <div><strong>Test defect</strong>The script, assertion, locator, wait, or assumption is wrong. Fix or quarantine with a review date.</div>
+          <div><strong>Environment failure</strong>The environment is not in a meaningful test state. Mark the run invalid and route to the environment owner.</div>
+          <div><strong>Dependency failure</strong>A required service, sandbox, or provider is down or incompatible. Route to the dependency owner and record release impact.</div>
+          <div><strong>Ownership gap</strong>The failure is real, but no team owns the full journey. Name a journey owner before expanding the suite.</div>
+        </div>
+        </div>
+
+        <div>
+        <h2>The gut-check line</h2>
+        <p>If the suite fails at 6 a.m., can the team name who looks first, what evidence they need, and who decides whether the result is valid? If not, the E2E test is already doing its job: it found an ownership gap.</p>
+
+        <div class="callout warn">
+          <span class="callout-label">Watch out</span>
+          <p>Do not let this become a paperwork gate. Use it to make the run meaningful, not to delay every run until the environment is perfect.</p>
+        </div>
+
+        <p class="kit-back"><a href="../">&larr; Back to the Field Kit</a></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../field-kit/">Field Kit</a>
+        <a href="../../table-talk/">Table Talk</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="../../about/">About</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+        <a href="https://www.linkedin.com/in/robert-boles-qa/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/rboles84" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&#169; 2026 Robert Boles.</span>
+      <span class="fingerprint-tag">"I test things until they stop surprising me &mdash; then I go looking for what I missed."</span>
+      <span>Built for GitHub Pages. No build step required.</span>
+    </div>
+  </footer>
+</body>
+</html>
