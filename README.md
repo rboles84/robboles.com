@@ -94,3 +94,9 @@ Live Website
 https://robboles.com
 
 License
+
+Commit Authorship
+
+Robert Boles is the sole author. Do not add `Co-authored-by:` trailers to commits.
+
+Run `npm run install-hooks` after cloning to enable the tracked commit-message hook. The hook rejects every co-author trailer before Git creates the commit.
