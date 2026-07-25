@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>Human in Command, Not Human in the Loop</title>
+    <link>https://robboles.com/posts/human-in-command-not-human-in-the-loop/</link>
+    <guid>https://robboles.com/posts/human-in-command-not-human-in-the-loop/</guid>
+    <pubDate>Sat, 25 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Human-in-the-loop makes the person sound like a checkpoint. In QA, AI can draft, summarize, classify, and suggest, but humans retain decision authority over ambiguity, exceptions, release risk, and lifecycle-controlled outcomes.</description>
+  </item>
+  <item>
     <title>Test Data Is Infrastructure, Not Setup</title>
     <link>https://robboles.com/posts/test-data-is-infrastructure-not-setup/</link>
     <guid>https://robboles.com/posts/test-data-is-infrastructure-not-setup/</guid>

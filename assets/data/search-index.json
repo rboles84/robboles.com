@@ -26,6 +26,22 @@
       "published_date": "2026-07-08"
     },
     {
+      "id": "kit:ai-decision-authority-checklist",
+      "type": "field_kit",
+      "title": "AI Decision Authority Checklist",
+      "description": "A fillable checklist for separating source facts, AI suggestions, human judgment, and lifecycle-controlled outcomes before AI-assisted QA work becomes release evidence.",
+      "route": "/field-kit/ai-decision-authority-checklist/",
+      "section": "Field Kit",
+      "tags": [
+        "AI in QA",
+        "decision authority",
+        "release governance"
+      ],
+      "keywords": [],
+      "reading_minutes": null,
+      "published_date": null
+    },
+    {
       "id": "kit:e2e-readiness-ownership-checklist",
       "type": "field_kit",
       "title": "E2E Readiness and Ownership Checklist",
@@ -186,6 +202,22 @@
       "keywords": [],
       "reading_minutes": 9,
       "published_date": "2026-06-28"
+    },
+    {
+      "id": "post:human-in-command-not-human-in-the-loop",
+      "type": "post",
+      "title": "Human in Command, Not Human in the Loop",
+      "description": "Human-in-the-loop makes the person sound like a checkpoint. In QA, AI can draft, summarize, classify, and suggest, but humans retain decision authority over ambiguity, exceptions, release risk, and lifecycle-controlled outcomes.",
+      "route": "/posts/human-in-command-not-human-in-the-loop/",
+      "section": "QA Field Guide",
+      "tags": [
+        "AI in QA",
+        "Decision Authority",
+        "Release Governance"
+      ],
+      "keywords": [],
+      "reading_minutes": 7,
+      "published_date": "2026-07-25"
     },
     {
       "id": "post:izzet-vs-prismari",

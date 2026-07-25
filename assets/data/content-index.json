@@ -6,6 +6,24 @@
   },
   "records": [
     {
+      "id": "post:human-in-command-not-human-in-the-loop",
+      "content_type": "post",
+      "title": "Human in Command, Not Human in the Loop",
+      "description": "Human-in-the-loop makes the person sound like a checkpoint. In QA, AI can draft, summarize, classify, and suggest, but humans retain decision authority over ambiguity, exceptions, release risk, and lifecycle-controlled outcomes.",
+      "route": "/posts/human-in-command-not-human-in-the-loop/",
+      "published_date": "2026-07-25",
+      "reading_minutes": 7,
+      "tags": [
+        "AI in QA",
+        "Decision Authority",
+        "Release Governance"
+      ],
+      "section": "QA Field Guide",
+      "editorial_promise": "Human-in-the-loop describes a review step. Human-in-command describes accountability.",
+      "status": "published",
+      "subsection": "AI in QA"
+    },
+    {
       "id": "post:test-data-is-infrastructure-not-setup",
       "content_type": "post",
       "title": "Test Data Is Infrastructure, Not Setup",
@@ -339,6 +357,20 @@
         "Product Strategy"
       ],
       "section": "Projects",
+      "status": "published"
+    },
+    {
+      "id": "kit:ai-decision-authority-checklist",
+      "content_type": "field_kit",
+      "title": "AI Decision Authority Checklist",
+      "description": "A fillable checklist for separating source facts, AI suggestions, human judgment, and lifecycle-controlled outcomes before AI-assisted QA work becomes release evidence.",
+      "route": "/field-kit/ai-decision-authority-checklist/",
+      "tags": [
+        "AI in QA",
+        "decision authority",
+        "release governance"
+      ],
+      "section": "Field Kit",
       "status": "published"
     },
     {

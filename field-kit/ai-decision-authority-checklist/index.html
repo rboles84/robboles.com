@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Decision Authority Checklist &#8212; Field Kit &#8212; Robert Boles</title>
+  <meta name="description" content="A fillable checklist for separating source facts, AI suggestions, human judgment, and lifecycle-controlled outcomes before AI-assisted QA work becomes release evidence.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="AI Decision Authority Checklist &#8212; Field Kit">
+  <meta property="og:description" content="Separate source facts, AI suggestions, human judgment, and lifecycle-controlled outcomes before AI-assisted QA work becomes release evidence.">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://robboles.com/field-kit/ai-decision-authority-checklist/">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260718c">
+  <link rel="stylesheet" href="../../assets/css/mana.css">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js?v=20260718c"></script>
+  <style>
+    .authority-kit-preview { display: grid; gap: 34px; }
+    .authority-kit-preview h2 { margin: 0; }
+    .authority-kit-preview h2 + p { margin-top: 10px; max-width: 780px; }
+    .authority-chain {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .authority-step {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(95,208,200,.08), rgba(227,183,101,.04)), var(--panel);
+    }
+    .authority-step h3 {
+      display: grid;
+      gap: 6px;
+      margin: 0 0 10px;
+      font-size: 1.02rem;
+      letter-spacing: -.01em;
+    }
+    .step-pill {
+      display: inline-block;
+      width: fit-content;
+      border-radius: 999px;
+      border: 1px solid rgba(95,208,200,.32);
+      background: rgba(95,208,200,.08);
+      color: var(--accent);
+      font-size: .68rem;
+      line-height: 1;
+      padding: 6px 9px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+    .authority-step p { margin: 0; color: var(--muted); max-width: 760px; }
+    .authority-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+    .authority-card {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: var(--panel);
+      color: var(--muted);
+    }
+    .authority-card strong { display: block; color: var(--text); margin-bottom: 5px; font-size: 1rem; }
+    @media (max-width: 700px) {
+      .authority-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-root="../../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <svg class="brand-mark" aria-hidden="true" viewBox="0 0 100 100">
+          <circle class="ring" cx="50" cy="50" r="30"/>
+          <circle class="core" cx="50" cy="50" r="16"/>
+        </svg>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <div class="nav-item nav-item--field-guide nav-item--dropdown" data-nav-dropdown data-dropdown-name="Field Guide">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="field-guide-links" aria-label="Field Guide destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--guide" href="../../qa-field-guide/">
+            <strong>Explore the Field Guide</strong>
+            <span>Methods and lessons for reliable QA, AI, and software delivery.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--kit is-active" href="../../field-kit/">
+            <strong>Open the Field Kit</strong>
+            <span>Ready-to-use templates, checklists, worksheets, and tools.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../learning-lab/">learning lab</a>
+        <div class="nav-item nav-item--table-talk nav-item--dropdown" data-nav-dropdown data-dropdown-name="Table Talk">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../table-talk/">table talk</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="table-talk-links" aria-label="Show Table Talk links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="table-talk-links" aria-label="Table Talk destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="../../table-talk/">
+            <strong>Explore Table Talk</strong>
+            <span>Commander, mana bases, and the game I never grew out of.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="../../magic-math/">
+            <strong>Open Magic Math</strong>
+            <span>Finding hidden stories in the numbers.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../">Field Kit</a> / AI Decision Authority Checklist</div>
+        <p class="eyebrow">Field Kit &middot; checklist</p>
+        <h1>AI Decision Authority Checklist</h1>
+        <p class="lede">Use this before an AI-assisted QA artifact becomes release evidence. The goal is to keep source facts, machine suggestions, human judgment, and lifecycle outcomes separate enough that someone can defend the decision later.</p>
+        <div class="kit-actions">
+          <a class="button secondary" href="ai-decision-authority-checklist.html" download="ai-decision-authority-checklist.html">Download fillable HTML</a>
+          <a class="button ghost" href="../../posts/human-in-command-not-human-in-the-loop/">Read the post this came from &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container narrow authority-kit-preview">
+        <div>
+          <h2>How to use it</h2>
+          <p>This page is the quick read. Download the fillable version when an AI-generated test plan, failure summary, risk note, release recommendation, or exception language is about to influence a real decision.</p>
+
+          <div class="authority-chain">
+            <div class="authority-step">
+              <h3><span class="step-pill">Step 1</span>Start with source facts</h3>
+              <p>Name the logs, test results, requirements, defects, telemetry, screenshots, or records the AI output used.</p>
+            </div>
+            <div class="authority-step">
+              <h3><span class="step-pill">Step 2</span>Separate the machine suggestion</h3>
+              <p>Capture what AI inferred, grouped, summarized, classified, or proposed. Do not let the suggestion blur into the source facts.</p>
+            </div>
+            <div class="authority-step">
+              <h3><span class="step-pill">Step 3</span>Name the human judgment</h3>
+              <p>Record who accepted, rejected, corrected, or left the output ambiguous, and what decision they own.</p>
+            </div>
+            <div class="authority-step">
+              <h3><span class="step-pill">Step 4</span>Control the outcome</h3>
+              <p>Put the result where it belongs: defect, test, backlog item, risk record, release note, exception, or gate decision.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2>Use it for</h2>
+          <div class="authority-grid">
+            <div class="authority-card"><strong>Generated test cases</strong>Confirm the risk, source requirement, missing edge cases, and human owner.</div>
+            <div class="authority-card"><strong>Failure triage</strong>Separate product defects, test defects, data issues, environment gaps, and accepted noise.</div>
+            <div class="authority-card"><strong>Release-risk summaries</strong>Make sure the clean language still carries uncertainty and action.</div>
+            <div class="authority-card"><strong>Exception language</strong>Name who accepted the risk, why, and when it needs to be revisited.</div>
+          </div>
+        </div>
+
+        <div>
+          <h2>The gut-check line</h2>
+          <p>If the human owner could not defend the AI-assisted output in release triage, it is not decision-grade yet.</p>
+
+          <div class="callout warn">
+            <span class="callout-label">Watch out</span>
+            <p>Do not use the checklist to rubber-stamp polished output. Use it to find where authority, evidence, or lifecycle control is missing.</p>
+          </div>
+
+          <p class="kit-back"><a href="../">&larr; Back to the Field Kit</a></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../field-kit/">Field Kit</a>
+        <a href="../../table-talk/">Table Talk</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="../../about/">About</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+        <a href="https://www.linkedin.com/in/robert-boles-qa/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/rboles84" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&#169; 2026 Robert Boles.</span>
+      <span class="fingerprint-tag">"I test things until they stop surprising me â€” then I go looking for what I missed."</span>
+      <span>Built for GitHub Pages. No build step required.</span>
+    </div>
+  </footer>
+</body>
+</html>

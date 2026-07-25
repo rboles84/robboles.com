@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Human in Command, Not Human in the Loop &#8212; Robert Boles</title>
+  <meta name="description" content="Human-in-the-loop makes the person sound like a checkpoint. In QA, AI can draft, summarize, classify, and suggest, but humans retain decision authority over ambiguity, exceptions, release risk, and lifecycle-controlled outcomes.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="Human in Command, Not Human in the Loop &#8212; Robert Boles">
+  <meta property="og:description" content="Human-in-the-loop makes the person sound like a checkpoint. In QA, AI can draft, summarize, classify, and suggest, but humans retain decision authority over ambiguity, exceptions, release risk, and lifecycle-controlled outcomes.">
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2026-07-25">
+  <meta property="article:modified_time" content="2026-07-25">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://robboles.com/posts/human-in-command-not-human-in-the-loop/">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260718c">
+  <link rel="stylesheet" href="../../assets/css/mana.css">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js?v=20260718c"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": "https://robboles.com/posts/human-in-command-not-human-in-the-loop/#article",
+        "isPartOf": { "@type": "WebPage", "@id": "https://robboles.com/posts/human-in-command-not-human-in-the-loop/" },
+        "mainEntityOfPage": "https://robboles.com/posts/human-in-command-not-human-in-the-loop/",
+        "headline": "Human in Command, Not Human in the Loop",
+        "description": "Human-in-the-loop makes the person sound like a checkpoint. In QA, AI can draft, summarize, classify, and suggest, but humans retain decision authority over ambiguity, exceptions, release risk, and lifecycle-controlled outcomes.",
+        "inLanguage": "en-US",
+        "datePublished": "2026-07-25",
+        "dateModified": "2026-07-25",
+        "articleSection": "QA Field Guide",
+        "proficiencyLevel": "Intermediate",
+        "dependencies": "none (framework-agnostic; examples apply to AI-assisted QA, release governance, triage, and test-planning workflows)",
+        "keywords": "AI in QA, Decision Authority, Release Governance",
+        "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "publisher": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightHolder": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightYear": "2026",
+        "license": "https://robboles.com/about/#rights"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://robboles.com/" },
+          { "@type": "ListItem", "position": 2, "name": "QA Field Guide", "item": "https://robboles.com/qa-field-guide/" },
+          { "@type": "ListItem", "position": 3, "name": "Human in Command, Not Human in the Loop", "item": "https://robboles.com/posts/human-in-command-not-human-in-the-loop/" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body data-root="../../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <svg class="brand-mark" aria-hidden="true" viewBox="0 0 100 100">
+          <circle class="ring" cx="50" cy="50" r="30"/>
+          <circle class="core" cx="50" cy="50" r="16"/>
+        </svg>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <div class="nav-item nav-item--field-guide nav-item--dropdown" data-nav-dropdown data-dropdown-name="Field Guide">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="field-guide-links" aria-label="Field Guide destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--guide" href="../../qa-field-guide/">
+            <strong>Explore the Field Guide</strong>
+            <span>Methods and lessons for reliable QA, AI, and software delivery.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--kit" href="../../field-kit/">
+            <strong>Open the Field Kit</strong>
+            <span>Ready-to-use templates, checklists, worksheets, and tools.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../learning-lab/">learning lab</a>
+        <div class="nav-item nav-item--table-talk nav-item--dropdown" data-nav-dropdown data-dropdown-name="Table Talk">
+        <div class="nav-item-primary">
+          <a class="nav-link" href="../../table-talk/">table talk</a>
+          <button class="nav-caret" type="button" aria-expanded="false" aria-controls="table-talk-links" aria-label="Show Table Talk links">
+            <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+          </button>
+        </div>
+        <div class="nav-dropdown" id="table-talk-links" aria-label="Table Talk destinations">
+          <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="../../table-talk/">
+            <strong>Explore Table Talk</strong>
+            <span>Commander, mana bases, and the game I never grew out of.</span>
+          </a>
+          <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="../../magic-math/">
+            <strong>Open Magic Math</strong>
+            <span>Finding hidden stories in the numbers.</span>
+          </a>
+        </div>
+      </div>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container page-hero narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../../qa-field-guide/">QA Field Guide</a> / Human in Command</div>
+        <p class="eyebrow">QA Field Guide</p>
+        <h1>Human in Command, Not Human in the Loop</h1>
+        <p class="lede">The phrase "human in the loop" sounds safe until you ask what the human is actually allowed to own. In QA, the answer cannot be "review the machine's work and hope the risk is covered." The human has to stay in command of the decision.</p>
+        <div class="article-meta"><span>Jul 25, 2026</span><span>7 min read</span><span>QA Field Guide</span></div>
+        <div class="tag-row"><span>AI in QA</span><span>Decision Authority</span><span>Release Governance</span></div>
+      </div>
+    </section>
+
+    <article class="article">
+      <div class="container article-grid">
+        <div class="article-body">
+
+          <p class="article-verified"><span class="dot">&#9679;</span> Last verified Jul 25, 2026</p>
+
+          <p class="promise">Human-in-the-loop describes a review step. Human-in-command describes accountability. AI can have draft authority. Humans retain decision authority.</p>
+
+          <p>I do not dislike the phrase "human in the loop." It was useful language for a while. It reminded teams that AI output should not flow straight into production, release notes, test plans, defect triage, or customer-facing decisions without a person involved somewhere.</p>
+
+          <p>But "somewhere" is doing too much work.</p>
+
+          <p>A person can be in the loop and still have no real authority. They can be asked to approve a summary they did not source, accept a classification they did not validate, or rubber-stamp a recommendation because the process says a human touched it. That is not governance. That is theater with a checkbox.</p>
+
+          <h2 id="loop-is-too-small">The loop is too small</h2>
+          <p>A loop is a position in a workflow. Command is responsibility for the outcome. That difference matters in QA because the hardest decisions are rarely simple yes/no reviews of machine output.</p>
+
+          <p>The hard parts are ambiguity, exceptions, risk tradeoffs, and context. Is this failure a product defect, a data problem, an environment issue, or an accepted risk? Is this generated test case actually covering the business rule, or just tracing a path through the UI? Is this release summary telling leaders what changed, or only repeating what the tools exported?</p>
+
+          <p>AI can help prepare those questions. It can draft the first map. It can cluster failures, summarize logs, propose test ideas, compare requirements to coverage, and surface gaps faster than a person working from a blank page. I use it that way because it is useful.</p>
+
+          <p>Useful is not the same as accountable.</p>
+
+          <h2 id="draft-authority">Draft authority is not decision authority</h2>
+          <p>The cleaner split is this: AI can have draft authority. Humans retain decision authority.</p>
+
+          <table>
+            <thead>
+              <tr><th>AI can draft</th><th>The human owns</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Test ideas from a story, requirement, or risk note</td><td>Which risks matter enough to test</td></tr>
+              <tr><td>Failure classifications from logs and screenshots</td><td>Whether the classification is defensible in triage</td></tr>
+              <tr><td>Release-risk summaries from dashboards and notes</td><td>Whether the release recommendation should change</td></tr>
+              <tr><td>Coverage maps and traceability notes</td><td>Whether the evidence proves the claim being made</td></tr>
+              <tr><td>Exception language for a known gap</td><td>Whether the exception is acceptable and who accepted it</td></tr>
+            </tbody>
+          </table>
+          <p class="table-caption">The draft can be machine-assisted. The decision still needs a human owner who can defend it.</p>
+
+          <p>This is where a lot of AI-assisted QA work gets squishy. The output looks polished, and polished output creates pressure to use it. A test plan with sections and bullets feels more complete than a messy set of questions. A defect summary with confident wording feels more settled than the logs underneath it. A release note written cleanly can sound like a decision has already been made.</p>
+
+          <p>That is the trap. AI is very good at making incomplete thinking look finished.</p>
+
+          <h2 id="decision-chain">The decision chain I want</h2>
+          <p>The useful chain is not "AI generates, human approves." That skips too many layers. I want the work to move through four states:</p>
+
+          <div class="reusable-asset">
+            <p class="caption">// decision chain</p>
+            <ol>
+              <li><strong>System-derived facts.</strong> What came from logs, tests, requirements, defects, telemetry, source records, or observed behavior?</li>
+              <li><strong>Machine-suggested interpretation.</strong> What did AI infer, group, summarize, classify, or propose?</li>
+              <li><strong>Human-validated judgment.</strong> What did a responsible person accept, reject, correct, or leave ambiguous?</li>
+              <li><strong>Lifecycle-controlled outcome.</strong> Where did the decision land: defect, test, exception, release note, risk record, backlog item, or gate decision?</li>
+            </ol>
+          </div>
+
+          <p>That chain forces a separation between fact, suggestion, judgment, and outcome. Without it, teams start treating AI output as if it carries the authority of the evidence beneath it. Sometimes it does. Sometimes it is only a clean guess sitting on top of thin context.</p>
+
+          <p>The human in command is the person who can point to each layer and say what happened there.</p>
+
+          <h2 id="where-it-matters">Where this matters in QA</h2>
+          <p>This shows up anywhere AI touches release confidence.</p>
+
+          <p><strong>Test generation.</strong> AI can draft a useful first pass, but a human decides whether the cases protect the risk that matters. A generated test that follows every acceptance criterion can still miss the customer-impact path if nobody asks what failure would actually hurt.</p>
+
+          <p><strong>Failure triage.</strong> AI can group failures and suggest likely causes. Someone still has to decide whether the run is invalid, the product is broken, the environment is unready, the data is stale, or the failure is accepted for this release.</p>
+
+          <p><strong>Log analysis.</strong> AI can read more text than anyone wants to read at 4:30 p.m. on release day. The judgment is whether the summary is enough to act on or whether the team needs a deeper read before calling the risk understood.</p>
+
+          <p><strong>Release summaries.</strong> AI can turn messy notes into clean language. A responsible reviewer decides whether that language tells leaders what they need to know, including the parts that are still uncertain.</p>
+
+          <p><strong>Exceptions.</strong> This is the big one. AI can help write an exception. It should not own the exception. A known gap needs a human name, a risk statement, an expiration or revisit trigger, and a place in the lifecycle where the decision can be found later.</p>
+
+          <div class="callout warn">
+            <span class="callout-label">Watch out</span>
+            <p>The dangerous moment is not when AI is obviously wrong. The dangerous moment is when it is mostly right, written cleanly, and just ambiguous enough that nobody wants to slow down and own the remaining judgment.</p>
+          </div>
+
+          <h2 id="not-anti-ai">This is not anti-AI</h2>
+          <p>I keep saying this because the distinction matters: putting humans in command is not an argument against using AI. It is the reason AI becomes usable in higher-stakes work.</p>
+
+          <p>If every AI output needs to be re-created manually from scratch before anyone trusts it, the workflow does not scale. If every AI output is accepted because a human skimmed it, the workflow is unsafe. The middle path is not a vague "review it." The middle path is explicit authority.</p>
+
+          <ul>
+            <li>AI drafts the test idea; the tester owns whether the risk is covered.</li>
+            <li>AI summarizes the failure; triage owns whether the diagnosis is accepted.</li>
+            <li>AI proposes the release note; the reviewer owns whether leaders are getting the truth.</li>
+            <li>AI writes the exception language; the accountable owner accepts or rejects the risk.</li>
+          </ul>
+
+          <p>That sounds slower than blind automation because it is more honest about where the decision lives. In practice, it is usually faster than arguing later about who trusted what and why.</p>
+
+          <h2 id="authority-check">The authority check</h2>
+          <p>The simplest test I know is this:</p>
+
+          <p><strong>If a person could not defend the output in release triage, the output is not decision-grade.</strong></p>
+
+          <p>Not "could they explain what the AI said." Not "could they point to the prompt." Defend it. Show the facts. Name the assumptions. Explain the ambiguity. Say what decision changed because of it. Own the exception if there is one.</p>
+
+          <p>That is the difference between review and command.</p>
+
+          <div class="reusable-asset">
+            <p class="caption">// take this with you</p>
+            <p>The AI Decision Authority Checklist separates source facts, machine suggestions, human judgment, and lifecycle outcome before an AI-assisted QA artifact becomes part of release evidence.</p>
+            <a class="button" href="../../field-kit/ai-decision-authority-checklist/">Open the checklist &rarr;</a>
+            <a class="button ghost" href="../../field-kit/ai-decision-authority-checklist/ai-decision-authority-checklist.html" download="ai-decision-authority-checklist.html">Download fillable HTML</a>
+          </div>
+
+          <h2 id="where-breaks">Where this breaks</h2>
+          <p>This breaks if "human in command" becomes a prettier way to say "the senior person signs everything." That is not the point. Command does not mean one person becomes a bottleneck for every AI-assisted artifact. It means each decision has an owner at the right altitude.</p>
+
+          <p>A tester can own whether a generated case actually covers the edge condition. A developer can own whether a log summary matches the implementation. A product owner can own whether a known gap is acceptable for a release. A QA lead can own whether the evidence supports the go/no-go conversation. Authority should sit where the judgment actually belongs.</p>
+
+          <p>It also breaks if teams ask humans to validate AI output without giving them the source material. You cannot own a decision if all you see is the polished answer. The facts, assumptions, and uncertainty have to stay attached.</p>
+
+          <h2 id="rule">My rule of thumb</h2>
+          <p>AI should prepare decisions for humans, not make decisions around them.</p>
+
+          <p>If the work affects release risk, defect severity, test priority, customer impact, or an exception, do not settle for "human in the loop." Name the human in command. Name what they own. Keep the facts attached. Put the outcome somewhere the next person can find it.</p>
+
+          <p>Better tests. Better releases. Less theater.</p>
+
+          <h2 id="related">Related posts</h2>
+          <div class="two-grid">
+            <a class="article-nav-card" href="../../posts/traceable-is-not-true/"><strong>Traceable Isn't the Same as True</strong><span>QA Field Guide</span></a>
+            <a class="article-nav-card" href="../../posts/how-i-run-ai-like-a-qa-system/"><strong>How I Run AI Like a QA System</strong><span>Learning Lab</span></a>
+            <a class="article-nav-card" href="../../posts/what-good-qa-actually-owns/"><strong>What Good QA Actually Owns</strong><span>QA Field Guide</span></a>
+          </div>
+
+          <div class="author-bio">
+            <div class="avatar" aria-hidden="true">RB</div>
+            <div>
+              <h2>Robert Boles</h2>
+              <p>Senior SDET and QA architect with 14 years in enterprise property &amp; casualty insurance &mdash; I've halved a regression cycle, built the QA governance teams run on, and brought AI into test generation without losing the plot. Former Air Force lab tech; I build side projects like Vox Mana on the weekend.</p>
+              <p class="bio-tagline">"I test things until they stop surprising me â€” then I go looking for what I missed."</p>
+              <p class="bio-links">
+                <a href="../../about/">About &amp; full bio</a>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="article-aside">
+          <div class="note-card" data-toc>
+            <h2>On this page</h2>
+            <a href="#loop-is-too-small">The loop is too small</a>
+            <a href="#draft-authority">Draft authority</a>
+            <a href="#decision-chain">The decision chain</a>
+            <a href="#where-it-matters">Where this matters</a>
+            <a href="#not-anti-ai">This is not anti-AI</a>
+            <a href="#authority-check">The authority check</a>
+            <a href="#where-breaks">Where this breaks</a>
+            <a href="#rule">My rule of thumb</a>
+            <a href="#related">Related posts</a>
+          </div>
+          <button class="button copy-link" type="button" data-copy-link>Copy article link</button>
+        </aside>
+      </div>
+    </article>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../field-kit/">Field Kit</a>
+        <a href="../../table-talk/">Table Talk</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="../../about/">About</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+        <a href="https://www.linkedin.com/in/robert-boles-qa/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/rboles84" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&#169; 2026 Robert Boles.</span>
+      <span class="fingerprint-tag">"I test things until they stop surprising me â€” then I go looking for what I missed."</span>
+      <span>Built for GitHub Pages. No build step required.</span>
+    </div>
+  </footer>
+</body>
+</html>

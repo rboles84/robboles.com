@@ -1,5 +1,20 @@
 [
   {
+    "slug": "human-in-command-not-human-in-the-loop",
+    "title": "Human in Command, Not Human in the Loop",
+    "date": "2026-07-25",
+    "category": "QA Field Guide",
+    "lane": "AI in QA",
+    "tags": [
+      "AI in QA",
+      "Decision Authority",
+      "Release Governance"
+    ],
+    "description": "Human-in-the-loop makes the person sound like a checkpoint. In QA, AI can draft, summarize, classify, and suggest, but humans retain decision authority over ambiguity, exceptions, release risk, and lifecycle-controlled outcomes.",
+    "promise": "Human-in-the-loop describes a review step. Human-in-command describes accountability.",
+    "reading_minutes": 7
+  },
+  {
     "slug": "test-data-is-infrastructure-not-setup",
     "title": "Test Data Is Infrastructure, Not Setup",
     "date": "2026-07-25",
