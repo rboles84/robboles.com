@@ -386,23 +386,95 @@
     const initial = params.get('q') || '';
     if (input) input.value = initial;
 
-    fetch(root + 'assets/data/posts.json')
+    // Shared normalization contract (RBB-045 plan §5.4/§5.5), loaded from
+    // assets/js/search-normalize.js — the SAME file the generator uses, so the
+    // built index and the live query can never disagree. Fallback keeps search
+    // working (degraded) if the module ever fails to load.
+    const SN = window.SearchNormalize || {
+      normalize: function (s) {
+        const p = String(s).toLowerCase().replace(/\s+/g, ' ').trim();
+        return { phrase: p, terms: p ? p.split(' ') : [] };
+      },
+      compareDatedThenId: function (a, b) {
+        const ad = !!a.published_date, bd = !!b.published_date;
+        if (ad !== bd) return ad ? -1 : 1;
+        if (ad && a.published_date !== b.published_date) return a.published_date < b.published_date ? 1 : -1;
+        return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+      },
+    };
+
+    // Match form: normalize, then fold hyphens to spaces so `blue-red`,
+    // `blue red`, and `blue–red` are equivalent (a separator is preserved —
+    // `bluered` is deliberately NOT matched). Used for both index and query.
+    function matchForm(value) {
+      const norm = SN.normalize(value);
+      const phrase = norm.phrase.replace(/-/g, ' ').replace(/\s+/g, ' ').trim();
+      return { phrase: phrase, terms: phrase ? phrase.split(' ') : [] };
+    }
+
+    const TYPE_LABEL = { post: 'article', data_experience: 'data story', field_kit: 'field kit', project: 'project' };
+    const FIELD_WEIGHTS = [['title', 5], ['tags', 3], ['keywords', 3], ['section', 2], ['description', 2]];
+
+    // §5.5 — a record's score is the sum of each query term's best per-field hit;
+    // every term must land somewhere (AND). A whole-word hit doubles the field weight.
+    function scoreRecord(rec, queryTerms) {
+      let total = 0;
+      for (let i = 0; i < queryTerms.length; i++) {
+        const term = queryTerms[i];
+        let best = 0;
+        for (let f = 0; f < FIELD_WEIGHTS.length; f++) {
+          const field = FIELD_WEIGHTS[f][0];
+          const weight = FIELD_WEIGHTS[f][1];
+          const raw = field === 'tags' || field === 'keywords' ? (rec[field] || []).join(' ') : (rec[field] || '');
+          const mf = matchForm(raw);
+          if (mf.phrase.indexOf(term) === -1) continue;
+          const hit = mf.terms.indexOf(term) !== -1 ? weight * 2 : weight;
+          if (hit > best) best = hit;
+        }
+        if (best === 0) return -1; // this term matched nothing → record excluded (AND)
+        total += best;
+      }
+      return total;
+    }
+
+    fetch(root + 'assets/data/search-index.json')
       .then(function (response) { return response.json(); })
-      .then(function (posts) {
+      .then(function (payload) {
+        const records = (payload && payload.records) || [];
         function render() {
-          const q = input ? input.value.trim().toLowerCase() : '';
-          const filtered = posts.filter(function (post) {
-            return !q || [post.title, post.description, post.category, post.tags.join(' ')].join(' ').toLowerCase().includes(q);
+          const query = matchForm(input ? input.value : '');
+          let matched;
+          if (!query.terms.length) {
+            matched = records.map(function (r) { return { rec: r, score: 0 }; });
+          } else {
+            matched = [];
+            for (let i = 0; i < records.length; i++) {
+              const score = scoreRecord(records[i], query.terms);
+              if (score >= 0) matched.push({ rec: records[i], score: score });
+            }
+          }
+          matched.sort(function (a, b) {
+            if (a.score !== b.score) return b.score - a.score;
+            return SN.compareDatedThenId(a.rec, b.rec);
           });
-          results.innerHTML = filtered.map(function (post) {
+          if (!matched.length) {
+            results.innerHTML = '<p class="empty-state is-visible">No matching results yet.</p>';
+            return;
+          }
+          results.innerHTML = matched.map(function (m) {
+            const r = m.rec;
+            const href = root + String(r.route || '').replace(/^\//, '');
+            const typeLabel = TYPE_LABEL[r.type] || r.type;
+            const readMeta = r.reading_minutes != null ? ' · ' + r.reading_minutes + ' min read' : '';
+            const tags = (r.tags || []).slice(0, 3).map(function (tag) { return '<span>' + escapeHtml(tag) + '</span>'; }).join('');
             return '<article class="post-card">' +
-              '<div class="card-topline"><span>' + escapeHtml(post.category) + '</span><span>' + post.reading_minutes + ' min read</span></div>' +
-              '<h3><a href="' + root + 'posts/' + post.slug + '/">' + escapeHtml(post.title) + '</a></h3>' +
-              '<p>' + escapeHtml(post.description) + '</p>' +
-              '<div class="tag-row">' + post.tags.slice(0,3).map(function (tag) { return '<span>' + escapeHtml(tag) + '</span>'; }).join('') + '</div>' +
+              '<div class="card-topline"><span>' + escapeHtml(r.section || '') + '</span>' +
+                '<span class="result-type">' + escapeHtml(typeLabel) + readMeta + '</span></div>' +
+              '<h3><a href="' + href + '">' + escapeHtml(r.title) + '</a></h3>' +
+              '<p>' + escapeHtml(r.description || '') + '</p>' +
+              (tags ? '<div class="tag-row">' + tags + '</div>' : '') +
               '</article>';
           }).join('');
-          if (!filtered.length) results.innerHTML = '<p class="empty-state is-visible">No matching posts yet.</p>';
         }
         if (input) input.addEventListener('input', render);
         render();

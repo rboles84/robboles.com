@@ -6,60 +6,74 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
-    <title>It's Not Your Automation Tool That's Broken — It's Your Process</title>
+    <title>Finish Him — How Commander Combos Actually End</title>
+    <link>https://robboles.com/magic-math/finish-him/</link>
+    <guid>https://robboles.com/magic-math/finish-him/</guid>
+    <pubDate>Sat, 18 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Across 15,107 documented lethal Commander combo variants, most don&apos;t end with one dramatic final move — they end with the game handing you a loop and saying: do it again. A Magic Math data story.</description>
+  </item>
+  <item>
+    <title>It&apos;s Not Your Automation Tool That&apos;s Broken — It&apos;s Your Process</title>
     <link>https://robboles.com/posts/automation-tool-vs-process/</link>
     <guid>https://robboles.com/posts/automation-tool-vs-process/</guid>
     <pubDate>Mon, 13 Jul 2026 12:00:00 +0000</pubDate>
-    <description>Teams blame the framework when nightly runs go red and tests get flaky. Most of the time the framework isn't the problem — nobody owns the suite. Here's what changes when you fix that instead of rewriting it.</description>
+    <description>Teams blame the framework when nightly runs go red and tests get flaky. Most of the time the framework isn&apos;t the problem — nobody owns the suite. Here&apos;s what changes when you fix that instead of rewriting it.</description>
   </item>
   <item>
-    <title>Your QA Dashboard Doesn't Need More Charts, It Needs Fewer Questions</title>
+    <title>Izzet and Prismari Are Both Blue-Red. They&apos;re Not the Same Deck.</title>
+    <link>https://robboles.com/posts/izzet-vs-prismari/</link>
+    <guid>https://robboles.com/posts/izzet-vs-prismari/</guid>
+    <pubDate>Sun, 12 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Same two colors, same color pie, completely different game. Izzet and Prismari prove that a color identity tells you the toolbox, not which tool gets picked up twice a turn.</description>
+  </item>
+  <item>
+    <title>Your QA Dashboard Doesn&apos;t Need More Charts, It Needs Fewer Questions</title>
     <link>https://robboles.com/posts/reclaiming-qa-dashboards-gqm/</link>
     <guid>https://robboles.com/posts/reclaiming-qa-dashboards-gqm/</guid>
-    <pubDate>Sun, 12 Jul 2026 17:00:00 +0000</pubDate>
+    <pubDate>Sun, 12 Jul 2026 12:00:00 +0000</pubDate>
     <description>Most QA dashboards get built bottom-up from whatever the tools export, which is how they end up full of vanity metrics nobody acts on. The Goal-Question-Metric framework flips the build order.</description>
   </item>
   <item>
-    <title>Traceable Isn't the Same as True</title>
+    <title>Traceable Isn&apos;t the Same as True</title>
     <link>https://robboles.com/posts/traceable-is-not-true/</link>
     <guid>https://robboles.com/posts/traceable-is-not-true/</guid>
-    <pubDate>Sun, 12 Jul 2026 16:00:00 +0000</pubDate>
-    <description>A v1 launch scan on Vox Mana came back green — records existed, citations resolved, generated pages matched their source, regression passed. Exploratory testing found the checks were proving the wrong thing anyway. Here's the gap, and the rule I use to close it.</description>
+    <pubDate>Sun, 12 Jul 2026 12:00:00 +0000</pubDate>
+    <description>A v1 launch scan on Vox Mana came back green — records existed, citations resolved, generated pages matched their source, regression passed. Exploratory testing found the checks were proving the wrong thing anyway. Here&apos;s the gap, and the rule I use to close it.</description>
   </item>
   <item>
     <title>Your Precon Is a Passport</title>
     <link>https://robboles.com/posts/your-precon-is-a-passport/</link>
     <guid>https://robboles.com/posts/your-precon-is-a-passport/</guid>
-    <pubDate>Sun, 12 Jul 2026 15:00:00 +0000</pubDate>
-    <description>A precon isn't a lesser deck you apologize for — it's the fastest legal way into a Commander game. The nerves aren't the problem. Not having four sentences ready is.</description>
-  </item>
-  <item>
-    <title>Izzet and Prismari Are Both Blue-Red. They're Not the Same Deck.</title>
-    <link>https://robboles.com/posts/izzet-vs-prismari/</link>
-    <guid>https://robboles.com/posts/izzet-vs-prismari/</guid>
-    <pubDate>Sun, 12 Jul 2026 14:30:00 +0000</pubDate>
-    <description>Same two colors, same color pie, completely different game. Izzet and Prismari prove that a color identity tells you the toolbox, not which tool gets picked up twice a turn.</description>
-  </item>
-  <item>
-    <title>A Quiz Can Be Evidence, Not Vibes</title>
-    <link>https://robboles.com/posts/quiz-evidence-not-vibes/</link>
-    <guid>https://robboles.com/posts/quiz-evidence-not-vibes/</guid>
-    <pubDate>Thu, 09 Jul 2026 14:00:00 +0000</pubDate>
-    <description>Most fandom quizzes hand you a confident label and no receipts. Building voxmana.io's placement quiz, I built the other kind — one that tracks its evidence, resolves the near-miss, and refuses to call a vibe a fact.</description>
-  </item>
-  <item>
-    <title>Static Doesn’t Mean Safe — What Building voxmana.io Taught Me</title>
-    <link>https://robboles.com/posts/static-site-release-risk/</link>
-    <guid>https://robboles.com/posts/static-site-release-risk/</guid>
-    <pubDate>Thu, 09 Jul 2026 13:00:00 +0000</pubDate>
-    <description>Building voxmana.io as a static site didn't remove release risk — it hid it in the seams. Here's where a 'static' side project can still bite, and how I made those risks visible before launch.</description>
+    <pubDate>Sun, 12 Jul 2026 12:00:00 +0000</pubDate>
+    <description>A precon isn&apos;t a lesser deck you apologize for — it&apos;s the fastest legal way into a Commander game. The nerves aren&apos;t the problem. Not having four sentences ready is.</description>
   </item>
   <item>
     <title>How I Cut a Regression Cycle in Half</title>
     <link>https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/</link>
     <guid>https://robboles.com/posts/how-i-cut-a-regression-cycle-in-half/</guid>
     <pubDate>Thu, 09 Jul 2026 12:00:00 +0000</pubDate>
-    <description>Our platform upgraded twice a year, and testing one upgrade in full took three months. Here's the method that cut it to six weeks: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.</description>
+    <description>Our platform upgraded twice a year, and testing one upgrade in full took three months. Here&apos;s the method that cut it to six weeks: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.</description>
+  </item>
+  <item>
+    <title>A Quiz Can Be Evidence, Not Vibes</title>
+    <link>https://robboles.com/posts/quiz-evidence-not-vibes/</link>
+    <guid>https://robboles.com/posts/quiz-evidence-not-vibes/</guid>
+    <pubDate>Thu, 09 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Most fandom quizzes hand you a confident label and no receipts. Building voxmana.io&apos;s placement quiz, I built the other kind — one that tracks its evidence, resolves the near-miss, and refuses to call a vibe a fact.</description>
+  </item>
+  <item>
+    <title>Static Doesn’t Mean Safe — What Building voxmana.io Taught Me</title>
+    <link>https://robboles.com/posts/static-site-release-risk/</link>
+    <guid>https://robboles.com/posts/static-site-release-risk/</guid>
+    <pubDate>Thu, 09 Jul 2026 12:00:00 +0000</pubDate>
+    <description>Building voxmana.io as a static site didn&apos;t remove release risk — it hid it in the seams. Here&apos;s where a &apos;static&apos; side project can still bite, and how I made those risks visible before launch.</description>
+  </item>
+  <item>
+    <title>The Mana Base Codex · All 37 Commander Identities</title>
+    <link>https://robboles.com/table-talk/mana-base-codex/</link>
+    <guid>https://robboles.com/table-talk/mana-base-codex/</guid>
+    <pubDate>Wed, 08 Jul 2026 12:00:00 +0000</pubDate>
+    <description>An illuminated reference to every Commander mana-fixing land and rock, mapped across all 37 color identities — with a hypergeometric consistency lab, a chronological timeline of fixing, and an authored lore layer.</description>
   </item>
   <item>
     <title>The Ages of Fixing: What Every Magic Land Is Charging You</title>
@@ -79,7 +93,7 @@
     <title>What Good QA Actually Owns</title>
     <link>https://robboles.com/posts/what-good-qa-actually-owns/</link>
     <guid>https://robboles.com/posts/what-good-qa-actually-owns/</guid>
-    <pubDate>Sat, 28 Jun 2026 00:00:00 +0000</pubDate>
+    <pubDate>Sun, 28 Jun 2026 12:00:00 +0000</pubDate>
     <description>QA owns quality — and you own it by making it visible to the right people, in the language they can act on, before it ships.</description>
   </item>
 </channel>

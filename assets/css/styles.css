@@ -618,6 +618,13 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   background: var(--dark-2); border: 1px solid var(--dark-line); border-radius: var(--radius);
   padding: 28px; display: flex; flex-direction: column; gap: 16px;
 }
+/* Two-column featured variant (text + a "latest notes" side card). Defined as a
+   class — not inline styles — so the mobile breakpoint below can collapse it;
+   an inline grid-template-columns can't be overridden by a media query. */
+.project-feature--split {
+  display: grid; grid-template-columns: 1fr 0.8fr; gap: 36px;
+  align-items: center; border-radius: 10px; padding: 32px;
+}
 .project-feature .featured-line {
   display: flex; align-items: center; gap: 14px;
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
@@ -718,6 +725,7 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   .article-aside { position: static; }
   .guide-cat .grid { grid-template-columns: 1fr; gap: 20px; }
   .card-grid, .two-grid, .lane-strip { grid-template-columns: 1fr; }
+  .project-feature--split { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 24px; }
 
   .nav-toggle { display: inline-block; }

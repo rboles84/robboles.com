@@ -15,6 +15,22 @@
     "reading_minutes": 9
   },
   {
+    "slug": "izzet-vs-prismari",
+    "title": "Izzet and Prismari Are Both Blue-Red. They're Not the Same Deck.",
+    "date": "2026-07-12",
+    "category": "Table Talk",
+    "lane": "Table Talk",
+    "tags": [
+      "Izzet",
+      "Prismari",
+      "Color Identity",
+      "Deckbuilding"
+    ],
+    "description": "Same two colors, same color pie, completely different game. Izzet and Prismari prove that a color identity tells you the toolbox, not which tool gets picked up twice a turn.",
+    "promise": "Same wedge of the color wheel. Two different games underneath it.",
+    "reading_minutes": 7
+  },
+  {
     "slug": "reclaiming-qa-dashboards-gqm",
     "title": "Your QA Dashboard Doesn't Need More Charts, It Needs Fewer Questions",
     "date": "2026-07-12",
@@ -30,6 +46,22 @@
     "reading_minutes": 6
   },
   {
+    "slug": "traceable-is-not-true",
+    "title": "Traceable Isn't the Same as True",
+    "date": "2026-07-12",
+    "category": "QA Field Guide",
+    "lane": "AI in QA",
+    "tags": [
+      "Evidence Quality",
+      "Exploratory Testing",
+      "AI-Assisted QA",
+      "Release Readiness"
+    ],
+    "description": "A v1 launch scan on Vox Mana came back green — records existed, citations resolved, generated pages matched their source, regression passed. Exploratory testing found the checks were proving the wrong thing anyway. Here's the gap, and the rule I use to close it.",
+    "promise": "A green scan proves a build is consistent with its own data. It doesn't prove the data was ever true.",
+    "reading_minutes": 5
+  },
+  {
     "slug": "your-precon-is-a-passport",
     "title": "Your Precon Is a Passport",
     "date": "2026-07-12",
@@ -38,52 +70,40 @@
     "tags": [
       "Commander",
       "Precons",
-      "New Players"
+      "New Players",
+      "Rule 0"
     ],
     "description": "A precon isn't a lesser deck you apologize for — it's the fastest legal way into a Commander game. The nerves aren't the problem. Not having four sentences ready is.",
     "promise": "You bought a precon and now you don't know what to say about it. Here are the four sentences that fix that.",
-    "reading_minutes": 7
+    "reading_minutes": 9
   },
   {
-    "slug": "izzet-vs-prismari",
-    "title": "Izzet and Prismari Are Both Blue-Red. They're Not the Same Deck.",
-    "date": "2026-07-12",
-    "category": "Table Talk",
-    "lane": "Table Talk",
-    "tags": [
-      "Izzet",
-      "Prismari",
-      "Color Identity"
-    ],
-    "description": "Same two colors, same color pie, completely different game. Izzet and Prismari prove that a color identity tells you the toolbox, not which tool gets picked up twice a turn.",
-    "promise": "Same wedge of the color wheel. Two different games underneath it.",
-    "reading_minutes": 5
-  },
-  {
-    "slug": "traceable-is-not-true",
-    "title": "Traceable Isn't the Same as True",
-    "date": "2026-07-12",
+    "slug": "how-i-cut-a-regression-cycle-in-half",
+    "title": "How I Cut a Regression Cycle in Half",
+    "date": "2026-07-09",
     "category": "QA Field Guide",
-    "lane": "QA Authority",
+    "lane": "QA Strategy",
     "tags": [
-      "Evidence Quality",
-      "Exploratory Testing",
-      "AI-Assisted QA"
+      "Risk-Based Testing",
+      "Regression",
+      "Release Readiness",
+      "ISTQB"
     ],
-    "description": "A v1 launch scan on Vox Mana came back green — records existed, citations resolved, generated pages matched their source, regression passed. Exploratory testing found the checks were proving the wrong thing anyway. Here's the gap, and the rule I use to close it.",
-    "promise": "A green scan proves a build is consistent with its own data. It doesn't prove the data was ever true.",
-    "reading_minutes": 5
+    "description": "Our platform upgraded twice a year, and testing one upgrade in full took three months. Here's the method that cut it to six weeks: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.",
+    "promise": "The lever wasn't more machines or more people. It was deciding, on purpose, what not to run.",
+    "reading_minutes": 6
   },
   {
     "slug": "quiz-evidence-not-vibes",
     "title": "A Quiz Can Be Evidence, Not Vibes",
     "date": "2026-07-09",
     "category": "Learning Lab",
-    "lane": "Builder Laboratory",
+    "lane": "Learning Lab",
     "tags": [
       "Evidence-Based Design",
       "Classifiers",
-      "Building in Public"
+      "Building in Public",
+      "Quiz Design"
     ],
     "description": "Most fandom quizzes hand you a confident label and no receipts. Building voxmana.io's placement quiz, I built the other kind — one that tracks its evidence, resolves the near-miss, and refuses to call a vibe a fact.",
     "promise": "A confident label with no receipts isn't a result. It's a costume.",
@@ -94,29 +114,15 @@
     "title": "Static Doesn’t Mean Safe — What Building voxmana.io Taught Me",
     "date": "2026-07-09",
     "category": "Learning Lab",
-    "lane": "Builder Laboratory",
+    "lane": "Learning Lab",
     "tags": [
       "Static Sites",
       "Release Readiness",
-      "Building in Public"
+      "Building in Public",
+      "Vox Mana"
     ],
     "description": "Building voxmana.io as a static site didn't remove release risk — it hid it in the seams. Here's where a 'static' side project can still bite, and how I made those risks visible before launch.",
     "promise": "A static site has no server to crash. That's exactly why its riskiest failures don't announce themselves.",
-    "reading_minutes": 6
-  },
-  {
-    "slug": "how-i-cut-a-regression-cycle-in-half",
-    "title": "How I Cut a Regression Cycle in Half",
-    "date": "2026-07-09",
-    "category": "QA Field Guide",
-    "lane": "QA Authority",
-    "tags": [
-      "Risk-Based Testing",
-      "Regression",
-      "Release Readiness"
-    ],
-    "description": "Our platform upgraded twice a year, and testing one upgrade in full took three months. Here's the method that cut it to six weeks: an honest audit, a coverage map, a business-built rubric, vendor guidance, and ISTQB-style risk scoring.",
-    "promise": "The lever wasn't more machines or more people. It was deciding, on purpose, what not to run.",
     "reading_minutes": 6
   },
   {
@@ -128,7 +134,8 @@
     "tags": [
       "Commander",
       "Mana Base",
-      "Lands"
+      "Lands",
+      "MTG"
     ],
     "description": "Thirty years of Magic land design is one long argument about a single question: how easy should it be to cast your spells on time? Read the lands as answers and it starts to make sense.",
     "promise": "The hand looked keepable until it didn't. Nobody countered me. Nobody outplayed me. I just couldn't cast my spells on time.",
@@ -139,11 +146,12 @@
     "title": "How I Run AI Like a QA System",
     "date": "2026-06-28",
     "category": "Learning Lab",
-    "lane": "Builder Laboratory",
+    "lane": "Learning Lab",
     "tags": [
       "AI Workflows",
       "Systems Thinking",
-      "Non-determinism"
+      "Non-determinism",
+      "Grounding"
     ],
     "description": "AI is non-deterministic by design. I run my AI work the way I run quality engineering: operating prompts, grounding, examples, gates, and feedback loops.",
     "promise": "Most people make AI reliable by wording the prompt better. I make it reliable the way QA makes anything reliable — with systems.",
@@ -154,7 +162,7 @@
     "title": "What Good QA Actually Owns",
     "date": "2026-06-28",
     "category": "QA Field Guide",
-    "lane": "QA Authority",
+    "lane": "QA Strategy",
     "tags": [
       "QA Strategy",
       "Release Confidence",
