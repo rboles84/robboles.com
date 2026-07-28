@@ -26,6 +26,18 @@
       "published_date": "2026-07-08"
     },
     {
+      "id": "data:tutor-free-structure",
+      "type": "data_experience",
+      "title": "Tutor-Free Does Not Mean Structure-Free",
+      "description": "A Commander Spellbook-derived analysis of what remains structurally connected when a documented combo package contains no package-level tutor evidence. A Magic Math data story.",
+      "route": "/magic-math/tutor-free-structure/",
+      "section": "Magic Math",
+      "tags": [],
+      "keywords": [],
+      "reading_minutes": 9,
+      "published_date": "2026-07-28"
+    },
+    {
       "id": "kit:ai-decision-authority-checklist",
       "type": "field_kit",
       "title": "AI Decision Authority Checklist",

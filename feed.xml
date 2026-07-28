@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>Tutor-Free Does Not Mean Structure-Free</title>
+    <link>https://robboles.com/magic-math/tutor-free-structure/</link>
+    <guid>https://robboles.com/magic-math/tutor-free-structure/</guid>
+    <pubDate>Tue, 28 Jul 2026 12:00:00 +0000</pubDate>
+    <description>A Commander Spellbook-derived analysis of what remains structurally connected when a documented combo package contains no package-level tutor evidence. A Magic Math data story.</description>
+  </item>
+  <item>
     <title>Coverage Is Not Confidence</title>
     <link>https://robboles.com/posts/coverage-is-not-confidence/</link>
     <guid>https://robboles.com/posts/coverage-is-not-confidence/</guid>

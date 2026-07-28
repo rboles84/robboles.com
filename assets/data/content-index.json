@@ -335,6 +335,17 @@
       "status": "published"
     },
     {
+      "id": "data:tutor-free-structure",
+      "content_type": "data_experience",
+      "title": "Tutor-Free Does Not Mean Structure-Free",
+      "description": "A Commander Spellbook-derived analysis of what remains structurally connected when a documented combo package contains no package-level tutor evidence. A Magic Math data story.",
+      "route": "/magic-math/tutor-free-structure/",
+      "published_date": "2026-07-28",
+      "reading_minutes": 9,
+      "section": "Magic Math",
+      "status": "published"
+    },
+    {
       "id": "project:vox-mana",
       "content_type": "project",
       "title": "Vox Mana",

@@ -1,0 +1,1657 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutor-Free Does Not Mean Structure-Free — Magic Math</title>
+<meta name="description" content="A Commander Spellbook-derived analysis of what remains structurally connected when a documented combo package contains no package-level tutor evidence. A Magic Math data story.">
+<meta name="author" content="Robert Boles">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Tutor-Free Does Not Mean Structure-Free">
+<meta property="og:description" content="After package-level tutor evidence disappears, what structural support is still visible in the combo itself? Explore the structure map of 86,448 tutor-free Commander Spellbook variants.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://robboles.com/magic-math/tutor-free-structure/">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<!-- Mana Font: MTG mana-symbol glyphs for {C}/{3}/etc. tokens inside documented
+     prerequisites. Shared sitewide vendor file (assets/css/mana.css +
+     assets/fonts/mana.*) — self-hosted, zero external requests. Same file
+     table-talk/mana-base-codex/ links; this page only exercises ms/ms-cost. -->
+<link rel="stylesheet" href="../../assets/css/mana.css">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #07090c;
+  --bg2: #0d1115;
+  --panel: rgba(18, 22, 28, 0.9);
+  --panel-soft: rgba(18, 22, 28, 0.72);
+  --ink: #f3efe7;
+  --muted: #b5b0a4;
+  --faint: #8f8778;
+  --gold: #e4c477;
+  --gold-soft: rgba(228,196,119,.16);
+  --line: rgba(228,196,119,.22);
+  /* Signal-specific tokens (mirroring how finish-him defines a token per category) */
+  --sig-H: #e6b15c;   /* high gravity */
+  --sig-F: #6dcbb4;   /* large family */
+  --sig-S: #bd8ce0;   /* strict one-slot */
+  --sig-C: #7a9fdb;   /* commander */
+  --sig-H-soft: rgba(230,177,92,.16);
+  --sig-F-soft: rgba(109,203,180,.16);
+  --sig-S-soft: rgba(189,140,224,.16);
+  --sig-C-soft: rgba(122,159,219,.16);
+  --warn: #d66658;
+  --shadow: 0 24px 70px rgba(0,0,0,.34);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-width: 320px; background: var(--bg); color: var(--ink); }
+body {
+  background:
+    radial-gradient(circle at 12% 6%, rgba(109,203,180,.10), transparent 34rem),
+    radial-gradient(circle at 86% 0%, rgba(228,196,119,.12), transparent 36rem),
+    linear-gradient(180deg, var(--bg), var(--bg2) 28rem, var(--bg));
+}
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.vh { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip-link { position: absolute; left: -999px; top: 0; background: var(--gold); color: #1a140a; padding: 8px 14px; border-radius: 6px; z-index: 100; font-size: 13px; text-decoration: none; }
+.skip-link:focus { left: 12px; top: 12px; }
+:where(a, button, input, select, summary, [tabindex]):focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+
+/* ---- width system --------------------------------------------------------
+   Three reusable tiers (Wave 4): .reading (~720px) for narrative prose —
+   already the established width for every .prose section on this page;
+   .medium (~880px) for evidence that reads as argument, not a data grid (the
+   claim panels + methodology box); the bare .shell (1180px, narrowed to
+   1040px at very wide viewports below) for interactive tools and full data
+   tables, which genuinely need the room. Nothing here is new *behavior* —
+   every section already used .reading or the bare shell; .medium is the one
+   new tier, applied only where a section's content doesn't need full width. */
+.shell { width: min(1180px, calc(100% - 32px)); margin-inline: auto; }
+.reading { width: min(720px, 100%); margin-inline: auto; }
+.medium { width: min(880px, 100%); margin-inline: auto; }
+html { scroll-behavior: smooth; }
+/* Breathing room for anchor targets — this page has no fixed header to clear,
+   but a heading landing flush against the viewport's top edge still reads as
+   cramped. */
+[id] { scroll-margin-top: 20px; }
+
+/* ---- "On this page" navigation -------------------------------------------
+   Same concept and label as the shared site's own `data-toc` "On this page"
+   note-card (content/templates/article-template.html, styled in
+   assets/css/styles.css) — ported rather than shared, since this island page
+   loads neither file. A single native <details>: at every width up to
+   1439px it's an ordinary collapsible disclosure (open/close, keyboard, and
+   touch all native — works with scripting off); explorer.js additionally
+   force-opens it into a persistent slim rail at >=1440px, where there is
+   real gutter beside the (narrowed, see below) shell to put it in, and hides
+   the now-redundant toggle. The rail is fixed, not part of the document
+   flow, so it can never overlap or push article content. */
+.toc { margin: 0 0 28px; border: 1px solid var(--line); border-radius: 14px; background: rgba(11,14,18,.6); }
+.toc summary { min-height: 44px; display: flex; align-items: center; padding: 0 18px; cursor: pointer; font-size: .78rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); list-style: none; }
+.toc summary::-webkit-details-marker { display: none; }
+.toc summary::before { content: "▸ "; }
+.toc[open] summary::before { content: "▾ "; }
+.toc nav { display: flex; flex-direction: column; padding: 2px 14px 14px; }
+/* Belt-and-suspenders: an explicit closed-state rule, same technique
+   finish-him's own comment documents (author rules can outrank the UA
+   stylesheet's native details-closed hiding depending on the engine) —
+   verified this renders correctly without it, but there's no reason to
+   depend on that rather than state it outright. */
+.toc:not([open]) nav { display: none; }
+.toc nav a { min-height: 44px; display: flex; align-items: center; padding: 0 8px; margin: 1px 0; border-left: 3px solid transparent; border-radius: 4px; color: var(--muted); font-size: .86rem; text-decoration: none; }
+.toc nav a:hover, .toc nav a:focus-visible { color: var(--ink); background: rgba(255,255,255,.04); }
+.toc nav a[aria-current="true"] { color: var(--gold); font-weight: 700; border-left-color: var(--gold); }
+@media (min-width: 1440px) {
+  /* Narrower shell only at this width, purely to open a gutter wide enough
+     for the rail — untouched at every width below, where the rail doesn't
+     render at all. 1040px still sits inside this Wave's own "explorers"
+     width target (960-1120px). */
+  .shell { width: min(1040px, calc(100% - 32px)); }
+  .toc {
+    position: fixed; top: 140px; left: calc(50% - 704px); width: 160px;
+    max-height: calc(100vh - 180px); overflow-y: auto;
+    margin: 0; padding: 0; border: none; background: transparent; z-index: 5;
+  }
+  /* Hiding the summary — and relying on JS to force `open` — is scoped to
+     html.js specifically. Without scripting, `open` is never set by anyone,
+     so at this width a no-JS reader still gets a plain, visible, native
+     disclosure toggle in the rail's position: closed by default, opens on
+     click/Enter/Space same as any <details>. Losing only the "always
+     expanded, no click needed" enhancement, never the content itself. */
+  html.js .toc summary { display: none; }
+  .toc nav { padding: 0; gap: 2px; }
+  /* Compact again in rail mode — the 44px touch-target floor is for the
+     tappable mobile/tablet disclosure; a mouse/keyboard-driven rail doesn't
+     need it and 10 links at 44px each would make the rail unnecessarily
+     tall. */
+  .toc nav a { min-height: 0; display: block; font-size: .78rem; line-height: 1.35; padding: 6px 8px; }
+}
+
+/* ---- chapter transitions --------------------------------------------------
+   A restrained kicker above each numbered chapter's heading — reuses the
+   page's own .eyebrow (already used once, in the hero) rather than a new
+   visual language, so "a new part of the argument begins here" reads as
+   consistent with the rest of the page, not a bolted-on component. */
+.chapter-eyebrow { margin: 0 0 6px; padding-top: 22px; border-top: 1px solid var(--line); }
+.prose:first-of-type .chapter-eyebrow, .lead .chapter-eyebrow { border-top: none; padding-top: 0; }
+
+.back-link { margin: 0 0 16px; }
+.back-link a { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 18px; border: 1px solid var(--line); border-radius: 999px; background: rgba(11,14,18,.55); color: var(--muted); font-size: .85rem; font-weight: 600; text-decoration: none; }
+.back-link a:hover, .back-link a:focus-visible { color: var(--gold); border-color: rgba(228,196,119,.45); background: var(--gold-soft); }
+.back-link.bottom { margin: 34px 0 0; text-align: center; }
+
+header.hero { padding: 46px 0 20px; text-align: center; }
+.eyebrow { margin: 0; color: var(--gold); font-size: .76rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+.hero h1 { margin: 12px auto; max-width: 16ch; font-family: Georgia, serif; font-size: clamp(2.4rem, 5.4vw, 4.4rem); font-weight: 500; line-height: 1.02; }
+.hero .dek { width: min(760px, 100%); margin: 0 auto; color: var(--muted); font-size: 1.04rem; line-height: 1.7; }
+
+.pop-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 30px auto 0; max-width: 900px; }
+.pop-cell { padding: 16px 14px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel-soft); }
+.pop-cell .pn { font-family: Georgia, serif; font-size: clamp(1.5rem, 3.4vw, 2.2rem); color: var(--gold); line-height: 1; }
+.pop-cell .pl { margin-top: 8px; color: var(--muted); font-size: .74rem; line-height: 1.4; }
+
+main { padding-bottom: 20px; }
+.prose h2 { margin: 44px 0 4px; font-family: Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 500; line-height: 1.15; }
+.prose h3 { margin: 26px 0 4px; font-family: Georgia, serif; font-size: 1.2rem; font-weight: 500; color: var(--gold); }
+.prose p { color: #ded9cf; line-height: 1.75; font-size: 1.02rem; margin: 14px 0; }
+.prose ul { color: #ded9cf; line-height: 1.7; }
+.prose strong { color: var(--ink); }
+.lead p { font-size: 1.1rem; color: var(--ink); }
+
+.block { margin: 30px 0; padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: var(--panel-soft); box-shadow: var(--shadow); }
+.block > h2 { margin-top: 0; }
+.section-sub { margin: 8px 0 0; color: var(--muted); line-height: 1.6; }
+
+/* ---- data tables (generated) ------------------------------------------- */
+.table-wrap { overflow-x: auto; margin-top: 16px; -webkit-overflow-scrolling: touch; }
+.data-table { border-collapse: collapse; width: 100%; font-size: .82rem; }
+.data-table caption { text-align: left; color: var(--muted); font-size: .8rem; line-height: 1.5; margin-bottom: 10px; caption-side: top; }
+.data-table th, .data-table td { padding: 8px 10px; border-bottom: 1px solid rgba(228,196,119,.14); text-align: left; }
+.data-table thead th { color: var(--gold); font-size: .72rem; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.data-table tbody th { font-weight: 600; color: var(--ink); }
+.data-table td.num, .data-table th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.data-table td.sig-on { text-align: center; }
+.data-table td.sig-off { color: var(--faint); text-align: center; }
+/* Present dots match the same per-signal color used in chips, legend swatches,
+   and selection pills elsewhere on the page (H gold / F teal / S purple / C
+   blue), instead of one flat color regardless of column. */
+.data-table td.sig-on.sig-H { color: var(--sig-H); }
+.data-table td.sig-on.sig-F { color: var(--sig-F); }
+.data-table td.sig-on.sig-S { color: var(--sig-S); }
+.data-table td.sig-on.sig-C { color: var(--sig-C); }
+.data-table tfoot th, .data-table tfoot td { border-top: 2px solid var(--line); color: var(--gold); font-weight: 700; }
+.data-table td.lim { color: var(--muted); font-size: .76rem; }
+.sig-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 7px; vertical-align: middle; }
+.sig-H, .sig-swatch.sig-H { background: var(--sig-H); }
+.sig-F, .sig-swatch.sig-F { background: var(--sig-F); }
+.sig-S, .sig-swatch.sig-S { background: var(--sig-S); }
+.sig-C, .sig-swatch.sig-C { background: var(--sig-C); }
+.table-note { margin: 12px 0 0; color: var(--muted); font-size: .78rem; line-height: 1.55; }
+
+/* ---- flagship: Structural Support Explorer ----------------------------- */
+.explorer { margin-top: 22px; }
+.explorer-nojs { padding: 14px 16px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); font-size: .84rem; }
+html.js .explorer-nojs { display: none; }
+.explorer-interactive { display: none; }
+html.js .explorer-interactive { display: block; }
+.signal-controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.signal-fieldset { border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin: 0; background: rgba(11,14,18,.6); }
+.signal-fieldset legend { display: flex; align-items: center; gap: 8px; padding: 0 4px; font-weight: 700; font-size: .86rem; }
+.signal-fieldset legend .dot { width: 13px; height: 13px; border-radius: 50%; display: inline-block; flex: none; }
+.signal-fieldset legend .sig-code { color: var(--faint); font-weight: 400; font-size: .82em; }
+.signal-fieldset .sig-desc { color: var(--muted); font-size: .7rem; line-height: 1.4; margin: 4px 2px 10px; }
+.tri { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.tri label { display: flex; align-items: center; justify-content: center; min-height: 40px; padding: 4px; border: 1px solid var(--line); border-radius: 9px; background: rgba(9,12,15,.7); font-size: .74rem; color: var(--muted); text-align: center; cursor: pointer; }
+.tri input { position: absolute; opacity: 0; width: 0; height: 0; }
+.tri label:hover { border-color: rgba(228,196,119,.4); }
+.tri input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+.tri input:checked + span { color: var(--ink); font-weight: 700; }
+.signal-fieldset[data-sig="H"] .tri input:checked + span { color: var(--sig-H); }
+.signal-fieldset[data-sig="F"] .tri input:checked + span { color: var(--sig-F); }
+.signal-fieldset[data-sig="S"] .tri input:checked + span { color: var(--sig-S); }
+.signal-fieldset[data-sig="C"] .tri input:checked + span { color: var(--sig-C); }
+.tri label:has(input:checked) { background: var(--gold-soft); border-color: rgba(228,196,119,.5); }
+.explorer-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+.explorer-actions button { min-height: 40px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: rgba(11,14,18,.6); color: var(--muted); font-size: .8rem; font-weight: 600; }
+.explorer-actions button:hover, .explorer-actions button:focus-visible { color: var(--gold); border-color: rgba(228,196,119,.45); }
+.explorer-h-note { color: var(--faint); font-size: .74rem; line-height: 1.4; }
+
+/* The whole output block (count → meaning → cards) fades as one unit on a
+   selection change, so filtering reads as asking a question rather than a
+   page redraw. Reduced-motion users skip this entirely (explorer.js renders
+   synchronously in that case; this class is only ever toggled when motion is
+   allowed, but the rule is harmless either way since the global reduced-motion
+   media query below also zeroes the transition). */
+.explorer-output { transition: opacity .16s ease; }
+.explorer-output.is-fading { opacity: 0; }
+
+.result-panel { margin-top: 16px; padding: 20px 22px; border: 1px solid rgba(228,196,119,.4); border-radius: 16px; background: linear-gradient(180deg, rgba(228,196,119,.06), rgba(11,14,18,.82)); }
+.result-kind { margin: 0; font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+.result-count { font-family: Georgia, serif; font-size: clamp(2.4rem, 6vw, 3.6rem); line-height: 1; margin: 8px 0 2px; }
+.result-count small { font-size: .4em; color: var(--muted); }
+.result-name { margin: 4px 0 0; color: var(--ink); font-size: 1rem; }
+.result-explain { margin: 10px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.55; }
+.result-selection { margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.selchip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border: 1px solid var(--line); border-radius: 999px; font-size: .72rem; color: var(--muted); }
+.selchip .dot { width: 9px; height: 9px; border-radius: 50%; }
+
+/* ---- interpretation layer: the reward the reader sees before the cards --- */
+.meaning-panel { margin-top: 16px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 16px; background: rgba(11,14,18,.6); }
+.meaning-title { margin: 0 0 10px; font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+.meaning-checklist { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 6px; }
+.meaning-checklist li { display: flex; align-items: baseline; gap: 8px; font-size: .84rem; color: #ded9cf; line-height: 1.4; }
+.meaning-checklist .mc-icon { flex: none; width: 1.1em; font-weight: 700; text-align: center; }
+.meaning-checklist .mc-yes .mc-icon { color: var(--sig-F); }
+.meaning-checklist .mc-no .mc-icon { color: var(--faint); }
+.meaning-checklist .mc-any { color: var(--faint); font-style: italic; }
+.meaning-checklist .mc-any .mc-icon { color: var(--faint); }
+.meaning-checklist .mc-code { color: var(--faint); font-size: .82em; }
+.meaning-body p { margin: 6px 0; color: #ded9cf; font-size: .9rem; line-height: 1.65; }
+.meaning-body .meaning-caveat { display: block; margin-top: 2px; color: var(--muted); font-size: .78rem; font-style: italic; }
+.meaning-agg-list { margin: 6px 0 0; padding-left: 18px; color: #ded9cf; font-size: .88rem; line-height: 1.6; }
+.meaning-agg-list li { margin-bottom: 8px; }
+
+.drill { margin-top: 22px; }
+.drill h3 { margin: 0 0 4px; }
+.drill-note { color: var(--muted); font-size: .8rem; margin: 0 0 14px; }
+.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr)); gap: 16px; }
+/* A lone card left over in the final row (odd example count in a 2-column
+   grid) spans full width instead of sitting half-empty to one side. */
+.result-grid > .mini-card:nth-child(odd):last-child { grid-column: 1 / -1; }
+.mini-card { padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: rgba(11,14,18,.82); display: flex; flex-direction: column; gap: 9px; }
+.mini-card h4 { margin: 0; font-family: Georgia, serif; font-weight: 500; font-size: 1.05rem; }
+.mini-card .mc-why { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.5; }
+.mini-thumbs { display: flex; gap: 10px; flex-wrap: wrap; }
+.mc-diff { color: var(--sig-H); font-size: .74rem; }
+.mc-full-link { align-self: flex-start; margin-top: 2px; color: var(--gold); font-size: .74rem; text-decoration: none; border-bottom: 1px dashed rgba(228,196,119,.5); }
+.mc-full-link:hover, .mc-full-link:focus-visible { border-bottom-style: solid; }
+.drill-sync { min-height: 40px; padding: 0 16px; border: 1px solid rgba(228,196,119,.45); border-radius: 999px; background: var(--gold-soft); color: var(--gold); font-size: .78rem; font-weight: 600; }
+.drill-sync:hover, .drill-sync:focus-visible { border-color: var(--gold); color: var(--ink); }
+.empty-state { display: grid; gap: 8px; place-items: center; min-height: 130px; padding: 22px; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; background: rgba(11,14,18,.5); line-height: 1.6; }
+.empty-state p { margin: 0; max-width: 52ch; text-align: left; }
+.empty-state p:first-child { text-align: center; }
+.related-block { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--line); }
+.related-block h4 { margin: 0 0 4px; color: var(--muted); font-size: .82rem; font-weight: 700; }
+
+/* ---- card objects (shared: static examples + drill-down) ------------------
+   Ported from finish-him's `.scry-card` (magic-math/finish-him/index.html:303)
+   rather than reimplemented: an anchor wrapping the card image plus a visible
+   name label with an external-link cue, opening the card's Scryfall page. Same
+   sizing (120×167) so a card reads identically across both Magic Math pages. */
+/* `flex: none` so a card holds its exact size and the row wraps instead —
+   without it the flex default shrinks cards a few px when four don't fit. */
+.scry-card { display: flex; flex: none; flex-direction: column; gap: 5px; width: 120px; text-decoration: none; position: relative; }
+.scry-card img, .scry-card .thumb-broken {
+  width: 120px; height: 167px; border-radius: 8px;
+  border: 1px solid var(--line); background: rgba(255,255,255,.05);
+  transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+}
+.scry-card img { display: block; }
+/* The broken-image stand-in keeps .thumb-broken's centered-grid layout — this
+   pair of classes outranks it, so display must be restated, not inherited. */
+.scry-card .thumb-broken { display: grid; place-items: center; }
+.scry-card .scry-name { color: var(--muted); font-size: .68rem; line-height: 1.3; display: inline-flex; align-items: center; gap: 4px; }
+.scry-card:hover .scry-name, .scry-card:focus-visible .scry-name { color: var(--gold); }
+/* Lift-and-glow on hover/focus — the same transform + gold-border + soft-shadow
+   vocabulary the section blocks already use, scaled up enough that the card face
+   becomes readable in place. No ancestor sets `overflow`, so nothing clips it.
+   Gated on `hover: hover` so a tap on touch doesn't leave a card stuck zoomed;
+   the Scryfall link is the full-detail affordance everywhere. The global
+   reduced-motion rule drops the transition, and the enlargement still applies —
+   it just arrives instantly instead of animating. */
+@media (hover: hover) {
+  .scry-card:hover img, .scry-card:hover .thumb-broken { transform: translateY(-4px) scale(1.42); border-color: rgba(228,196,119,.55); box-shadow: 0 18px 40px rgba(0,0,0,.55); }
+  .scry-card:hover { z-index: 5; }
+}
+.scry-card:focus-visible img, .scry-card:focus-visible .thumb-broken { transform: translateY(-4px) scale(1.42); border-color: rgba(228,196,119,.55); box-shadow: 0 18px 40px rgba(0,0,0,.55); }
+.scry-card:focus-visible { z-index: 5; }
+.ext-cue { font-size: .78em; opacity: .8; }
+.icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; }
+
+/* ---- package popup (#pkgpop) ----------------------------------------------
+   Ports the site-wide `.cardname` / `#cardpop` interaction that
+   posts/your-precon-is-a-passport/ uses (assets/js/site.js ~484,
+   assets/css/styles.css ~1011): ONE reusable fixed-position panel appended to
+   <body>, `display:none` → `.on` fade-in, inert until shown, placed beside its
+   trigger and clamped into the viewport, closed by Escape / outside click /
+   scroll / resize.
+
+   Ported rather than linked because this is a standalone island page that loads
+   neither site.js nor styles.css — the same reason mana-base-codex carries its
+   own copy of the pattern. Two deliberate adaptations (recorded in
+   docs/reference/reusable-components.md):
+     1. Opens on click / Enter / Space, not hover. A full package panel is too
+        large to throw under a moving pointer, and hover-open would fight the
+        already-approved `.scry-card` hover zoom living inside these same cards.
+     2. Restores focus to its trigger on close, and the trigger is a real
+        <button> (Passport uses a tabindex span, which gives focus but not
+        native Enter/Space).
+   Card images inside the panel keep the untouched `.scry-card` behavior. */
+.pkg-trigger {
+  display: inline; margin: 0; padding: 0; border: 0; background: none; font: inherit;
+  color: inherit; text-align: left; cursor: pointer;
+  border-bottom: 2px solid rgba(228,196,119,.45);
+  transition: color .14s ease, border-color .14s ease;
+}
+.pkg-trigger:hover, .pkg-trigger[aria-expanded="true"] { color: var(--gold); border-bottom-color: var(--gold); }
+.pkg-trigger .pkg-cue { font-size: .74em; color: var(--gold); opacity: .85; margin-left: .35em; white-space: nowrap; }
+/* In prose the trigger sits inside running text, so it must not disturb line
+   height or wrapping — inline, inherited font, underline only. */
+.prose .pkg-trigger { border-bottom-width: 1px; border-bottom-style: dashed; }
+.prose .pkg-trigger:hover, .prose .pkg-trigger[aria-expanded="true"] { border-bottom-style: solid; }
+
+#pkgpop {
+  display: none; position: fixed; z-index: 60;
+  width: 420px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px);
+  overflow-y: auto; overscroll-behavior: contain;
+  /* Opaque form of --panel (which is rgba(18,22,28,.9)): a floating panel this
+     large has to be readable on its own — at 90% the article text underneath
+     bleeds through badly, especially on a phone where it covers most of the
+     screen. Same hue, no transparency. */
+  background: #12161c; border: 1px solid rgba(228,196,119,.45); border-radius: 16px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.6);
+  opacity: 0; transform: translateY(4px);
+  transition: opacity .14s ease, transform .14s ease;
+}
+/* Inert until faded in — same guard as #cardpop, so a sliver of invisible
+   panel can never intercept a click during the transition. */
+#pkgpop:not(.on) { pointer-events: none; }
+#pkgpop.on { opacity: 1; transform: translateY(0); }
+#pkgpop:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.pkgpop-head { position: relative; padding: 18px 52px 12px 20px; border-bottom: 1px solid var(--line); }
+.pkgpop-head h3 { margin: 0; font-family: Georgia, serif; font-weight: 500; font-size: 1.2rem; line-height: 1.25; }
+.pkgpop-close {
+  position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); border-radius: 50%; background: rgba(9,12,15,.8);
+  color: var(--muted); font-size: 1.2rem; line-height: 1;
+}
+.pkgpop-close:hover, .pkgpop-close:focus-visible { color: var(--gold); border-color: rgba(228,196,119,.5); }
+.pkgpop-body { padding: 16px 20px 20px; }
+/* The one example that isn't tutor-free needs to be noticed, not looked up —
+   same --warn color as its gallery-card chip, but stated as a full sentence
+   rather than a two-word badge. */
+.pkgpop-flag { margin: 0 0 16px; padding: 10px 12px; border: 1px solid rgba(214,102,88,.45); border-radius: 10px; background: rgba(214,102,88,.08); color: var(--warn); font-size: .84rem; font-weight: 600; line-height: 1.5; }
+.pkgpop-cards { display: flex; flex-wrap: wrap; gap: 12px; }
+.pkgpop-section { margin: 16px 0 0; }
+.pkgpop-section:first-child { margin-top: 0; }
+.pkgpop-label { display: block; margin-bottom: 3px; color: var(--gold); font-size: .66rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.pkgpop-line { margin: 2px 0 0; color: #ded9cf; font-size: .9rem; line-height: 1.6; }
+.pkgpop-section .pkgpop-line + .pkgpop-line { margin-top: 8px; }
+.pkgpop-produces { margin: 2px 0 0; padding-left: 20px; color: #ded9cf; font-size: .9rem; line-height: 1.6; }
+.pkgpop-produces li { margin-bottom: 2px; }
+.pkgpop-signals { margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.pkgpop-tech { margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; background: rgba(9,12,15,.5); }
+.pkgpop-tech summary { padding: 10px 14px; cursor: pointer; font-size: .76rem; color: var(--gold); list-style: none; }
+.pkgpop-tech summary::-webkit-details-marker { display: none; }
+.pkgpop-tech summary::before { content: "▸ "; }
+.pkgpop-tech[open] summary::before { content: "▾ "; }
+.pkgpop-tech .ex-meta { padding: 0 14px 14px; margin: 0; }
+
+/* Structural tags on examples (shared: static cards + drill + popup).
+   These name, in plain language, the structural properties a package actually
+   has. Absences are never tagged, and H never appears at example level — an
+   example is here to illustrate an idea, not to enumerate analysis flags. The
+   per-signal color is carried on a left edge plus the label text, so meaning is
+   never conveyed by color alone. */
+.sig-tag { display: inline-flex; align-items: center; padding: 4px 10px 4px 9px; border-radius: 8px; font-size: .72rem; font-weight: 600; color: #ded9cf; background: rgba(255,255,255,.04); border: 1px solid var(--line); border-left: 3px solid var(--line); }
+.sig-tag-F { border-left-color: var(--sig-F); }
+.sig-tag-S { border-left-color: var(--sig-S); }
+.sig-tag-C { border-left-color: var(--sig-C); }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 999px; font-size: .7rem; border: 1px solid var(--line); color: var(--muted); }
+.chip-warn { border-color: rgba(214,102,88,.5); color: var(--warn); }
+
+/* ---- example cards (generated static list) ----------------------------- */
+/* align-items: start (grid's default is stretch) — without it every card in a
+   row is force-stretched to match the tallest one, so a two-card example sits
+   in a big blank gap at the bottom whenever it shares a row with a taller
+   three/four-card one. This is the one property that fixes it: each card now
+   sizes to its own intrinsic content height, so a shorter package just looks
+   shorter — never redesigned per-card, just no longer stretched. */
+.example-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr)); gap: 24px; margin-top: 20px; align-items: start; }
+/* Eleven examples in a 2-column grid leaves the last one alone in its row —
+   span it full width instead of stranding it to one side. */
+.example-grid > .example-card:nth-child(odd):last-child { grid-column: 1 / -1; }
+.example-card { padding: 26px; border: 1px solid var(--line); border-radius: 18px; background: rgba(11,14,18,.82); display: flex; flex-direction: column; gap: 13px; }
+.example-card .ex-role { margin: 0; }
+.example-card h4 { margin: 2px 0 0; font-family: Georgia, serif; font-weight: 500; font-size: 1.26rem; line-height: 1.2; }
+.ex-thumbs { display: flex; gap: 12px; flex-wrap: wrap; }
+/* A two-card package's thumbs row otherwise stretches to the card's full
+   width by default flex cross-axis stretch (.example-card has no explicit
+   align-items), leaving a wide empty gap beside just two card faces — most
+   visible on the last (odd-count) card, which spans the full grid width.
+   Card-count selector, not a per-example rule: any future two-card example
+   gets this automatically, any three/four-card example is unaffected. */
+.ex-thumbs:has(> .scry-card:nth-child(2):last-child) { align-self: flex-start; width: fit-content; }
+.ex-why { margin: 2px 0 0; }
+.ex-why-label { display: block; margin-bottom: 3px; color: var(--gold); font-size: .66rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.ex-why-text { color: #ded9cf; font-size: .92rem; line-height: 1.6; }
+.ex-signals { margin: 2px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.ex-meta { margin: 2px 0 0; display: grid; gap: 9px; }
+.ex-meta div { display: grid; grid-template-columns: 140px 1fr; gap: 8px; }
+.ex-meta dt { color: var(--faint); font-size: .7rem; text-transform: uppercase; letter-spacing: .03em; }
+.ex-meta dd { margin: 0; color: #ded9cf; font-size: .82rem; line-height: 1.5; }
+.ex-detail { margin-top: 2px; border: 1px solid var(--line); border-radius: 10px; background: rgba(9,12,15,.5); }
+.ex-detail summary { padding: 10px 14px; cursor: pointer; font-size: .76rem; color: var(--gold); list-style: none; }
+.ex-detail summary::-webkit-details-marker { display: none; }
+.ex-detail summary::before { content: "▸ "; }
+.ex-detail[open] summary::before { content: "▾ "; }
+/* With JS enhancement active, the package popup (opened from the card's own
+   title) covers this same prerequisite/result/commander content — see
+   popupHtmlDetail() in explorer.js. Showing it in both places at once is
+   exactly the "much of the same technical data" duplication this page had
+   before; hide the inline copy so there is one source once JS is running,
+   same html.js pattern already used for .explorer-nojs/.explorer-interactive.
+   With scripting off this stays the only way to reach that content, and is
+   left fully intact. */
+html.js .example-card .ex-detail { display: none; }
+.ex-detail .ex-meta { padding: 0 14px 14px; margin: 0; }
+.ex-limit { margin: 2px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.55; font-style: italic; }
+.ex-nourl { margin: 0; color: var(--faint); font-size: .68rem; }
+.thumb-broken { display: inline-grid; place-items: center; text-align: center; font-size: .58rem; line-height: 1.2; color: var(--muted); padding: 5px; box-sizing: border-box; object-fit: unset; }
+
+/* ---- evidence boundary panel ------------------------------------------- */
+.claim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+.claim-panel { padding: 20px; border: 1px solid var(--line); border-radius: 16px; }
+.claim-panel.is-does { border-color: rgba(109,203,180,.4); background: linear-gradient(180deg, rgba(109,203,180,.07), rgba(11,14,18,.6)); }
+.claim-panel.is-doesnt { border-color: rgba(214,102,88,.4); background: linear-gradient(180deg, rgba(214,102,88,.07), rgba(11,14,18,.6)); }
+.claim-panel h3 { margin: 0 0 10px; font-family: Georgia, serif; font-weight: 500; color: var(--ink); }
+.claim-panel ul { margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.7; font-size: .9rem; }
+.method-box { margin-top: 18px; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: rgba(11,14,18,.6); }
+.method-box p { color: var(--muted); font-size: .88rem; line-height: 1.7; }
+
+details.ladder { margin-top: 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(11,14,18,.6); }
+details.ladder summary { padding: 12px 16px; cursor: pointer; color: var(--gold); font-size: .86rem; }
+details.ladder .ladder-body { padding: 0 16px 14px; color: var(--muted); font-size: .84rem; line-height: 1.6; }
+
+.module-caveat { margin: 16px 0 0; color: var(--faint); font-size: .76rem; line-height: 1.5; }
+
+/* ---- Gravity Explorer: logarithmic participation spectrum ----------------
+   Each row is one curated package. The bar spans its real lowest- to
+   highest-gravity component and the marker is its published mean — no
+   synthesized points, and no corpus-level share is ever placed on this axis
+   (30.9% is a share of appearances, not a gravity value), so those figures sit
+   in a separate labelled block instead. */
+.spectrum { margin-top: 18px; }
+.spec-axis { position: relative; height: 20px; margin: 0 0 6px 0; border-bottom: 1px solid var(--line); }
+.spec-tick { position: absolute; top: 0; transform: translateX(-50%); color: var(--faint); font-size: .66rem; }
+.spec-tick::after { content: ''; position: absolute; left: 50%; bottom: -5px; width: 1px; height: 5px; background: var(--line); }
+/* min-height 44px keeps each row a comfortable touch target (the bar itself is
+   only 22px tall, which would otherwise leave a ~32px row). */
+.spec-row { display: grid; grid-template-columns: minmax(0, 270px) 1fr; align-items: center; gap: 12px; min-height: 44px; padding: 6px 8px; border: 0; background: none; width: 100%; text-align: left; color: inherit; font: inherit; cursor: pointer; border-radius: 8px; }
+.spec-row:hover, .spec-row:focus-visible { background: rgba(228,196,119,.07); }
+.spec-row[aria-pressed="true"] { background: var(--gold-soft); }
+.spec-name { color: var(--muted); font-size: .76rem; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spec-row[aria-pressed="true"] .spec-name { color: var(--ink); }
+.spec-track { position: relative; height: 22px; }
+.spec-bar { position: absolute; top: 8px; height: 6px; border-radius: 999px; background: linear-gradient(90deg, rgba(228,196,119,.35), rgba(228,196,119,.75)); }
+.spec-dot { position: absolute; top: 4px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--gold); border: 2px solid #10130f; }
+.spec-end { position: absolute; top: 6px; width: 2px; height: 10px; background: rgba(228,196,119,.8); }
+.spectrum-readout { margin-top: 14px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: rgba(11,14,18,.6); }
+.sr-empty { color: var(--muted); font-size: .85rem; margin: 0; }
+.sr-why { margin: 0 0 10px; color: var(--muted); font-size: .86rem; line-height: 1.55; }
+.sr-title { margin: 0 0 10px; font-family: Georgia, serif; font-weight: 500; font-size: 1.1rem; }
+.sr-vals { display: flex; flex-wrap: wrap; gap: 18px; margin: 0 0 10px; }
+.sr-val strong { display: block; font-family: Georgia, serif; font-size: 1.25rem; color: var(--gold); line-height: 1; }
+.sr-val span { display: block; margin-top: 3px; color: var(--faint); font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; }
+.sr-note { margin: 0; color: var(--muted); font-size: .84rem; line-height: 1.55; }
+.gravity-context { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+.gctx { padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: rgba(11,14,18,.5); }
+.gctx-n { margin: 0; font-family: Georgia, serif; font-size: 1.5rem; color: var(--gold); line-height: 1; }
+.gctx-l { margin: 6px 0 0; color: var(--muted); font-size: .76rem; line-height: 1.5; }
+
+/* ---- Family Explorer: live threshold slider ------------------------------ */
+.family-explorer { margin-top: 18px; }
+.fam-label { display: block; margin-bottom: 8px; color: var(--muted); font-size: .8rem; font-weight: 600; }
+#famSlider { width: 100%; accent-color: var(--gold); min-height: 44px; }
+.fam-scale { display: flex; justify-content: space-between; margin-top: -4px; }
+.fam-scale span { color: var(--faint); font-size: .68rem; }
+.fam-scale span.is-active { color: var(--gold); font-weight: 700; }
+.fam-readout { margin-top: 14px; padding: 18px 20px; border: 1px solid rgba(228,196,119,.4); border-radius: 14px; background: linear-gradient(180deg, rgba(228,196,119,.06), rgba(11,14,18,.82)); }
+.fr-count { margin: 0; font-family: Georgia, serif; font-size: clamp(2rem, 5vw, 2.8rem); line-height: 1; }
+.fr-count small { font-size: .38em; color: var(--muted); }
+.fr-desc { margin: 8px 0 0; color: #ded9cf; font-size: .88rem; line-height: 1.55; }
+.fr-strict { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; line-height: 1.55; }
+.fr-strict strong { color: var(--ink); }
+
+/* ---- Combo Structure Explorer: filters over the static example list ------ */
+.combo-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; margin-top: 18px; }
+/* min-width:0 + max-width:100% stop the role <select> from sizing itself to its
+   longest option text ("large family concentrated around one documented
+   engine"), which otherwise forces this group ~455px wide and overflows the
+   page on a phone. */
+.cf-group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; max-width: 100%; }
+.cf-legend { color: var(--faint); font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.cf-chk { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(9,12,15,.7); color: var(--muted); font-size: .78rem; cursor: pointer; }
+.cf-chk:hover { border-color: rgba(228,196,119,.4); }
+.cf-chk:has(input:checked) { background: var(--gold-soft); border-color: rgba(228,196,119,.5); color: var(--ink); font-weight: 600; }
+.cf-chk:has(input:focus-visible) { outline: 2px solid var(--gold); outline-offset: 2px; }
+.cf-chk.cf-disabled { opacity: .5; cursor: not-allowed; }
+.combo-filters select { min-height: 40px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 10px; background: rgba(9,12,15,.92); min-width: 0; max-width: min(100%, 280px); text-overflow: ellipsis; }
+.combo-filters button { min-height: 40px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: rgba(11,14,18,.6); color: var(--muted); font-size: .8rem; font-weight: 600; }
+.combo-filters button:hover, .combo-filters button:focus-visible { color: var(--gold); border-color: rgba(228,196,119,.45); }
+.cf-note { margin: 10px 0 0; color: var(--faint); font-size: .74rem; line-height: 1.5; }
+.cf-count { margin: 10px 0 0; color: var(--gold); font-size: .82rem; font-weight: 700; }
+.cf-empty { margin-top: 14px; padding: 20px; border: 1px dashed var(--line); border-radius: 14px; background: rgba(11,14,18,.5); text-align: center; }
+.cf-empty p { margin: 0 0 6px; color: var(--muted); line-height: 1.6; }
+.cf-empty-note { font-size: .82rem; }
+.cf-reset-inline { min-height: 40px; margin-top: 8px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: rgba(11,14,18,.6); color: var(--gold); font-size: .8rem; font-weight: 600; }
+.example-card[hidden] { display: none; }
+
+footer { padding: 30px 0 54px; text-align: center; color: var(--muted); font-size: .8rem; line-height: 1.7; }
+footer a { color: var(--muted); }
+footer a:hover, footer a:focus-visible { color: var(--gold); }
+
+@media (max-width: 860px) {
+  .pop-strip { grid-template-columns: repeat(2, 1fr); }
+  .signal-controls { grid-template-columns: repeat(2, 1fr); }
+  .claim-grid { grid-template-columns: 1fr; }
+  .gravity-context { grid-template-columns: 1fr; }
+  /* Package name stacks above its bar so the bar keeps usable width. */
+  .spec-row { grid-template-columns: 1fr; gap: 2px; }
+  .spec-name { white-space: normal; }
+}
+@media (max-width: 520px) {
+  .pop-strip { grid-template-columns: 1fr; }
+  .signal-controls { grid-template-columns: 1fr; }
+  .ex-meta div { grid-template-columns: 1fr; gap: 2px; }
+  /* Two cards per row on a phone rather than one — at 120px only a single card
+     fits the narrower column, which stretched a four-card example into four
+     stacked rows. Ratio kept at Scryfall's 120:167. */
+  .scry-card { width: 104px; }
+  .scry-card img, .scry-card .thumb-broken { width: 104px; height: 145px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+</style>
+<script>document.documentElement.classList.add('js');</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://robboles.com/magic-math/tutor-free-structure/",
+  "url": "https://robboles.com/magic-math/tutor-free-structure/",
+  "headline": "Tutor-Free Does Not Mean Structure-Free",
+  "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+  "copyrightHolder": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+  "copyrightYear": "2026",
+  "license": "https://robboles.com/about/#rights"
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="hero shell">
+  <p class="back-link"><a href="../">&larr; back to Magic Math &middot; robboles.com</a></p>
+  <p class="eyebrow">Magic Math · Combo Systems</p>
+  <h1 id="main">Tutor-Free Does Not Mean Structure-Free</h1>
+  <p class="dek">What <strong>100,196</strong> Commander Spellbook variants reveal about the structures that remain when a documented combo package contains no tutor evidence.</p>
+  <div class="pop-strip">
+    <div class="pop-cell"><div class="pn">100,196</div><div class="pl">documented Commander Spellbook variants analyzed</div></div>
+    <div class="pop-cell"><div class="pn">86,448</div><div class="pl">classified as tutor-free candidates (86.3%)</div></div>
+    <div class="pop-cell"><div class="pn">66.6%</div><div class="pl">of those contain a widely reused combo piece</div></div>
+    <div class="pop-cell"><div class="pn">34.6%</div><div class="pl">belong to a large group of related combos</div></div>
+  </div>
+</header>
+
+<main class="shell">
+
+  <details class="toc" id="toc">
+    <summary>On this page</summary>
+    <nav aria-label="Article sections">
+      <a href="#question">The question</a>
+      <a href="#tutor-free-means">What tutor-free means</a>
+      <a href="#structural-support">Structural support</a>
+      <a href="#widely-reused">Widely reused pieces</a>
+      <a href="#related-groups">Related combo groups</a>
+      <a href="#one-slot-h">One-slot patterns</a>
+      <a href="#commander-required-h">Commander-required combos</a>
+      <a href="#examples">Combo examples</a>
+      <a href="#what-this-answers">What this answers</a>
+      <a href="#boundary">Evidence and methodology</a>
+    </nav>
+  </details>
+
+  <section class="prose reading lead" id="question">
+    <p>Some players remove tutors because they want fewer repeated finishes. They want the deck to take different paths, to feel less scripted, or to leave room for a combo to emerge instead of being fetched on schedule.</p>
+    <p>Other players make almost the opposite argument. A tutor is a visible event. It exposes intent, gives the table a recognizable moment to reassess the game, and might be serving a toolbox rather than the same win every time. An untutored combo can arrive without that search step. In the player discussions that motivated this analysis, both positions appeared. Those discussions were qualitative—not a poll, and not evidence that either view is dominant.</p>
+    <p>That disagreement led me to a narrower question: <strong>after package-level tutor evidence disappears, what structural support is still visible in the combo itself?</strong></p>
+    <p>Commander Spellbook is well suited to the package half of that question. It documents exact combo pieces, prerequisites, results, relationships, and commander requirements. It cannot observe complete decklists, draw probability, actual game repetition, player awareness, or table response. So this is not an article about how often combos happen. It is an article about what remains connected after one particular connection—searching for the pieces—is removed from the documented package.</p>
+  </section>
+
+  <section class="prose reading" id="tutor-free-means">
+    <p class="eyebrow chapter-eyebrow">Chapter 1 · What tutor-free means</p>
+    <h2 id="tutor-free-means-h">What “tutor-free candidate” means</h2>
+    <p>I analyzed <strong>100,196 documented Commander Spellbook variants</strong>. After joining the exact cards to Oracle data and checking Oracle text, execution steps, and prerequisites for search evidence, <strong>86,448 variants were classified as tutor-free candidates</strong>.</p>
+    <p>That label is narrower than it sounds. It means the documented package contains no positive evidence that a required component or a documented step searches for the pieces needed for that package. It does <strong>not</strong> mean the full deck contains no tutors. It does not mean the combo is hard to assemble, fair, casual, random, or unexpected.</p>
+    <p>All 86,448 tutor-free candidates passed the enrichment and review gates used here: high-confidence classification, exact-Oracle-ID coverage, no unmatched required component, and no manual-review flag. I am comfortable with the package-level label. I am not extending it to the deck around the package.</p>
+  </section>
+
+  <section class="block" id="tutor-class" aria-labelledby="tutor-class-h">
+    <h2 id="tutor-class-h">The full population, kept honest</h2>
+    <div class="table-wrap">
+      <!-- GENERATED:tfs-tutorclass-table:START — do not edit by hand; run `node scripts/build-tutor-free-structure.js` -->
+<table class="data-table tutorclass-table">
+    <caption>CHART 1 · All 100,196 documented variants by package-level tutor class. Only the highlighted tutor-free class is analyzed below; the others (including needs-review) stay separate.</caption>
+    <thead>
+      <tr><th scope="col">Tutor class</th><th scope="col" class="num">Variants</th><th scope="col" class="num">Share of 100,196</th><th scope="col">Note</th></tr>
+    </thead>
+    <tbody>
+      <tr class="row-hl">
+        <th scope="row">Tutor-free candidate</th>
+        <td class="num">86,448</td>
+        <td class="num">86.3%</td>
+        <td class="lim">This class describes the package rather than the full deck.</td>
+      </tr>
+      <tr>
+        <th scope="row">Needs review</th>
+        <td class="num">8,025</td>
+        <td class="num">8.0%</td>
+        <td class="lim">Do not fold needs-review records into tutor-free.</td>
+      </tr>
+      <tr>
+        <th scope="row">Self-assembling candidate</th>
+        <td class="num">2,855</td>
+        <td class="num">2.8%</td>
+        <td class="lim">Self-assembly is distinct from documented tutor-required execution.</td>
+      </tr>
+      <tr>
+        <th scope="row">Tutor-required candidate</th>
+        <td class="num">1,527</td>
+        <td class="num">1.5%</td>
+        <td class="lim">This is package-level evidence only.</td>
+      </tr>
+      <tr>
+        <th scope="row">Tutor-capable but unused candidate</th>
+        <td class="num">1,341</td>
+        <td class="num">1.3%</td>
+        <td class="lim">Capability does not establish use in the documented line.</td>
+      </tr>
+    </tbody>
+  </table><!-- GENERATED:tfs-tutorclass-table:END -->
+    </div>
+  </section>
+
+  <section class="prose reading" id="structural-support">
+    <p class="eyebrow chapter-eyebrow">Chapter 2 · Structural support</p>
+    <h2 id="structural-support-h">The wrong binary</h2>
+    <p>“Tutored or untutored” sounds like a complete description of combo consistency. It answers one real question: <strong>does the documented package search for required pieces?</strong> It does not answer every other way those pieces might be connected.</p>
+    <p>For this article, I use <strong>structural support</strong> to mean four observable package properties:</p>
+    <ul>
+      <li>a component reused across many documented variants;</li>
+      <li>membership in a source-grouped candidate family;</li>
+      <li>survival of a strict fixed-core, one-varying-slot test;</li>
+      <li>a required commander.</li>
+    </ul>
+    <p>These are not alternate forms of tutoring. A commander in the command zone is not a tutor. A card with hundreds of documented combo partners is not a tutor. A card that can occupy one structural slot is not a tutor. Each one simply tells us that the package is connected to something beyond its own row in the database.</p>
+    <p>“Support” is neutral here. It does not mean stronger, healthier, or more likely to appear in a game. Commander players often use “consistency” to bundle search, redundancy, card draw, commander access, mana reliability, and recovery into one word. Commander Spellbook can separate some of those package structures. It cannot turn them into a real-game consistency estimate.</p>
+  </section>
+
+  <!-- ======================= FLAGSHIP ======================= -->
+  <section class="block" id="explorer" aria-labelledby="explorer-h">
+    <h2 id="explorer-h">Structural Support Explorer</h2>
+    <p class="section-sub">Removing tutors does not remove every other connection around a combo. Below are four measurements that each look for a different kind of support a tutor-free package can still have. A package can have more than one, so set each one to <em>present</em>, <em>absent</em>, or <em>any</em> and watch how the population splits.</p>
+
+    <div class="explorer">
+      <p class="explorer-nojs">This explorer is interactive with JavaScript enabled. Every value it can show is also in the two tables below (CHART 2 and CHART 5), which read correctly with scripting off.</p>
+
+      <div class="explorer-interactive">
+        <form class="signal-controls" id="signalControls" aria-label="Structural signal filters">
+          <fieldset class="signal-fieldset" data-sig="H">
+            <legend><span class="dot" style="background:var(--sig-H)"></span> Contains a widely reused combo piece <span class="sig-code">(H)</span></legend>
+            <p class="sig-desc">At least one card in the package appears across many other documented Commander Spellbook combos.</p>
+            <div class="tri" role="group">
+              <label><input type="radio" name="H" value="any" checked><span>Any</span></label>
+              <label><input type="radio" name="H" value="present"><span>Present</span></label>
+              <label><input type="radio" name="H" value="absent"><span>Absent</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="signal-fieldset" data-sig="F">
+            <legend><span class="dot" style="background:var(--sig-F)"></span> Belongs to a large group of related combos <span class="sig-code">(F)</span></legend>
+            <p class="sig-desc">The package belongs to a source-grouped family of at least 100 documented variants.</p>
+            <div class="tri" role="group">
+              <label><input type="radio" name="F" value="any" checked><span>Any</span></label>
+              <label><input type="radio" name="F" value="present"><span>Present</span></label>
+              <label><input type="radio" name="F" value="absent"><span>Absent</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="signal-fieldset" data-sig="S">
+            <legend><span class="dot" style="background:var(--sig-S)"></span> Matches a strict one-slot variation pattern <span class="sig-code">(S)</span></legend>
+            <p class="sig-desc">The package belongs to a narrow structure where one exact card slot changes while the rest of the documented structure stays matched.</p>
+            <div class="tri" role="group">
+              <label><input type="radio" name="S" value="any" checked><span>Any</span></label>
+              <label><input type="radio" name="S" value="present"><span>Present</span></label>
+              <label><input type="radio" name="S" value="absent"><span>Absent</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="signal-fieldset" data-sig="C">
+            <legend><span class="dot" style="background:var(--sig-C)"></span> Requires the commander <span class="sig-code">(C)</span></legend>
+            <p class="sig-desc">Commander Spellbook explicitly marks the commander as required for this package.</p>
+            <div class="tri" role="group">
+              <label><input type="radio" name="C" value="any" checked><span>Any</span></label>
+              <label><input type="radio" name="C" value="present"><span>Present</span></label>
+              <label><input type="radio" name="C" value="absent"><span>Absent</span></label>
+            </div>
+          </fieldset>
+        </form>
+        <div class="explorer-actions">
+          <button type="button" id="resetSignals">Reset filters</button>
+          <p class="explorer-h-note">The counts below describe the full 86,448-candidate population. The curated examples underneath are illustrations chosen to show what these structures look like on real cards — they are not a sample of the population.</p>
+        </div>
+
+        <div class="explorer-output" id="explorerOutput">
+          <div class="result-panel" id="resultPanel" aria-live="polite">
+            <!-- filled by explorer.js -->
+          </div>
+
+          <div class="meaning-panel" id="meaningPanel" aria-live="polite">
+            <!-- filled by explorer.js -->
+          </div>
+
+          <div class="drill" id="drill">
+            <!-- filled by explorer.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:28px">Four ways a tutor-free combo can still have support</h3>
+    <p class="section-sub">Removing tutors does not remove every other connection around a combo. These four measurements look for different kinds of support. A package can have more than one, so the percentages overlap and should not be added together. The research data records these internally as H, F, S, and C.</p>
+    <div class="table-wrap">
+      <!-- GENERATED:tfs-signals-table:START — do not edit by hand; run `node scripts/build-tutor-free-structure.js` -->
+<table class="data-table signals-table">
+    <caption>CHART 2 · Four ways a tutor-free package can still have support, among the 86,448 tutor-free candidates (recorded internally as H/F/S/C). A package can have more than one — the counts are not additive and the percentages are not a score.</caption>
+    <thead>
+      <tr><th scope="col">Kind of support</th><th scope="col" class="num">Candidates</th><th scope="col" class="num">Share of 86,448</th><th scope="col">What it does not mean</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"><span class="sig-swatch sig-H" aria-hidden="true"></span>Widely reused combo piece <span class="sig-code">(H)</span></th>
+        <td class="num">57,597</td>
+        <td class="num">66.6%</td>
+        <td class="lim">Gravity is Commander Spellbook participation rather than power or EDH popularity.</td>
+      </tr>
+      <tr>
+        <th scope="row"><span class="sig-swatch sig-F" aria-hidden="true"></span>Large related-combo group <span class="sig-code">(F)</span></th>
+        <td class="num">29,944</td>
+        <td class="num">34.6%</td>
+        <td class="lim">Candidate-family membership does not establish interchangeability.</td>
+      </tr>
+      <tr>
+        <th scope="row"><span class="sig-swatch sig-S" aria-hidden="true"></span>One-slot variation pattern <span class="sig-code">(S)</span></th>
+        <td class="num">1,560</td>
+        <td class="num">1.8%</td>
+        <td class="lim">The strict rule is conservative and does not capture every functional substitute.</td>
+      </tr>
+      <tr>
+        <th scope="row"><span class="sig-swatch sig-C" aria-hidden="true"></span>Commander required <span class="sig-code">(C)</span></th>
+        <td class="num">858</td>
+        <td class="num">1.0%</td>
+        <td class="lim">Commander-required does not mean guaranteed castability or availability.</td>
+      </tr>
+    </tbody>
+  </table><!-- GENERATED:tfs-signals-table:END -->
+    </div>
+
+    <h3 style="margin-top:28px">How those four kinds of support combine</h3>
+    <p class="section-sub">Every tutor-free package falls into exactly one row below. Some have none of the four measured connections. Some have one, two, or three. None in this dataset have all four.</p>
+    <div class="table-wrap">
+      <!-- GENERATED:tfs-cohort-table:START — do not edit by hand; run `node scripts/build-tutor-free-structure.js` -->
+<table class="data-table cohort-table">
+    <caption>CHART 5 · Every tutor-free package falls into exactly one of the sixteen rows below (recorded internally as H/F/S/C combinations). Each variant is counted once. Shares are of 86,448.</caption>
+    <thead>
+      <tr><th scope="col">Combination</th><th scope="col" title="Widely reused combo piece">H</th><th scope="col" title="Large related-combo group">F</th><th scope="col" title="One-slot variation pattern">S</th><th scope="col" title="Commander required">C</th><th scope="col" class="num">Variants</th><th scope="col" class="num">Share</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">None of the four measured connections</th>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="num">22,784</td>
+        <td class="num">26.4%</td>
+      </tr>
+      <tr>
+        <th scope="row">Widely reused piece only</th>
+        <td class="sig-on sig-H" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="num">31,412</td>
+        <td class="num">36.3%</td>
+      </tr>
+      <tr>
+        <th scope="row">Large related-combo group only</th>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-F" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="num">4,995</td>
+        <td class="num">5.8%</td>
+      </tr>
+      <tr>
+        <th scope="row">One-slot variation only</th>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-S" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="num">895</td>
+        <td class="num">1.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">Commander required only</th>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-C" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="num">172</td>
+        <td class="num">0.2%</td>
+      </tr>
+      <tr>
+        <th scope="row">Widely reused piece + large related-combo group</th>
+        <td class="sig-on sig-H" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-F" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="num">24,867</td>
+        <td class="num">28.8%</td>
+      </tr>
+      <tr>
+        <th scope="row">Widely reused piece + one-slot variation</th>
+        <td class="sig-on sig-H" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-S" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="num">630</td>
+        <td class="num">0.7%</td>
+      </tr>
+      <tr>
+        <th scope="row">Widely reused piece + commander required</th>
+        <td class="sig-on sig-H" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-C" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="num">583</td>
+        <td class="num">0.7%</td>
+      </tr>
+      <tr>
+        <th scope="row">Large related-combo group + one-slot variation</th>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-F" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-S" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="num">5</td>
+        <td class="num">0.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">Large related-combo group + commander required</th>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-F" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-C" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="num">0</td>
+        <td class="num">0.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">One-slot variation + commander required</th>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-S" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-C" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="num">0</td>
+        <td class="num">0.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">Widely reused piece + large related-combo group + commander required</th>
+        <td class="sig-on sig-H" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-F" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-C" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="num">75</td>
+        <td class="num">0.1%</td>
+      </tr>
+      <tr>
+        <th scope="row">Widely reused piece + large related-combo group + one-slot variation</th>
+        <td class="sig-on sig-H" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-F" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-S" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="num">2</td>
+        <td class="num">0.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">Widely reused piece + one-slot variation + commander required</th>
+        <td class="sig-on sig-H" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-S" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-C" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="num">28</td>
+        <td class="num">0.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">Large related-combo group + one-slot variation + commander required</th>
+        <td class="sig-off" data-on="0"><span aria-hidden="true">–</span><span class="vh"> absent</span></td>
+        <td class="sig-on sig-F" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-S" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-C" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="num">0</td>
+        <td class="num">0.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">All four kinds of support</th>
+        <td class="sig-on sig-H" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-F" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-S" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="sig-on sig-C" data-on="1"><span aria-hidden="true">●</span><span class="vh"> present</span></td>
+        <td class="num">0</td>
+        <td class="num">0.0%</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr><th scope="row">All tutor-free candidates</th><td></td><td></td><td></td><td></td><td class="num">86,448</td><td class="num">100.0%</td></tr>
+    </tfoot>
+  </table>
+  <p class="table-note">Each row counts packages with <em>exactly</em> that combination. For example, the <strong>Widely reused piece + large related-combo group</strong> row (24,867) excludes packages that also require a commander or match the one-slot variation pattern. The article's “24,944 candidates have both H and F” is the broader figure — it also includes those additional cases. The two numbers measure different things; neither is wrong.</p><!-- GENERATED:tfs-cohort-table:END -->
+    </div>
+  </section>
+
+  <section class="prose reading">
+    <p>Among the 86,448 tutor-free candidates, <strong>57,597</strong> have the high-gravity signal, <strong>29,944</strong> have the large-family signal, <strong>1,560</strong> survive the strict one-slot test, and <strong>858</strong> require a commander. The categories overlap. Adding those counts would count many packages twice.</p>
+    <p>The largest overlap is between high gravity and large-family membership: <strong>24,944 tutor-free candidates have both</strong>. But neither signal swallows the other. Some packages connect through a widely reused card without joining a large family. Others join a large family without containing a top-gravity component.</p>
+    <p>That overlap is why the layered view works better than a replacement label. If I called every family member “redundant,” I would overstate the relationship evidence. If I called every high-gravity package “consistent,” I would turn database participation into draw probability. Keeping the layers separate lets each one say exactly what it measures—and makes the gaps between them visible.</p>
+    <p>The cleanest summary is not “structured” versus “unstructured.” Of the tutor-free candidates, <strong>22,784 have none of these four selected signals</strong>, 37,474 have one, 26,085 have two, and 105 have three. None have all four. That mix is the result: tutor-free packages are structurally different from one another.</p>
+    <p>“None of these four” still does not mean “no structure.” The rule is only checking these four measures. Under a deliberately strict isolation rule—no candidate-family membership and no component appearing in more than two variants—only <strong>ten tutor-free candidates</strong> qualified. <span data-package-ref="9">Leyline of the Guildpact plus Coalition Victory</span> is one. It is useful precisely because it pushes against the article's thesis instead of decorating it.</p>
+  </section>
+
+  <section class="prose reading" id="widely-reused">
+    <p class="eyebrow chapter-eyebrow">Chapter 3 · Widely reused pieces</p>
+    <h2 id="widely-reused-h">Widely reused pieces</h2>
+    <p><strong>Component gravity is the number of documented Commander Spellbook variants containing a card.</strong> It is not card power, Commander popularity, deck inclusion rate, draw probability, or game frequency.</p>
+    <p>Under the extraction's rank-based top-1% definition, <strong>57,597 of 86,448 tutor-free candidates contain at least one top-gravity component: 66.6%</strong>. That was the first place my simple expectation failed. I expected removing package-level tutor evidence to leave a much sparser map. Instead, many tutor-free packages still touch cards that recur throughout Spellbook.</p>
+    <p>The distribution also has a long tail. The <strong>top 100 cards account for 30.9% of exact-component appearances</strong>, while <strong>1,367 exact cards appear in only one documented variant</strong> (18.8% of the 7,281 exact cards). A relatively small group participates in a large portion of documented combo structures. Many other cards appear once.</p>
+    <p><span data-package-ref="1">Sensei's Divining Top, Foundry Inspector, and Mystic Forge</span> show the connected side: the package combines a top-gravity component with a large source family. <span data-package-ref="2">Gravecrawler plus Phyrexian Altar</span> contains a top-gravity component too, but the documented line still needs another Zombie. High gravity does not erase setup.</p>
+    <p>The contrast can exist inside one package. <span data-package-ref="3">Nim Deathmantle, Ashnod's Altar, and Knight of the Last Breath</span> pair a Spellbook-narrow component with a broad hub. Calling the whole package “common” would flatten the part that makes it specific.</p>
+  </section>
+
+  <!-- ======================= GRAVITY EXPLORER ======================= -->
+  <section class="block" id="gravity" aria-labelledby="gravity-h">
+    <h2 id="gravity-h">Gravity Explorer</h2>
+    <p class="section-sub">Each package is placed on a scale based on how often its cards appear in documented Commander Spellbook combos. The line runs from the least frequently documented card in the package to the most frequently documented one. The marker shows the package average.</p>
+    <p class="section-sub">This measures participation in Commander Spellbook — not card power, deck popularity, or how often the combo appears in real games.</p>
+    <p class="module-caveat">The horizontal scale is logarithmic so packages with very different counts can remain readable together. These are real component counts — the spectrum shows only the packages below, never a simulated field of cards.</p>
+
+    <div class="explorer">
+      <p class="explorer-nojs">With JavaScript enabled this becomes an interactive spectrum. Every value it plots is in the table below.</p>
+
+      <div class="explorer-interactive">
+        <div class="spectrum" id="spectrum"><!-- built by explorer.js --></div>
+        <div class="spectrum-readout" id="spectrumReadout" aria-live="polite"><!-- built by explorer.js --></div>
+        <div class="gravity-context">
+          <div class="gctx">
+            <p class="gctx-n">66.6%</p>
+            <p class="gctx-l">of the 86,448 tutor-free candidates contain at least one top-1%-gravity component (57,597).</p>
+          </div>
+          <div class="gctx">
+            <p class="gctx-n">30.9%</p>
+            <p class="gctx-l">of all exact-component appearances come from the top 100 cards. A corpus-wide share, not a position on the spectrum.</p>
+          </div>
+          <div class="gctx">
+            <p class="gctx-n">1,367</p>
+            <p class="gctx-l">exact cards appear in only one documented variant — 18.8% of the 7,281 exact cards.</p>
+          </div>
+        </div>
+        <p class="module-caveat">Component gravity is Commander Spellbook corpus participation, not card power, EDH popularity, deck inclusion, or draw probability.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <!-- GENERATED:tfs-gravity-table:START — do not edit by hand; run `node scripts/build-tutor-free-structure.js` -->
+<table class="data-table gravity-table">
+    <caption>Component gravity for the 11 curated example packages — the number of documented Commander Spellbook variants containing each component. Values are per package: the lowest-gravity component, the highest, and the mean across that package's components.</caption>
+    <thead>
+      <tr><th scope="col">Package</th><th scope="col" class="num">Lowest component</th><th scope="col" class="num">Highest component</th><th scope="col" class="num">Mean</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Sensei&#39;s Divining Top + Foundry Inspector + Mystic Forge</th>
+        <td class="num">109</td>
+        <td class="num">2,358</td>
+        <td class="num">862.7</td>
+      </tr>
+      <tr>
+        <th scope="row">Gravecrawler + Phyrexian Altar</th>
+        <td class="num">298</td>
+        <td class="num">5,112</td>
+        <td class="num">2705.0</td>
+      </tr>
+      <tr>
+        <th scope="row">Nim Deathmantle + Ashnod&#39;s Altar + Knight of the Last Breath</th>
+        <td class="num">2</td>
+        <td class="num">5,808</td>
+        <td class="num">2139.3</td>
+      </tr>
+      <tr>
+        <th scope="row">Staff of Domination + Priest of Titania</th>
+        <td class="num">81</td>
+        <td class="num">268</td>
+        <td class="num">174.5</td>
+      </tr>
+      <tr>
+        <th scope="row">Underworld Breach + Malevolent Rumble + Mass Hysteria + A Realm Reborn</th>
+        <td class="num">269</td>
+        <td class="num">530</td>
+        <td class="num">409.8</td>
+      </tr>
+      <tr>
+        <th scope="row">Aetherflux Reservoir + Exquisite Blood</th>
+        <td class="num">22</td>
+        <td class="num">193</td>
+        <td class="num">107.5</td>
+      </tr>
+      <tr>
+        <th scope="row">Tidespout Tyrant + Sol Ring</th>
+        <td class="num">51</td>
+        <td class="num">124</td>
+        <td class="num">87.5</td>
+      </tr>
+      <tr>
+        <th scope="row">Krenko, Mob Boss + Skirk Prospector + Goblin Warchief</th>
+        <td class="num">9</td>
+        <td class="num">238</td>
+        <td class="num">120.3</td>
+      </tr>
+      <tr>
+        <th scope="row">Leyline of the Guildpact + Coalition Victory</th>
+        <td class="num">1</td>
+        <td class="num">1</td>
+        <td class="num">1.0</td>
+      </tr>
+      <tr>
+        <th scope="row">Godo, Bandit Warlord + Helm of the Host</th>
+        <td class="num">165</td>
+        <td class="num">311</td>
+        <td class="num">238.0</td>
+      </tr>
+      <tr>
+        <th scope="row">Dramatic Reversal + Isochron Scepter</th>
+        <td class="num">38</td>
+        <td class="num">302</td>
+        <td class="num">170.0</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="table-note"><strong>Corpus-level context (not points on the same scale):</strong> the top 100 cards supply 30.9% of all exact-component appearances, and 1,367 exact cards (18.8% of 7,281) appear in only one documented variant. Component gravity is Commander Spellbook corpus participation, not EDH popularity, power, or deck inclusion.</p><!-- GENERATED:tfs-gravity-table:END -->
+    </div>
+  </section>
+
+  <section class="prose reading" id="related-groups">
+    <p class="eyebrow chapter-eyebrow">Chapter 4 · Related combo groups</p>
+    <h2 id="related-groups-h">A family is not automatically redundancy</h2>
+    <p>Within the tutor-free cohort, <strong>29,944 of 86,448 candidates belong to a candidate family containing at least 100 variants: 34.6%</strong>. That sounds like a huge redundancy story. It sounded convincing until I asked what a candidate family actually guarantees.</p>
+    <p>The answer is: related structure, not interchangeable cards. A family may represent a shared engine, related packages, a result-sharing cluster, or many variants enumerated around one documented source group. Those are real relationships. They do not prove that the varying cards fill the same role in a deck.</p>
+    <p>The 100-variant cutoff is also an editorial threshold, not a natural boundary. At a minimum family size of 2, 64,081 tutor-free candidates qualify. The count falls to 59,576 at 10, 47,903 at 25, 38,338 at 50, 29,944 at 100, 16,476 at 250, and 5,550 at 500. The curve matters more than any single cutoff.</p>
+  </section>
+
+  <section class="block" id="family" aria-labelledby="family-h">
+    <h2 id="family-h">How large a related-combo group has to be</h2>
+    <div class="table-wrap">
+      <!-- GENERATED:tfs-family-table:START — do not edit by hand; run `node scripts/build-tutor-free-structure.js` -->
+<table class="data-table family-table">
+    <caption>CHART 3 · How many tutor-free packages belong to a related-combo group, at each of the seven published minimum-group-size thresholds (recorded internally as candidate-family membership). Shares are of 86,448. The 100-variant line (34.6%) is an editorial display point, not a natural boundary.</caption>
+    <thead>
+      <tr><th scope="col">Minimum group size</th><th scope="col" class="num">Tutor-free candidates</th><th scope="col" class="num">Share</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">at least 2 variants</th>
+        <td class="num">64,081</td>
+        <td class="num">74.1%</td>
+      </tr>
+      <tr>
+        <th scope="row">at least 10 variants</th>
+        <td class="num">59,576</td>
+        <td class="num">68.9%</td>
+      </tr>
+      <tr>
+        <th scope="row">at least 25 variants</th>
+        <td class="num">47,903</td>
+        <td class="num">55.4%</td>
+      </tr>
+      <tr>
+        <th scope="row">at least 50 variants</th>
+        <td class="num">38,338</td>
+        <td class="num">44.3%</td>
+      </tr>
+      <tr>
+        <th scope="row">at least 100 variants</th>
+        <td class="num">29,944</td>
+        <td class="num">34.6%</td>
+      </tr>
+      <tr>
+        <th scope="row">at least 250 variants</th>
+        <td class="num">16,476</td>
+        <td class="num">19.1%</td>
+      </tr>
+      <tr>
+        <th scope="row">at least 500 variants</th>
+        <td class="num">5,550</td>
+        <td class="num">6.4%</td>
+      </tr>
+    </tbody>
+  </table><!-- GENERATED:tfs-family-table:END -->
+    </div>
+    <div class="explorer">
+      <p class="explorer-nojs">With JavaScript enabled the seven thresholds become a live slider. Every value it reports is in the table above.</p>
+
+      <div class="explorer-interactive family-explorer">
+        <label class="fam-label" for="famSlider">Minimum related-combo group size</label>
+        <input type="range" id="famSlider" min="0" max="6" step="1" value="4"
+               aria-describedby="famReadout" list="famTicks">
+        <datalist id="famTicks">
+          <option value="0" label="2"></option><option value="1" label="10"></option>
+          <option value="2" label="25"></option><option value="3" label="50"></option>
+          <option value="4" label="100"></option><option value="5" label="250"></option>
+          <option value="6" label="500"></option>
+        </datalist>
+        <div class="fam-scale" id="famScale" aria-hidden="true"><!-- built by explorer.js --></div>
+        <div class="fam-readout" id="famReadout" aria-live="polite"><!-- built by explorer.js --></div>
+        <p class="module-caveat">Candidate-family membership is a source-grouped relationship, not verified card interchangeability. The 100-variant line is an editorial display point, not a natural boundary.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="prose reading">
+    <p><span data-package-ref="4">Staff of Domination plus Priest of Titania</span> belongs to a large candidate family, but the line still asks for an established Elf board and a Priest that can tap. An <span data-package-ref="5">Underworld Breach package with Malevolent Rumble, Mass Hysteria, and A Realm Reborn</span> also sits in a large source family and needs cards already in the graveyard. Family size maps a neighborhood. It does not turn that neighborhood into a stack of clean replacements.</p>
+    <p>Enumeration matters here. One fixed engine documented with many possible payoffs or enablers can create many variant rows. Those rows are valid packages, but they are not independent observations of different decks or games. The family analysis describes the recorded surface of an engine, not how often players build or encounter it.</p>
+    <p class="eyebrow chapter-eyebrow">Chapter 5 · One-slot patterns</p>
+    <h2 id="one-slot-h">The stricter test changed the picture</h2>
+    <p>To test the stronger redundancy claim, I used a narrower rule. The reproduced fixed core had to match the documented fixed core. Every qualifying package had to differ by exactly one exact component slot while preserving exact-card count, color identity, and normalized result-family structure.</p>
+    <p>Only <strong>1,888 variants</strong> survived that strict one-slot structural test. <strong>1,560 of them were tutor-free candidates.</strong> Broad connectivity is common in the database. Clean one-slot patterns are much narrower.</p>
+  </section>
+
+  <section class="block" id="strict" aria-labelledby="strict-h">
+    <h2 id="strict-h">A large related-combo group versus a one-slot variation</h2>
+    <div class="table-wrap">
+      <!-- GENERATED:tfs-familyvsstrict-table:START — do not edit by hand; run `node scripts/build-tutor-free-structure.js` -->
+<table class="data-table familyvsstrict-table">
+    <caption>CHART 4 · How broadly a related-combo group extends, compared with the much narrower one-slot variation pattern. Each row prints its own denominator; the all-variant count (1,888) and the tutor-free count (1,560) for the one-slot pattern are kept distinct. The held overall-family-covered row is excluded.</caption>
+    <thead>
+      <tr><th scope="col">Measure</th><th scope="col" class="num">Count</th><th scope="col" class="num">Denominator</th><th scope="col" class="num">Share</th><th scope="col">Note</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Belongs to any related-combo group — tutor-free</th>
+        <td class="num">64,081</td>
+        <td class="num">of 86,448</td>
+        <td class="num">74.1%</td>
+        <td class="lim">Candidate family is broader than substitution.</td>
+      </tr>
+      <tr>
+        <th scope="row">Belongs to a large related-combo group (100+) — tutor-free</th>
+        <td class="num">29,944</td>
+        <td class="num">of 86,448</td>
+        <td class="num">34.6%</td>
+        <td class="lim">The selected threshold is not a natural law.</td>
+      </tr>
+      <tr>
+        <th scope="row">Matches the one-slot variation pattern — all variants</th>
+        <td class="num">1,888</td>
+        <td class="num">of 100,196</td>
+        <td class="num">1.9%</td>
+        <td class="lim">The test is conservative and does not prove functional deck-level replacement.</td>
+      </tr>
+      <tr>
+        <th scope="row">Matches the one-slot variation pattern — tutor-free</th>
+        <td class="num">1,560</td>
+        <td class="num">of 86,448</td>
+        <td class="num">1.8%</td>
+        <td class="lim">Do not compare percentages without their printed denominators.</td>
+      </tr>
+    </tbody>
+  </table><!-- GENERATED:tfs-familyvsstrict-table:END -->
+    </div>
+    <details class="ladder">
+      <summary>The two-card ladder (a definition, not the one true meaning)</summary>
+      <div class="ladder-body" id="ladderBody">
+        <p>Two definitions of a “two-card combo,” neither treated as the one true meaning:</p>
+        <ul>
+          <li><strong>805</strong> tutor-free candidates meet the clean-pair rule.</li>
+          <li><strong>306</strong> of those also meet the conservative terminal-result rule.</li>
+        </ul>
+        <p style="color:var(--faint)">Of 86,448 tutor-free candidates. Do not turn either value into the one true definition of a two-card combo.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="prose reading">
+    <p>This is where I need to be careful. Even the strict survivors are structural candidates, not proof that two cards have equal mana costs, timing, resilience, or deckbuilding roles. The test is stronger evidence of a substitution pattern than broad family membership. It does not capture every kind of real deck redundancy.</p>
+    <p><span data-package-ref="6">Aetherflux Reservoir plus Exquisite Blood</span> is one strict example, and it still carries a substantial life-total prerequisite. <span data-package-ref="7">Tidespout Tyrant plus Sol Ring</span> is another, and it still needs another suitable nontoken permanent. Replacing one slot does not replace the rest of the game state.</p>
+    <p class="eyebrow chapter-eyebrow">Chapter 6 · Commander-required combos</p>
+    <h2 id="commander-required-h">The command zone is a different kind of support</h2>
+    <p>Commander anchoring is the smallest selected layer: <strong>858 tutor-free candidates require a commander according to the source field</strong>. That does not mean only 858 Spellbook combos involve legendary creatures or cards commonly used as commanders. It means those 858 tutor-free records explicitly mark a commander as required.</p>
+    <p><span data-package-ref="8">Krenko, Mob Boss with Skirk Prospector and Goblin Warchief</span> shows both sides of the field. Krenko is a known, visible required piece. The documented package also needs a Goblin count tied to commander tax. The command zone changes where one piece begins. It does not find the other pieces or satisfy the board.</p>
+    <p>The field is narrower than the way players casually say, “My commander is part of the combo.” A commander might be an exact component, a repeatable enabler, or the deck's organizing engine. This analysis supports the first statement when the source marks that commander as required. It does not fully classify every role a commander can play.</p>
+  </section>
+
+  <p class="eyebrow chapter-eyebrow reading">Chapter 7 · Combo examples</p>
+  <section class="block" id="examples" aria-labelledby="examples-h">
+    <h2 id="examples-h">The eleven curated combo examples</h2>
+    <p class="section-sub">Real documented packages, one or two per structural role, so the abstractions never float away from actual cards. None of these variants has an authoritative Commander Spellbook URL in the publication package, so none is linked. Card images come from Scryfall and degrade to card names and type lines if they fail to load.</p>
+    <div class="explorer">
+      <p class="explorer-nojs">With JavaScript enabled these examples become filterable. All eleven are listed below either way.</p>
+
+      <div class="explorer-interactive">
+        <form class="combo-filters" id="comboFilters" aria-label="Filter the curated examples">
+          <div class="cf-group">
+            <span class="cf-legend">Tutor class</span>
+            <label class="cf-chk"><input type="checkbox" name="tutorclass" value="tutor_free_candidate"><span>Tutor-free</span></label>
+            <label class="cf-chk"><input type="checkbox" name="tutorclass" value="tutor_required_candidate"><span>Tutor-required</span></label>
+          </div>
+          <div class="cf-group">
+            <span class="cf-legend">Structure</span>
+            <label class="cf-chk"><input type="checkbox" name="signal" value="F"><span>Large documented family</span></label>
+            <label class="cf-chk"><input type="checkbox" name="signal" value="S"><span>Strict structural pattern</span></label>
+            <label class="cf-chk"><input type="checkbox" name="signal" value="C"><span>Required commander</span></label>
+          </div>
+          <button type="button" id="comboReset">Reset filters</button>
+        </form>
+        <p class="cf-note">Selecting several means <strong>intersection</strong> — a package must have all of them.</p>
+        <p class="cf-count" id="comboCount" aria-live="polite"><!-- built by explorer.js --></p>
+        <div class="cf-empty" id="comboEmpty" hidden>
+          <p>No packaged examples match these filters.</p>
+          <p class="cf-empty-note">That describes this publication package's eleven curated illustrations — not the underlying corpus.</p>
+          <button type="button" class="cf-reset-inline" id="comboResetInline">Reset filters</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENERATED:tfs-example-list:START — do not edit by hand; run `node scripts/build-tutor-free-structure.js` -->
+<div class="example-grid" id="exampleGrid">
+    <article class="example-card" id="example-1" data-order="1" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="true" data-s="false" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/2x2/314/senseis-divining-top?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Sensei&#39;s Divining Top on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/e/5/e5142b7a-e580-4737-a4aa-2590f6610ceb.jpg?1673149430" width="120" height="167" loading="lazy" alt="" data-cardname="Sensei&#39;s Divining Top" data-typeline="Artifact">
+        <span class="scry-name">Sensei&#39;s Divining Top <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/cmm/385/foundry-inspector?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Foundry Inspector on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/1/6/16debeb1-fb2b-4172-b6da-726416d4fb38.jpg?1689999559" width="120" height="167" loading="lazy" alt="" data-cardname="Foundry Inspector" data-typeline="Artifact Creature — Construct">
+        <span class="scry-name">Foundry Inspector <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/cmm/964/mystic-forge?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Mystic Forge on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/b/c/bc0de77a-c503-4000-9eb5-aa28a5e91082.jpg?1690005636" width="120" height="167" loading="lazy" alt="" data-cardname="Mystic Forge" data-typeline="Artifact">
+        <span class="scry-name">Mystic Forge <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Sensei&#39;s Divining Top + Foundry Inspector + Mystic Forge</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Widely reused pieces and enumeration example</span></p>
+      <p class="ex-signals"><span class="sig-tag sig-tag-F">Large related-combo group</span></p>
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 109 · max 2358 · avg 862.7</dd></div>
+        <div><dt>Candidate family</dt><dd>434-variant family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          
+          <div><dt>Documented result</dt><dd>Infinite card draw | Near-infinite storm count | Infinite draw triggers</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Combines a very high-gravity card with a 434-variant source family without implying easy assembly.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-2" data-order="2" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="false" data-s="false" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/tdc/93/gravecrawler?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Gravecrawler on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/6/9/6987d609-ba0f-42bf-9b61-bdfb943c03b5.jpg?1743206046" width="120" height="167" loading="lazy" alt="" data-cardname="Gravecrawler" data-typeline="Creature — Zombie">
+        <span class="scry-name">Gravecrawler <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/2x2/311/phyrexian-altar?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Phyrexian Altar on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/9/5/95d9f93c-50a8-41a9-be98-d1900bf1c12f.jpg?1673149406" width="120" height="167" loading="lazy" alt="" data-cardname="Phyrexian Altar" data-typeline="Artifact">
+        <span class="scry-name">Phyrexian Altar <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Gravecrawler + Phyrexian Altar</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Widely reused pieces counterexample</span></p>
+      
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 298 · max 5112 · avg 2705.0</dd></div>
+        <div><dt>Candidate family</dt><dd>no qualifying family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          <div><dt>Documented prerequisite</dt><dd>You control an additional Zombie.</dd></div>
+          <div><dt>Documented result</dt><dd>Infinite death triggers | Infinite ETB | Infinite LTB | Infinite sacrifice triggers | Infinite storm count</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Shows that high gravity can coexist with a prerequisite and no qualifying large family.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-3" data-order="3" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="false" data-s="false" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/2x2/309/nim-deathmantle?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Nim Deathmantle on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/7/8/787b1cc8-42b4-4d3e-9b8a-a252de297b1a.jpg?1673149391" width="120" height="167" loading="lazy" alt="" data-cardname="Nim Deathmantle" data-typeline="Artifact — Equipment">
+        <span class="scry-name">Nim Deathmantle <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/cmm/368/ashnods-altar?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Ashnod&#39;s Altar on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/3/c/3c0f7157-a375-499c-92c7-d47d2e95dbad.jpg?1689999385" width="120" height="167" loading="lazy" alt="" data-cardname="Ashnod&#39;s Altar" data-typeline="Artifact">
+        <span class="scry-name">Ashnod&#39;s Altar <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/moc/331/knight-of-the-last-breath?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Knight of the Last Breath on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/1/4/1438d850-1e08-4d75-a79c-d6a4738d5a67.jpg?1682209790" width="120" height="167" loading="lazy" alt="" data-cardname="Knight of the Last Breath" data-typeline="Creature — Giant Knight">
+        <span class="scry-name">Knight of the Last Breath <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Nim Deathmantle + Ashnod&#39;s Altar + Knight of the Last Breath</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Long-tail contrast within one package</span></p>
+      
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 2 · max 5808 · avg 2139.3</dd></div>
+        <div><dt>Candidate family</dt><dd>no qualifying family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          
+          <div><dt>Documented result</dt><dd>Infinite colorless mana | Infinite creature tokens | Infinite death triggers | Infinite ETB | Infinite LTB | Infinite sacrifice triggers</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Pairs a component appearing in only two variants with the dataset&#39;s highest-gravity component.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-4" data-order="4" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="true" data-s="false" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/cmr/343/staff-of-domination?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Staff of Domination on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/f/d/fde838c8-2f32-4e7d-a236-0bc42dd7abd9.jpg?1608911729" width="120" height="167" loading="lazy" alt="" data-cardname="Staff of Domination" data-typeline="Artifact">
+        <span class="scry-name">Staff of Domination <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/mh3/286/priest-of-titania?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Priest of Titania on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/e/b/eb11921b-1b28-483f-a707-4de21a6daa31.jpg?1717013714" width="120" height="167" loading="lazy" alt="" data-cardname="Priest of Titania" data-typeline="Creature — Elf Druid">
+        <span class="scry-name">Priest of Titania <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Staff of Domination + Priest of Titania</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Candidate-family threshold example</span></p>
+      <p class="ex-signals"><span class="sig-tag sig-tag-F">Large related-combo group</span></p>
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 81 · max 268 · avg 174.5</dd></div>
+        <div><dt>Candidate family</dt><dd>229-variant family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          <div><dt>Documented prerequisite</dt><dd>Priest of Titania does not have summoning sickness. There are at least five Elves on the battlefield.</dd></div>
+          <div><dt>Documented result</dt><dd>Infinite card draw | Infinite draw triggers | Infinite lifegain | Infinite lifegain triggers | Infinite untap of creatures you control | Infinite mana creatures you control can produce | Infinite green mana</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Shows a 229-variant family whose package still has substantial board prerequisites.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-5" data-order="5" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="true" data-s="false" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/thb/161/underworld-breach?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Underworld Breach on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/0/e/0e51d796-7279-4c06-87f0-37adbdaa41df.jpg?1753711955" width="120" height="167" loading="lazy" alt="" data-cardname="Underworld Breach" data-typeline="Enchantment">
+        <span class="scry-name">Underworld Breach <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/mh3/161/malevolent-rumble?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Malevolent Rumble on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/a/1/a178cfe8-f9fa-4255-88d0-54a0bed079f5.jpg?1717012517" width="120" height="167" loading="lazy" alt="" data-cardname="Malevolent Rumble" data-typeline="Sorcery">
+        <span class="scry-name">Malevolent Rumble <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/inr/164/mass-hysteria?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Mass Hysteria on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/3/c/3c1854c9-11df-406d-b751-302b6f3a08fd.jpg?1736468190" width="120" height="167" loading="lazy" alt="" data-cardname="Mass Hysteria" data-typeline="Enchantment">
+        <span class="scry-name">Mass Hysteria <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/fin/196/a-realm-reborn?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open A Realm Reborn on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/d/1/d1af74e4-38d5-44b5-85e1-4d13f6970453.jpg?1748706495" width="120" height="167" loading="lazy" alt="" data-cardname="A Realm Reborn" data-typeline="Enchantment">
+        <span class="scry-name">A Realm Reborn <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Underworld Breach + Malevolent Rumble + Mass Hysteria + A Realm Reborn</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Large-family limitation example</span></p>
+      <p class="ex-signals"><span class="sig-tag sig-tag-F">Large related-combo group</span></p>
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 269 · max 530 · avg 409.8</dd></div>
+        <div><dt>Candidate family</dt><dd>268-variant family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          <div><dt>Documented prerequisite</dt><dd>You have at least three other cards in your graveyard.</dd></div>
+          <div><dt>Documented result</dt><dd>Infinite self-mill | Near-infinite ETB | Near-infinite LTB | Near-infinite death triggers | Near-infinite magecraft triggers | Near-infinite storm count</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Illustrates how enumeration around a documented source group can create many related variants without proving interchangeable cards.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-6" data-order="6" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="false" data-s="true" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/kld/192/aetherflux-reservoir?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Aetherflux Reservoir on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/9/6/96b6b2e1-c3e6-464c-8a13-b15deb34e862.jpg?1576382939" width="120" height="167" loading="lazy" alt="" data-cardname="Aetherflux Reservoir" data-typeline="Artifact">
+        <span class="scry-name">Aetherflux Reservoir <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/lcc/195/exquisite-blood?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Exquisite Blood on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/0/e/0e8ccfa7-4178-476a-a155-0ca1c98556c9.jpg?1698988246" width="120" height="167" loading="lazy" alt="" data-cardname="Exquisite Blood" data-typeline="Enchantment">
+        <span class="scry-name">Exquisite Blood <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Aetherflux Reservoir + Exquisite Blood</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Strict one-slot example</span></p>
+      <p class="ex-signals"><span class="sig-tag sig-tag-S">One-slot variation pattern</span></p>
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 22 · max 193 · avg 107.5</dd></div>
+        <div><dt>Candidate family</dt><dd>2-variant family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          <div><dt>Documented prerequisite</dt><dd>You have at least 51 life.</dd></div>
+          <div><dt>Documented result</dt><dd>Infinite damage | Infinite lifegain triggers</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Survives the conservative fixed-core one-varying-slot test while retaining a material life-total prerequisite.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-7" data-order="7" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="false" data-s="true" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/rvr/63/tidespout-tyrant?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Tidespout Tyrant on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/d/b/db68f47b-f49a-4978-acdd-453ecfb948da.jpg?1758104156" width="120" height="167" loading="lazy" alt="" data-cardname="Tidespout Tyrant" data-typeline="Creature — Djinn">
+        <span class="scry-name">Tidespout Tyrant <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/soc/128/sol-ring?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Sol Ring on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/8/7/870ec754-a76c-40ea-9b81-81b3dca1f62c.jpg?1775940518" width="120" height="167" loading="lazy" alt="" data-cardname="Sol Ring" data-typeline="Artifact">
+        <span class="scry-name">Sol Ring <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Tidespout Tyrant + Sol Ring</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Strict one-slot example</span></p>
+      <p class="ex-signals"><span class="sig-tag sig-tag-S">One-slot variation pattern</span></p>
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 51 · max 124 · avg 87.5</dd></div>
+        <div><dt>Candidate family</dt><dd>6-variant family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          <div><dt>Documented prerequisite</dt><dd>You control a nontoken permanent that can be cast using <i class="ms ms-c ms-cost" aria-hidden="true"></i>.</dd></div>
+          <div><dt>Documented result</dt><dd>Infinite colorless mana | Infinite storm count</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Provides a second strict family with a different package shape and an explicit additional permanent requirement.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-8" data-order="8" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="false" data-s="false" data-c="true">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/fdn/204/krenko-mob-boss?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Krenko, Mob Boss on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/8/2/824b2d73-2151-4e5e-9f05-8f63e2bdcaa9.jpg?1730632010" width="120" height="167" loading="lazy" alt="" data-cardname="Krenko, Mob Boss" data-typeline="Legendary Creature — Goblin Warrior">
+        <span class="scry-name">Krenko, Mob Boss <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/dmr/137/skirk-prospector?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Skirk Prospector on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/7/b/7bc508b3-8b38-4cf0-89a7-a2cb247ed083.jpg?1675200167" width="120" height="167" loading="lazy" alt="" data-cardname="Skirk Prospector" data-typeline="Creature — Goblin">
+        <span class="scry-name">Skirk Prospector <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/dom/130/goblin-warchief?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Goblin Warchief on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/5/b/5bac033c-dc4e-40a0-b103-4892e4b50249.jpg?1562736294" width="120" height="167" loading="lazy" alt="" data-cardname="Goblin Warchief" data-typeline="Creature — Goblin Warrior">
+        <span class="scry-name">Goblin Warchief <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Krenko, Mob Boss + Skirk Prospector + Goblin Warchief</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Command-zone anchoring example</span></p>
+      <p class="ex-signals"><span class="sig-tag sig-tag-C">Commander required</span></p>
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 9 · max 238 · avg 120.3</dd></div>
+        <div><dt>Candidate family</dt><dd>no qualifying family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          <div><dt>Commander required</dt><dd>Krenko, Mob Boss</dd></div>
+          <div><dt>Documented prerequisite</dt><dd>You control a number of Goblins that is equal to or greater than six plus Krenko&#39;s commander tax.</dd></div>
+          <div><dt>Documented result</dt><dd>Infinite commander casts | Infinite creature tokens with haste | Infinite death triggers | Infinite ETB | Infinite LTB | Infinite red mana | Infinite sacrifice triggers | Infinite storm count</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Shows a required commander alongside a large board-state prerequisite; command-zone access does not finish the assembly problem.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-9" data-order="9" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="false" data-s="false" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/mkm/217/leyline-of-the-guildpact?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Leyline of the Guildpact on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/b/f/bf6e59be-f959-4f4a-8c2d-b7c441e88135.jpg?1706242205" width="120" height="167" loading="lazy" alt="" data-cardname="Leyline of the Guildpact" data-typeline="Enchantment">
+        <span class="scry-name">Leyline of the Guildpact <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/tsb/91/coalition-victory?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Coalition Victory on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/4/4/446824f7-dc42-42da-8bd5-6c37f3358d65.jpg?1562775464" width="120" height="167" loading="lazy" alt="" data-cardname="Coalition Victory" data-typeline="Sorcery">
+        <span class="scry-name">Coalition Victory <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Leyline of the Guildpact + Coalition Victory</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Counterexample to universal connectivity</span></p>
+      
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 1 · max 1 · avg 1.0</dd></div>
+        <div><dt>Candidate family</dt><dd>no qualifying family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          <div><dt>Documented prerequisite</dt><dd>You control at least one land. You control at least one creature.</dd></div>
+          <div><dt>Documented result</dt><dd>Win the game</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Meets the strict no-family and maximum-gravity-at-most-two isolation rule.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-10" data-order="10" data-tutorfree="false" data-tutorclass="tutor_required_candidate" data-f="false" data-s="false" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/cmm/227/godo-bandit-warlord?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Godo, Bandit Warlord on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/0/1/01d566cf-cb32-461d-8afe-b0f3f4c24160.jpg?1689997867" width="120" height="167" loading="lazy" alt="" data-cardname="Godo, Bandit Warlord" data-typeline="Legendary Creature — Human Barbarian">
+        <span class="scry-name">Godo, Bandit Warlord <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/dom/217/helm-of-the-host?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Helm of the Host on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/1/d/1d65d20c-09e5-4139-838b-7e0e48eb2b2b.jpg?1666094567" width="120" height="167" loading="lazy" alt="" data-cardname="Helm of the Host" data-typeline="Legendary Artifact — Equipment">
+        <span class="scry-name">Helm of the Host <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      <p class="ex-role"><span class="chip chip-warn">tutor-required (comparison)</span></p>
+      <h4>Godo, Bandit Warlord + Helm of the Host</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Package-level search comparison</span></p>
+      
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 165 · max 311 · avg 238.0</dd></div>
+        <div><dt>Candidate family</dt><dd>no qualifying family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          <div><dt>Documented prerequisite</dt><dd>Helm of the Host attached to Godo.</dd></div>
+          <div><dt>Documented result</dt><dd>Infinite combat phases | Infinite death triggers | Infinite ETB | Infinite LTB | Infinite sacrifice triggers | Put all Equipment cards from your library onto the battlefield</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">The documented package explicitly uses search and clarifies the mechanical difference between tutoring and structural connectivity.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+    <article class="example-card" id="example-11" data-order="11" data-tutorfree="true" data-tutorclass="tutor_free_candidate" data-f="false" data-s="false" data-c="false">
+      <div class="ex-thumbs"><a class="scry-card" href="https://scryfall.com/card/gn2/20/dramatic-reversal?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Dramatic Reversal on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/3/0/30de9083-8702-471c-92e7-5cf89936a208.jpg?1576267241" width="120" height="167" loading="lazy" alt="" data-cardname="Dramatic Reversal" data-typeline="Instant">
+        <span class="scry-name">Dramatic Reversal <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a><a class="scry-card" href="https://scryfall.com/card/2xm/264/isochron-scepter?utm_source=api" target="_blank" rel="noopener noreferrer" aria-label="Open Isochron Scepter on Scryfall in a new tab">
+        <img src="https://cards.scryfall.io/normal/front/2/a/2aa24fe0-e275-4307-b26c-2a656068a451.jpg?1623543821" width="120" height="167" loading="lazy" alt="" data-cardname="Isochron Scepter" data-typeline="Artifact">
+        <span class="scry-name">Isochron Scepter <span class="ext-cue"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></span></span>
+      </a></div>
+      
+      <h4>Dramatic Reversal + Isochron Scepter</h4>
+      <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">Familiar example with omitted setup in casual shorthand</span></p>
+      
+      <dl class="ex-meta">
+        <div><dt>Component gravity</dt><dd>min 38 · max 302 · avg 170.0</dd></div>
+        <div><dt>Candidate family</dt><dd>no qualifying family</dd></div>
+      </dl>
+      <details class="ex-detail">
+        <summary>Full package data</summary>
+        <dl class="ex-meta">
+          
+          <div><dt>Documented prerequisite</dt><dd>Nonland permanents you control can tap to produce at least <i class="ms ms-3 ms-cost" aria-hidden="true"></i>.</dd></div>
+          <div><dt>Documented result</dt><dd>Infinite magecraft triggers | Infinite mana nonland permanents you control can produce | Infinite storm count | Infinite untap of nonland permanents you control</dd></div>
+        </dl>
+      </details>
+      <p class="ex-limit">Clarifies that a famous two-name package can be tutor-free at package level while still requiring documented mana-producing permanents.</p>
+      <p class="ex-nourl">No authoritative Commander Spellbook URL is included in this publication package for this variant.</p>
+    </article>
+  </div><!-- GENERATED:tfs-example-list:END -->
+  </section>
+
+  <section class="prose reading" id="what-this-answers">
+    <p class="eyebrow chapter-eyebrow">Chapter 8 · What this answers</p>
+    <h2 id="what-this-answers-h">What this answers — and what it does not</h2>
+    <h3>Does removing tutors remove all structural support?</h3>
+    <p>No. Many tutor-free candidates remain connected through reused components, related families, strict one-slot patterns, or commander requirements. But the zero-signal and isolated packages keep that answer bounded.</p>
+    <h3>Does the remaining structure prove deck consistency?</h3>
+    <p>No. That would require complete decklists, card counts, draw and selection effects, recursion, mana development, mulligans, and gameplay data. None of those probabilities are in Commander Spellbook.</p>
+    <h3>Is redundancy basically another tutor?</h3>
+    <p>No. A tutor searches a hidden zone and turns a choice into a specific card. Redundancy offers multiple cards or packages that might satisfy a role. Both can affect access, but they create different choices, reveal different information, and consume deck slots differently. Candidate-family membership alone does not establish redundancy.</p>
+    <h3>Can an untutored combo still be predictable?</h3>
+    <p>The structural analysis gives us clues: command-zone visibility, widely reused pieces, and broad engine connectivity. It cannot establish real gameplay predictability, recognition, surprise, or table response.</p>
+    <h3>Does tutor-free mean more varied games?</h3>
+    <p>Commander Spellbook cannot tell us. The player discussions include people who cut tutors to seek variety and people who replace search with redundant effects. Answering what happens in games requires complete decks and gameplay evidence.</p>
+  </section>
+
+  <p class="eyebrow chapter-eyebrow reading">Chapter 9 · Evidence and methodology</p>
+  <section class="block medium" id="boundary" aria-labelledby="boundary-h">
+    <h2 id="boundary-h">The evidence boundary</h2>
+    <p class="section-sub">Part of what makes this trustworthy is being explicit about its edges.</p>
+    <div class="claim-grid">
+      <article class="claim-panel is-does">
+        <h3>What the data supports</h3>
+        <ul>
+          <li>100,196 documented variants; 86,448 classified tutor-free at the package level.</li>
+          <li>Four separate, overlapping structural signals — never combined into a score.</li>
+          <li>Component gravity as documented-corpus participation, printed with its denominator.</li>
+          <li>Candidate-family coverage across all seven thresholds, not one “natural” cutoff.</li>
+          <li>The strict one-slot survivors (1,888 all-class; 1,560 tutor-free), each denominator kept distinct.</li>
+        </ul>
+      </article>
+      <article class="claim-panel is-doesnt">
+        <h3>What it does not claim</h3>
+        <ul>
+          <li>That tutor-free combos are fair, sneakier, or that removing tutors changes nothing.</li>
+          <li>That candidate families are interchangeable cards.</li>
+          <li>That high gravity identifies the best or most powerful Commander cards.</li>
+          <li>Any real-game assembly probability, consistency per game, surprise, or power level.</li>
+          <li>Anything about full decks: the dataset contains no decklists or gameplay logs.</li>
+        </ul>
+      </article>
+    </div>
+    <div class="method-box">
+      <h3 style="margin:0 0 8px;font-family:Georgia,serif;font-weight:500;color:var(--gold)">Methodology in plain language</h3>
+      <p>This research uses Commander Spellbook source data covering 100,196 documented variants. Exact cards were joined to an auditable Oracle enrichment before package-level tutor evidence was classified from Oracle text, execution text, and prerequisites. Component gravity counts how many documented variants contain a card. Candidate families preserve source relationships and do not automatically establish substitution. The strict one-slot test requires a matching fixed core, one varying exact component, and matched package structure under the approved rule. Unresolved evidence stays outside the tutor-free class. The dataset contains no complete decklists and estimates no draw or gameplay probability. Related variants can enumerate the same engine and are not fully independent observations.</p>
+    </div>
+  </section>
+
+  <section class="prose reading">
+    <h2>Better questions than tutor count alone</h2>
+    <p>Tutor count is still worth discussing. It tells us whether the documented package searches for its pieces. It simply does not tell us everything supporting those pieces. For an actual deck conversation, I would ask: does the commander provide one of the pieces? How many cards can fill each role? Are the pieces independently useful in several engines? Is this package the deck's main plan, a backup ending, or an incidental overlap? Does the deck repeatedly search for the same line? How many slots exist primarily to assemble or protect it? What visible moments let opponents recognize the plan? What happens when the package is disrupted?</p>
+    <p>Most of those are not quantities Commander Spellbook can answer alone. They are better questions because they separate search, replacement options, visibility, protection, and recovery instead of compressing them into one moral label. Tutor count tells us whether the documented package searches for its pieces. It does not tell us how much structure remains around those pieces.</p>
+  </section>
+
+  <p class="back-link bottom"><a href="../">&larr; back to Magic Math &middot; robboles.com</a></p>
+</main>
+
+<footer class="shell">
+  Tutor-Free Does Not Mean Structure-Free · Magic Math · Studied set: 100,196 documented Commander Spellbook variants<br>
+  Source: Commander Spellbook combo-variant research pack · Analysis current as of 2026-07-26<br>
+  Card images via <a href="https://scryfall.com/" target="_blank" rel="noopener noreferrer">Scryfall</a>. Combo data via <a href="https://commanderspellbook.com/" target="_blank" rel="noopener noreferrer">Commander Spellbook</a>. Neither endorses this page.
+</footer>
+
+<!-- GENERATED:tfs-data:START — do not edit by hand; run `node scripts/build-tutor-free-structure.js` -->
+<script id="tfs-data" type="application/json">{"meta":{"story":"Tutor-Free Does Not Mean Structure-Free","subtitle":"What 100,196 Commander Spellbook variants reveal about the structures that remain when a documented combo package contains no tutor evidence","thesis":"A documented package classified as tutor-free can still have structural support through widely reused components, related-combo families, strict one-slot patterns, or command-zone anchoring. These signals describe package structure, not deck-level assembly probability.","slug":"magic-math/tutor-free-structure/","sourceGenerated":"2026-07-26T00:16:39Z","source":"Commander Spellbook combo-variant research pack (tutor-free-structure handoff)"},"summary":{"analyzed_variants":100196,"tutor_free_candidates":86448,"top_gravity_tutor_free":57597,"top_gravity_tutor_free_share_percent":66.6,"family_100_tutor_free":29944,"family_100_tutor_free_share_percent":34.6,"strict_one_slot_all_variants":1888,"strict_one_slot_tutor_free":1560,"top_100_component_appearance_share_percent":30.9,"one_variant_cards":1367},"signals":[{"signal_code":"H","label":"Contains a top-1%-gravity component","count":57597,"denominator":86448,"share":0.666262,"share_percent":66.6,"overlap_type":"overlapping","caption":"Two-thirds of tutor-free candidates contain a component in the extraction's top one percent by documented variant count.","limitation":"Gravity is Commander Spellbook participation rather than power or EDH popularity."},{"signal_code":"F","label":"Candidate family size at least 100","count":29944,"denominator":86448,"share":0.346382,"share_percent":34.6,"overlap_type":"overlapping","caption":"About one-third of tutor-free candidates occur in a candidate family of at least 100 variants.","limitation":"Candidate-family membership does not establish interchangeability."},{"signal_code":"S","label":"Strict one-slot structural family","count":1560,"denominator":86448,"share":0.018046,"share_percent":1.8,"overlap_type":"overlapping","caption":"A much smaller tutor-free cohort survives the strict fixed-core one-varying-slot test.","limitation":"The strict rule is conservative and does not capture every functional substitute."},{"signal_code":"C","label":"Commander required","count":858,"denominator":86448,"share":0.009925,"share_percent":1,"overlap_type":"overlapping","caption":"A small tutor-free cohort requires a commander.","limitation":"Commander-required does not mean guaranteed castability or availability."}],"signalDenominator":86448,"cohorts":[{"cohort":"None","signal_code":"NONE","active_signals":[],"count":22784,"denominator":86448,"share":0.263557,"share_percent":26.4,"caption":"More than one-quarter have none of these four selected signals.","limitation":"None of these four does not mean structure-free."},{"cohort":"High gravity only","signal_code":"H","active_signals":["H"],"count":31412,"denominator":86448,"share":0.363363,"share_percent":36.3,"caption":"High gravity alone is the largest exclusive structural profile.","limitation":"Signals are descriptive and not a consistency score."},{"cohort":"Large family only","signal_code":"F","active_signals":["F"],"count":4995,"denominator":86448,"share":0.05778,"share_percent":5.8,"caption":"Some candidates have the large-family signal without a top-gravity component.","limitation":"Candidate family is not interchangeability."},{"cohort":"Strict one-slot only","signal_code":"S","active_signals":["S"],"count":895,"denominator":86448,"share":0.010353,"share_percent":1,"caption":"Some candidates survive the strict test without H F or C.","limitation":"Strict structure does not establish real-deck replacement."},{"cohort":"Commander only","signal_code":"C","active_signals":["C"],"count":172,"denominator":86448,"share":0.00199,"share_percent":0.2,"caption":"Commander anchoring can occur without the other selected signals.","limitation":"Commander-required is not guaranteed access."},{"cohort":"High gravity plus large family","signal_code":"HF","active_signals":["H","F"],"count":24867,"denominator":86448,"share":0.287653,"share_percent":28.8,"caption":"High gravity and large-family structure overlap heavily.","limitation":"Related variants reduce observational independence."},{"cohort":"High gravity plus strict one-slot","signal_code":"HS","active_signals":["H","S"],"count":630,"denominator":86448,"share":0.007288,"share_percent":0.7,"caption":"High gravity and strict one-slot structure occasionally overlap.","limitation":"Signals are not probabilities."},{"cohort":"High gravity plus commander","signal_code":"HC","active_signals":["H","C"],"count":583,"denominator":86448,"share":0.006744,"share_percent":0.7,"caption":"Some commander-anchored packages also contain a top-gravity component.","limitation":"Command-zone structure does not establish assembly ease."},{"cohort":"Large family plus strict one-slot","signal_code":"FS","active_signals":["F","S"],"count":5,"denominator":86448,"share":0.000058,"share_percent":0,"caption":"Very few rows have F and S without H or C.","limitation":"Threshold and strict-test definitions matter."},{"cohort":"Large family plus commander","signal_code":"FC","active_signals":["F","C"],"count":0,"denominator":86448,"share":0,"share_percent":0,"caption":"No row has exactly F and C without H or S.","limitation":"Zero is specific to these definitions."},{"cohort":"Strict one-slot plus commander","signal_code":"SC","active_signals":["S","C"],"count":0,"denominator":86448,"share":0,"share_percent":0,"caption":"No row has exactly S and C without H or F.","limitation":"Zero is specific to these definitions."},{"cohort":"High gravity plus large family plus commander","signal_code":"HFC","active_signals":["H","F","C"],"count":75,"denominator":86448,"share":0.000868,"share_percent":0.1,"caption":"A small cohort has H F and C.","limitation":"Signals are structural and noncausal."},{"cohort":"High gravity plus large family plus strict one-slot","signal_code":"HFS","active_signals":["H","F","S"],"count":2,"denominator":86448,"share":0.000023,"share_percent":0,"caption":"Two rows have H F and S without C.","limitation":"Signals are definition-sensitive."},{"cohort":"High gravity plus strict one-slot plus commander","signal_code":"HSC","active_signals":["H","S","C"],"count":28,"denominator":86448,"share":0.000324,"share_percent":0,"caption":"A small cohort has H S and C.","limitation":"Signals are structural and noncausal."},{"cohort":"Large family plus strict one-slot plus commander","signal_code":"FSC","active_signals":["F","S","C"],"count":0,"denominator":86448,"share":0,"share_percent":0,"caption":"No row has exactly F S and C without H.","limitation":"Zero is specific to these definitions."},{"cohort":"All four signals","signal_code":"HFSC","active_signals":["H","F","S","C"],"count":0,"denominator":86448,"share":0,"share_percent":0,"caption":"No row has all four selected signals.","limitation":"The absence reflects current definitions and source modeling."}],"cohortDenominator":86448,"reconciliation":{"hIncl":57597,"fIncl":29944,"sIncl":1560,"cIncl":858,"hfIncl":24944,"byCount":{"0":22784,"1":37474,"2":26085,"3":105,"4":0}},"examples":[{"order":1,"id":"777-985-5078","purpose":"Widely reused pieces and enumeration example","limitation":"Combines a very high-gravity card with a 434-variant source family without implying easy assembly.","cards":["Sensei's Divining Top","Foundry Inspector","Mystic Forge"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":109,"maximum":2358,"average":862.666667},"family":{"family_id":"of:589","family_size":434,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":false,"commanderRequirement":null,"prerequisites":null,"resultText":"Infinite card draw | Near-infinite storm count | Infinite draw triggers","signals":{"F":true,"S":false,"C":false}},{"order":2,"id":"2577-4050","purpose":"Widely reused pieces counterexample","limitation":"Shows that high gravity can coexist with a prerequisite and no qualifying large family.","cards":["Gravecrawler","Phyrexian Altar"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":298,"maximum":5112,"average":2705},"family":{"family_id":null,"family_size":0,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":false,"commanderRequirement":null,"prerequisites":"You control an additional Zombie.","resultText":"Infinite death triggers | Infinite ETB | Infinite LTB | Infinite sacrifice triggers | Infinite storm count","signals":{"F":false,"S":false,"C":false}},{"order":3,"id":"2034-3969-5003","purpose":"Long-tail contrast within one package","limitation":"Pairs a component appearing in only two variants with the dataset's highest-gravity component.","cards":["Nim Deathmantle","Ashnod's Altar","Knight of the Last Breath"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":2,"maximum":5808,"average":2139.333333},"family":{"family_id":null,"family_size":0,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":false,"commanderRequirement":null,"prerequisites":null,"resultText":"Infinite colorless mana | Infinite creature tokens | Infinite death triggers | Infinite ETB | Infinite LTB | Infinite sacrifice triggers","signals":{"F":false,"S":false,"C":false}},{"order":4,"id":"1376-2645","purpose":"Candidate-family threshold example","limitation":"Shows a 229-variant family whose package still has substantial board prerequisites.","cards":["Staff of Domination","Priest of Titania"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":81,"maximum":268,"average":174.5},"family":{"family_id":"of:2725","family_size":229,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":false,"commanderRequirement":null,"prerequisites":"Priest of Titania does not have summoning sickness. There are at least five Elves on the battlefield.","resultText":"Infinite card draw | Infinite draw triggers | Infinite lifegain | Infinite lifegain triggers | Infinite untap of creatures you control | Infinite mana creatures you control can produce | Infinite green mana","signals":{"F":true,"S":false,"C":false}},{"order":5,"id":"1368-1849-6321-6723","purpose":"Large-family limitation example","limitation":"Illustrates how enumeration around a documented source group can create many related variants without proving interchangeable cards.","cards":["Underworld Breach","Malevolent Rumble","Mass Hysteria","A Realm Reborn"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":269,"maximum":530,"average":409.75},"family":{"family_id":"of:33123","family_size":268,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":false,"commanderRequirement":null,"prerequisites":"You have at least three other cards in your graveyard.","resultText":"Infinite self-mill | Near-infinite ETB | Near-infinite LTB | Near-infinite death triggers | Near-infinite magecraft triggers | Near-infinite storm count","signals":{"F":true,"S":false,"C":false}},{"order":6,"id":"3966-4740","purpose":"Strict one-slot example","limitation":"Survives the conservative fixed-core one-varying-slot test while retaining a material life-total prerequisite.","cards":["Aetherflux Reservoir","Exquisite Blood"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":22,"maximum":193,"average":107.5},"family":{"family_id":"of:538","family_size":2,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":true,"commanderRequirement":null,"prerequisites":"You have at least 51 life.","resultText":"Infinite damage | Infinite lifegain triggers","signals":{"F":false,"S":true,"C":false}},{"order":7,"id":"542-5034","purpose":"Strict one-slot example","limitation":"Provides a second strict family with a different package shape and an explicit additional permanent requirement.","cards":["Tidespout Tyrant","Sol Ring"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":51,"maximum":124,"average":87.5},"family":{"family_id":"of:1895","family_size":6,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":true,"commanderRequirement":null,"prerequisites":"You control a nontoken permanent that can be cast using {C}.","resultText":"Infinite colorless mana | Infinite storm count","signals":{"F":false,"S":true,"C":false}},{"order":8,"id":"38-659-1288","purpose":"Command-zone anchoring example","limitation":"Shows a required commander alongside a large board-state prerequisite; command-zone access does not finish the assembly problem.","cards":["Krenko, Mob Boss","Skirk Prospector","Goblin Warchief"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":9,"maximum":238,"average":120.333333},"family":{"family_id":null,"family_size":0,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":false,"commanderRequirement":"Krenko, Mob Boss","prerequisites":"You control a number of Goblins that is equal to or greater than six plus Krenko's commander tax.","resultText":"Infinite commander casts | Infinite creature tokens with haste | Infinite death triggers | Infinite ETB | Infinite LTB | Infinite red mana | Infinite sacrifice triggers | Infinite storm count","signals":{"F":false,"S":false,"C":true}},{"order":9,"id":"1024-5364","purpose":"Counterexample to universal connectivity","limitation":"Meets the strict no-family and maximum-gravity-at-most-two isolation rule.","cards":["Leyline of the Guildpact","Coalition Victory"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":1,"maximum":1,"average":1},"family":{"family_id":null,"family_size":0,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":false,"commanderRequirement":null,"prerequisites":"You control at least one land. You control at least one creature.","resultText":"Win the game","signals":{"F":false,"S":false,"C":false}},{"order":10,"id":"1692-4251","purpose":"Package-level search comparison","limitation":"The documented package explicitly uses search and clarifies the mechanical difference between tutoring and structural connectivity.","cards":["Godo, Bandit Warlord","Helm of the Host"],"tutorClass":"tutor_required_candidate","isTutorFree":false,"gravity":{"minimum":165,"maximum":311,"average":238},"family":{"family_id":null,"family_size":0,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":false,"commanderRequirement":null,"prerequisites":"Helm of the Host attached to Godo.","resultText":"Infinite combat phases | Infinite death triggers | Infinite ETB | Infinite LTB | Infinite sacrifice triggers | Put all Equipment cards from your library onto the battlefield","signals":{"F":false,"S":false,"C":false}},{"order":11,"id":"4821-5261","purpose":"Familiar example with omitted setup in casual shorthand","limitation":"Clarifies that a famous two-name package can be tutor-free at package level while still requiring documented mana-producing permanents.","cards":["Dramatic Reversal","Isochron Scepter"],"tutorClass":"tutor_free_candidate","isTutorFree":true,"gravity":{"minimum":38,"maximum":302,"average":170},"family":{"family_id":null,"family_size":0,"caveat":"Candidate-family membership does not prove interchangeability."},"strictOneSlot":false,"commanderRequirement":null,"prerequisites":"Nonland permanents you control can tap to produce at least {3}.","resultText":"Infinite magecraft triggers | Infinite mana nonland permanents you control can produce | Infinite storm count | Infinite untap of nonland permanents you control","signals":{"F":false,"S":false,"C":false}}],"cards":{"A Realm Reborn":{"name":"A Realm Reborn","typeLine":"Enchantment","manaCost":"{4}{G}{G}","colorIdentity":["G"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/fin/196/a-realm-reborn?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/d/1/d1af74e4-38d5-44b5-85e1-4d13f6970453.jpg?1748706495","imageNormal":"https://cards.scryfall.io/normal/front/d/1/d1af74e4-38d5-44b5-85e1-4d13f6970453.jpg?1748706495"},"Aetherflux Reservoir":{"name":"Aetherflux Reservoir","typeLine":"Artifact","manaCost":"{4}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/kld/192/aetherflux-reservoir?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/9/6/96b6b2e1-c3e6-464c-8a13-b15deb34e862.jpg?1576382939","imageNormal":"https://cards.scryfall.io/normal/front/9/6/96b6b2e1-c3e6-464c-8a13-b15deb34e862.jpg?1576382939"},"Ashnod's Altar":{"name":"Ashnod's Altar","typeLine":"Artifact","manaCost":"{3}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/cmm/368/ashnods-altar?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/3/c/3c0f7157-a375-499c-92c7-d47d2e95dbad.jpg?1689999385","imageNormal":"https://cards.scryfall.io/normal/front/3/c/3c0f7157-a375-499c-92c7-d47d2e95dbad.jpg?1689999385"},"Coalition Victory":{"name":"Coalition Victory","typeLine":"Sorcery","manaCost":"{3}{W}{U}{B}{R}{G}","colorIdentity":["B","G","R","U","W"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/tsb/91/coalition-victory?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/4/4/446824f7-dc42-42da-8bd5-6c37f3358d65.jpg?1562775464","imageNormal":"https://cards.scryfall.io/normal/front/4/4/446824f7-dc42-42da-8bd5-6c37f3358d65.jpg?1562775464"},"Dramatic Reversal":{"name":"Dramatic Reversal","typeLine":"Instant","manaCost":"{1}{U}","colorIdentity":["U"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/gn2/20/dramatic-reversal?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/3/0/30de9083-8702-471c-92e7-5cf89936a208.jpg?1576267241","imageNormal":"https://cards.scryfall.io/normal/front/3/0/30de9083-8702-471c-92e7-5cf89936a208.jpg?1576267241"},"Exquisite Blood":{"name":"Exquisite Blood","typeLine":"Enchantment","manaCost":"{4}{B}","colorIdentity":["B"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/lcc/195/exquisite-blood?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/0/e/0e8ccfa7-4178-476a-a155-0ca1c98556c9.jpg?1698988246","imageNormal":"https://cards.scryfall.io/normal/front/0/e/0e8ccfa7-4178-476a-a155-0ca1c98556c9.jpg?1698988246"},"Foundry Inspector":{"name":"Foundry Inspector","typeLine":"Artifact Creature — Construct","manaCost":"{3}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/cmm/385/foundry-inspector?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/1/6/16debeb1-fb2b-4172-b6da-726416d4fb38.jpg?1689999559","imageNormal":"https://cards.scryfall.io/normal/front/1/6/16debeb1-fb2b-4172-b6da-726416d4fb38.jpg?1689999559"},"Goblin Warchief":{"name":"Goblin Warchief","typeLine":"Creature — Goblin Warrior","manaCost":"{1}{R}{R}","colorIdentity":["R"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/dom/130/goblin-warchief?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/5/b/5bac033c-dc4e-40a0-b103-4892e4b50249.jpg?1562736294","imageNormal":"https://cards.scryfall.io/normal/front/5/b/5bac033c-dc4e-40a0-b103-4892e4b50249.jpg?1562736294"},"Godo, Bandit Warlord":{"name":"Godo, Bandit Warlord","typeLine":"Legendary Creature — Human Barbarian","manaCost":"{5}{R}","colorIdentity":["R"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/cmm/227/godo-bandit-warlord?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/0/1/01d566cf-cb32-461d-8afe-b0f3f4c24160.jpg?1689997867","imageNormal":"https://cards.scryfall.io/normal/front/0/1/01d566cf-cb32-461d-8afe-b0f3f4c24160.jpg?1689997867"},"Gravecrawler":{"name":"Gravecrawler","typeLine":"Creature — Zombie","manaCost":"{B}","colorIdentity":["B"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/tdc/93/gravecrawler?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/6/9/6987d609-ba0f-42bf-9b61-bdfb943c03b5.jpg?1743206046","imageNormal":"https://cards.scryfall.io/normal/front/6/9/6987d609-ba0f-42bf-9b61-bdfb943c03b5.jpg?1743206046"},"Helm of the Host":{"name":"Helm of the Host","typeLine":"Legendary Artifact — Equipment","manaCost":"{4}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/dom/217/helm-of-the-host?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/1/d/1d65d20c-09e5-4139-838b-7e0e48eb2b2b.jpg?1666094567","imageNormal":"https://cards.scryfall.io/normal/front/1/d/1d65d20c-09e5-4139-838b-7e0e48eb2b2b.jpg?1666094567"},"Isochron Scepter":{"name":"Isochron Scepter","typeLine":"Artifact","manaCost":"{2}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/2xm/264/isochron-scepter?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/2/a/2aa24fe0-e275-4307-b26c-2a656068a451.jpg?1623543821","imageNormal":"https://cards.scryfall.io/normal/front/2/a/2aa24fe0-e275-4307-b26c-2a656068a451.jpg?1623543821"},"Knight of the Last Breath":{"name":"Knight of the Last Breath","typeLine":"Creature — Giant Knight","manaCost":"{5}{W}{B}","colorIdentity":["B","W"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/moc/331/knight-of-the-last-breath?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/1/4/1438d850-1e08-4d75-a79c-d6a4738d5a67.jpg?1682209790","imageNormal":"https://cards.scryfall.io/normal/front/1/4/1438d850-1e08-4d75-a79c-d6a4738d5a67.jpg?1682209790"},"Krenko, Mob Boss":{"name":"Krenko, Mob Boss","typeLine":"Legendary Creature — Goblin Warrior","manaCost":"{2}{R}{R}","colorIdentity":["R"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/fdn/204/krenko-mob-boss?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/8/2/824b2d73-2151-4e5e-9f05-8f63e2bdcaa9.jpg?1730632010","imageNormal":"https://cards.scryfall.io/normal/front/8/2/824b2d73-2151-4e5e-9f05-8f63e2bdcaa9.jpg?1730632010"},"Leyline of the Guildpact":{"name":"Leyline of the Guildpact","typeLine":"Enchantment","manaCost":"{G/W}{G/U}{B/G}{R/G}","colorIdentity":["B","G","R","U","W"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/mkm/217/leyline-of-the-guildpact?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/b/f/bf6e59be-f959-4f4a-8c2d-b7c441e88135.jpg?1706242205","imageNormal":"https://cards.scryfall.io/normal/front/b/f/bf6e59be-f959-4f4a-8c2d-b7c441e88135.jpg?1706242205"},"Malevolent Rumble":{"name":"Malevolent Rumble","typeLine":"Sorcery","manaCost":"{1}{G}","colorIdentity":["G"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/mh3/161/malevolent-rumble?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/a/1/a178cfe8-f9fa-4255-88d0-54a0bed079f5.jpg?1717012517","imageNormal":"https://cards.scryfall.io/normal/front/a/1/a178cfe8-f9fa-4255-88d0-54a0bed079f5.jpg?1717012517"},"Mass Hysteria":{"name":"Mass Hysteria","typeLine":"Enchantment","manaCost":"{R}","colorIdentity":["R"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/inr/164/mass-hysteria?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/3/c/3c1854c9-11df-406d-b751-302b6f3a08fd.jpg?1736468190","imageNormal":"https://cards.scryfall.io/normal/front/3/c/3c1854c9-11df-406d-b751-302b6f3a08fd.jpg?1736468190"},"Mystic Forge":{"name":"Mystic Forge","typeLine":"Artifact","manaCost":"{4}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/cmm/964/mystic-forge?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/b/c/bc0de77a-c503-4000-9eb5-aa28a5e91082.jpg?1690005636","imageNormal":"https://cards.scryfall.io/normal/front/b/c/bc0de77a-c503-4000-9eb5-aa28a5e91082.jpg?1690005636"},"Nim Deathmantle":{"name":"Nim Deathmantle","typeLine":"Artifact — Equipment","manaCost":"{2}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/2x2/309/nim-deathmantle?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/7/8/787b1cc8-42b4-4d3e-9b8a-a252de297b1a.jpg?1673149391","imageNormal":"https://cards.scryfall.io/normal/front/7/8/787b1cc8-42b4-4d3e-9b8a-a252de297b1a.jpg?1673149391"},"Phyrexian Altar":{"name":"Phyrexian Altar","typeLine":"Artifact","manaCost":"{3}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/2x2/311/phyrexian-altar?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/9/5/95d9f93c-50a8-41a9-be98-d1900bf1c12f.jpg?1673149406","imageNormal":"https://cards.scryfall.io/normal/front/9/5/95d9f93c-50a8-41a9-be98-d1900bf1c12f.jpg?1673149406"},"Priest of Titania":{"name":"Priest of Titania","typeLine":"Creature — Elf Druid","manaCost":"{1}{G}","colorIdentity":["G"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/mh3/286/priest-of-titania?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/e/b/eb11921b-1b28-483f-a707-4de21a6daa31.jpg?1717013714","imageNormal":"https://cards.scryfall.io/normal/front/e/b/eb11921b-1b28-483f-a707-4de21a6daa31.jpg?1717013714"},"Sensei's Divining Top":{"name":"Sensei's Divining Top","typeLine":"Artifact","manaCost":"{1}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/2x2/314/senseis-divining-top?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/e/5/e5142b7a-e580-4737-a4aa-2590f6610ceb.jpg?1673149430","imageNormal":"https://cards.scryfall.io/normal/front/e/5/e5142b7a-e580-4737-a4aa-2590f6610ceb.jpg?1673149430"},"Skirk Prospector":{"name":"Skirk Prospector","typeLine":"Creature — Goblin","manaCost":"{R}","colorIdentity":["R"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/dmr/137/skirk-prospector?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/7/b/7bc508b3-8b38-4cf0-89a7-a2cb247ed083.jpg?1675200167","imageNormal":"https://cards.scryfall.io/normal/front/7/b/7bc508b3-8b38-4cf0-89a7-a2cb247ed083.jpg?1675200167"},"Sol Ring":{"name":"Sol Ring","typeLine":"Artifact","manaCost":"{1}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/soc/128/sol-ring?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/8/7/870ec754-a76c-40ea-9b81-81b3dca1f62c.jpg?1775940518","imageNormal":"https://cards.scryfall.io/normal/front/8/7/870ec754-a76c-40ea-9b81-81b3dca1f62c.jpg?1775940518"},"Staff of Domination":{"name":"Staff of Domination","typeLine":"Artifact","manaCost":"{3}","colorIdentity":[],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/cmr/343/staff-of-domination?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/f/d/fde838c8-2f32-4e7d-a236-0bc42dd7abd9.jpg?1608911729","imageNormal":"https://cards.scryfall.io/normal/front/f/d/fde838c8-2f32-4e7d-a236-0bc42dd7abd9.jpg?1608911729"},"Tidespout Tyrant":{"name":"Tidespout Tyrant","typeLine":"Creature — Djinn","manaCost":"{5}{U}{U}{U}","colorIdentity":["U"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/rvr/63/tidespout-tyrant?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/d/b/db68f47b-f49a-4978-acdd-453ecfb948da.jpg?1758104156","imageNormal":"https://cards.scryfall.io/normal/front/d/b/db68f47b-f49a-4978-acdd-453ecfb948da.jpg?1758104156"},"Underworld Breach":{"name":"Underworld Breach","typeLine":"Enchantment","manaCost":"{1}{R}","colorIdentity":["R"],"faceCount":1,"faceNames":[],"scryfallUri":"https://scryfall.com/card/thb/161/underworld-breach?utm_source=api","imageSmall":"https://cards.scryfall.io/small/front/0/e/0e51d796-7279-4c06-87f0-37adbdaa41df.jpg?1753711955","imageNormal":"https://cards.scryfall.io/normal/front/0/e/0e51d796-7279-4c06-87f0-37adbdaa41df.jpg?1753711955"}},"familyCurve":[{"minimum_family_size":2,"count":64081,"denominator":86448,"share":0.741266,"share_percent":74.1,"limitation":"Families are source-grouped related structures rather than verified substitutions."},{"minimum_family_size":10,"count":59576,"denominator":86448,"share":0.689154,"share_percent":68.9,"limitation":"Families are source-grouped related structures rather than verified substitutions."},{"minimum_family_size":25,"count":47903,"denominator":86448,"share":0.554125,"share_percent":55.4,"limitation":"Families are source-grouped related structures rather than verified substitutions."},{"minimum_family_size":50,"count":38338,"denominator":86448,"share":0.44348,"share_percent":44.3,"limitation":"Families are source-grouped related structures rather than verified substitutions."},{"minimum_family_size":100,"count":29944,"denominator":86448,"share":0.346382,"share_percent":34.6,"limitation":"The 100-variant threshold is an editorial display point rather than a natural boundary."},{"minimum_family_size":250,"count":16476,"denominator":86448,"share":0.190589,"share_percent":19.1,"limitation":"Families are source-grouped related structures rather than verified substitutions."},{"minimum_family_size":500,"count":5550,"denominator":86448,"share":0.0642,"share_percent":6.4,"limitation":"Families are source-grouped related structures rather than verified substitutions."}],"familyVsStrict":[{"label":"Any candidate-family membership - tutor-free","count":64081,"denominator":86448,"share":0.741266,"share_percent":74.1,"limitation":"Candidate family is broader than substitution."},{"label":"Family size at least 100 - tutor-free","count":29944,"denominator":86448,"share":0.346382,"share_percent":34.6,"limitation":"The selected threshold is not a natural law."},{"label":"Strict one-slot structure - all variants","count":1888,"denominator":100196,"share":0.018843,"share_percent":1.9,"limitation":"The test is conservative and does not prove functional deck-level replacement."},{"label":"Strict one-slot structure - tutor-free","count":1560,"denominator":86448,"share":0.018046,"share_percent":1.8,"limitation":"Do not compare percentages without their printed denominators."}],"gravity":{"top100Pct":30.9,"oneVariantCards":1367,"totalExactCards":7281,"oneVariantSharePercent":18.8,"caveat":"Component gravity is Commander Spellbook corpus participation, not EDH popularity, power, or deck inclusion.","bands":[{"band":"top_1_percent_component_present_in_tutor_free_variant","count":57597,"denominator":86448,"share_percent":66.6},{"band":"one_variant_cards","count":1367,"denominator":7281,"share_percent":18.8}]},"tutorClasses":[{"class":"Tutor-free candidate","count":86448,"denominator":100196,"share":0.862789,"share_percent":86.3,"caption":"Most documented variants had no positive package-level tutor evidence under the implemented rules.","limitation":"This class describes the package rather than the full deck."},{"class":"Needs review","count":8025,"denominator":100196,"share":0.080093,"share_percent":8,"caption":"Unresolved evidence remains a separate class.","limitation":"Do not fold needs-review records into tutor-free."},{"class":"Self-assembling candidate","count":2855,"denominator":100196,"share":0.028494,"share_percent":2.8,"caption":"A required component structurally locates another required component.","limitation":"Self-assembly is distinct from documented tutor-required execution."},{"class":"Tutor-required candidate","count":1527,"denominator":100196,"share":0.01524,"share_percent":1.5,"caption":"The documented execution or prerequisites explicitly require a search action.","limitation":"This is package-level evidence only."},{"class":"Tutor-capable but unused candidate","count":1341,"denominator":100196,"share":0.013384,"share_percent":1.3,"caption":"A required component can search but the documented line does not use that ability to assemble the package.","limitation":"Capability does not establish use in the documented line."}],"twoCardLadder":{"status":"sidebar_only_optional","values":[{"definition":"clean_structure_pairs","count":805,"denominator":86448,"source_claim":"C14","use":"sidebar only"},{"definition":"conservative_terminal_pairs","count":306,"denominator":86448,"source_claim":"C14","use":"sidebar only"}],"caveat":"Do not turn either value into the one true definition of two-card combo."}}</script><!-- GENERATED:tfs-data:END -->
+<script src="explorer.js" defer></script>
+</body>
+</html>
