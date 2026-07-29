@@ -215,7 +215,7 @@ header.hero { padding: 46px 0 30px; text-align: center; }
 .cashout-rail .cashout-alias { font-size: 1rem; }
 
 /* ---- Section 3: story cards -------------------------------------------- */
-.story-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-top: 18px; }
+.story-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); align-items: start; gap: 14px; margin-top: 18px; }
 .story-card { display: flex; flex-direction: column; gap: 8px; padding: 20px 18px; border: 1px solid var(--line); border-radius: 16px; background: rgba(11,14,18,.82); position: relative; overflow: hidden; }
 .story-card .st-icon { font-size: 30px; line-height: 1; color: var(--gold); }
 .story-card .st-num { font-family: Georgia, serif; font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1; }
@@ -307,7 +307,9 @@ header.hero { padding: 46px 0 30px; text-align: center; }
 .detail-body h2 { margin: 0 0 4px; font-family: Georgia, serif; font-weight: 500; font-size: 1.7rem; }
 .detail-body .finisher { margin: 10px 0 0; color: var(--ink); line-height: 1.65; font-size: .96rem; }
 .detail-body .result-line { margin: 8px 0 0; color: var(--muted); font-size: .8rem; }
-.detail-metrics { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-top: 16px; }
+.notice-label { margin: 14px 0 0; color: var(--muted); font-size: .64rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.detail-body .insight { margin: 4px 0 0; color: var(--ink); line-height: 1.65; font-size: .96rem; }
+.detail-metrics { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-top: 16px; }
 .detail-metrics div { padding: 11px; border: 1px solid var(--line); border-radius: 10px; background: rgba(9,12,15,.92); }
 .detail-metrics strong, .detail-metrics span { display: block; }
 .detail-metrics strong { font-family: Georgia, serif; font-size: 1rem; }
@@ -639,6 +641,23 @@ footer a:hover, footer a:focus-visible { color: var(--gold); }
     "1561-5165": "Source-implicit finish",
     "2199-4800": "Repeat-driven, delayed source-implicit finish",
     "3038-3858": "Delayed card-text win",
+  };
+
+  // Dossier-only teaching layer: what to notice about *this specific* line,
+  // never repeated on the card. Interprets only the approved finish mode,
+  // terminal condition, gate flags, and the record's own source steps — no
+  // new claim, number, or gameplay/power/frequency statement is introduced.
+  const insight = {
+    "690-3966": "This line does not need one giant finishing spell. Once either enchantment creates the first life change, the two triggers keep feeding each other until an opponent is out of life. The important question is not how large the first trigger is—it is whether the table can interrupt the loop.",
+    "742-1295": "This is about as clean as a card-text win gets: no damage, no life total, no combat step. Thassa's Oracle's own ability just checks your library and declares a winner. The exile step isn't the payoff — it's the setup that makes the check come back empty.",
+    "1218-6714": "This is one of the rare poison finishes in the collection, and unlike many non-repeat lines, it still has to connect in combat. Super State turns one infect hit into a multiplayer finish by carrying that damage across the rest of the table.",
+    "2836-3093": "Decking yourself is normally the worst thing that can happen in Commander. This line is a reminder that the same action becomes a win condition the moment something changes what an empty library means for you — Laboratory Maniac doesn't stop the deck-out, it rewrites what used to punish it.",
+    "1879-3259-7358": "Three cards perform three different jobs: one supplies fresh attackers, one gives them haste, and one creates the extra combats. Unlike a loop that only needs its pieces to resolve, this one has to keep connecting with the enchanted creature. A successful block or removal spell can break the chain.",
+    "1203-4567": "This is one of the few lines in the set where the payoff isn't infinite anything — it's a single attack. Fire Covenant's life payment does two jobs at once: it clears blockers and it grows your own attacker, which is why one swing with Greven reaches the 21-commander-damage threshold by itself.",
+    "6758-6804": "“More Than One Way Out” describes something real here. The same 100-damage event can force enough draws to empty the opponent's library while also causing enough life loss to end the game. The package does not rely on only one recorded route to the finish.",
+    "1561-5165": "The win is never written as a single “you win” instruction. Peer into the Abyss makes the opponent draw a huge portion of their library, and Ob Nixilis turns each of those draws into additional damage. The finish emerges from the two abilities working together rather than from either card stating the final result outright.",
+    "2199-4800": "The repeated action happens now, but the win waits until the next upkeep. Frenetic Efreet can generate the coin-flip attempts, yet Chance Encounter still has to remain on the battlefield long enough to check its counters. The loop builds the condition immediately; the payoff gives opponents a full turn cycle to answer it.",
+    "3038-3858": "A two-card combo that only needs to happen once, but still can't finish the turn it comes together — Mayael's Aria checks the board at your upkeep, so Colossification has to already be attached before that trigger fires. “Delayed” isn't a downside so much as a built-in one-turn window opponents get to try to answer it.",
   };
 
   // --- Inline SVG icon set (no external assets) ----------------------------
@@ -1109,7 +1128,11 @@ footer a:hover, footer a:focus-visible { color: var(--gold); }
     renderRecords(); // rebuilds the DOM synchronously — the card is already focusable by the time this returns
     // Return keyboard focus to the card that was open, rather than dropping
     // it to <body> once the dossier (and its close button) are removed.
-    document.querySelector(`[data-variant-id="${CSS.escape(previousId)}"]`)?.focus();
+    // Scoped to recordsGrid: several curated records also appear in the
+    // "Most Popular Spellbook Lines" ranking above, which renders its own
+    // element carrying the same data-variant-id — an unscoped document-wide
+    // query would grab that one instead if it comes first in DOM order.
+    recordsGrid.querySelector(`[data-variant-id="${CSS.escape(previousId)}"]`)?.focus();
   }
 
   function renderRecords() {
@@ -1185,15 +1208,12 @@ footer a:hover, footer a:focus-visible { color: var(--gold); }
         <div class="detail-body">
           <p class="eyebrow" style="text-align:left">${esc(finishAlias[r.approved_finish_mode])} · ${esc(cashoutAlias[r.terminal_condition] || r.terminal_condition)}</p>
           <h2>${esc(r.display_title)}</h2>
-          <p class="why-here">${icons.check}${esc(whyHere[r.variant_id] || "")}</p>
-          <p class="at-table-label">At the table</p>
-          <p class="finisher">${esc(finishers[r.variant_id] || "")}</p>
           <p class="result-line"><strong style="color:var(--gold)">Result:</strong> ${esc(r.display_results)}</p>
+          <p class="notice-label">What to notice</p>
+          <p class="insight">${esc(insight[r.variant_id] || "")}</p>
           <div class="detail-metrics">
             <div><strong>${fmt(r.popularity)}</strong><span>Spellbook popularity</span></div>
             <div><strong>${r.card_count}</strong><span>Cards in the combo</span></div>
-            <div><strong>${esc(cashoutAlias[r.terminal_condition] || r.terminal_condition)}</strong><span>${esc(r.terminal_condition)}</span></div>
-            <div><strong>${Number(r.delayed_gate_flag) ? "Delayed" : Number(r.combat_gate_flag) ? "Combat" : "Immediate"}</strong><span>Timing note</span></div>
           </div>
           <details>
             <summary>Show the full combo line (Commander Spellbook source text)</summary>
