@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "owner": "RBB-061",
+  "purpose": "Temporary ceiling for under-the-hood language already published before the Magic Math public-language gate. New or increased debt is forbidden.",
+  "files": {
+    "magic-math/tutor-free-structure/index.html": {
+      "database": 3,
+      "dataset": 5
+    }
+  }
+}
