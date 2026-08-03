@@ -26,6 +26,18 @@
       "published_date": "2026-07-08"
     },
     {
+      "id": "data:partner-isnt-one-mechanic",
+      "type": "data_experience",
+      "title": "Partner Isn’t One Mechanic. It’s Four Different Choices.",
+      "description": "What 2,476 legal commander pairs reveal about the four different choices hiding behind Partner—and the job the second card adds to your command zone.",
+      "route": "/magic-math/partner-isnt-one-mechanic/",
+      "section": "Magic Math",
+      "tags": [],
+      "keywords": [],
+      "reading_minutes": 9,
+      "published_date": "2026-08-03"
+    },
+    {
       "id": "data:tutor-free-structure",
       "type": "data_experience",
       "title": "Tutor-Free Does Not Mean Structure-Free",

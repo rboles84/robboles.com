@@ -346,6 +346,17 @@
       "status": "published"
     },
     {
+      "id": "data:partner-isnt-one-mechanic",
+      "content_type": "data_experience",
+      "title": "Partner Isn’t One Mechanic. It’s Four Different Choices.",
+      "description": "What 2,476 legal commander pairs reveal about the four different choices hiding behind Partner—and the job the second card adds to your command zone.",
+      "route": "/magic-math/partner-isnt-one-mechanic/",
+      "published_date": "2026-08-03",
+      "reading_minutes": 9,
+      "section": "Magic Math",
+      "status": "published"
+    },
+    {
       "id": "project:vox-mana",
       "content_type": "project",
       "title": "Vox Mana",

@@ -340,10 +340,10 @@ test('T-27: real manifest — data_experience records carry no tags key', () => 
 // -----------------------------------------------------------------------
 // Real-manifest schema + cross-record validation (T-01/T-02/T-03/T-04 at scale)
 // -----------------------------------------------------------------------
-test('the real content-index.json passes full schema + cross-record validation (44 records)', () => {
+test('the real content-index.json passes full schema + cross-record validation (45 records)', () => {
   const manifest = gen.loadManifest(REAL_MANIFEST_PATH);
   assert.doesNotThrow(() => gen.validateManifest(manifest));
-  assert.equal(manifest.records.length, 44);
+  assert.equal(manifest.records.length, 45);
 });
 
 // -----------------------------------------------------------------------
@@ -697,13 +697,13 @@ test('T-11: every include_in_articles post appears as a card in articles/index.h
 // -----------------------------------------------------------------------
 // T-15 — search-index completeness + scope
 // -----------------------------------------------------------------------
-test('T-15: search-index.json contains exactly the 31 searchable records and no hub/utility', () => {
+test('T-15: search-index.json contains exactly the 32 searchable records and no hub/utility', () => {
   const manifest = gen.loadManifest(REAL_MANIFEST_PATH);
   gen.validateManifest(manifest);
   const idx = JSON.parse(gen.buildSearchIndex(manifest));
   const expected = manifest.records.filter((r) => r.__effective.searchable).map((r) => r.id).sort();
   const got = idx.records.map((r) => r.id).sort();
-  assert.equal(expected.length, 31, 'expected 31 searchable records');
+  assert.equal(expected.length, 32, 'expected 32 searchable records');
   assert.deepEqual(got, expected);
   assert.ok(!idx.records.some((r) => r.type === 'hub' || r.type === 'utility'), 'no hub/utility record may be in the search index');
 });
@@ -769,8 +769,9 @@ test('T-28: feeds carry posts + data experiences; sitemap excludes 404/template 
   gen.validateManifest(manifest);
   const feed = gen.buildFeedXml(manifest);
   const itemCount = (feed.match(/<item>/g) || []).length;
-  assert.equal(itemCount, 19, 'feed carries 16 posts + 3 data experiences');
+  assert.equal(itemCount, 20, 'feed carries 16 posts + 4 data experiences');
   assert.ok(feed.includes('/magic-math/finish-him/'), 'feed includes the Finish Him data experience');
+  assert.ok(feed.includes('/magic-math/partner-isnt-one-mechanic/'), 'feed includes the Partner data experience');
   assert.ok(feed.includes('/table-talk/mana-base-codex/'), 'feed includes the Mana Base Codex data experience');
 
   const sitemap = gen.buildSitemapXml(manifest);
@@ -779,8 +780,8 @@ test('T-28: feeds carry posts + data experiences; sitemap excludes 404/template 
   assert.ok(sitemap.includes('<loc>https://robboles.com/search/</loc>'), 'sitemap includes /search/ via its explicit flag');
   const locCount = (sitemap.match(/<loc>/g) || []).length;
   const lastmodCount = (sitemap.match(/<lastmod>/g) || []).length;
-  assert.equal(locCount, 42, 'sitemap has 42 entries (44 records − 404 − template)');
-  assert.equal(lastmodCount, 19, '<lastmod> appears only on the 19 dated records');
+  assert.equal(locCount, 43, 'sitemap has 43 entries (45 records − 404 − template)');
+  assert.equal(lastmodCount, 20, '<lastmod> appears only on the 20 dated records');
 });
 
 // -----------------------------------------------------------------------
