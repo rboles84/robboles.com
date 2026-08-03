@@ -113,6 +113,54 @@
       oracle: 'If one or more tokens would be created under your control, those tokens plus a Mutagen token are created instead.',
       href: 'https://scryfall.com/card/774716f4-d211-497a-be91-69cd700edbf2'
     },
+    ishai: {
+      name: 'Ishai, Ojutai Dragonspeaker', image: 'cards/ishai-ojutai-dragonspeaker.jpg', colors: ['W', 'U'], rarity: 'mythic',
+      job: 'Opponents casting spells becomes +1/+1 counters.',
+      oracle: 'Whenever an opponent casts a spell, put a +1/+1 counter on Ishai. Ishai has Partner.',
+      href: 'https://scryfall.com/card/2e89ce6a-6bc9-427f-a8b2-c07a9fc3218f'
+    },
+    reyhan: {
+      name: 'Reyhan, Last of the Abzan', image: 'cards/reyhan-last-of-the-abzan.jpg', colors: ['B', 'G'], rarity: 'rare',
+      job: 'Counters survive a creature’s trip to the graveyard or command zone.',
+      oracle: 'Reyhan enters with three +1/+1 counters. When one of your creatures with counters dies or goes to the command zone, those counters can move to another creature. Reyhan has Partner.',
+      href: 'https://scryfall.com/card/8afad106-a49b-4910-959e-228c109ea983'
+    },
+    'tenth-doctor': {
+      name: 'The Tenth Doctor', image: 'cards/the-tenth-doctor.jpg', colors: ['U', 'R'], rarity: 'mythic',
+      job: 'Attacking puts a spell on the clock.',
+      oracle: 'Whenever you attack, exile to the next nonland card, put three time counters on it, and give it suspend if needed. The Doctor can also time travel three times.',
+      href: 'https://scryfall.com/card/f1499f49-793b-4265-9ad0-883a431941ab'
+    },
+    'rose-tyler': {
+      name: 'Rose Tyler', image: 'cards/rose-tyler.jpg', colors: ['W'], rarity: 'rare',
+      job: 'Suspended cards become time counters and power.',
+      oracle: 'When Rose attacks, she gains a time counter for each suspended card you own and each other permanent you control with a time counter. She gets +1/+1 for each time counter on her.',
+      href: 'https://scryfall.com/card/3aa8d034-f98c-4e27-b6af-850eadf59941'
+    },
+    cecily: {
+      name: 'Cecily, Haunted Mage', image: 'cards/cecily-haunted-mage.jpg', colors: ['U', 'B', 'R'], rarity: 'rare',
+      job: 'An attack draws toward a free instant or sorcery.',
+      oracle: 'Cecily draws and costs you 1 life when she attacks. With eleven cards in hand, she may cast an instant or sorcery from your hand without paying its mana cost.',
+      href: 'https://scryfall.com/card/a09ffd51-8ea4-40a6-b64e-58f3acfee533'
+    },
+    leonardo: {
+      name: 'Leonardo, the Balance', image: 'cards/leonardo-the-balance.jpg', colors: ['W', 'U', 'B', 'R', 'G'], rarity: 'mythic',
+      job: 'A token entering spreads +1/+1 counters across the team.',
+      oracle: 'Once each turn, when a token enters under your control, Leonardo may put a +1/+1 counter on each creature you control.',
+      href: 'https://scryfall.com/card/72e637db-7112-406f-809b-0eda248488b5'
+    },
+    raphael: {
+      name: 'Raphael, the Muscle', image: 'cards/raphael-the-muscle.jpg', colors: ['R'], rarity: 'mythic',
+      job: 'Creatures with counters deal twice the damage.',
+      oracle: 'Raphael doubles damage dealt by creatures you control with counters on them. When he enters, he creates a Mutagen token.',
+      href: 'https://scryfall.com/card/bccdd54c-e64b-44d2-87b3-e80029672529'
+    },
+    'ellie-brick': {
+      name: 'Ellie, Brick Master', image: 'cards/ellie-brick-master.jpg', colors: ['R'], rarity: 'mythic',
+      job: 'Attacks aimed elsewhere create attacking creature tokens.',
+      oracle: 'Whenever a player attacks one of your opponents, that player creates a tapped Cordyceps Infected creature token attacking that opponent.',
+      href: 'https://scryfall.com/card/e973462f-589d-4c53-81d7-075ec1d5a9b4'
+    },
     akiri: {
       name: 'Akiri, Line-Slinger', image: 'cards/akiri-line-slinger.jpg', colors: ['W', 'R'], rarity: 'rare',
       job: 'Artifacts increase her power.',
@@ -315,9 +363,9 @@
 
   const ARCHITECTURES = {
     open: {
-      first: 'malcolm', second: 'breeches',
+      first: 'reyhan', second: 'ishai',
       connector: 'or', count: '61 more Open Partners', heading: 'Anyone with anyone',
-      copy: 'Malcolm can sit beside Breeches—or any of the other 61 Open Partner commanders.'
+      copy: 'Reyhan can sit beside Ishai—or any of the other 61 Open Partner commanders.'
     },
     doctor: {
       first: 'fourth-doctor', second: 'sarah-jane',
@@ -360,7 +408,7 @@
 
   const COLOR_JOBS = {
     zero: { first: 'april', second: 'donatello', result: 'U', label: '0 colors', answer: ['799 pairs add no new colors.', 'April and Donatello stay mono-blue. Their card text still gives the second commander another job.'] },
-    one: { first: 'malcolm', second: 'breeches', result: 'UR', label: '+1 color', answer: ['One extra color is the usual result.', 'Breeches adds red to Malcolm’s blue command zone—and adds a different reward for Pirate damage.'] },
+    one: { first: 'tenth-doctor', second: 'rose-tyler', result: 'WUR', label: '+1 color', answer: ['One extra color is the usual result.', 'Rose adds white beside The Tenth Doctor’s blue and red—and gives their time counters another job.'] },
     two: { first: 'akiri', second: 'kydele', result: 'WURG', label: '+2 colors', answer: ['Only 40 pairs add two colors.', 'Akiri and Kydele join two disjoint two-color identities. The four-color result still does not prove their plans fit.'] }
   };
   const colorRoot = document.querySelector('[data-viz="color-jobs"]');
@@ -419,12 +467,12 @@
       lesson: ['Elmar supplies an artifact Bjorna can spend.', 'You can still crack the Clue to draw, or Bjorna can turn it into damage and force a creature to attack elsewhere.']
     },
     character: {
-      family: 'Character Select', title: 'April + Donatello', summary: 'Investigating creates a second token along the way.',
+      family: 'Character Select', title: 'Leonardo + Raphael', summary: 'One supplies a Mutagen. The other turns that token entry into counters for the whole team.',
       cards: [
-        { name: 'April O’Neil, Live on the Scene', image: 'cards/april-oneil-live-on-the-scene.jpg', colors: ['U'], job: 'Creature entries make Clues.', text: 'Whenever a Mutant, Ninja, or Turtle you control enters, investigate.', href: 'https://scryfall.com/card/7265ab42-5434-4127-acd6-8905ab63d62d' },
-        { name: 'Donatello, the Brains', image: 'cards/donatello-the-brains.jpg', colors: ['U'], job: 'Every token event adds a Mutagen.', text: 'If one or more tokens would be created under your control, those tokens plus a Mutagen token are created instead.', href: 'https://scryfall.com/card/774716f4-d211-497a-be91-69cd700edbf2' }
+        { name: 'Leonardo, the Balance', image: 'cards/leonardo-the-balance.jpg', colors: ['W','U','B','R','G'], job: 'A token entry spreads +1/+1 counters.', text: 'Once each turn, when a token enters under your control, Leonardo may put a +1/+1 counter on each creature you control.', href: 'https://scryfall.com/card/72e637db-7112-406f-809b-0eda248488b5' },
+        { name: 'Raphael, the Muscle', image: 'cards/raphael-the-muscle.jpg', colors: ['R'], job: 'Counters turn into twice the damage.', text: 'Raphael creates a Mutagen token when he enters and doubles damage dealt by creatures you control with counters on them.', href: 'https://scryfall.com/card/bccdd54c-e64b-44d2-87b3-e80029672529' }
       ],
-      lesson: ['One token event can arrive with an extra piece.', 'April’s investigate creates a Clue. Donatello’s replacement effect adds a Mutagen token to that event.']
+      lesson: ['Raphael’s Mutagen can start a much larger counter event.', 'The token entering can trigger Leonardo, putting a +1/+1 counter on each creature you control. Raphael then cares about those counters in combat.']
     },
     survivors: {
       family: 'Survivors', title: 'Abby + Joel', summary: 'Creature tokens enter from one commander and matter when they die to the other.',
@@ -452,26 +500,75 @@
     }
   };
 
+  const FAMILY_ALTERNATES = {
+    friends: {
+      family: 'Friends forever', title: 'Cecily + Elmar', summary: 'Cecily can cast toward the second spell. Elmar turns that second spell into an untap and a Clue.',
+      cards: [
+        { name: 'Cecily, Haunted Mage', image: 'cards/cecily-haunted-mage.jpg', colors: ['U','B','R'], job: 'An attack draws toward a free spell.', text: 'Cecily draws when she attacks. With eleven cards in hand, she may cast an instant or sorcery from your hand without paying its mana cost.', href: 'https://scryfall.com/card/a09ffd51-8ea4-40a6-b64e-58f3acfee533' },
+        { name: 'Elmar, Ulvenwald Informant', image: 'cards/elmar-ulvenwald-informant.jpg', colors: ['R','G'], job: 'The second spell can make a Clue.', text: 'Whenever you cast your second spell each turn, untap target creature, then investigate.', href: 'https://scryfall.com/card/95d197b3-fc56-43a2-981f-b5b905222b5c' }
+      ],
+      lesson: ['The attack can help set up Elmar’s second-spell trigger.', 'Cecily draws first and may cast a spell for free when your hand is full. If that helps you reach the second spell, Elmar untaps a creature and investigates.']
+    },
+    character: {
+      family: 'Character Select', title: 'April + Donatello', summary: 'Investigating creates a second token along the way.',
+      cards: [
+        { name: 'April O’Neil, Live on the Scene', image: 'cards/april-oneil-live-on-the-scene.jpg', colors: ['U'], job: 'Creature entries make Clues.', text: 'Whenever a Mutant, Ninja, or Turtle you control enters, investigate.', href: 'https://scryfall.com/card/7265ab42-5434-4127-acd6-8905ab63d62d' },
+        { name: 'Donatello, the Brains', image: 'cards/donatello-the-brains.jpg', colors: ['U'], job: 'Every token event adds a Mutagen.', text: 'If one or more tokens would be created under your control, those tokens plus a Mutagen token are created instead.', href: 'https://scryfall.com/card/774716f4-d211-497a-be91-69cd700edbf2' }
+      ],
+      lesson: ['One token event can arrive with an extra piece.', 'April’s investigate creates a Clue. Donatello’s replacement effect adds a Mutagen token to that event.']
+    },
+    survivors: {
+      family: 'Survivors', title: 'Ellie + Joel', summary: 'One creates attacking creature tokens. The other notices when a creature token dies.',
+      cards: [
+        { name: 'Ellie, Brick Master', image: 'cards/ellie-brick-master.jpg', colors: ['R'], job: 'Attacks aimed elsewhere create creature tokens.', text: 'Whenever a player attacks one of your opponents, that player creates a tapped Cordyceps Infected creature token attacking that opponent.', href: 'https://scryfall.com/card/e973462f-589d-4c53-81d7-075ec1d5a9b4' },
+        { name: 'Joel, Resolute Survivor', image: 'cards/joel-resolute-survivor.jpg', colors: ['B','G'], job: 'A dying creature token becomes a counter and a card.', text: 'When a creature token dies, put a +1/+1 counter on Joel and draw a card. This triggers only once each turn.', href: 'https://scryfall.com/card/713ab02f-cd48-420d-a2fe-ef460e6ce2d2' }
+      ],
+      lesson: ['Ellie creates another kind of creature token for Joel to watch.', 'Ellie’s trigger can add an attacking token to combat. If a creature token dies, Joel can turn that death into a counter and a card.']
+    },
+    named: {
+      family: 'Named Partner', title: 'Pir + Toothy', summary: 'Toothy builds counters from cards. Pir makes each counter event one larger.',
+      cards: [
+        { name: 'Pir, Imaginative Rascal', image: 'cards/pir-imaginative-rascal.jpg', colors: ['G'], job: 'Counter events get one more.', text: 'If counters would be put on a permanent your team controls, Pir adds one more of each kind.', href: 'https://gatherer.wizards.com/BBD/en-us/11/pir-imaginative-rascal' },
+        { name: 'Toothy, Imaginary Friend', image: 'cards/toothy-imaginary-friend.jpg', colors: ['U'], job: 'Card draw becomes +1/+1 counters.', text: 'Drawing puts a +1/+1 counter on Toothy. When Toothy leaves, its counters become cards.', href: 'https://gatherer.wizards.com/BBD/en-us/12/toothy-imaginary-friend' }
+      ],
+      lesson: ['This named relationship pushes the same counter engine.', 'Toothy turns each card drawn into a counter. Pir makes that counter event one larger.']
+    }
+  };
+
   const familyRoot = document.querySelector('.partner-explorer');
   const familyPairButton = familyRoot?.querySelector('.family-pair');
+  const familyRedealButton = familyRoot?.querySelector('[data-redeal-family]');
   const pairDialog = document.querySelector('#pair-dialog');
   const dialogContent = pairDialog?.querySelector('.pair-dialog-content');
   let selectedFamily = 'friends';
+  let selectedFamilyVariant = 0;
   let dialogRestore = null;
 
-  function drawFamily(key) {
+  function selectedFamilyData() {
+    return selectedFamilyVariant === 1 && FAMILY_ALTERNATES[selectedFamily]
+      ? FAMILY_ALTERNATES[selectedFamily]
+      : FAMILY_PAIRS[selectedFamily];
+  }
+
+  function drawFamily(key, variant = 0) {
     if (!familyPairButton) return;
     selectedFamily = key;
-    const data = FAMILY_PAIRS[key];
-    familyPairButton.setAttribute('data-open-family-pair', key);
+    selectedFamilyVariant = variant === 1 && FAMILY_ALTERNATES[key] ? 1 : 0;
+    const data = selectedFamilyData();
+    familyPairButton.setAttribute('data-open-family-pair', `${key}-${selectedFamilyVariant}`);
     familyPairButton.innerHTML = `
       <span class="family-pair-art" aria-hidden="true"><img src="${cardPath(data.cards[0].image)}" alt=""><img src="${cardPath(data.cards[1].image)}" alt=""></span>
       <span class="family-pair-copy"><small>${data.family}</small><strong>${data.title}</strong><span>${data.summary}</span><b>Open this command zone <span aria-hidden="true">→</span></b></span>`;
+    if (familyRedealButton) {
+      familyRedealButton.hidden = !FAMILY_ALTERNATES[key];
+      familyRedealButton.setAttribute('aria-label', `${selectedFamilyVariant ? 'Return to the first' : 'Deal another'} ${data.family} pairing`);
+      familyRedealButton.querySelector('span').textContent = selectedFamilyVariant ? 'Return to first pairing' : 'Deal another pairing';
+    }
   }
 
   function openFamilyDialog() {
     if (!pairDialog || !dialogContent) return;
-    const data = FAMILY_PAIRS[selectedFamily];
+    const data = selectedFamilyData();
     dialogContent.innerHTML = `
       <div class="pair-dialog-heading"><small>${data.family}</small><h3 id="pair-dialog-title">${data.title}</h3><p>${data.summary}</p></div>
       <div class="pair-dialog-cards">${data.cards.map((card) => `
@@ -491,6 +588,7 @@
       drawFamily(button.getAttribute('data-family'));
     });
   });
+  familyRedealButton?.addEventListener('click', () => drawFamily(selectedFamily, selectedFamilyVariant ? 0 : 1));
   familyPairButton?.addEventListener('click', openFamilyDialog);
   pairDialog?.querySelector('.pair-dialog-close')?.addEventListener('click', () => pairDialog.close());
   pairDialog?.addEventListener('click', (event) => { if (event.target === pairDialog) pairDialog.close(); });
