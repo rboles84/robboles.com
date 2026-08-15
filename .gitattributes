@@ -1,0 +1,12 @@
+# T-14 compares these generated outputs byte-for-byte. Keep checkout line endings
+# identical to the generator on every platform, including Windows with autocrlf=true.
+assets/data/search-index.json text eol=lf
+assets/data/posts.json text eol=lf
+feed.xml text eol=lf
+rss.xml text eol=lf
+sitemap.xml text eol=lf
+index.html text eol=lf
+articles/index.html text eol=lf
+learning-lab/index.html text eol=lf
+table-talk/index.html text eol=lf
+qa-field-guide/index.html text eol=lf

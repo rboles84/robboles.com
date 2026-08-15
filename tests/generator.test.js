@@ -678,6 +678,23 @@ test('T-14 (live tree): every generated output on disk matches what the current 
   assert.deepEqual(drifted, [], `generated files drifted from the manifest: ${drifted.join(', ')}`);
 });
 
+test('T-14b: every byte-compared generated output is pinned to LF in .gitattributes', () => {
+  const manifest = gen.loadManifest(REAL_MANIFEST_PATH);
+  gen.validateManifest(manifest);
+  const outputs = gen.computeOutputs(manifest);
+  const attributes = fs.readFileSync(path.join(ROOT, '.gitattributes'), 'utf8')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'));
+
+  for (const rel of Object.keys(outputs)) {
+    assert.ok(
+      attributes.includes(`${rel.replace(/\\/g, '/')} text eol=lf`),
+      `missing LF checkout policy for generated output: ${rel}`,
+    );
+  }
+});
+
 // -----------------------------------------------------------------------
 // T-11 — /articles/ listing completeness
 // -----------------------------------------------------------------------
