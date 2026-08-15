@@ -46,6 +46,20 @@ Site lanes:
   needs to supply answers, print/save-safe, free of site navigation clutter, and checked manually
   before the post is treated as ready.
 
+## Development
+
+Implementation is governed by [`RobDevPass.md`](RobDevPass.md). Work at an experienced mid-level/product
+developer level with senior guardrails: practical and proportional, able to make safe in-scope decisions,
+but never from blank context or by blind trial-and-error. Scale investigation depth to the change.
+
+For non-trivial work, ground the implementation in the current Kanban card, relevant `learning.md` entries
+and handoffs, the owning files and repository structure, a current analogous post/component, and targeted
+Git history when it clarifies intent. Identify the source of truth, consumers, protected contracts,
+non-goals, shared blast radius, failure/accessibility states, rollback, and the smallest complete change.
+Reuse existing patterns before creating new ones; never hand-edit generated output; surface scope drift
+instead of hiding it in a larger diff. RobDevPass READY hands implementation evidence to RobQAPass—it does
+not replace testing or owner acceptance.
+
 ## Testing
 
 A change's QA scope is governed by [`RobQAPass.md`](RobQAPass.md). Before selecting checks, classify
@@ -142,9 +156,9 @@ land within a year of each other — check the existing manifest's used years be
 For any non-trivial work, the main agent must follow:
 
 1. Pre-flight review
-2. Planning, including RobQAPass QA tier and protected-contract classification
-3. Kanban update (`RBB-###` card)
-4. Implementation
+2. Identify or update the Kanban card (`RBB-###`)
+3. RobDevPass planning/change contract, including preliminary RobQAPass classification
+4. Implementation to RobDevPass READY
 5. Risk-proportional verification under `RobQAPass.md` (build-free checks)
 6. Documentation + learning-log update
 7. Handoff report
@@ -156,18 +170,22 @@ reveal follow-up work.
 
 Before starting any planning, implementation, content, data, or verification task, review:
 
-1. `learning.md`
-2. `docs/handoffs/HANDOFF_INDEX.md`
-3. Recent relevant handoff files in `docs/handoffs/`
-4. `docs/kanban/board.md`
-5. Related Kanban cards
-6. Related docs/plans
-7. Before writing new CSS/JS for a mana-color, rarity, Keyrune, or card-hover/flavor pattern:
+1. Current branch/status and overlapping working-tree changes
+2. `RobDevPass.md` and `RobQAPass.md`
+3. `learning.md`
+4. `docs/handoffs/HANDOFF_INDEX.md`
+5. Recent relevant handoff files in `docs/handoffs/`
+6. `docs/kanban/board.md` and related cards
+7. Owning files, related docs/plans, and relevant repository structure
+8. A current analogous post/component and targeted Git history when they clarify implementation intent
+9. Before writing new CSS/JS for a mana-color, rarity, Keyrune, or card-hover/flavor pattern:
    `docs/reference/reusable-components.md` — reuse an existing component instead of a parallel one
    that silently drops a fix the original already has.
 
-Summarize: recent related work, known risks, decisions already made, files recently changed, and what
-should not be touched. If no relevant handoffs exist, state: `No relevant prior handoff found.`
+Summarize: recent related work, current source-of-truth/owners, known risks, decisions already made,
+files recently changed, applicable existing patterns, and what should not be touched. Scale the depth to
+the change; do not perform history or page review merely for ceremony. If no relevant handoffs exist,
+state: `No relevant prior handoff found.`
 
 ## Learning log
 
@@ -189,9 +207,10 @@ Filename: `YYYY-MM-DD-HHMM-agent-name-short-task.md`
 
 Each handoff includes: agent name, task requested, files reviewed, files changed, what changed, why,
 decisions made, risks/uncertainties, checks run, not touched, follow-up recommendations, next suggested
-agent, and related card/docs. An implementation handoff claiming RobQAPass readiness must also include
-the required fields defined in `RobQAPass.md`; reference that authority rather than duplicating its
-policy. Also update `docs/handoffs/HANDOFF_INDEX.md`.
+agent, and related card/docs. An implementation handoff claiming RobDevPass readiness must include the
+fields defined in `RobDevPass.md`; a handoff claiming RobQAPass readiness must include the fields defined
+in `RobQAPass.md`. Reference those authorities rather than duplicating their policy. Also update
+`docs/handoffs/HANDOFF_INDEX.md`.
 
 ## Roles (`.codex/prompts/`)
 
