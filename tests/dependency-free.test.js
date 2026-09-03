@@ -19,7 +19,7 @@ const { ROOT, listHtmlFiles } = require('./helpers');
 const ALLOWED_HOSTS = new Set([
   'robboles.com',
   'voxmana.io', // intentional outbound project link
-  'scryfall.com', // static search links only, not fetched — see table-talk/mana-base-codex
+  'scryfall.com', // static links and the opt-in Codex card-art preview
   'schema.org',
   'www.w3.org',
   'app.kit.com', // intentional: subscribe form POSTs directly to Kit's public API, no server — see site.js
@@ -74,15 +74,20 @@ test('every fetch() call in shipped JS targets a local path, not an external hos
   assert.equal(offenders.length, 0, `external fetch() call(s):\n${offenders.join('\n')}`);
 });
 
-test('the Mana Base Codex specifically has zero runtime third-party calls', () => {
+test('the Mana Base Codex permits only its cached, lazy Scryfall named-card preview', () => {
   const codexPath = path.join(ROOT, 'table-talk', 'mana-base-codex', 'index.html');
   const text = fs.readFileSync(codexPath, 'utf8');
-  assert.doesNotMatch(text, /fetch\(/, 'Codex should have no fetch() calls at all (self-contained by design)');
-  assert.doesNotMatch(
-    text, /cdn\.jsdelivr\.net|api\.scryfall\.com/,
-    'Codex should not reference the mana-font CDN or the live Scryfall API'
+  const fetchCalls = [...text.matchAll(/fetch\(/g)];
+  assert.equal(fetchCalls.length, 1, 'Codex should make exactly one kind of runtime request');
+  assert.match(
+    text, /fetch\('https:\/\/api\.scryfall\.com\/cards\/named\?exact='\+encodeURIComponent\(key\)\)/,
+    'the only request should be Scryfall\'s exact named-card endpoint'
   );
-  // Its font must be self-hosted, not loaded from a CDN.
+  assert.match(text, /const imageCache=new Map\(\)/, 'preview lookup should be cached per card name');
+  assert.match(text, /const SCRYFALL_MIN_INTERVAL_MS=150/, 'preview requests should leave a safe gap');
+  assert.match(text, /let scryfallQueue=Promise\.resolve\(\), nextScryfallRequestAt=0/, 'preview requests should be serialized');
+  assert.match(text, /nextScryfallRequestAt=Date\.now\(\)\+SCRYFALL_MIN_INTERVAL_MS;\s*const response=await fetch/, 'the safe gap should be set before each request starts');
+  // Its font must remain self-hosted, not loaded from a CDN.
   assert.match(
     text, /href="\.\.\/\.\.\/assets\/css\/mana\.css"/,
     'Codex should link the shared self-hosted assets/css/mana.css'
