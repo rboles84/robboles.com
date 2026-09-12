@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful</title>
+    <link>https://robboles.com/posts/dogfooding-yak-shaving-software-jargon/</link>
+    <guid>https://robboles.com/posts/dogfooding-yak-shaving-software-jargon/</guid>
+    <pubDate>Sat, 12 Sep 2026 12:00:00 +0000</pubDate>
+    <description>Dogfooding, yak shaving, RAG, grounding, drift, and blast radius sound ridiculous. Each one names a useful habit worth keeping.</description>
+  </item>
+  <item>
     <title>Partner Isn’t One Mechanic. It’s Four Different Choices.</title>
     <link>https://robboles.com/magic-math/partner-isnt-one-mechanic/</link>
     <guid>https://robboles.com/magic-math/partner-isnt-one-mechanic/</guid>
@@ -137,13 +144,6 @@
     <guid>https://robboles.com/posts/how-i-run-ai-like-a-qa-system/</guid>
     <pubDate>Sun, 28 Jun 2026 12:00:00 +0000</pubDate>
     <description>AI is non-deterministic by design. I run my AI work the way I run quality engineering: operating prompts, grounding, examples, gates, and feedback loops.</description>
-  </item>
-  <item>
-    <title>What Good QA Actually Owns</title>
-    <link>https://robboles.com/posts/what-good-qa-actually-owns/</link>
-    <guid>https://robboles.com/posts/what-good-qa-actually-owns/</guid>
-    <pubDate>Sun, 28 Jun 2026 12:00:00 +0000</pubDate>
-    <description>QA owns quality — and you own it by making it visible to the right people, in the language they can act on, before it ships.</description>
   </item>
 </channel>
 </rss>

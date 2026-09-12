@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful &#8212; Robert Boles</title>
+  <meta name="description" content="Dogfooding, yak shaving, RAG, grounding, drift, and blast radius sound ridiculous. Each one names a useful habit worth keeping.">
+  <meta name="author" content="Robert Boles">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful &#8212; Robert Boles">
+  <meta property="og:description" content="Dogfooding, yak shaving, RAG, grounding, drift, and blast radius sound ridiculous. Each one names a useful habit worth keeping.">
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2026-09-12">
+  <meta property="article:modified_time" content="2026-09-12">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://robboles.com/posts/dogfooding-yak-shaving-software-jargon/">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260718c">
+  <link rel="stylesheet" href="../../assets/css/mana.css">
+  <link rel="icon" href="../../favicon.ico" sizes="any">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+  <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
+  <script defer src="../../assets/js/site.js?v=20260718c"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": "https://robboles.com/posts/dogfooding-yak-shaving-software-jargon/#article",
+        "isPartOf": { "@type": "WebPage", "@id": "https://robboles.com/posts/dogfooding-yak-shaving-software-jargon/" },
+        "mainEntityOfPage": "https://robboles.com/posts/dogfooding-yak-shaving-software-jargon/",
+        "headline": "Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful",
+        "description": "Dogfooding, yak shaving, RAG, grounding, drift, and blast radius sound ridiculous. Each one names a useful habit worth keeping.",
+        "inLanguage": "en-US",
+        "datePublished": "2026-09-12",
+        "dateModified": "2026-09-12",
+        "articleSection": "Learning Lab",
+        "proficiencyLevel": "Beginner",
+        "keywords": ["AI Vocabulary", "Software Culture", "Systems Thinking"],
+        "dependencies": "None",
+        "author": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "publisher": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightHolder": { "@type": "Person", "@id": "https://robboles.com/about/#person" },
+        "copyrightYear": "2026",
+        "license": "https://robboles.com/about/#rights"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://robboles.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Learning Lab", "item": "https://robboles.com/learning-lab/" },
+          { "@type": "ListItem", "position": 3, "name": "Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful", "item": "https://robboles.com/posts/dogfooding-yak-shaving-software-jargon/" }
+        ]
+      }
+    ]
+  }
+  </script>
+  <style>
+    .article-body { min-width: 0; }
+    .flashcard-intro { margin-bottom: 16px; }
+    .flashcard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0 28px;
+    }
+    .flashcard {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .flashcard summary {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px;
+      cursor: pointer;
+      font-family: var(--mono);
+      color: var(--ink);
+      list-style: none;
+    }
+    .flashcard summary::-webkit-details-marker { display: none; }
+    .flashcard summary::after {
+      content: "+";
+      color: var(--accent);
+      font-size: 18px;
+      line-height: 1;
+    }
+    .flashcard[open] summary::after { content: "−"; }
+    .flashcard summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -3px;
+    }
+    .flashcard p {
+      margin: 0;
+      padding: 0 16px 16px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.55;
+    }
+    .flashcard .flashcard-cue {
+      color: var(--faint);
+      font-size: 11px;
+      font-weight: 500;
+      flex: 0 0 auto;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    @media (max-width: 680px) {
+      .flashcard-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-root="../../">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-site-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Robert Boles home">
+        <svg class="brand-mark" aria-hidden="true" viewBox="0 0 100 100">
+          <circle class="ring" cx="50" cy="50" r="30"/>
+          <circle class="core" cx="50" cy="50" r="16"/>
+        </svg>
+        <span class="brand-text"><strong>robboles</strong><small>.com</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav>
+        <a class="nav-link" href="../../">home</a>
+        <div class="nav-item nav-item--field-guide nav-item--dropdown" data-nav-dropdown data-dropdown-name="Field Guide">
+          <div class="nav-item-primary">
+            <a class="nav-link" href="../../qa-field-guide/">field guide</a>
+            <button class="nav-caret" type="button" aria-expanded="false" aria-controls="field-guide-links" aria-label="Show Field Guide links">
+              <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+            </button>
+          </div>
+          <div class="nav-dropdown" id="field-guide-links" aria-label="Field Guide destinations">
+            <a class="nav-dropdown-card nav-dropdown-card--guide" href="../../qa-field-guide/">
+              <strong>Explore the Field Guide</strong>
+              <span>Methods and lessons for reliable QA, AI, and software delivery.</span>
+            </a>
+            <a class="nav-dropdown-card nav-dropdown-card--kit" href="../../field-kit/">
+              <strong>Open the Field Kit</strong>
+              <span>Ready-to-use templates, checklists, worksheets, and tools.</span>
+            </a>
+          </div>
+        </div>
+        <a class="nav-link" href="../../learning-lab/">learning lab</a>
+        <div class="nav-item nav-item--table-talk nav-item--dropdown" data-nav-dropdown data-dropdown-name="Table Talk">
+          <div class="nav-item-primary">
+            <a class="nav-link" href="../../table-talk/">table talk</a>
+            <button class="nav-caret" type="button" aria-expanded="false" aria-controls="table-talk-links" aria-label="Show Table Talk links">
+              <svg aria-hidden="true" viewBox="0 0 12 8" focusable="false"><path d="M1 1l5 5 5-5"></path></svg>
+            </button>
+          </div>
+          <div class="nav-dropdown" id="table-talk-links" aria-label="Table Talk destinations">
+            <a class="nav-dropdown-card nav-dropdown-card--table-talk" href="../../table-talk/">
+              <strong>Explore Table Talk</strong>
+              <span>Commander, mana bases, and the game I never grew out of.</span>
+            </a>
+            <a class="nav-dropdown-card nav-dropdown-card--magic-math" href="../../magic-math/">
+              <strong>Open Magic Math</strong>
+              <span>Finding hidden stories in the numbers.</span>
+            </a>
+          </div>
+        </div>
+        <a class="nav-link" href="../../projects/">projects</a>
+        <a class="nav-link nav-search" href="../../search/">search</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container narrow">
+        <div class="breadcrumbs"><a href="../../">Home</a> / <a href="../../learning-lab/">Learning Lab</a> / Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful</div>
+        <p class="eyebrow">Learning Lab</p>
+        <h1>Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful</h1>
+        <p class="lede">Dogfooding, yak shaving, RAG, grounding, drift, and blast radius sound ridiculous. Each one names a useful habit worth keeping.</p>
+        <div class="article-meta"><span>Sep 12, 2026</span><span>8 min read</span><span>Learning Lab</span></div>
+        <div class="tag-row"><span>AI Vocabulary</span><span>Software Culture</span><span>Systems Thinking</span></div>
+      </div>
+    </section>
+
+    <article class="article">
+      <div class="container article-grid">
+        <div class="article-body">
+
+          <p class="article-verified"><span class="dot">&#9679;</span> Last verified September 12, 2026 &middot; no tools required</p>
+          <p class="promise">The jargon is absurd. The habits underneath it are useful.</p>
+
+          <p>If you're going to work with AI, it's important to take care of yourself.</p>
+          <p>Start your morning with some dogfooding. Get your chunking in early. Stay grounded. Remember to rehydrate. If you start hallucinating, check for drift. A little rubber ducking can help with stress. And whatever you do, try to keep your blast radius under control.</p>
+          <p>Follow this simple wellness routine and your RAG should be absolutely shredded by summer.</p>
+          <p>Unfortunately, most of those are established AI or software terms. I'm borrowing <em>rehydration</em> from software state management for the working context an AI session needs.</p>
+          <p>I've worked in software for years, so I'm probably desensitized to some of this. But AI has introduced a whole new group of people to an industry that has apparently been letting sleep-deprived engineers name things unsupervised for decades.</p>
+          <p>So, for anyone trying to follow the conversation, here's a completely normal day in AI and software.</p>
+
+          <h2 id="dogfooding">7:30 AM &mdash; Start with some dogfooding</h2>
+          <p>No dogs are harmed during dogfooding.</p>
+          <p>Probably.</p>
+          <p>Dogfooding basically means <strong>using your own product</strong>.</p>
+          <p>If I build something and tell everyone it's fantastic but refuse to use it myself, that's probably useful information.</p>
+          <p>The term sounds ridiculous, but the principle is great: don't just test your product in the nice little environment you created for it. Actually live with it.</p>
+          <p>Use it.</p>
+          <p>Get annoyed by it.</p>
+          <p>Discover that the button you thought was perfectly positioned is somehow the most irritating button ever created after you've clicked it 400 times.</p>
+          <p>That's dogfooding.</p>
+
+          <h2 id="rubber-ducking">8:30 AM &mdash; Time for some rubber ducking</h2>
+          <p>Now that we've fed the dog, get the duck.</p>
+          <p>Rubber duck debugging is exactly as sophisticated as it sounds.</p>
+          <p>You explain your problem to a rubber duck.</p>
+          <p>That's it.</p>
+          <p>The duck has no certifications. The duck did not attend your standup. The duck has never used Jira.</p>
+          <p>And yet somehow, halfway through explaining the problem, you realize:</p>
+          <p>"Oh."</p>
+          <p>Forcing yourself to explain something clearly often exposes what you weren't thinking clearly about.</p>
+          <p>AI has essentially given us a rubber duck that talks back.</p>
+          <p>Which is incredibly useful.</p>
+          <p>It also means the duck can now confidently tell you something completely wrong, so progress is complicated.</p>
+
+          <h2 id="yak-shaving">9:45 AM &mdash; Shave a yak</h2>
+          <p>You came in this morning wanting to change one small thing.</p>
+          <p>Easy.</p>
+          <p>Except changing the thing requires updating a dependency.</p>
+          <p>The dependency won't build because your tooling is outdated.</p>
+          <p>You update the tooling.</p>
+          <p>That breaks something else.</p>
+          <p>You investigate that.</p>
+          <p>Now you're reading a GitHub issue from 2022 written by someone whose username looks like a Wi-Fi password.</p>
+          <p>It's almost lunch.</p>
+          <p>The thing remains unchanged.</p>
+          <p>You've been <strong>yak shaving</strong>.</p>
+          <p>Yak shaving is when completing one task requires another task, which requires another task, which requires another task, until you're seven layers removed from the thing you originally wanted to accomplish.</p>
+          <p>AI is remarkably good at helping with yak shaving.</p>
+          <p>AI is also remarkably good at <strong>creating exciting new yaks</strong>.</p>
+          <p>This is why occasionally asking, "What were we originally trying to do?" is an underrated engineering practice.</p>
+
+          <h2 id="chunking">11:30 AM &mdash; Get your chunking in</h2>
+          <p>We've dogfooded, rubber ducked, and shaved a yak.</p>
+          <p>Obviously, it's time to start chunking.</p>
+          <p>Chunking is considerably less violent than it sounds.</p>
+          <p>If you have a giant pile of information, you break it into smaller pieces that are easier to find and work with.</p>
+          <p>Think about a 900-page manual.</p>
+          <p>Instead of handing the AI all 900 pages every time you ask a question, you split the information into useful pieces so the system can find the parts that probably matter.</p>
+          <p>Those pieces are chunks.</p>
+          <p>You now have chunks.</p>
+          <p>Please don't put them in the dogfood.</p>
+
+          <h2 id="rag">12:15 PM &mdash; Work on your RAG</h2>
+          <p>RAG stands for <strong>retrieval-augmented generation</strong>.</p>
+          <p>Which is exactly the sort of name you get when engineers are allowed to name things.</p>
+          <p>Plain English:</p>
+          <p><strong>Find the useful stuff first. Then give that stuff to the AI.</strong></p>
+          <p>You have 10,000 pages of information.</p>
+          <p>Your question probably needs 12 of them.</p>
+          <p>RAG is one way of finding those 12 before asking the AI to answer.</p>
+          <p>This is great.</p>
+          <p>There's just one tiny problem.</p>
+          <p>Having the correct answer somewhere in your giant pile of information does not mean the system actually retrieved it.</p>
+          <p>Your filing cabinet may contain your birth certificate.</p>
+          <p>That does not help if I confidently hand you a Chili's receipt instead.</p>
+          <p>RAG is useful.</p>
+          <p>RAG is not magic.</p>
+
+          <h2 id="grounding">1:00 PM &mdash; Stay grounded</h2>
+          <p>You've eaten lunch. You've worked on your RAG.</p>
+          <p>It's important to stay grounded.</p>
+          <p>Grounding an AI means tying its response to relevant, verifiable information instead of asking it to freestyle reality.</p>
+          <p>If I'm asking an AI about my project, I can give it the requirements, documentation, source material, current state, or other evidence it needs.</p>
+          <p>That's grounding.</p>
+          <p>Think less:</p>
+          <p>"Go to your room and think about what you've done."</p>
+          <p>Think more:</p>
+          <p>"Here are the actual documents. Please stop guessing."</p>
+
+          <h2 id="hallucination">2:00 PM &mdash; Hallucination time</h2>
+          <p>And apparently we weren't grounded enough.</p>
+          <p>In AI, a hallucination is when the system produces erroneous or false information and presents it like everything is perfectly normal.</p>
+          <p>You ask:</p>
+          <p>"Where does the documentation say that?"</p>
+          <p>And the AI responds, metaphorically:</p>
+          <p>"Documentation?"</p>
+          <p>This gets simplified to "AI makes stuff up," which is useful enough for normal conversation.</p>
+          <p>But the interesting part is figuring out <strong>why</strong> you got the bad answer.</p>
+          <p>Maybe the model invented something.</p>
+          <p>Maybe your RAG retrieved the wrong information.</p>
+          <p>Maybe your source was outdated.</p>
+          <p>Maybe you didn't provide enough context.</p>
+          <p>Maybe the question was ambiguous.</p>
+          <p>Maybe <em>you</em> assumed something that wasn't true.</p>
+          <p>The useful lesson isn't "AI hallucinates, therefore AI bad."</p>
+          <p>It's this:</p>
+          <p><strong>Confidence is not evidence.</strong></p>
+          <p>This applies to humans too, unfortunately.</p>
+
+          <h2 id="rehydration">2:45 PM &mdash; Remember to rehydrate</h2>
+          <p>You've had a long day.</p>
+          <p>Please rehydrate.</p>
+          <p>Not yourself.</p>
+          <p>The robot.</p>
+          <p>Even when a tool offers history or memory, a new AI session should not be assumed to carry perfect working knowledge of everything you've done across a long project.</p>
+          <p>Eventually you start a new session, change tools, lose useful context, or realize the current conversation has accumulated enough baggage to qualify for a checked bag.</p>
+          <p>For this kind of long AI-assisted project, I use <strong>rehydration</strong> as shorthand for:</p>
+          <p><strong>Here's where we are. Here's what matters. Here's what we decided. Here's what's next. Please don't make me explain the last six weeks again.</strong></p>
+          <p>I had to do exactly that in September 2026 when I reopened an article after two rounds of revision. The useful context wasn't in my head anymore. It was in the draft, the decision notes, and the checks we'd already run. Feeding those back into the next session turned a cold start into a continuation.</p>
+          <p>The goal isn't to make AI remember everything.</p>
+          <p>The goal is to preserve the important things somewhere reliable so you can give them back when they're needed.</p>
+          <p>It's project Gatorade.</p>
+
+          <h2 id="drift">3:30 PM &mdash; Check for drift</h2>
+          <p>No cars are involved.</p>
+          <p>Here, I mean the project kind of drift: the work gradually moves away from what you originally intended.</p>
+          <p>Machine learning also uses <em>drift</em> more narrowly for changes in input data or prediction patterns. That's a different yak.</p>
+          <p>The annoying part is that every individual step can look reasonable.</p>
+          <p>Change this.</p>
+          <p>Improve that.</p>
+          <p>Clean this up.</p>
+          <p>Add this useful thing.</p>
+          <p>Tweak that behavior.</p>
+          <p>Three weeks later you look at the project and think:</p>
+          <p>"What happened to my website?"</p>
+          <p>That's drift.</p>
+          <p>It's one of the reasons having a clear definition of what you're actually building matters.</p>
+          <p>You need something to drift <strong>from</strong>.</p>
+
+          <h2 id="blast-radius">4:15 PM &mdash; Reduce the blast radius</h2>
+          <p>We started this morning feeding dogs and talking to ducks.</p>
+          <p>We are ending the afternoon discussing explosions.</p>
+          <p>Naturally.</p>
+          <p>Blast radius means:</p>
+          <p><strong>If this goes wrong, how much else can it break?</strong></p>
+          <p>Change one isolated piece of copy?</p>
+          <p>Small blast radius.</p>
+          <p>Give an autonomous agent permission to rewrite your production database, deploy directly to production, email every customer, and update your DNS records?</p>
+          <p>Larger blast radius.</p>
+          <p>Maybe don't do that one on Friday afternoon.</p>
+          <p>The concept matters more as AI systems become capable of actually doing things instead of merely suggesting things.</p>
+          <p>Giving AI more capability is useful.</p>
+          <p>Giving it unlimited capability because you're tired of clicking "approve" is how future blog posts get written.</p>
+
+          <h2 id="fluent">5:00 PM &mdash; Congratulations, you're fluent</h2>
+          <p>So tomorrow morning we'll dogfood the new workflow, rubber duck whatever breaks, try not to shave too many yaks, chunk our source material, work on our RAG, keep the AI grounded, watch for hallucinations, rehydrate when the context gets messy, check for drift, and keep the blast radius small.</p>
+          <p>Which is, somehow, now a sentence you understand.</p>
+          <p>I'm sorry.</p>
+          <p>Underneath all this completely unhinged terminology are some genuinely useful ideas. Use the things you build. Explain problems clearly. Notice when one task has turned into seventeen. Break large problems into manageable pieces. Find relevant information before making decisions. Ground conclusions in evidence. Don't mistake confidence for correctness. Preserve important context. Check that you're still solving the original problem. And when something can go wrong, think about how much damage it can do.</p>
+          <p>The portable rule is simple: <strong>when the jargon gets weird, translate it back into the action.</strong> If you can explain what the term asks you to do, you understand it. If you can't, another acronym won't save you.</p>
+          <p>Apparently, we could have just said all of that.</p>
+          <p>But then we'd have to find something else to do with the yak.</p>
+
+          <h2 id="flashcards">The completely normal flashcard deck</h2>
+          <div class="reusable-asset">
+            <p class="caption">// take this with you</p>
+            <p class="flashcard-intro">Read the term, say the plain-English action, then open the card to check yourself. Try not to cheat. The duck is watching.</p>
+            <div class="flashcard-grid">
+              <details class="flashcard"><summary><strong>Dogfooding</strong><span class="flashcard-cue">show action</span></summary><p>Use your own product.</p></details>
+              <details class="flashcard"><summary><strong>Rubber ducking</strong><span class="flashcard-cue">show action</span></summary><p>Explain the problem clearly enough to hear the gap.</p></details>
+              <details class="flashcard"><summary><strong>Yak shaving</strong><span class="flashcard-cue">show action</span></summary><p>Check whether the prerequisite work has swallowed the original task.</p></details>
+              <details class="flashcard"><summary><strong>Chunking</strong><span class="flashcard-cue">show action</span></summary><p>Break a large body of information into useful pieces.</p></details>
+              <details class="flashcard"><summary><strong>RAG</strong><span class="flashcard-cue">show action</span></summary><p>Find the relevant material before asking the AI to answer.</p></details>
+              <details class="flashcard"><summary><strong>Grounding</strong><span class="flashcard-cue">show action</span></summary><p>Give the AI evidence and context instead of asking it to guess.</p></details>
+              <details class="flashcard"><summary><strong>Hallucination</strong><span class="flashcard-cue">show action</span></summary><p>Treat confident output as a claim that still needs evidence.</p></details>
+              <details class="flashcard"><summary><strong>Rehydration</strong><span class="flashcard-cue">show action</span></summary><p>Restore the decisions and context a new session needs.</p></details>
+              <details class="flashcard"><summary><strong>Drift</strong><span class="flashcard-cue">show action</span></summary><p>Compare the current work with the original intent.</p></details>
+              <details class="flashcard"><summary><strong>Blast radius</strong><span class="flashcard-cue">show action</span></summary><p>Limit how much a mistake can affect.</p></details>
+            </div>
+          </div>
+
+          <h2 id="sources">Sources and terminology notes</h2>
+          <p>I checked the definitions against primary or official references. The plain-English translations and bad animal jokes are mine.</p>
+          <ul>
+            <li><a href="https://learn.microsoft.com/en-us/microsoft-365-apps/best-practices/microsoft-365-change-guide">Microsoft's dogfooding practice</a>, <a href="https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/"><cite>The Pragmatic Programmer</cite></a> for rubber duck debugging, and the <a href="https://www.catb.org/jargon/html/Y/yak-shaving.html">Jargon File's yak-shaving entry</a>.</li>
+            <li>The original <a href="https://arxiv.org/abs/2005.11401">retrieval-augmented generation paper</a> and <a href="https://cloud.google.com/vertex-ai/generative-ai/docs/fine-tune-rag-transformations">Google Cloud's RAG chunking documentation</a>.</li>
+            <li><a href="https://cloud.google.com/generative-ai-app-builder/docs/check-grounding">Google Cloud's grounding documentation</a> and <a href="https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence">NIST's definition of AI confabulation or hallucination</a>.</li>
+            <li><a href="https://github.com/rt2zz/redux-persist/blob/master/docs/api.md">Redux Persist's state-rehydration terminology</a>. My use of it for restoring AI working context is an analogy, not a standard AI term.</li>
+            <li><a href="https://learn.microsoft.com/en-us/industry/playbook/cross-industry/glossary">Microsoft's narrower data-drift definition</a> and <a href="https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/use-fault-isolation-to-protect-your-workload.html">AWS guidance on limiting failure impact</a>.</li>
+          </ul>
+
+          <h2 id="related">Related posts</h2>
+          <div class="two-grid">
+            <a class="article-nav-card" href="../../posts/how-i-run-ai-like-a-qa-system/"><strong>How I Run AI Like a QA System</strong><span>Learning Lab</span></a>
+            <a class="article-nav-card" href="../../posts/traceable-is-not-true/"><strong>Traceable Isn't the Same as True</strong><span>QA Field Guide</span></a>
+          </div>
+
+          <div class="author-bio">
+            <div class="avatar" aria-hidden="true">RB</div>
+            <div>
+              <h2>Robert Boles</h2>
+              <p>Senior SDET and QA architect with 14 years in enterprise property &amp; casualty insurance &mdash; I've halved a regression cycle, built the QA governance teams run on, and brought AI into test generation without losing the plot. Former Air Force lab tech; I build side projects like Vox Mana on the weekend.</p>
+              <p class="bio-tagline">"I test things until they stop surprising me — then I go looking for what I missed."</p>
+              <p class="bio-links"><a href="../../about/">About &amp; full bio</a></p>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="article-aside">
+          <div class="note-card" data-toc>
+            <h2>On this page</h2>
+            <a href="#dogfooding">Dogfooding</a>
+            <a href="#rubber-ducking">Rubber ducking</a>
+            <a href="#yak-shaving">Yak shaving</a>
+            <a href="#chunking">Chunking</a>
+            <a href="#rag">RAG</a>
+            <a href="#grounding">Grounding</a>
+            <a href="#hallucination">Hallucination</a>
+            <a href="#rehydration">Rehydration</a>
+            <a href="#drift">Drift</a>
+            <a href="#blast-radius">Blast radius</a>
+            <a href="#fluent">The plain-English rule</a>
+            <a href="#flashcards">Flashcard deck</a>
+            <a href="#sources">Sources and notes</a>
+            <a href="#related">Related posts</a>
+          </div>
+          <button class="button copy-link" type="button" data-copy-link>Copy article link</button>
+        </aside>
+      </div>
+    </article>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="footer-brand" href="../../">Robert Boles</a>
+        <p>Practical QA systems, automation patterns, release confidence, and builder notes from the field.</p>
+      </div>
+      <div>
+        <h2>Explore</h2>
+        <a href="../../qa-field-guide/">QA Field Guide</a>
+        <a href="../../automation-cookbook/">Automation Cookbook</a>
+        <a href="../../learning-lab/">Learning Lab</a>
+        <a href="../../field-kit/">Field Kit</a>
+        <a href="../../table-talk/">Table Talk</a>
+        <a href="../../projects/">Projects</a>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <a href="../../feed.xml">RSS feed</a>
+        <a href="../../search/">Search the site</a>
+        <a href="../../about/">About</a>
+        <a href="mailto:hello@robboles.com">Contact</a>
+        <a href="https://www.linkedin.com/in/robert-boles-qa/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/rboles84" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&#169; 2026 Robert Boles.</span>
+      <span>Built for GitHub Pages. No build step required.</span>
+    </div>
+  </footer>
+</body>
+</html>

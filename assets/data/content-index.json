@@ -6,6 +6,24 @@
   },
   "records": [
     {
+      "id": "post:dogfooding-yak-shaving-software-jargon",
+      "content_type": "post",
+      "title": "Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful",
+      "description": "Dogfooding, yak shaving, RAG, grounding, drift, and blast radius sound ridiculous. Each one names a useful habit worth keeping.",
+      "route": "/posts/dogfooding-yak-shaving-software-jargon/",
+      "published_date": "2026-09-12",
+      "reading_minutes": 8,
+      "tags": [
+        "AI Vocabulary",
+        "Software Culture",
+        "Systems Thinking"
+      ],
+      "section": "Learning Lab",
+      "editorial_promise": "The jargon is absurd. The habits underneath it are useful.",
+      "status": "published",
+      "modified_date": "2026-09-12"
+    },
+    {
       "id": "post:coverage-is-not-confidence",
       "content_type": "post",
       "title": "Coverage Is Not Confidence",

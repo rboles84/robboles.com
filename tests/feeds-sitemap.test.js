@@ -1,17 +1,23 @@
 'use strict';
-/* feed.xml, rss.xml, and sitemap.xml are hand-maintained alongside
-   posts.json (there's no build step that generates them) — meaning they
-   silently drift if a post is added/renamed and one of the three files
-   gets missed. These tests catch that class of mistake, plus basic XML
-   well-formedness. */
+/* feed.xml, rss.xml, and sitemap.xml are generated from content-index.json.
+   These checks protect the projections' links and basic XML shape. */
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { ROOT, assertWellFormedXml } = require('./helpers');
+const gen = require('../scripts/build-site-indexes.js');
 
 const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets', 'data', 'posts.json'), 'utf8'));
+const manifest = gen.loadManifest(path.join(ROOT, 'assets', 'data', 'content-index.json'));
+gen.validateManifest(manifest);
+const feedWindowPostSlugs = manifest.records
+  .filter((record) => record.__effective.include_in_feed)
+  .sort(gen.compareDateOrderedThenId)
+  .slice(0, 20)
+  .filter((record) => record.content_type === 'post')
+  .map((record) => record.id.split(':')[1]);
 
 for (const file of ['feed.xml', 'rss.xml', 'sitemap.xml']) {
   test(`${file} is well-formed XML`, () => {
@@ -21,11 +27,11 @@ for (const file of ['feed.xml', 'rss.xml', 'sitemap.xml']) {
 }
 
 for (const file of ['feed.xml', 'rss.xml']) {
-  test(`${file} has an <item> for every post in posts.json`, () => {
+  test(`${file} has an <item> for every post in the 20-item feed window`, () => {
     const text = fs.readFileSync(path.join(ROOT, file), 'utf8');
-    for (const post of posts) {
-      const url = `https://robboles.com/posts/${post.slug}/`;
-      assert.ok(text.includes(url), `${file} is missing an item for "${post.slug}" (${url})`);
+    for (const slug of feedWindowPostSlugs) {
+      const url = `https://robboles.com/posts/${slug}/`;
+      assert.ok(text.includes(url), `${file} is missing an item for "${slug}" (${url})`);
     }
   });
 

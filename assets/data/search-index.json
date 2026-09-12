@@ -226,6 +226,22 @@
       "published_date": "2026-07-25"
     },
     {
+      "id": "post:dogfooding-yak-shaving-software-jargon",
+      "type": "post",
+      "title": "Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful",
+      "description": "Dogfooding, yak shaving, RAG, grounding, drift, and blast radius sound ridiculous. Each one names a useful habit worth keeping.",
+      "route": "/posts/dogfooding-yak-shaving-software-jargon/",
+      "section": "Learning Lab",
+      "tags": [
+        "AI Vocabulary",
+        "Software Culture",
+        "Systems Thinking"
+      ],
+      "keywords": [],
+      "reading_minutes": 8,
+      "published_date": "2026-09-12"
+    },
+    {
       "id": "post:how-i-cut-a-regression-cycle-in-half",
       "type": "post",
       "title": "How I Cut a Regression Cycle in Half",
