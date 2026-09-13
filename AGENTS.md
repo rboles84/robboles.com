@@ -60,6 +60,11 @@ Reuse existing patterns before creating new ones; never hand-edit generated outp
 instead of hiding it in a larger diff. RobDevPass READY hands implementation evidence to RobQAPass—it does
 not replace testing or owner acceptance.
 
+For a new post, current-MTG claim, research/data story, shared UI, generator, or ambiguous multi-file
+change, apply [`RobAnalystPass.md`](RobAnalystPass.md) before planning implementation and use
+[`RobScrumPass.md`](RobScrumPass.md) to manage the existing card flow. These are concise refinement and
+flow authorities; they do not replace RobDevPass, RobQAPass, editorial review, or Rob's acceptance.
+
 ## Testing
 
 A change's QA scope is governed by [`RobQAPass.md`](RobQAPass.md). Before selecting checks, classify
@@ -156,12 +161,13 @@ land within a year of each other — check the existing manifest's used years be
 For any non-trivial work, the main agent must follow:
 
 1. Pre-flight review
-2. Identify or update the Kanban card (`RBB-###`)
-3. RobDevPass planning/change contract, including preliminary RobQAPass classification
-4. Implementation to RobDevPass READY
-5. Risk-proportional verification under `RobQAPass.md` (build-free checks)
-6. Documentation + learning-log update
-7. Handoff report
+2. Refine with RobAnalyst when the request meets its trigger; otherwise record why it is a local QA-0/QA-1 exception
+3. Identify or update the Kanban card (`RBB-###`) and use RobScrum to protect WIP, dependencies, and handoff flow
+4. RobDevPass planning/change contract, including preliminary RobQAPass classification
+5. Implementation to RobDevPass READY
+6. Risk-proportional verification under `RobQAPass.md` (build-free checks)
+7. Documentation + learning-log update
+8. Handoff report
 
 Do not work from blank context. Small read-only questions and quick lookups are exempt unless they
 reveal follow-up work.
@@ -222,6 +228,11 @@ in `RobQAPass.md`. Reference those authorities rather than duplicating their pol
 - `test.md` - QA / Verification Strategist (build-free verification)
 - `writing.md` - Content Companion (article drafting in Rob's voice)
 - `webdev.md` - WebDev Helper (teaches HTML/CSS/JS; does not edit files for me)
+
+Repo-local skills under `.agents/skills/` expose the RobAnalyst, RobScrum, RobDev, and RobQA entry points;
+their root `*Pass.md` documents remain authoritative. Use `RobModelRouting.md` for guarded model and
+parallel-work defaults: Luna/low for bounded mechanical support, Terra/medium for ordinary role work, and
+Sol/medium only for its documented difficult/high-trust triggers.
 
 See `docs/reference/workflow.md` for the full flow.
 
