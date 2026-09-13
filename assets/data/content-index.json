@@ -6,6 +6,24 @@
   },
   "records": [
     {
+      "id": "post:congratulations-you-built-a-demo",
+      "content_type": "post",
+      "title": "Congratulations, You Built a Demo",
+      "description": "AI can get you from idea to working prototype frighteningly fast. That doesn’t mean you’re done.",
+      "route": "/posts/congratulations-you-built-a-demo/",
+      "published_date": "2026-09-12",
+      "reading_minutes": 8,
+      "tags": [
+        "AI Workflows",
+        "Building in Public",
+        "Systems Thinking"
+      ],
+      "section": "Learning Lab",
+      "editorial_promise": "Build fast, learn fast, then decide whether the thing deserves the work required to become real.",
+      "status": "published",
+      "modified_date": "2026-09-12"
+    },
+    {
       "id": "post:dogfooding-yak-shaving-software-jargon",
       "content_type": "post",
       "title": "Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful",

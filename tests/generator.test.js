@@ -340,10 +340,10 @@ test('T-27: real manifest — data_experience records carry no tags key', () => 
 // -----------------------------------------------------------------------
 // Real-manifest schema + cross-record validation (T-01/T-02/T-03/T-04 at scale)
 // -----------------------------------------------------------------------
-test('the real content-index.json passes full schema + cross-record validation (46 records)', () => {
+test('the real content-index.json passes full schema + cross-record validation (47 records)', () => {
   const manifest = gen.loadManifest(REAL_MANIFEST_PATH);
   assert.doesNotThrow(() => gen.validateManifest(manifest));
-  assert.equal(manifest.records.length, 46);
+  assert.equal(manifest.records.length, 47);
 });
 
 // -----------------------------------------------------------------------
@@ -614,7 +614,7 @@ test('MT-21: every /articles/ generated card shows section + reading time and no
   const html = fs.readFileSync(path.join(ROOT, 'articles', 'index.html'), 'utf8');
   const region = html.match(/GENERATED:ARTICLES_LIST:START[\s\S]*?GENERATED:ARTICLES_LIST:END/)[0];
   const cards = region.match(/<article class="post-card"[\s\S]*?<\/article>/g) || [];
-  assert.equal(cards.length, 17, 'expected 17 article cards');
+  assert.equal(cards.length, 18, 'expected 18 article cards');
   for (const card of cards) {
     const topline = card.match(/<div class="card-topline">([\s\S]*?)<\/div>/);
     assert.ok(topline, 'each card has a card-topline');
@@ -704,7 +704,7 @@ test('T-11: every include_in_articles post appears as a card in articles/index.h
   const expected = manifest.records
     .filter((r) => r.content_type === 'post' && r.__effective.include_in_articles)
     .map((r) => r.id.split(':')[1]).sort();
-  assert.equal(expected.length, 17, 'expected 17 articles-eligible posts');
+  assert.equal(expected.length, 18, 'expected 18 articles-eligible posts');
   const html = fs.readFileSync(path.join(ROOT, 'articles', 'index.html'), 'utf8');
   const region = html.match(/GENERATED:ARTICLES_LIST:START[\s\S]*?GENERATED:ARTICLES_LIST:END/)[0];
   const found = [...new Set([...region.matchAll(/\.\.\/posts\/([a-z0-9-]+)\//g)].map((m) => m[1]))].sort();
@@ -714,13 +714,13 @@ test('T-11: every include_in_articles post appears as a card in articles/index.h
 // -----------------------------------------------------------------------
 // T-15 — search-index completeness + scope
 // -----------------------------------------------------------------------
-test('T-15: search-index.json contains exactly the 33 searchable records and no hub/utility', () => {
+test('T-15: search-index.json contains exactly the 34 searchable records and no hub/utility', () => {
   const manifest = gen.loadManifest(REAL_MANIFEST_PATH);
   gen.validateManifest(manifest);
   const idx = JSON.parse(gen.buildSearchIndex(manifest));
   const expected = manifest.records.filter((r) => r.__effective.searchable).map((r) => r.id).sort();
   const got = idx.records.map((r) => r.id).sort();
-  assert.equal(expected.length, 33, 'expected 33 searchable records');
+  assert.equal(expected.length, 34, 'expected 34 searchable records');
   assert.deepEqual(got, expected);
   assert.ok(!idx.records.some((r) => r.type === 'hub' || r.type === 'utility'), 'no hub/utility record may be in the search index');
 });
@@ -786,7 +786,7 @@ test('T-28: feeds carry posts + data experiences; sitemap excludes 404/template 
   gen.validateManifest(manifest);
   const feed = gen.buildFeedXml(manifest);
   const itemCount = (feed.match(/<item>/g) || []).length;
-  assert.equal(itemCount, 20, 'feed carries 16 posts + 4 data experiences');
+  assert.equal(itemCount, 20, 'feed carries the newest 20 eligible records');
   assert.ok(feed.includes('/magic-math/finish-him/'), 'feed includes the Finish Him data experience');
   assert.ok(feed.includes('/magic-math/partner-isnt-one-mechanic/'), 'feed includes the Partner data experience');
   assert.ok(feed.includes('/table-talk/mana-base-codex/'), 'feed includes the Mana Base Codex data experience');
@@ -797,8 +797,8 @@ test('T-28: feeds carry posts + data experiences; sitemap excludes 404/template 
   assert.ok(sitemap.includes('<loc>https://robboles.com/search/</loc>'), 'sitemap includes /search/ via its explicit flag');
   const locCount = (sitemap.match(/<loc>/g) || []).length;
   const lastmodCount = (sitemap.match(/<lastmod>/g) || []).length;
-  assert.equal(locCount, 44, 'sitemap has 44 entries (46 records − 404 − template)');
-  assert.equal(lastmodCount, 21, '<lastmod> appears only on the 21 dated records');
+  assert.equal(locCount, 45, 'sitemap has 45 entries (47 records − 404 − template)');
+  assert.equal(lastmodCount, 22, '<lastmod> appears only on the 22 dated records');
 });
 
 // -----------------------------------------------------------------------

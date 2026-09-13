@@ -1,5 +1,20 @@
 [
   {
+    "slug": "congratulations-you-built-a-demo",
+    "title": "Congratulations, You Built a Demo",
+    "date": "2026-09-12",
+    "category": "Learning Lab",
+    "lane": "Learning Lab",
+    "tags": [
+      "AI Workflows",
+      "Building in Public",
+      "Systems Thinking"
+    ],
+    "description": "AI can get you from idea to working prototype frighteningly fast. That doesn’t mean you’re done.",
+    "promise": "Build fast, learn fast, then decide whether the thing deserves the work required to become real.",
+    "reading_minutes": 8
+  },
+  {
     "slug": "dogfooding-yak-shaving-software-jargon",
     "title": "Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful",
     "date": "2026-09-12",

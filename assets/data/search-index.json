@@ -210,6 +210,22 @@
       "published_date": "2026-07-13"
     },
     {
+      "id": "post:congratulations-you-built-a-demo",
+      "type": "post",
+      "title": "Congratulations, You Built a Demo",
+      "description": "AI can get you from idea to working prototype frighteningly fast. That doesn’t mean you’re done.",
+      "route": "/posts/congratulations-you-built-a-demo/",
+      "section": "Learning Lab",
+      "tags": [
+        "AI Workflows",
+        "Building in Public",
+        "Systems Thinking"
+      ],
+      "keywords": [],
+      "reading_minutes": 8,
+      "published_date": "2026-09-12"
+    },
+    {
       "id": "post:coverage-is-not-confidence",
       "type": "post",
       "title": "Coverage Is Not Confidence",
