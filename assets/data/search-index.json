@@ -424,6 +424,22 @@
       "published_date": "2026-06-28"
     },
     {
+      "id": "post:what-i-check-before-increasing-a-selenium-timeout",
+      "type": "post",
+      "title": "What I Check When a Test Passes Locally and Fails in CI",
+      "description": "A local pass and a CI failure are two observations under different conditions. Compare the evidence, readiness, data, and execution before changing the timeout.",
+      "route": "/posts/what-i-check-before-increasing-a-selenium-timeout/",
+      "section": "QA Field Guide",
+      "tags": [
+        "CI/CD",
+        "Flaky Tests",
+        "Test Triage"
+      ],
+      "keywords": [],
+      "reading_minutes": 7,
+      "published_date": "2026-09-14"
+    },
+    {
       "id": "post:why-magic-lands-are-so-weird",
       "type": "post",
       "title": "The Ages of Fixing: What Every Magic Land Is Charging You",

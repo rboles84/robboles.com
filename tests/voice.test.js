@@ -27,7 +27,9 @@ const { ROOT } = require('./helpers');
 const RULES_PATH = path.join(ROOT, 'docs', 'voice', 'lint-rules.js');
 const rules = fs.existsSync(RULES_PATH) ? require(RULES_PATH) : null;
 
-const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets', 'data', 'posts.json'), 'utf8'));
+const posts = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets', 'data', 'content-index.json'), 'utf8'))
+  .records.filter((r) => r.content_type === 'post' && ['published', 'draft'].includes(r.status))
+  .map((r) => ({ slug: r.route.slice('/posts/'.length).replace(/\/$/, '') }));
 
 function getArticleText(slug) {
   const html = fs.readFileSync(path.join(ROOT, 'posts', slug, 'index.html'), 'utf8');

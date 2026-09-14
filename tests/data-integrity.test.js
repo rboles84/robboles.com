@@ -71,14 +71,18 @@ test('every post.slug has a matching posts/<slug>/index.html on disk', () => {
   }
 });
 
-test('every real posts/<slug>/ folder is represented in posts.json (no orphaned posts)', () => {
+test('every real posts/<slug>/ folder is registered in content-index.json (including drafts)', () => {
   const postsDir = path.join(ROOT, 'posts');
   const folders = fs.readdirSync(postsDir, { withFileTypes: true })
     .filter((e) => e.isDirectory())
     .map((e) => e.name);
-  const knownSlugs = new Set(posts.map((p) => p.slug));
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/data/content-index.json'), 'utf8'));
+  const slugOf = (r) => r.route.slice('/posts/'.length).replace(/\/$/, '');
+  const knownSlugs = new Set(manifest.records.filter((r) => r.content_type === 'post').map(slugOf));
+  const published = manifest.records.filter((r) => r.content_type === 'post' && r.status === 'published').map(slugOf).sort();
+  assert.deepEqual(posts.map((p) => p.slug).sort(), published, 'posts.json must contain exactly published posts, excluding drafts');
   const orphans = folders.filter((f) => !knownSlugs.has(f));
-  assert.equal(orphans.length, 0, `posts/ folder(s) not listed in posts.json: ${orphans.join(', ')}`);
+  assert.equal(orphans.length, 0, `posts/ folder(s) not registered in content-index.json: ${orphans.join(', ')}`);
 });
 
 test('the post title inside its own HTML file matches posts.json (no stale metadata)', () => {
@@ -92,4 +96,19 @@ test('the post title inside its own HTML file matches posts.json (no stale metad
       `posts.json title for "${post.slug}" doesn't match the page's <h1>`
     );
   }
+});
+
+test('the local-versus-CI triage guide lives in QA Field Guide Automation, not the recipe lane', () => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/data/content-index.json'), 'utf8'));
+  const record = manifest.records.find((r) => r.id === 'post:what-i-check-before-increasing-a-selenium-timeout');
+  assert.ok(record, 'expected the local-versus-CI guide in the content index');
+  assert.equal(record.section, 'QA Field Guide');
+  assert.equal(record.subsection, 'Automation');
+
+  const page = fs.readFileSync(path.join(ROOT, 'posts/what-i-check-before-increasing-a-selenium-timeout/index.html'), 'utf8');
+  assert.match(page, /<p class="eyebrow">QA Field Guide<\/p>/);
+  assert.match(page, /<span>QA Field Guide<\/span>/);
+
+  const cookbook = fs.readFileSync(path.join(ROOT, 'automation-cookbook/index.html'), 'utf8');
+  assert.doesNotMatch(cookbook, /what-i-check-before-increasing-a-selenium-timeout/);
 });

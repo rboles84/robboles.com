@@ -24,6 +24,25 @@
       "modified_date": "2026-09-12"
     },
     {
+      "id": "post:what-i-check-before-increasing-a-selenium-timeout",
+      "content_type": "post",
+      "title": "What I Check When a Test Passes Locally and Fails in CI",
+      "description": "A local pass and a CI failure are two observations under different conditions. Compare the evidence, readiness, data, and execution before changing the timeout.",
+      "route": "/posts/what-i-check-before-increasing-a-selenium-timeout/",
+      "published_date": "2026-09-14",
+      "reading_minutes": 7,
+      "tags": [
+        "CI/CD",
+        "Flaky Tests",
+        "Test Triage"
+      ],
+      "section": "QA Field Guide",
+      "subsection": "Automation",
+      "editorial_promise": "Before rerunning, decide what the next result needs to tell you.",
+      "status": "published",
+      "modified_date": "2026-09-14"
+    },
+    {
       "id": "post:dogfooding-yak-shaving-software-jargon",
       "content_type": "post",
       "title": "Dogfooding, Yak Shaving, and Why Software Jargon Is Secretly Useful",

@@ -6,6 +6,13 @@
   <description>A practical knowledge base from Robert Boles on QA systems, automation, release confidence, and builder experiments.</description>
   <language>en-us</language>
   <item>
+    <title>What I Check When a Test Passes Locally and Fails in CI</title>
+    <link>https://robboles.com/posts/what-i-check-before-increasing-a-selenium-timeout/</link>
+    <guid>https://robboles.com/posts/what-i-check-before-increasing-a-selenium-timeout/</guid>
+    <pubDate>Mon, 14 Sep 2026 12:00:00 +0000</pubDate>
+    <description>A local pass and a CI failure are two observations under different conditions. Compare the evidence, readiness, data, and execution before changing the timeout.</description>
+  </item>
+  <item>
     <title>Congratulations, You Built a Demo</title>
     <link>https://robboles.com/posts/congratulations-you-built-a-demo/</link>
     <guid>https://robboles.com/posts/congratulations-you-built-a-demo/</guid>
@@ -137,13 +144,6 @@
     <guid>https://robboles.com/table-talk/mana-base-codex/</guid>
     <pubDate>Wed, 08 Jul 2026 12:00:00 +0000</pubDate>
     <description>An illuminated reference to every Commander mana-fixing land and rock, mapped across all 37 color identities — with a hypergeometric consistency lab, a chronological timeline of fixing, and an authored lore layer.</description>
-  </item>
-  <item>
-    <title>The Ages of Fixing: What Every Magic Land Is Charging You</title>
-    <link>https://robboles.com/posts/why-magic-lands-are-so-weird/</link>
-    <guid>https://robboles.com/posts/why-magic-lands-are-so-weird/</guid>
-    <pubDate>Wed, 08 Jul 2026 12:00:00 +0000</pubDate>
-    <description>Thirty years of Magic land design is one long argument about a single question: how easy should it be to cast your spells on time? Read the lands as answers and it starts to make sense.</description>
   </item>
 </channel>
 </rss>
