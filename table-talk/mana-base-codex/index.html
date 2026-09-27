@@ -191,8 +191,6 @@
   .res-sigil svg{width:170px; height:170px; display:block}
   .sigil-mana{font-family:"Mana"; font-size:16px; fill:rgba(12,14,19,.88); text-anchor:middle;
     dominant-baseline:central; pointer-events:none}
-  .sigil-core{font-family:"Mana"; font-size:34px; fill:var(--gold); text-anchor:middle;
-    dominant-baseline:central; pointer-events:none}
   .res-id h2{font-size:clamp(24px,4vw,36px); margin:10px 0 6px}
   .res-id.node-glyph-result h2{margin-top:0}
   .res-id .meta{font-family:var(--mono); font-size:12px; color:var(--bone-dim)}
@@ -1465,36 +1463,34 @@ const TIERRANK={S:0,A:1,B:2,C:3};
    now also unit-testable from Node. See tests/codex-math.test.js. */
 
 /* ---------------------------------------------------------------------------
-   4) MANA ORBIT — the Planeswalker mark anchors the center, with W/U/B/R/G
-   held as five separate points around a faint circular orbit. Gold arcs stitch
-   active colors together along that orbit, preserving the familiar Magic read
-   without a pentagon, star, rail, or center-crossing chords; large treatments
-   add Mana glyphs.
+   4) FIVE-POINT IDENTITY SIGIL — mirrors Vox Mana's W/U/B/R/G topology while
+   retaining the Codex palette and Mana Font treatment. Active colors connect
+   with straight edges: two colors get one line, while three or more close the
+   selected shape. Large treatments add Mana glyphs.
 --------------------------------------------------------------------------- */
 const MANA_ORDER=['W','U','B','R','G'];
-const MANA_ANGLE={W:-90,U:-18,B:54,R:126,G:198};
 const MANA_GLYPH={W:'\ue600',U:'\ue601',B:'\ue602',R:'\ue603',G:'\ue604'};
-const MTG_PLANESWALKER='\ue623';
-/* Every node center lies on the same 68px orbit as the guide stroke. */
-const MANA_ORBIT={W:{x:100,y:32},U:{x:164.7,y:79},B:{x:140,y:155},R:{x:60,y:155},G:{x:35.3,y:79}};
-function orbitArc(from,to){
-  const a=MANA_ORBIT[from], b=MANA_ORBIT[to];
-  const delta=((MANA_ANGLE[to]-MANA_ANGLE[from]+540)%360)-180;
-  return `M${a.x} ${a.y} A68 68 0 0 ${delta>0?1:0} ${b.x} ${b.y}`;
+const MANA_POINTS={W:{x:100,y:32},U:{x:164.7,y:79},B:{x:140,y:155},R:{x:60,y:155},G:{x:35.3,y:79}};
+function sigilEdges(cs){
+  const active=MANA_ORDER.filter(c=>cs.includes(c));
+  if(active.length<2) return [];
+  if(active.length===2) return [[active[0],active[1]]];
+  return active.map((c,i)=>[c,active[(i+1)%active.length]]);
+}
+function sigilEdge(from,to){
+  const a=MANA_POINTS[from], b=MANA_POINTS[to];
+  const xy=`x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"`;
+  return `<g><line ${xy} stroke="rgba(0,0,0,.72)" stroke-width="5.2" stroke-linecap="round"/><line ${xy} stroke="var(--gold)" stroke-opacity=".72" stroke-width="2.9" stroke-linecap="round"/><line ${xy} stroke="rgba(255,235,166,.6)" stroke-width=".9" stroke-linecap="round"/></g>`;
 }
 function sigil(cs, {nodeGlyphs=false}={}){
   const active=new Set(cs);
   const colorless=cs.length===0;
   const label=colorless?'Colorless':cs.map(c=>CNAME[c]).join(' ');
   let s=`<svg viewBox="0 0 200 200" role="img" aria-label="${label} identity sigil">`;
-  s+=`<circle cx="100" cy="100" r="68" fill="none" stroke="rgba(58,66,86,.55)" stroke-width="1.2"/>`;
-  const linked=[...active].sort((a,b)=>MANA_ORDER.indexOf(a)-MANA_ORDER.indexOf(b));
-  for(let i=1;i<linked.length;i++) s+=`<path d="${orbitArc(linked[i-1],linked[i])}" fill="none" stroke="var(--gold)" stroke-opacity=".72" stroke-width="3" stroke-linecap="round"/>`;
-  if(linked.length===5) s+=`<path d="${orbitArc('G','W')}" fill="none" stroke="var(--gold)" stroke-opacity=".72" stroke-width="3" stroke-linecap="round"/>`;
-  s+=`<circle cx="100" cy="100" r="27" fill="rgba(201,162,75,.05)" stroke="var(--gold-dim)" stroke-opacity=".7" stroke-width="1"/>`;
-  s+=`<text class="sigil-core" x="100" y="102" aria-hidden="true">${MTG_PLANESWALKER}</text>`;
+  s+=`<polygon points="100,32 164.7,79 140,155 60,155 35.3,79" fill="none" stroke="rgba(58,66,86,.55)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  sigilEdges(cs).forEach(([from,to])=>{ s+=sigilEdge(from,to); });
   MANA_ORDER.forEach(c=>{
-    const {x,y}=MANA_ORBIT[c];
+    const {x,y}=MANA_POINTS[c];
     if(active.has(c)){
       s+=`<circle cx="${x}" cy="${y}" r="12" fill="var(--${c})" fill-opacity=".9" stroke="rgba(0,0,0,.4)" stroke-width="1"/>`;
       s+=`<circle cx="${x}" cy="${y}" r="16.5" fill="none" stroke="var(--${c})" stroke-opacity=".28" stroke-width="1"/>`;
@@ -1503,6 +1499,10 @@ function sigil(cs, {nodeGlyphs=false}={}){
       s+=`<circle cx="${x}" cy="${y}" r="8" fill="var(--ink-3)" stroke="var(--line-2)" stroke-width="1"/>`;
     }
   });
+  if(colorless){
+    s+=`<circle cx="100" cy="101" r="20" fill="var(--bone-faint)" fill-opacity=".12"/>`;
+    s+=`<circle cx="100" cy="101" r="15" fill="var(--ink-3)" stroke="var(--bone-faint)" stroke-width="1.4"/>`;
+  }
   s+=`</svg>`;
   return s;
 }
@@ -2278,7 +2278,7 @@ const cardPop = (function(){
    BOOT — runs once, immediately, when this script block executes (there's no
    DOMContentLoaded wrapper because the script tag is the last thing in
    <body>, so the whole page above it already exists by the time this runs).
-   1. Draw the static five-color mana orbit in the hero.
+   1. Draw the static five-color identity sigil in the hero.
    2. Render the Catalog tab's content once, up front (cheap enough that
       there's no need to defer it until the tab is actually opened).
    3. Wire up the card-hover popup system everywhere in the page.

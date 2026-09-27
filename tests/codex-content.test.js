@@ -10,6 +10,14 @@ const codex = fs.readFileSync(
   'utf8'
 );
 
+test('Mana Base Codex inline script parses', () => {
+  const inlineScripts = [...codex.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)]
+    .filter((match) => !/type=["']application\/ld\+json["']/.test(match[1]))
+    .map((match) => match[2])
+    .filter(Boolean);
+  assert.doesNotThrow(() => new Function(inlineScripts.join('\n')));
+});
+
 test('Mana Base Codex distinguishes 32 Commander identities from five faction lenses', () => {
   assert.match(codex, /The Mana Base Codex · 32 Commander Color Identities/);
   assert.match(codex, /32 identities · 5 faction lenses/);
@@ -49,7 +57,7 @@ test('Mana Base Codex provides a reduced-motion-safe page-local back-to-top cont
   assert.match(codex, /backtop\.hidden=window\.scrollY<=500/);
   assert.match(codex, /behavior:matchMedia\('\(prefers-reduced-motion:reduce\)'\)\.matches\?'auto':'smooth'/);
 });
-test('Mana Base Codex shows cached Scryfall art previews and uses a centered Planeswalker Mana orbit', () => {
+test('Mana Base Codex shows cached Scryfall art previews and uses the Vox-style five-point identity sigil', () => {
   assert.match(codex, /\.cardname\{cursor:help; border-bottom:1px dotted var\(--line-2\)/);
   assert.match(codex, /hoverTimer=setTimeout\(\(\)=>show\(el\),120\)/);
   assert.match(codex, /const imageCache=new Map\(\)/);
@@ -59,23 +67,21 @@ test('Mana Base Codex shows cached Scryfall art previews and uses a centered Pla
   assert.match(codex, /scryfallQueue=request\.catch\(\(\)=>\{\}\)/);
   assert.match(codex, /fetch\('https:\/\/api\.scryfall\.com\/cards\/named\?exact='\+encodeURIComponent\(key\)\)/);
   assert.match(codex, /beh:'<span class="mana-run" aria-label="one generic mana, tap"><i class="ms ms-1 ms-cost mana-symbol" aria-hidden="true"><\/i><i class="ms ms-tap ms-cost mana-symbol" aria-hidden="true"><\/i><\/span>: filter into one of each guild color/);
-  assert.match(codex, /const MTG_PLANESWALKER='\\ue623'/);
-  assert.match(codex, /const MANA_ORBIT=\{W:\{x:100,y:32\},U:\{x:164\.7,y:79\},B:\{x:140,y:155\},R:\{x:60,y:155\},G:\{x:35\.3,y:79\}\}/);
-  assert.match(codex, /const MANA_ANGLE=\{W:-90,U:-18,B:54,R:126,G:198\}/);
-  assert.match(codex, /function orbitArc\(from,to\)/);
-  assert.match(codex, /stroke="var\(--gold\)" stroke-opacity="\.72" stroke-width="3" stroke-linecap="round"/);
-  assert.match(codex, /const linked=\[\.\.\.active\]\.sort\(\(a,b\)=>MANA_ORDER\.indexOf\(a\)-MANA_ORDER\.indexOf\(b\)\)/);
-  assert.match(codex, /if\(linked\.length===5\) s\+=`<path d="\$\{orbitArc\('G','W'\)\}/);
-  assert.match(codex, /Every node center lies on the same 68px orbit as the guide stroke/);
-  assert.match(codex, /<text class="sigil-core" x="100" y="102" aria-hidden="true">\$\{MTG_PLANESWALKER\}<\/text>/);
-  assert.match(codex, /\.sigil-core\{font-family:"Mana"; font-size:34px; fill:var\(--gold\)/);
+  assert.match(codex, /const MANA_POINTS=\{W:\{x:100,y:32\},U:\{x:164\.7,y:79\},B:\{x:140,y:155\},R:\{x:60,y:155\},G:\{x:35\.3,y:79\}\}/);
+  assert.match(codex, /function sigilEdges\(cs\)/);
+  assert.match(codex, /if\(active\.length===2\) return \[\[active\[0\],active\[1\]\]\]/);
+  assert.match(codex, /return active\.map\(\(c,i\)=>\[c,active\[\(i\+1\)%active\.length\]\]\)/);
+  assert.match(codex, /<polygon points="100,32 164\.7,79 140,155 60,155 35\.3,79"/);
+  assert.match(codex, /function sigilEdge\(from,to\)/);
+  assert.match(codex, /stroke="var\(--gold\)" stroke-opacity="\.72" stroke-width="2\.9" stroke-linecap="round"/);
+  assert.match(codex, /<circle cx="100" cy="101" r="15" fill="var\(--ink-3\)" stroke="var\(--bone-faint\)"/);
   assert.doesNotMatch(codex, /MANA_WEAVE|MANA_RAIL|M24 100H176/);
   assert.match(codex, /<text class="sigil-mana" x="\$\{x\}" y="\$\{y\}" aria-hidden="true">\$\{MANA_GLYPH\[c\]\}<\/text>/);
-  assert.doesNotMatch(codex, /const PENT_ORDER|function pentPos|<polygon points=/);
+  assert.doesNotMatch(codex, /MTG_PLANESWALKER|MANA_ANGLE|function orbitArc|<circle cx="100" cy="100" r="68"/);
   assert.doesNotMatch(codex, /canTrackHeroSigil|requestAnimationFrame\(updateHeroSigil\)|--sigil-near/);
 });
 
-test('Mana Base Codex uses the Mana black palette and a static WUBRG hero orbit', () => {
+test('Mana Base Codex uses the Mana black palette and a static WUBRG hero sigil', () => {
   assert.match(codex, /--B:#a7999e/);
   assert.match(codex, /--Bg:rgba\(167,153,158,\.16\)/);
   assert.match(codex, /hero-sigil'\)\.innerHTML=sigil\(\['W','U','B','R','G'\],\{nodeGlyphs:true\}\)/);
