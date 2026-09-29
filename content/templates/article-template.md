@@ -2,6 +2,9 @@
 
 Draft in this file, then port the prose into `article-template.html`
 (copy that to `posts/<slug>/index.html` and fill the `{{TOKENS}}`).
+The HTML template deliberately starts with `noindex,follow` and no canonical because the template itself
+is publicly reachable. Before publication, remove that robots tag and add the post's exact absolute
+self-canonical. The generator will reject a published post that retains `noindex` or lacks its canonical.
 
 > Before drafting, read the local voice pack in `docs/voice/` (profile, anti-patterns, archetypes).
 > A post may not reach `status: published` until it passes `docs/voice/voice-and-publish-checklist.md`.

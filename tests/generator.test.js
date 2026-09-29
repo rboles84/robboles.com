@@ -4,7 +4,7 @@
    docs/architecture/RBB-045-content-source-of-truth-plan.md §9, prioritizing the
    safety-critical rules per the RBB-046 implementation brief: article-body
    protection, transactional rollback, strict-mode parsing, the four-consumer
-   SEO equality, canonical staged enforcement, route grammar, date requiredness,
+   SEO equality, final canonical/noindex enforcement, route grammar, date requiredness,
    and tag casing.
 
    Two test styles are used:
@@ -14,11 +14,8 @@
      schema/cross-record rules that are already known to pass against it.
 
    NOT COVERED here (see the implementation handoff for the exact list):
-   T-05/T-06/T-25/T-26/T-28/T-29 as *live-page* assertions are exercised only
-   against fixtures, not the real tree, because the real tree's OG/JSON-LD
-   normalization diff (§2.3.3a) has not been applied — that would require
-   writing inside posts/**, which this generator (and this test suite) never
-   does. See the handoff report for the exact BLOCKED status this reflects. */
+   Generator write-safety behavior remains fixture-based. Read-only metadata
+   contracts also run against the real tree so published drift fails locally. */
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -347,11 +344,56 @@ test('the real content-index.json passes full schema + cross-record validation',
 });
 
 // -----------------------------------------------------------------------
-// T-05 — canonical staged enforcement (AD-3/AD-6), fixture-based
+// T-05 — final canonical/noindex enforcement (RBB-048)
 // -----------------------------------------------------------------------
-test('T-05: real manifest debt lists are exactly 13 missing-canonical routes and 1 wrong-value route', () => {
-  assert.equal(gen.CANONICAL_MISSING_DEBT.size, 13);
-  assert.equal(gen.CANONICAL_VALUE_DEBT.size, 1);
+test('T-05: the real tree satisfies the final indexing metadata contract without canonical debt warnings', () => {
+  const manifest = gen.loadManifest(REAL_MANIFEST_PATH);
+  gen.validateManifest(manifest);
+  const problems = gen.validateAgainstPages(manifest, {});
+  const indexingErrors = problems.errors.filter((e) => /canonical|robots noindex|noindex utility|excluded from the sitemap/.test(e));
+  assert.deepEqual(indexingErrors, []);
+  assert.deepEqual(problems.warnings.filter((w) => /CANONICAL_/.test(w)), []);
+});
+
+test('T-05: an indexable route requires its exact absolute self-canonical and may not declare noindex', () => {
+  const record = baseRecord();
+  record.__effective = gen.resolveVisibility(record);
+
+  const valid = { canonical: 'https://example.test/posts/fixture-post/', robots: [] };
+  const validProblems = { errors: [], warnings: [] };
+  gen.validateIndexingMetadata(record, valid, 'https://example.test', validProblems);
+  assert.deepEqual(validProblems.errors, []);
+
+  for (const page of [
+    { canonical: null, robots: [] },
+    { canonical: 'https://example.test/posts/wrong/', robots: [] },
+    { canonical: 'https://example.test/posts/fixture-post/', robots: ['noindex', 'follow'] },
+  ]) {
+    const problems = { errors: [], warnings: [] };
+    gen.validateIndexingMetadata(record, page, 'https://example.test', problems);
+    assert.ok(problems.errors.length > 0, `expected indexing failure for ${JSON.stringify(page)}`);
+  }
+});
+
+test('T-05: a utility outside the sitemap requires noindex and must not declare a canonical', () => {
+  const record = {
+    id: 'util:fixture', content_type: 'utility', title: 'Fixture Utility',
+    description: 'A utility fixture.', route: '/fixture.html', section: 'Site', status: 'published',
+  };
+  record.__effective = gen.resolveVisibility(record);
+
+  const validProblems = { errors: [], warnings: [] };
+  gen.validateIndexingMetadata(record, { canonical: null, robots: ['noindex', 'follow'] }, 'https://example.test', validProblems);
+  assert.deepEqual(validProblems.errors, []);
+
+  for (const page of [
+    { canonical: null, robots: [] },
+    { canonical: 'https://example.test/fixture.html', robots: ['noindex', 'follow'] },
+  ]) {
+    const problems = { errors: [], warnings: [] };
+    gen.validateIndexingMetadata(record, page, 'https://example.test', problems);
+    assert.ok(problems.errors.length > 0, `expected utility indexing failure for ${JSON.stringify(page)}`);
+  }
 });
 
 // -----------------------------------------------------------------------
@@ -766,7 +808,7 @@ test('T-23: the shared dated-before-undated / date-desc / id-asc comparator is a
 // -----------------------------------------------------------------------
 // T-26 — manual reading-time behavior + advisory warning boundary
 // -----------------------------------------------------------------------
-test('T-26: manual authority — cross-surface reading time is exact, and a >=2 min computed gap warns without failing', () => {
+test('T-26: manual authority — cross-surface reading time is exact, with only the deliberate Precon override warning', () => {
   const manifest = gen.loadManifest(REAL_MANIFEST_PATH);
   assert.equal(manifest.reading_time_authority, 'manual');
   gen.validateManifest(manifest);
@@ -774,8 +816,9 @@ test('T-26: manual authority — cross-surface reading time is exact, and a >=2 
   const rtErrors = problems.errors.filter((e) => /reading time/.test(e));
   assert.deepEqual(rtErrors, [], 'no reading-time cross-surface mismatch may be an error in manual authority');
   const rtWarnings = problems.warnings.filter((w) => /computed reading time/.test(w));
-  assert.ok(rtWarnings.some((w) => /your-precon-is-a-passport/.test(w)), 'the known >=2 min deviation warns');
-  assert.ok(rtWarnings.some((w) => /why-magic-lands-are-so-weird/.test(w)), 'the known >=2 min deviation warns');
+  assert.equal(rtWarnings.length, 1, `expected exactly one deliberate reading-time advisory, got: ${rtWarnings.join('; ')}`);
+  assert.match(rtWarnings[0], /your-precon-is-a-passport.*computed reading time 7.*manifest value 9/);
+  assert.ok(!rtWarnings.some((w) => /why-magic-lands-are-so-weird/.test(w)), 'the corrected Ages value must not warn');
 });
 
 // -----------------------------------------------------------------------

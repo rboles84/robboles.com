@@ -66,26 +66,6 @@ function isAllowed(relPath) {
   return WRITE_ALLOW.includes(norm);
 }
 
-// §2.3.2 — canonical staging, two bounded route allow-lists (AD-3 / AD-6).
-const CANONICAL_MISSING_DEBT = new Set([
-  '/',
-  '/articles/',
-  '/qa-field-guide/',
-  '/automation-cookbook/',
-  '/learning-lab/',
-  '/table-talk/',
-  '/table-talk/mana-base-codex/',
-  '/projects/',
-  '/projects/vox-mana/',
-  '/projects/recipe-flexibility-app-concept/',
-  '/projects/mtg-store-inventory-app-concept/',
-  '/search/',
-  '/404.html',
-]);
-const CANONICAL_VALUE_DEBT = new Map([
-  ['/content/templates/article-template.html', 'https://robboles.com/posts/{{SLUG}}/'],
-]);
-
 // §2.3.1 — fail-closed per-type visibility defaults.
 const VISIBILITY_DEFAULTS = {
   post: { searchable: true, include_in_articles: true, include_in_feed: true, include_in_sitemap: true, include_on_home: true },
@@ -544,6 +524,17 @@ function findMatchingClose(html, openTagStart, tag) {
 // -----------------------------------------------------------------------
 // Read-only page inspection (§3.2)
 // -----------------------------------------------------------------------
+function readRobotsDirectives(html) {
+  const tag = html.match(/<meta\s+[^>]*name=["']robots["'][^>]*>/i);
+  if (!tag) return [];
+  const content = tag[0].match(/\bcontent=["']([^"']*)["']/i);
+  if (!content) return [];
+  return content[1]
+    .split(',')
+    .map((directive) => directive.trim().toLowerCase())
+    .filter(Boolean);
+}
+
 function readPostPage(record) {
   const slug = record.id.split(':')[1];
   const file = path.join(ROOT, 'posts', slug, 'index.html');
@@ -578,6 +569,7 @@ function readPostPage(record) {
     ogDesc: ogDesc ? decodeEntities(ogDesc[1]) : null,
     twDesc: twDesc ? decodeEntities(twDesc[1]) : null,
     canonical: canonical ? canonical[1] : null,
+    robots: readRobotsDirectives(html),
     jsonldDescription,
     jsonldKeywords,
     promisePresent: !!promiseM && normalizeWhitespace(decodeEntities(stripTags(promiseM[1]))).length > 0,
@@ -592,7 +584,7 @@ function readGenericPage(routeToFile, route) {
   if (!file || !fs.existsSync(file)) return null;
   const html = fs.readFileSync(file, 'utf8');
   const canonical = html.match(/<link rel="canonical" href="([^"]*)"/);
-  return { html, canonical: canonical ? canonical[1] : null };
+  return { html, canonical: canonical ? canonical[1] : null, robots: readRobotsDirectives(html) };
 }
 
 function routeToFilePath(route) {
@@ -628,6 +620,31 @@ function checkPostOrphans(manifest, problems) {
   }
 }
 
+function validateIndexingMetadata(record, page, origin, problems) {
+  const expectedCanonical = origin + record.route;
+  const hasNoindex = page.robots.includes('noindex');
+  const isExcludedUtility = record.content_type === 'utility' && !record.__effective.include_in_sitemap;
+
+  if (isExcludedUtility) {
+    if (!hasNoindex) {
+      problems.errors.push(`record "${record.id}": utility route "${record.route}" is excluded from the sitemap but does not declare robots noindex`);
+    }
+    if (page.canonical) {
+      problems.errors.push(`record "${record.id}": noindex utility route "${record.route}" must not declare canonical "${page.canonical}"`);
+    }
+    return;
+  }
+
+  if (hasNoindex) {
+    problems.errors.push(`record "${record.id}": indexable route "${record.route}" must not declare robots noindex`);
+  }
+  if (!page.canonical) {
+    problems.errors.push(`record "${record.id}": indexable route "${record.route}" has no canonical`);
+  } else if (page.canonical !== expectedCanonical) {
+    problems.errors.push(`record "${record.id}": canonical "${page.canonical}" != expected "${expectedCanonical}"`);
+  }
+}
+
 // -----------------------------------------------------------------------
 // Validate-only checks against live pages (§3.3 row 13, T-03b, T-05, T-06,
 // T-12, T-25, T-26, T-27, T-28, T-29)
@@ -650,25 +667,10 @@ function validateAgainstPages(manifest, opts) {
       continue;
     }
 
-    // T-05 — canonical staged enforcement (all record types)
+    // T-05 — final indexing metadata contract (all record types)
     const page = r.content_type === 'post' ? readPostPage(r) : readGenericPage(routeToFilePath, r.route);
-    const expectedCanonical = origin + r.route;
     if (page) {
-      if (page.canonical) {
-        if (page.canonical !== expectedCanonical) {
-          if (CANONICAL_VALUE_DEBT.get(r.route) === page.canonical) {
-            problems.warnings.push(`WARNING (CANONICAL_VALUE_DEBT): "${r.route}" canonical is "${page.canonical}", expected "${expectedCanonical}" — recorded debt, RBB-048 owns`);
-          } else {
-            problems.errors.push(`record "${r.id}": canonical "${page.canonical}" != expected "${expectedCanonical}"`);
-          }
-        }
-      } else {
-        if (CANONICAL_MISSING_DEBT.has(r.route)) {
-          problems.warnings.push(`WARNING (CANONICAL_MISSING_DEBT): "${r.route}" has no canonical — recorded debt, RBB-048 owns`);
-        } else {
-          problems.errors.push(`record "${r.id}": route "${r.route}" has no canonical and is not on the CANONICAL_MISSING_DEBT list`);
-        }
-      }
+      validateIndexingMetadata(r, page, origin, problems);
     }
 
     if (r.content_type !== 'post') continue;
@@ -1283,7 +1285,7 @@ module.exports = {
   hashAllFilesUnder, assertPostsUnchanged, isDenied, isAllowed,
   normalize, compareDateOrderedThenId, buildSearchIndex, buildPostsJsonProjection,
   buildFeedXml, buildSitemapXml, validateAgainstPages, checkPostOrphans, checkMarkers, markerRegex,
-  CANONICAL_MISSING_DEBT, CANONICAL_VALUE_DEBT, ValidationError, ROOT,
+  readRobotsDirectives, validateIndexingMetadata, ValidationError, ROOT,
   RE_ROUTE_DIR, RE_ROUTE_FILE,
 };
 
