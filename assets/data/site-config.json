@@ -1,0 +1,10 @@
+{
+  "asset_version": "20260928a",
+  "versioned_assets": [
+    "assets/css/styles.css",
+    "assets/css/mana.css",
+    "assets/css/keyrune.css",
+    "assets/js/site.js",
+    "assets/js/search-normalize.js"
+  ]
+}

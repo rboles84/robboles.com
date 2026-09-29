@@ -89,7 +89,7 @@ test('the Mana Base Codex permits only its cached, lazy Scryfall named-card prev
   assert.match(text, /nextScryfallRequestAt=Date\.now\(\)\+SCRYFALL_MIN_INTERVAL_MS;\s*const response=await fetch/, 'the safe gap should be set before each request starts');
   // Its font must remain self-hosted, not loaded from a CDN.
   assert.match(
-    text, /href="\.\.\/\.\.\/assets\/css\/mana\.css"/,
+    text, /href="\.\.\/\.\.\/assets\/css\/mana\.css(?:\?v=[^"]+)?"/,
     'Codex should link the shared self-hosted assets/css/mana.css'
   );
 });

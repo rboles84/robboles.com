@@ -5,6 +5,7 @@
   "scripts": {
     "install-hooks": "node scripts/install-git-hooks.js",
     "prepare": "node scripts/install-git-hooks.js",
+    "sync:asset-versions": "node scripts/sync-asset-versions.js",
     "test": "node --test tests/*.test.js"
   }
 }
