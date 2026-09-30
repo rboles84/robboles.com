@@ -435,9 +435,9 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   transform: translateY(-3px); border-color: var(--accent);
   box-shadow: 0 14px 30px -20px rgba(28, 27, 24, 0.4);
 }
-.post-card h3 { font-size: 19px; font-weight: 600; line-height: 1.25; }
-.post-card h3 a { color: var(--ink); }
-.post-card h3 a:hover { color: var(--link-text); }
+.post-card h2, .post-card h3 { font-size: 19px; font-weight: 600; line-height: 1.25; }
+.post-card h2 a, .post-card h3 a { color: var(--ink); }
+.post-card h2 a:hover, .post-card h3 a:hover { color: var(--link-text); }
 .post-card p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--muted); flex: 1; }
 .post-card .card-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
 .post-card .card-actions .button { font-size: 11px; padding: 8px 10px; }
@@ -459,9 +459,9 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   font-family: var(--display); font-weight: 700; font-size: 40px; letter-spacing: 0.04em; color: var(--accent);
 }
 .project-body { padding: 22px; display: flex; flex-direction: column; gap: 12px; }
-.project-body h3 { font-size: 20px; font-weight: 600; }
-.project-body h3 a { color: var(--ink); }
-.project-body h3 a:hover { color: var(--link-text); }
+.project-body h2, .project-body h3 { font-size: 20px; font-weight: 600; }
+.project-body h2 a, .project-body h3 a { color: var(--ink); }
+.project-body h2 a:hover, .project-body h3 a:hover { color: var(--link-text); }
 .project-body p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
 
 /* Note card */
@@ -483,6 +483,10 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
 .note-card .profile-links { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 18px; }
 .note-card .profile-links .button {
   display: inline-flex; flex: 0 0 auto; padding: 11px 16px; border-bottom: none;
+}
+.lane-strip .note-card h2 {
+  font-family: var(--display); font-size: 18px; font-weight: 600; letter-spacing: -0.02em;
+  text-transform: none; color: var(--ink); margin-bottom: 8px;
 }
 .note-card .profile-links .button.accent { color: var(--dark-ink); }
 
@@ -609,9 +613,9 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   box-shadow: 0 14px 30px -20px rgba(28, 27, 24, 0.4);
 }
 .lane-card .prompt { font-family: var(--mono); font-size: 12px; color: var(--link-text); }
-.lane-card h3 { font-size: 21px; font-weight: 600; }
-.lane-card h3 a { color: var(--ink); }
-.lane-card:hover h3 a { color: var(--link-text); }
+.lane-card h2, .lane-card h3 { font-size: 21px; font-weight: 600; }
+.lane-card h2 a, .lane-card h3 a { color: var(--ink); }
+.lane-card:hover h2 a, .lane-card:hover h3 a { color: var(--link-text); }
 .lane-card p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--muted); flex: 1; }
 .lane-card .meta {
   display: flex; align-items: center; justify-content: space-between; margin-top: 6px;
@@ -670,7 +674,7 @@ h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.02em; line-heig
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--link-text-on-dark);
 }
 .project-feature .featured-line .ms-cluster { font-size: 14px; }
-.project-feature h3 { font-size: 30px; font-weight: 700; color: var(--dark-ink); }
+.project-feature .feature-title, .project-feature h3 { font-size: 30px; font-weight: 700; color: var(--dark-ink); }
 .project-feature p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--dark-muted); max-width: 48ch; }
 .stack-row { display: flex; flex-wrap: wrap; gap: 7px; }
 .stack-row span {
@@ -1268,6 +1272,7 @@ body[data-lane="table-talk"] .post-card:hover { border-color: var(--tt-gold); }
    existing 19px h3 / 14.5px p stay as they are elsewhere on the site. */
 .post-card[data-flavor] { position: relative; }
 .post-card[data-flavor] .card-topline,
+.post-card[data-flavor] h2,
 .post-card[data-flavor] h3,
 .post-card[data-flavor] p { position: relative; z-index: 1; }
 

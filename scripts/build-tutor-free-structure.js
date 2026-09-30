@@ -613,7 +613,7 @@ function buildExampleList(payload) {
     return `    <article class="example-card" id="example-${e.order}" data-order="${e.order}" data-tutorfree="${e.isTutorFree}" data-tutorclass="${esc(e.tutorClass)}" data-f="${e.signals.F}" data-s="${e.signals.S}" data-c="${e.signals.C}">
       <div class="ex-thumbs">${thumbs}</div>
       ${tf ? `<p class="ex-role">${tf.trim()}</p>` : ''}
-      <h4>${e.cards.map(esc).join(' + ')}</h4>
+      <h3 class="example-title">${e.cards.map(esc).join(' + ')}</h3>
       <p class="ex-why"><span class="ex-why-label">Why this example was selected</span><span class="ex-why-text">${esc(e.purpose)}</span></p>
       ${tags ? `<p class="ex-signals">${tags}</p>` : ''}
       <dl class="ex-meta">

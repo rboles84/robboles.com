@@ -14,7 +14,7 @@
 <!-- Mana Font: MTG mana-symbol + color-identity icons (member pips, identity glyphs).
      Shared sitewide vendor file (assets/css/mana.css + assets/fonts/mana.*) — self-hosted, zero
      external requests. Full upstream catalog; this page only exercises ms/ms-cost/ms-ci glyphs. -->
-<link rel="stylesheet" href="../../assets/css/mana.css?v=20260928a">
+<link rel="stylesheet" href="../../assets/css/mana.css?v=20260930a">
 <style>
 /* ============================================================================
    THE MANA BASE CODEX  ·  TABLE TALK
@@ -552,8 +552,8 @@
 .lsec:first-of-type{padding-top:6px}
 .lsec:last-of-type{border-bottom:0}
 .lnum{font-family:var(--mono); font-size:11px; letter-spacing:.2em; color:var(--gold); display:block; margin-bottom:8px}
-.lsec h3{font-size:clamp(20px,3vw,25px); margin:0 0 6px; font-weight:600; letter-spacing:-.01em; color:var(--bone)}
-.lsec h4{font-size:16px; margin:22px 0 8px; font-weight:600; color:var(--bone)}
+.lsec h2{font-size:clamp(20px,3vw,25px); margin:0 0 6px; font-weight:600; letter-spacing:-.01em; color:var(--bone)}
+.lsec h3{font-size:16px; margin:22px 0 8px; font-weight:600; letter-spacing:normal; color:var(--bone)}
 .ltag{color:var(--bone-faint); font-style:italic; margin:0 0 16px}
 .lsec p{margin:0 0 14px; max-width:70ch; color:var(--bone-dim); font-size:15px; line-height:1.62}
 .lsec p b{color:var(--bone); font-weight:600}
@@ -564,8 +564,8 @@
 .lcompare{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:6px 0 16px; max-width:70ch}
 @container (max-width:520px){ .lcompare{grid-template-columns:1fr} }
 .lcol{background:var(--ink-2); border:1px solid var(--line); border-radius:6px; padding:14px 16px}
-.lcol h4{margin:0 0 6px; font-size:13px; font-family:var(--mono); letter-spacing:.08em; text-transform:uppercase}
-.lcol.up h4{color:var(--tA)} .lcol.tp h4{color:var(--tB)}
+.lcol h3{margin:0 0 6px; font-size:13px; font-family:var(--mono); letter-spacing:.08em; text-transform:uppercase}
+.lcol.up h3{color:var(--tA)} .lcol.tp h3{color:var(--tB)}
 .lcol p{font-size:13.5px; margin:0; color:var(--bone-dim)}
 table.ltable{max-width:760px; margin:6px 0 16px}
 .lfam{margin:0}
@@ -822,7 +822,7 @@ table.ltable{max-width:760px; margin:6px 0 16px}
           you're ready to apply it to one of the 32 Commander color identities.</p>
 
         <article class="lsec" id="l-what">
-          <span class="lnum">01</span><h3>What a mana base is</h3>
+          <span class="lnum">01</span><h2>What a mana base is</h2>
           <p class="ltag">The engine room. Boring when it works; the reason you lose when it doesn't.</p>
           <p>Nearly every spell in Magic costs <b>mana</b>, and most spells demand mana of specific colors — the
             little colored symbols in the top-right corner of the card. A card that costs
@@ -843,17 +843,17 @@ table.ltable{max-width:760px; margin:6px 0 16px}
         </article>
 
         <article class="lsec" id="l-tension">
-          <span class="lnum">02</span><h3>The one tension: tapped vs. untapped</h3>
+          <span class="lnum">02</span><h2>The one tension: tapped vs. untapped</h2>
           <p class="ltag">Almost every fixing land is a trade between speed and cost.</p>
           <p>A land that enters the battlefield <b>untapped</b> can make mana the moment you play it. A land that
             enters <b>tapped</b> can't be used until your next turn — you've effectively skipped a beat. One tapped
             land in an opening hand is rarely a problem; three of them means your turns two, three, and four all
             run a mana short, and in a format defined by explosive starts, that adds up.</p>
           <div class="lcompare">
-            <div class="lcol up"><h4>Untapped</h4><p>Ready immediately. The premium lands find a way to be
+            <div class="lcol up"><h3>Untapped</h3><p>Ready immediately. The premium lands find a way to be
               untapped — by paying a little life, by checking a condition, or simply because they're that good.
               You pay for the privilege, in life or in money.</p></div>
-            <div class="lcol tp"><h4>Tapped</h4><p>Enters "asleep" for a turn. Usually cheaper, often carries a
+            <div class="lcol tp"><h3>Tapped</h3><p>Enters "asleep" for a turn. Usually cheaper, often carries a
               small bonus (scry, life, a surveil, a basic type). Fine in small numbers and in slower decks; a tax
               in fast ones.</p></div>
           </div>
@@ -862,7 +862,7 @@ table.ltable{max-width:760px; margin:6px 0 16px}
         </article>
 
         <article class="lsec" id="l-types">
-          <span class="lnum">03</span><h3>Basic land types &amp; fetchability</h3>
+          <span class="lnum">03</span><h2>Basic land types &amp; fetchability</h2>
           <p class="ltag">Why "Watery Grave is an Island and a Swamp" is a bigger deal than it looks.</p>
           <p>A basic land — Plains, Island, Swamp, Mountain, Forest — has a <b>basic land type</b>. Some nonbasic
             lands <b>also carry those types</b>: a shock land like Watery Grave is literally an Island Swamp, even
@@ -879,7 +879,7 @@ table.ltable{max-width:760px; margin:6px 0 16px}
         </article>
 
         <article class="lsec" id="l-tiers">
-          <span class="lnum">04</span><h3>The tier system</h3>
+          <span class="lnum">04</span><h2>The tier system</h2>
           <p class="ltag">A quick read on "how much does this land cost me to play?"</p>
           <p>Every land and rock in the Codex carries an <b>overall fit</b>. That is a recommendation shortcut,
             not a claim that every card is fast, painless, or even doing the same job. Read the behavior line for
@@ -897,7 +897,7 @@ table.ltable{max-width:760px; margin:6px 0 16px}
         </article>
 
         <article class="lsec" id="l-families">
-          <span class="lnum">05</span><h3>The cycle families</h3>
+          <span class="lnum">05</span><h2>The cycle families</h2>
           <p class="ltag">Lands come in cycles — one per color pair. Learn the family, and you know all ten members.</p>
           <p>Most fixing lands are printed as a <b>cycle</b>: the same design, once for each color combination.
             You don't have to memorize two hundred land names — you learn what a "shock land" does, and that
@@ -940,13 +940,13 @@ table.ltable{max-width:760px; margin:6px 0 16px}
         </article>
 
         <article class="lsec" id="l-build">
-          <span class="lnum">06</span><h3>How to build a base</h3>
+          <span class="lnum">06</span><h2>How to build a base</h2>
           <p class="ltag">Two questions: how many lands, and how many of each color?</p>
-          <h4>How many lands</h4>
+          <h3>How many lands</h3>
           <p>A typical Commander deck runs <b>36–38 lands</b>, adjusted for artifact ramp and curve. A low,
             aggressive curve with lots of two-mana rocks can dip toward 33–34; a top-heavy deck wants 38+ so it
             keeps hitting land drops. Start around 37 and tune from there.</p>
-          <h4>How many sources of each color</h4>
+          <h3>How many sources of each color</h3>
           <p>A <b>source</b> is anything that can make a given color — a basic, a dual, a rainbow land, a rock. The
             goal is enough sources that the color you need is reliably there by the turn you want to cast it. The
             <b>Consistency Lab</b> in the Build tab runs the exact probability for any source count — these are the
@@ -963,7 +963,7 @@ table.ltable{max-width:760px; margin:6px 0 16px}
         </article>
 
         <article class="lsec" id="l-seq">
-          <span class="lnum">07</span><h3>Sequencing, rocks &amp; ramp</h3>
+          <span class="lnum">07</span><h2>Sequencing, rocks &amp; ramp</h2>
           <p class="ltag">A good base is also about the order you play it in.</p>
           <p><b>Play your tapped lands when they cost you nothing.</b> If you have a tapland and an untapped land
             and no play to make anyway, lead with the tapland — keep the untapped one for a turn you actually
@@ -972,7 +972,7 @@ table.ltable{max-width:760px; margin:6px 0 16px}
             board already built. A checkland played before you control a matching type wastes its whole point.</p>
           <p><b>Fetch with intent.</b> Grab exactly the color you're short on — and, with a shuffle- or
             landfall-matters card, at the moment it helps most.</p>
-          <h4>Rocks and ramp</h4>
+          <h3>Rocks and ramp</h3>
           <p>Some mana rocks accelerate and fix at once; some only accelerate. <b>Sol Ring</b> is acceleration,
             not colored fixing. <b>Command Tower</b> is fixing, not acceleration. <b>Arcane Signet</b>, signets,
             and talismans can do both. In three-plus colors, <b>Chromatic Lantern</b> or <b>Coalition Relic</b>
@@ -980,7 +980,7 @@ table.ltable{max-width:760px; margin:6px 0 16px}
         </article>
 
         <article class="lsec" id="l-codex">
-          <span class="lnum">08</span><h3>How to use the rest of this Codex</h3>
+          <span class="lnum">08</span><h2>How to use the rest of this Codex</h2>
           <p class="ltag">Everything above, made interactive.</p>
           <p><b>Build a base</b> — pick one of the 32 Commander color identities. It raises the recommended base, sorted from the
             premium duals down, with production stats and a per-identity sigil. Flip between <i>Gallery</i> and

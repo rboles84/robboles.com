@@ -505,9 +505,9 @@
     // lean "detail" popup — see popupHtmlDetail().
     document.querySelectorAll('#exampleGrid .example-card').forEach((card) => {
       const ex = exampleByOrder.get(card.getAttribute('data-order'));
-      const h4 = card.querySelector('h4');
-      if (!ex || !h4 || h4.querySelector('.pkg-trigger')) return;
-      h4.innerHTML = packageTrigger(ex, null, 'detail');
+      const title = card.querySelector('.example-title');
+      if (!ex || !title || title.querySelector('.pkg-trigger')) return;
+      title.innerHTML = packageTrigger(ex, null, 'detail');
     });
     // Prose references carry an explicit, generator-validated data-package-ref
     // so nothing depends on matching card names in running text. Nothing about

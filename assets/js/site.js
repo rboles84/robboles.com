@@ -470,7 +470,7 @@
             return '<article class="post-card">' +
               '<div class="card-topline"><span>' + escapeHtml(r.section || '') + '</span>' +
                 '<span class="result-type">' + escapeHtml(typeLabel) + readMeta + '</span></div>' +
-              '<h3><a href="' + href + '">' + escapeHtml(r.title) + '</a></h3>' +
+              '<h2><a href="' + href + '">' + escapeHtml(r.title) + '</a></h2>' +
               '<p>' + escapeHtml(r.description || '') + '</p>' +
               (tags ? '<div class="tag-row">' + tags + '</div>' : '') +
               '</article>';

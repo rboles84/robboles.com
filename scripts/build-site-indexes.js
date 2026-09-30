@@ -848,6 +848,7 @@ function renderPostRow(r, indent) {
 
 function renderPostCard(r, indent, opts) {
   opts = opts || {};
+  const heading = opts.headingLevel === 2 ? 'h2' : 'h3';
   const label = opts.label || r.section;
   const readLabel = opts.noReadLabel ? '' : `<span>${r.reading_minutes} min read</span>`;
   const tags = r.tags || [];
@@ -857,7 +858,7 @@ function renderPostCard(r, indent, opts) {
   const tagRow = tags.map((t) => `<span>${htmlEscape(t)}</span>`).join('');
   let out = `${indent}<article class="post-card" data-card data-title="${htmlEscape(r.title)}" data-category="${htmlEscape(r.section)}" data-tags="${htmlEscape(dataTags)}"${flavorAttr}>\n`;
   out += `${indent}  <div class="card-topline"><span>${htmlEscape(label)}</span>${readLabel}</div>\n`;
-  out += `${indent}  <h3><a href="${opts.href || `../posts/${slug}/`}">${htmlEscape(r.title)}</a></h3>\n`;
+  out += `${indent}  <${heading}><a href="${opts.href || `../posts/${slug}/`}">${htmlEscape(r.title)}</a></${heading}>\n`;
   out += `${indent}  <p>${htmlEscape(r.description)}</p>\n`;
   out += `${indent}  <div class="tag-row">${tagRow}</div>\n`;
   if (opts.flavorFoot) {
@@ -874,7 +875,7 @@ function buildHomeRegion(manifest, indent) {
 
 function buildArticlesRegion(manifest, indent) {
   const posts = manifest.records.filter((r) => r.content_type === 'post' && r.__effective.include_in_articles).sort(compareDateOrderedThenId);
-  return posts.map((r) => renderPostCard(r, indent)).join('\n') + '\n' + indent.slice(0, -2);
+  return posts.map((r) => renderPostCard(r, indent, { headingLevel: 2 })).join('\n') + '\n' + indent.slice(0, -2);
 }
 
 function buildLearningLabRegion(manifest, indent) {
