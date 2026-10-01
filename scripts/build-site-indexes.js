@@ -897,7 +897,7 @@ function buildTableTalkRegion(manifest, indent) {
       out += `${indent}  <h3><a href="../posts/${slug}/">${htmlEscape(r.title)}</a></h3>\n`;
       out += `${indent}  <p>${htmlEscape(cp.description)}</p>\n`;
       out += `${indent}  <div class="tag-row">${cp.tags.map((t) => `<span>${htmlEscape(t)}</span>`).join('')}</div>\n`;
-      out += `${indent}  <div class="card-topline" style="margin-top:6px;"><span style="color:var(--fainter);">from the ${xmlEscapeName(cp.section === 'Table Talk' ? '' : '')}${htmlEscape('Learning Lab')}</span><span style="color:var(--accent);font-size:14px;">&rarr;</span></div>\n`;
+      out += `${indent}  <div class="card-topline" style="margin-top:6px;"><span style="color:var(--text-subtle);">from the ${xmlEscapeName(cp.section === 'Table Talk' ? '' : '')}${htmlEscape('Learning Lab')}</span><span style="color:var(--accent);font-size:14px;">&rarr;</span></div>\n`;
       out += `${indent}</article>`;
       cards.push(out);
     }

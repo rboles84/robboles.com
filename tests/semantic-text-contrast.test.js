@@ -76,6 +76,58 @@ const explicitDarkTokens = new Map([
   ...customProperties(declarationsFor(':root[data-theme="dark"]')),
 ]);
 
+test('RBB-073: bounded supporting-text consumers retain surface-compatible readable roles', () => {
+  const read = file => fs.readFileSync(path.join(ROOT, file), 'utf8');
+  const expectRole = (file, pattern, count, role, surfaces) => {
+    const matches = [...read(file).matchAll(pattern)];
+    assert.equal(matches.length, count, `${file}: semantic target inventory changed`);
+    for (const match of matches) {
+      assert.match(match[0], new RegExp(`color:var\\(${role}\\)`), `${file}: target must use ${role}`);
+    }
+    for (const [theme, tokens] of [['light', rootTokens], ['system dark', systemDarkTokens], ['explicit dark', explicitDarkTokens]]) {
+      for (const surface of surfaces) assertContrastAtLeast(`${file} ${theme} ${role} on ${surface}`, `var(${role})`, `var(${surface})`, tokens);
+    }
+  };
+  const subtle = '--text-subtle', fixed = '--text-subtle-on-dark';
+  for (const [selector, surface] of [['body', '--bg'], ['.post-card', '--surface'], ['.reusable-asset', '--surface']]) {
+    assert.equal(propertyValue(declarationsFor(selector), 'background'), `var(${surface})`, `${selector}: target surface changed`);
+  }
+  expectRole('field-kit/index.html', /<div class="card-actions">[^\n]+<\/div>\s*<div class="card-topline"[^>]*><span[^>]*>from [\s\S]*?<\/span>/g, 9, subtle, ['--surface']);
+  for (const [file, title, count] of [['learning-lab/index.html','latest notes',1],['table-talk/index.html',"what's inside",1],['magic-math/index.html',"what's inside",3]]) {
+    expectRole(file, new RegExp(`<div class="note-card"[^>]*>\\s*<h2[^>]*>${title}<\\/h2>`, 'g'), count, fixed, ['--dark-2']);
+    // The fixed role must stay paired with the fixed surface in every shared theme.
+    const cards = [...read(file).matchAll(/<div class="note-card"[^>]*>/g)];
+    assert.equal(cards.length, count);
+    for (const card of cards) assert.match(card[0], /background:var\(--dark-2\)/);
+  }
+  expectRole('learning-lab/index.html', /<p class="lane-note-cta"[^>]*>More build notes are coming[\s\S]*?<\/p>/g, 1, subtle, ['--bg']);
+  expectRole('table-talk/index.html', /<p class="lane-note-cta"[^>]*>More table talk is coming[\s\S]*?<\/p>/g, 1, subtle, ['--bg']);
+  expectRole('table-talk/index.html', /<p[^>]*>(?:Nine pieces I keep coming back to|These are workshops, not authorities:)[\s\S]*?<\/p>/g, 2, subtle, ['--bg']);
+  for (const file of ['posts/how-i-run-ai-like-a-qa-system/index.html','posts/traceable-is-not-true/index.html']) {
+    expectRole(file, /<p[^>]*>Spinning this into a printable Field Kit card next\.<\/p>/g, 1, subtle, ['--surface']);
+  }
+  const lands = 'posts/why-magic-lands-are-so-weird/index.html';
+  const timeline = read(lands).match(/<div class="reusable-asset" id="timeline">([\s\S]*?)<\/div>/);
+  assert.ok(timeline);
+  const dates = [...timeline[1].matchAll(/<li[^>]*>\s*<span[^>]*>\d{4}&ndash;\d{4}<\/span>/g)];
+  assert.equal(dates.length, 6);
+  for (const date of dates) assert.match(date[0], /color:var\(--text-subtle\)/);
+  expectRole(lands, /<p[^>]*>Era names and dates come straight from[\s\S]*?<\/p>/g, 1, subtle, ['--surface']);
+  const generator = require('../scripts/build-site-indexes');
+  const manifest = generator.loadManifest(path.join(ROOT, 'assets/data/content-index.json'));
+  generator.validateManifest(manifest);
+  const output = generator.computeOutputs(manifest);
+  const crossover = /<span[^>]*>from the Learning Lab<\/span>/g;
+  const emitted = [...output['table-talk/index.html'].matchAll(crossover)];
+  const served = [...read('table-talk/index.html').matchAll(crossover)];
+  assert.equal(emitted.length, 1);
+  assert.deepEqual(served.map(m => m[0]), emitted.map(m => m[0]), 'served crossover must match its producer');
+  assert.match(emitted[0][0], /color:var\(--text-subtle\)/);
+  for (const tokens of [rootTokens, systemDarkTokens, explicitDarkTokens]) {
+    assertContrastAtLeast('crossover card source', 'var(--text-subtle)', 'var(--surface)', tokens);
+  }
+});
+
 test('semantic readable-text roles meet normal-text contrast on every shared surface they serve', () => {
   const themeMatrices = [
     ['light', rootTokens],
