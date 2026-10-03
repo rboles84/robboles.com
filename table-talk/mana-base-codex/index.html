@@ -35,7 +35,9 @@
     --line-2:#3a4256;
     --bone:#e9e2cf;         /* primary text, aged bone */
     --bone-dim:#b3ac98;     /* secondary */
-    --bone-faint:#7b7663;   /* tertiary / captions */
+    --bone-faint:#7b7663;   /* ornaments / SVG, not a text role */
+    --bone-tertiary:#99927f; /* readable tertiary text on local ink surfaces */
+    --warning-text:#df806b; /* incomplete-cycle text, independent of mana red */
     --gold:#c9a24b;         /* arcane accent, used sparingly */
     --gold-dim:#8a7434;
     --gold-glow:rgba(201,162,75,.18);
@@ -123,7 +125,7 @@
   h1{font-size:clamp(30px,5vw,52px); line-height:1.02; margin:0 0 14px}
   h1 .thin{color:var(--bone-dim); font-style:italic; font-weight:400}
   .lede{max-width:680px; color:var(--bone-dim); font-size:17px; margin:0}
-  .flavor-line{margin:16px 0 0; max-width:640px; color:var(--bone-faint); font-style:italic;
+  .flavor-line{margin:16px 0 0; max-width:640px; color:var(--bone-tertiary); font-style:italic;
     font-size:14.5px; max-height:0; overflow:hidden; opacity:0; transition:.5s var(--ease)}
   body.flavor .flavor-line{max-height:80px; opacity:1; margin-top:18px}
   .frontier{margin-top:22px; display:flex; flex-wrap:wrap; gap:10px}
@@ -146,7 +148,7 @@
   .tab:hover{color:var(--bone); border-color:var(--line-2)}
   .tab[aria-selected="true"]{color:var(--ink); background:var(--gold); border-color:var(--gold); font-weight:600}
   .viewbar .spacer{flex:1}
-  .count{font-family:var(--mono); font-size:11px; color:var(--bone-faint)}
+  .count{font-family:var(--mono); font-size:11px; color:var(--bone-tertiary)}
   .flavor-toggle{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
     color:var(--bone-dim); background:transparent; border:1px solid var(--line-2); border-radius:2px;
     padding:8px 12px; cursor:pointer; display:inline-flex; gap:8px; align-items:center; transition:.15s}
@@ -178,7 +180,7 @@
   .atlas-sigil{display:block; width:46px; height:46px; margin:0; opacity:.82}
   .atlas-sigil svg{width:100%; height:100%; display:block}
   .idcard .nm{font-size:15.5px; font-weight:600; line-height:1.2; overflow-wrap:anywhere}
-  .idcard .sb{font-size:11.5px; line-height:1.28; color:var(--bone-faint); overflow-wrap:anywhere}
+  .idcard .sb{font-size:11.5px; line-height:1.28; color:var(--bone-tertiary); overflow-wrap:anywhere}
   .idcard .pips{display:flex; justify-content:center; align-items:center; min-height:16px; margin:4px 0 0}
   @container (max-width:960px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
   @container (max-width:640px){.grid{grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px}}
@@ -212,7 +214,7 @@
     border-top:2px solid var(--gold-dim); padding:14px 15px}
   .stat .v{font-size:26px; font-weight:600; line-height:1; letter-spacing:-.02em}
   .stat .l{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
-    color:var(--bone-faint); margin-top:7px}
+    color:var(--bone-tertiary); margin-top:7px}
   .stat.accent .v{color:var(--gold)}
 
   .callout{background:var(--ink-2); border:1px solid var(--line); border-left:2px solid var(--gold);
@@ -223,7 +225,7 @@
   .base-head{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:0 0 18px}
   .base-head h3{margin:0; font-size:20px}
   .base-head .k{font-family:var(--mono); font-size:11px; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--bone-faint)}
+    text-transform:uppercase; color:var(--bone-tertiary)}
   .base-head .switch{margin-left:auto; display:inline-flex; border:1px solid var(--line-2); border-radius:3px; overflow:hidden}
   .switch button{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
     background:transparent; color:var(--bone-dim); border:0; padding:7px 13px; cursor:pointer; transition:.15s}
@@ -232,23 +234,23 @@
   .cat{margin-bottom:34px}
   .cat-h{display:flex; align-items:baseline; gap:12px; margin:0 0 4px}
   .cat-h h4{font-size:16px; margin:0; font-weight:600; color:var(--bone)}
-  .cat-h .k{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--bone-faint)}
-  .cat-desc{color:var(--bone-faint); font-size:13px; margin:0 0 14px; max-width:820px}
-  .empty-note{color:var(--bone-faint); font-size:13px; font-style:italic}
+  .cat-h .k{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--bone-tertiary)}
+  .cat-desc{color:var(--bone-tertiary); font-size:13px; margin:0 0 14px; max-width:820px}
+  .empty-note{color:var(--bone-tertiary); font-size:13px; font-style:italic}
 
   /* Ledger table */
   table.ledger{width:100%; border-collapse:collapse; font-size:14px}
   table.ledger thead th{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--bone-faint); text-align:left; font-weight:500;
+    text-transform:uppercase; color:var(--bone-tertiary); text-align:left; font-weight:500;
     padding:0 12px 8px; border-bottom:1px solid var(--line)}
   table.ledger tbody td{padding:9px 12px; border-bottom:1px solid rgba(42,48,64,.5); vertical-align:top}
   table.ledger tbody tr:hover{background:rgba(255,255,255,.014)}
   td.card{width:34%}
   .cname{font-weight:600; color:var(--bone)}
-  .cyc{font-family:var(--mono); font-size:11px; color:var(--bone-faint); display:block; margin-top:1px}
+  .cyc{font-family:var(--mono); font-size:11px; color:var(--bone-tertiary); display:block; margin-top:1px}
   td.beh{color:var(--bone-dim); font-size:13px}
   td.src{width:14%}
-  .srctxt{font-family:var(--mono); font-size:11px; color:var(--bone-faint)}
+  .srctxt{font-family:var(--mono); font-size:11px; color:var(--bone-tertiary)}
 }
 
 /* =============================================================================
@@ -274,13 +276,13 @@
   .lcard .top{display:flex; align-items:flex-start; gap:8px; margin-bottom:8px}
   .lcard .top .pips{margin-top:3px}
   .lcard .nm{font-size:16px; font-weight:600; line-height:1.15; flex:1}
-  .lcard .cyc{font-family:var(--mono); font-size:10.5px; color:var(--bone-faint); margin-top:3px; display:block}
+  .lcard .cyc{font-family:var(--mono); font-size:10.5px; color:var(--bone-tertiary); margin-top:3px; display:block}
   .lcard .beh{color:var(--bone-dim); font-size:12.5px; margin:8px 0 10px; line-height:1.5}
   .lcard .foot{display:flex; align-items:center; gap:10px; padding-top:9px; border-top:1px solid rgba(42,48,64,.55);
-    font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--bone-faint)}
+    font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--bone-tertiary)}
   .lcard .foot .role{color:var(--bone-dim); text-transform:uppercase; letter-spacing:.1em}
   .lcard .foot .era{margin-left:auto}
-  .lcard .lore{font-size:12px; color:var(--bone-faint); font-style:italic; margin:9px 0 0; line-height:1.5;
+  .lcard .lore{font-size:12px; color:var(--bone-tertiary); font-style:italic; margin:9px 0 0; line-height:1.5;
     max-height:0; overflow:hidden; opacity:0; transition:.4s var(--ease)}
   body.flavor .lcard .lore{max-height:120px; opacity:1; margin-top:10px; padding-top:9px;
     border-top:1px dashed rgba(201,162,75,.25)}
@@ -300,7 +302,7 @@
   .lab-h{display:flex; align-items:baseline; gap:12px; margin:0 0 4px}
   .lab-h h3{margin:0; font-size:19px}
   .lab-h .k{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold)}
-  .lab-sub{color:var(--bone-faint); font-size:13px; margin:0 0 20px; max-width:760px}
+  .lab-sub{color:var(--bone-tertiary); font-size:13px; margin:0 0 20px; max-width:760px}
   .lab-body{display:grid; grid-template-columns:1fr; gap:26px}
   @container build (min-width:720px){ .lab-body{grid-template-columns:300px 1fr} }
   .controls{display:flex; flex-direction:column; gap:18px}
@@ -319,14 +321,14 @@
   .readouts{display:flex; flex-direction:column; gap:22px; justify-content:center}
   .meter .mlab{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px}
   .meter .mlab .name{font-size:14.5px; color:var(--bone)}
-  .meter .mlab .name small{display:block; font-family:var(--mono); font-size:10.5px; color:var(--bone-faint);
+  .meter .mlab .name small{display:block; font-family:var(--mono); font-size:10.5px; color:var(--bone-tertiary);
     letter-spacing:.05em; margin-top:2px; text-transform:none}
   .meter .mlab .pct{font-family:var(--mono); font-size:22px; color:var(--gold); font-weight:600}
   .track{height:12px; background:var(--ink-4); border-radius:6px; overflow:hidden; border:1px solid var(--line)}
   .fill{height:100%; width:0; border-radius:6px; transition:width .55s var(--ease);
     background:linear-gradient(90deg, var(--gold-dim), var(--gold))}
   .fill.double{background:linear-gradient(90deg, #6f8fc0, #9fc0e0)}
-  .lab-note{font-size:12.5px; color:var(--bone-faint); margin:20px 0 0; padding-top:16px;
+  .lab-note{font-size:12.5px; color:var(--bone-tertiary); margin:20px 0 0; padding-top:16px;
     border-top:1px solid var(--line); line-height:1.6}
   .lab-note b{color:var(--bone-dim)}
 }
@@ -346,7 +348,7 @@
   .era-h .yr{font-family:var(--mono); font-size:12px; letter-spacing:.16em; color:var(--gold)}
   .era-h .nm{font-size:17px; font-weight:600}
   .era-h .r{flex:1; height:1px; background:var(--line)}
-  .era-desc{color:var(--bone-faint); font-size:12.5px; margin:0 0 14px; max-width:760px}
+  .era-desc{color:var(--bone-tertiary); font-size:12.5px; margin:0 0 14px; max-width:760px}
   .tl-track{position:relative; margin-left:8px; padding-left:26px; border-left:1px solid var(--line-2)}
   .tl-item{position:relative; padding:12px 0 14px}
   .tl-item::before{content:""; position:absolute; left:-31px; top:17px; width:9px; height:9px; border-radius:50%;
@@ -354,10 +356,10 @@
   .tl-item.tS::before{background:var(--gold); box-shadow:0 0 8px var(--gold-glow)}
   .tl-top{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
   .tl-top .tl-nm{font-size:15.5px; font-weight:600}
-  .tl-top .tl-nick{font-style:italic; color:var(--bone-faint); font-size:12.5px}
-  .tl-top .tl-yr{font-family:var(--mono); font-size:11px; color:var(--bone-faint); margin-left:auto}
+  .tl-top .tl-nick{font-style:italic; color:var(--bone-tertiary); font-size:12.5px}
+  .tl-top .tl-yr{font-family:var(--mono); font-size:11px; color:var(--bone-tertiary); margin-left:auto}
   .tl-lore{color:var(--bone-dim); font-size:13px; margin:6px 0 0; max-width:820px; line-height:1.55}
-  .tl-plane{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:var(--bone-faint); margin-top:6px; text-transform:uppercase}
+  .tl-plane{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:var(--bone-tertiary); margin-top:6px; text-transform:uppercase}
 }
 
 /* =============================================================================
@@ -374,7 +376,7 @@
   .search{flex:1; min-width:200px; display:flex; align-items:center; gap:8px; background:var(--ink-2);
     border:1px solid var(--line-2); border-radius:3px; padding:8px 12px}
   .search input{flex:1; background:transparent; border:0; color:var(--bone); font-family:var(--serif); font-size:14px; outline:none}
-  .search input::placeholder{color:var(--bone-faint)}
+  .search input::placeholder{color:var(--bone-tertiary)}
   .search .ic{color:var(--bone-faint); font-family:var(--mono); font-size:13px}
   .filters{display:flex; gap:6px; flex-wrap:wrap}
   .fchip{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
@@ -382,24 +384,24 @@
     padding:7px 11px; cursor:pointer; transition:.15s}
   .fchip:hover{color:var(--bone)}
   .fchip[aria-pressed="true"]{background:var(--gold); color:var(--ink); border-color:var(--gold); font-weight:600}
-  .explorer .meta{font-family:var(--mono); font-size:11px; color:var(--bone-faint); margin-top:10px}
+  .explorer .meta{font-family:var(--mono); font-size:11px; color:var(--bone-tertiary); margin-top:10px}
 
   .cyc-block{margin-bottom:22px; background:var(--ink-2); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden}
   .cyc-block.pinned{border-color:var(--gold-dim); box-shadow:0 0 0 1px rgba(138,116,52,.35) inset}
   .cyc-top{display:flex; align-items:center; gap:14px; padding:14px 18px; flex-wrap:wrap;
     background:var(--ink-3); border-bottom:1px solid var(--line)}
   .cyc-top .name{font-size:17px; font-weight:600}
-  .cyc-top .nick{font-style:italic; color:var(--bone-faint); font-size:13px}
-  .cyc-top .flag{font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--R);
+  .cyc-top .nick{font-style:italic; color:var(--bone-tertiary); font-size:13px}
+  .cyc-top .flag{font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--warning-text);
     border:1px solid rgba(204,95,76,.4); border-radius:2px; padding:2px 6px}
-  .cyc-top .src{font-family:var(--mono); font-size:11px; color:var(--bone-faint)}
+  .cyc-top .src{font-family:var(--mono); font-size:11px; color:var(--bone-tertiary)}
   .cyc-top .pin{margin-left:auto; background:transparent; border:1px solid var(--line-2); border-radius:2px;
-    color:var(--bone-faint); font-family:var(--mono); font-size:11px; padding:5px 9px; cursor:pointer; transition:.15s}
+    color:var(--bone-tertiary); font-family:var(--mono); font-size:11px; padding:5px 9px; cursor:pointer; transition:.15s}
   .cyc-top .pin:hover{color:var(--gold); border-color:var(--gold-dim)}
   .cyc-top .pin[aria-pressed="true"]{color:var(--gold); border-color:var(--gold-dim)}
   .cyc-body{padding:12px 18px 16px}
   .cyc-beh{color:var(--bone-dim); font-size:13.5px; margin:0 0 8px; max-width:860px}
-  .cyc-lore{color:var(--bone-faint); font-size:12.5px; font-style:italic; margin:0 0 12px; max-width:860px;
+  .cyc-lore{color:var(--bone-tertiary); font-size:12.5px; font-style:italic; margin:0 0 12px; max-width:860px;
     max-height:0; overflow:hidden; opacity:0; transition:.4s var(--ease)}
   body.flavor .cyc-lore{max-height:100px; opacity:1; margin-bottom:14px}
   /* ---- Cycle member grid (individual lands listed inside a cycle block, e.g.
@@ -437,9 +439,9 @@
     min-width:44px; /* comfortably fits 3 pips (11px each) + 2 gaps (3px each) = 39px, +margin for safety */
   }
   .mem .mn{ color:var(--bone); line-height:1.3; } /* the land's name */
-  .no-results{color:var(--bone-faint); font-style:italic; padding:30px 0}
+  .no-results{color:var(--bone-tertiary); font-style:italic; padding:30px 0}
 
-  footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--line); color:var(--bone-faint); font-size:12.5px}
+  footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--line); color:var(--bone-tertiary); font-size:12.5px}
   footer .mono{font-size:11.5px}
 }
 
@@ -510,7 +512,7 @@
 #cardpop .cp-img{padding:8px; line-height:0}
 #cardpop .cp-img img{width:100%; border-radius:10px; display:block}
 #cardpop .cp-load{padding:26px 16px; text-align:center; font-family:var(--mono); font-size:11px;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--bone-faint)}
+  letter-spacing:.14em; text-transform:uppercase; color:var(--bone-tertiary)}
 #cardpop .cp-load .sp{display:inline-block; width:10px; height:10px; border-radius:50%;
   border:1.5px solid var(--gold-dim); border-top-color:var(--gold); margin-right:8px; vertical-align:-1px;
   animation:cpspin .7s linear infinite}
@@ -519,10 +521,10 @@
 #cardpop .cp-top{display:flex; align-items:flex-start; gap:8px}
 #cardpop .cp-nm{font-size:15px; font-weight:600; line-height:1.2; flex:1; color:var(--bone)}
 #cardpop .cp-pips{display:flex; gap:3px; margin-top:2px}
-#cardpop .cp-cyc{font-family:var(--mono); font-size:10.5px; color:var(--bone-faint); margin-top:4px; display:block}
+#cardpop .cp-cyc{font-family:var(--mono); font-size:10.5px; color:var(--bone-tertiary); margin-top:4px; display:block}
 #cardpop .cp-beh{font-size:12.5px; color:var(--bone-dim); margin:9px 0 0; line-height:1.5}
 #cardpop .cp-foot{display:flex; gap:8px; align-items:center; margin-top:10px; padding-top:9px;
-  border-top:1px solid var(--line); font-family:var(--mono); font-size:10px; color:var(--bone-faint)}
+  border-top:1px solid var(--line); font-family:var(--mono); font-size:10px; color:var(--bone-tertiary)}
 /* =============================================================================
    UNDERSTAND PANE STYLES (also unlayered — see note above; kept alongside
    the popup styles rather than filed into `@layer chrome`/`build` purely
@@ -769,7 +771,7 @@ table.ltable{max-width:760px; margin:6px 0 16px}
   <header class="hero">
     <div class="hero-grid">
       <div>
-        <p style="margin:0 0 12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;"><a href="../" style="border-bottom:none;color:var(--bone-faint)">&larr; back to Table Talk · robboles.com</a></p>
+        <p style="margin:0 0 12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;"><a href="../" style="border-bottom:none;color:var(--bone-tertiary)">&larr; back to Table Talk · robboles.com</a></p>
         <p class="eyebrow">Table Talk · Mana Reference Codex</p>
         <h1>The Mana Base Codex<br><span class="thin">a Commander mana-base reference across 32 color identities</span></h1>
         <p class="lede">A practical Commander fixing reference — original duals, shocks, fetches, pains, and

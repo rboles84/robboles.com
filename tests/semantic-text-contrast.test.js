@@ -76,6 +76,66 @@ const explicitDarkTokens = new Map([
   ...customProperties(declarationsFor(':root[data-theme="dark"]')),
 ]);
 
+test('RBB-077: Codex screen text consumers use readable local roles without recoloring decoration', () => {
+  const html = fs.readFileSync(path.join(ROOT, 'table-talk/mana-base-codex/index.html'), 'utf8');
+  const tokens = customProperties(html.match(/:root\s*\{([^}]+)\}/)[1] + ';');
+  const rule = (selector) => {
+    const start = html.indexOf(selector + '{');
+    assert.notEqual(start, -1, `missing Codex rule ${selector}`);
+    return html.slice(start + selector.length + 1, html.indexOf('}', start));
+  };
+  // These are effective text families, including inherited template text. The .ltag
+  // declaration is overridden by .lsec p; the search magnifier and SVG are ornaments.
+  const families = {
+    '--ink': ['.flavor-line', '.count', '.base-head .k', '.cat-h .k', '.cat-desc',
+      '.empty-note', 'table.ledger thead th', '.cyc', '.srctxt', '.era-desc',
+      '.tl-top .tl-nick', '.tl-top .tl-yr', '.tl-plane', '.explorer .meta', '.no-results', 'footer'],
+    '--ink-2': ['.stat .l', '.lab-sub', '.meter .mlab .name small', '.lab-note',
+      '.search input::placeholder', '.cyc-lore'],
+    '--ink-3': ['.idcard .sb', '.lcard .cyc', '.lcard .foot', '.lcard .lore',
+      '.cyc-top .nick', '.cyc-top .src', '.cyc-top .pin',
+      '#cardpop .cp-load', '#cardpop .cp-cyc', '#cardpop .cp-foot'],
+  };
+  for (const [surface, selectors] of Object.entries(families)) for (const selector of selectors) {
+    const foreground = propertyValue(rule(selector), 'color');
+    assert.equal(foreground, 'var(--bone-tertiary)', `readable wiring: ${selector}`);
+    assertContrastAtLeast(selector, foreground, `var(${surface})`, tokens);
+  }
+  // Opaque gallery gradients stay within ink-2/ink-3. Picker alpha gradients
+  // compose over the darker ground; hover is ink-3. Ledger's white row hover is
+  // checked as a real composited surface rather than pretending it is --ink.
+  assert.match(rule('.lcard'), /linear-gradient\(180deg, var\(--ink-3\), var\(--ink-2\)\)/);
+  assert.match(rule('.idcard'), /linear-gradient\(145deg,var\(--ink-2\),rgba\(24,28,38,\.55\)\)/);
+  assert.equal(propertyValue(rule('.idcard:hover'), 'background'), 'var(--ink-3)');
+  assert.match(rule('table.ledger tbody tr:hover'), /background:rgba\(255,255,255,\.014\)/);
+  const ledgerHover = '#' + hexToRgb(resolveToken('var(--ink)', tokens))
+    .map(v => Math.round(v * .986 + 255 * .014).toString(16).padStart(2, '0')).join('');
+  assertContrastAtLeast('ledger row hover', 'var(--bone-tertiary)', ledgerHover, tokens);
+  assertContrastAtLeast('raised-surface bound', 'var(--bone-tertiary)', 'var(--ink-4)', tokens);
+  assert.ok(luminance(resolveToken('var(--bone-tertiary)', tokens)) < luminance(tokens.get('--bone-dim')),
+    'tertiary text stays below secondary text in hierarchy');
+  assert.match(html, /<a href="\.\.\/" style="border-bottom:none;color:var\(--bone-tertiary\)">/);
+  assert.match(html, /class="sb">\$\{d\.sb\}/);
+  assert.match(html, /class="srctxt">\$\{it\.src\|\|''\}/);
+  assert.match(html, /class="foot"><span class="role">\$\{role\}<\/span><span class="era">\$\{era\}/);
+  assert.match(html, /class="cp-cyc">\$\{i\.cycle\}/);
+  assert.match(html, /class="cp-foot">\$\{foot\}/);
+  assert.equal(propertyValue(rule('.cyc-top .flag'), 'color'), 'var(--warning-text)');
+  assert.notEqual(tokens.get('--warning-text'), tokens.get('--R'), 'warning is independent of mana red');
+  assertContrastAtLeast('incomplete warning', 'var(--warning-text)', 'var(--ink-3)', tokens);
+  for (const selector of ['.cyc-top .pin:hover', '.cyc-top .pin[aria-pressed="true"]']) {
+    assert.equal(propertyValue(rule(selector), 'color'), 'var(--gold)');
+    assertContrastAtLeast(selector, 'var(--gold)', 'var(--ink-3)', tokens);
+  }
+  assert.equal(tokens.get('--bone-faint'), '#7b7663');
+  assert.equal(tokens.get('--R'), '#cc5f4c');
+  assert.equal(propertyValue(rule('.search .ic'), 'color'), 'var(--bone-faint)');
+  assert.equal(propertyValue(rule('.ltag'), 'color'), 'var(--bone-faint)');
+  assert.equal(propertyValue(rule('.lsec p'), 'color'), 'var(--bone-dim)');
+  assert.match(html, /fill="var\(--bone-faint\)" fill-opacity="\.12"/);
+  assert.match(html, /fill="var\(--ink-3\)" stroke="var\(--bone-faint\)"/);
+});
+
 test('RBB-076: Partner chart effective selected text passes while unselected colors stay intact', () => {
   const source = fs.readFileSync(path.join(ROOT, 'assets/css/magic-math/partner-four-choices.css'), 'utf8');
   const tokens = customProperties(source.slice(source.indexOf('{') + 1, source.indexOf('}')));
