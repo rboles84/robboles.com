@@ -12,13 +12,21 @@
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://robboles.com/projects/vox-mana/">
-  <link rel="stylesheet" href="../../assets/css/styles.css?v=20260930a">
-  <link rel="stylesheet" href="../../assets/css/mana.css?v=20260930a">
+  <link rel="stylesheet" href="../../assets/css/styles.css?v=20261002a">
+  <link rel="stylesheet" href="../../assets/css/mana.css?v=20261002a">
   <link rel="icon" href="../../favicon.ico" sizes="any">
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Robert Boles RSS" href="../../feed.xml">
-  <script defer src="../../assets/js/site.js?v=20260930a"></script>
+  <script defer src="../../assets/js/site.js?v=20261002a"></script>
+  <style>
+    .vm-proof { margin: 0 0 28px; }
+    .vm-proof img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
+    .vm-proof figcaption { margin-top: 10px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .vm-proof a { color: var(--link-text); }
+    .vm-path { margin: 18px 0 28px; }
+    #live-proof { scroll-margin-top: 84px; }
+  </style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -97,6 +105,10 @@
         <h1>Vox Mana</h1>
         <p class="lede">Commander color identity placement, data modeling, visual UX, and source governance.</p>
         <div class="tag-row"><span>Static Site</span><span>Data Modeling</span><span>Visual QA</span><span>AI Workflow</span></div>
+        <div class="kit-actions">
+          <a class="button accent" href="https://voxmana.io/" target="_blank" rel="noopener">Try Vox Mana &rarr;</a>
+          <a class="button ghost" href="#live-proof">See the live product</a>
+        </div>
       </div>
     </section>
     <div class="container"><div class="tt-rule"><span class="ms-cluster" aria-hidden="true"><i class="ms ms-w ms-cost"></i><i class="ms ms-u ms-cost"></i><i class="ms ms-b ms-cost"></i><i class="ms ms-r ms-cost"></i><i class="ms ms-g ms-cost"></i></span></div></div>
@@ -107,10 +119,35 @@
 <article class="case-panel"><h2>Goal</h2><p>Build a source-governed Commander color identity placement system that feels useful, visual, and maintainable.</p></article>
 <article class="case-panel"><h2>Stack</h2><p>HTML, CSS, JavaScript, generated JSON, visual regression checks, Codex-assisted workflows.</p></article>
 <article class="case-panel"><h2>Constraints</h2><p>No confidential data, source-first governance, public copy must stay understandable, generated data must not become source authority.</p></article>
-<article class="case-panel"><h2>What I built</h2><p>A multi-page static site with Home, Strategium, Archscry, Apocrypha, placement data, identity dossiers, and documented decision layers.</p></article>
-<article class="case-panel"><h2>What broke</h2><p>Visual regression drift, route-specific readability issues, generated data boundaries, and AI scope creep all needed explicit guardrails.</p></article>
-<article class="case-panel"><h2>What I learned</h2><p>Good side projects need the same quality habits as work systems: contracts, checks, scope boundaries, and handoffs.</p></article>
+<article class="case-panel"><h2>What I built</h2><p>Archscry connects a Commander identity reading to a dossier. The Implicit Maze offers plain-language, syntax, and visual card discovery. Strategium teaches table concepts; Apocrypha exposes the source notes and their limits.</p></article>
+<article class="case-panel"><h2>A near-miss I caught</h2><p>In my <a href="../../posts/static-site-release-risk/">July 9, 2026 build note</a>, I described a static reference page fetching card art live. It looked finished but depended on another service at runtime. I removed that fetch and cached the required art at authoring time.</p></article>
+<article class="case-panel"><h2>The boundary I keep checking</h2><p>Source records &rarr; generated JSON &rarr; the browser view. Each step needs to preserve the meaning it received. A matching page and dataset can still share the same wrong assumption: <a href="../../posts/traceable-is-not-true/">traceability needs evidence behind it</a>.</p></article>
         </div>
+      </div>
+    </section>
+
+    <section class="section tight" id="live-proof">
+      <div class="container">
+        <h2>From an identity to something you can explore</h2>
+        <p>These are public product views captured from voxmana.io on October 2, 2026. The dossier below is being browsed without taking a reading; the Loom shows selected filters before a search is submitted.</p>
+        <ol class="template-list vm-path">
+          <li><a href="https://voxmana.io/archscry/index.html?explore=mardu" target="_blank" rel="noopener">Browse the public Mardu dossier</a> to see how an identity becomes guidance a player can compare with their own preferences.</li>
+          <li><a href="https://voxmana.io/maze/" target="_blank" rel="noopener">Open the Maze</a> and choose The Loom. Select Green, Creature, and Trample to see the choices reflected in the query summary.</li>
+          <li>Inspect that summary before submitting the search. A direction worth exploring still needs the player's judgment.</li>
+        </ol>
+        <figure class="vm-proof">
+          <a href="../../assets/images/projects/vox-mana/dossier-browsing.jpg" target="_blank" rel="noopener" aria-label="Open the Mardu dossier screenshot at full size">
+            <img src="../../assets/images/projects/vox-mana/dossier-browsing.jpg" width="1216" height="508" loading="lazy" alt="The public Mardu Horde dossier, with its identity introduction and a notice that it is being browsed without a reading.">
+          </a>
+          <figcaption>A dossier has a visible context: this one is a public example, not a result assigned to a player. <a href="../../assets/images/projects/vox-mana/dossier-browsing.jpg" target="_blank" rel="noopener">Open full-size screenshot &rarr;</a></figcaption>
+        </figure>
+        <figure class="vm-proof">
+          <a href="../../assets/images/projects/vox-mana/loom-filters.jpg" target="_blank" rel="noopener" aria-label="Open the Loom filter screenshot at full size">
+            <img src="../../assets/images/projects/vox-mana/loom-filters.jpg" width="1280" height="900" loading="lazy" alt="The Loom with Green Commander color, Creature, and Trample selected; the current weave displays Green fit and Creature · Trample.">
+          </a>
+          <figcaption>The Loom reflects the selected constraints before the reader commits to a search. This capture shows filters, not returned cards. <a href="../../assets/images/projects/vox-mana/loom-filters.jpg" target="_blank" rel="noopener">Open full-size screenshot &rarr;</a></figcaption>
+        </figure>
+        <p>See the <a href="https://voxmana.io/apocrypha/" target="_blank" rel="noopener">source library</a> for what the project's references can support, or use the <a href="https://voxmana.io/guide/" target="_blank" rel="noopener">Guide</a> to choose your next path.</p>
       </div>
     </section>
 

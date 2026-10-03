@@ -76,6 +76,36 @@ const explicitDarkTokens = new Map([
   ...customProperties(declarationsFor(':root[data-theme="dark"]')),
 ]);
 
+test('RBB-074: lane text uses readable colors while decorative gold keeps its original value', () => {
+  for (const tokens of [rootTokens,systemDarkTokens,explicitDarkTokens]) {
+    for (const surface of ['--bg','--surface','--surface-2']) {
+      assertContrastAtLeast('gold text', 'var(--tt-label-text)', `var(${surface})`, tokens);
+      assertContrastAtLeast('caption text', 'var(--text-subtle)', `var(${surface})`, tokens);
+    }
+  }
+  for (const selector of ['.tt-eyebrow','.tt-art-cap .artist','body[data-lane="table-talk"] .post-card .card-topline span:first-child']) {
+    assert.equal(propertyValue(declarationsFor(selector),'color'),'var(--tt-label-text)');
+  }
+  for (const selector of ['.tt-art-cap','.tt-art-cap .tt-set-name']) assert.equal(propertyValue(declarationsFor(selector),'color'),'var(--text-subtle)');
+  assert.equal(propertyValue(declarationsFor('body[data-lane="table-talk"]'),'--tt-gold'),'#b9902e');
+});
+
+test('RBB-075: standalone labels and the AI print button have readable foreground/background pairs', () => {
+  const kits = ['ai-decision-authority-checklist','gqm-mapping-worksheet','quality-translated','risk-based-regression-triage-sheet','static-site-launch-readiness'];
+  for (const slug of kits) {
+    const html=fs.readFileSync(path.join(ROOT,'field-kit',slug,slug+'.html'),'utf8');
+    const tokens=customProperties(html.match(/:root\s*\{([^}]+)\}/)[1]+';');
+    const label=html.match(/\.eyebrow\s*\{([^}]+)\}/)[1];
+    assert.equal(propertyValue(label,'color'),'var(--accent-dark)');
+    assertContrastAtLeast(slug, 'var(--accent-dark)', tokens.has('--card')?'var(--card)':'var(--paper)',tokens);
+    if (slug==='ai-decision-authority-checklist') {
+      const button=html.match(/\n\s*button\s*\{([^}]+)\}/)[1];
+      assert.equal(propertyValue(button,'background'),'var(--accent-dark)');
+      assert.ok(contrast('#ffffff',resolveToken('var(--accent-dark)',tokens))>=4.5);
+    }
+  }
+});
+
 test('RBB-073: bounded supporting-text consumers retain surface-compatible readable roles', () => {
   const read = file => fs.readFileSync(path.join(ROOT, file), 'utf8');
   const expectRole = (file, pattern, count, role, surfaces) => {
@@ -93,14 +123,13 @@ test('RBB-073: bounded supporting-text consumers retain surface-compatible reada
     assert.equal(propertyValue(declarationsFor(selector), 'background'), `var(${surface})`, `${selector}: target surface changed`);
   }
   expectRole('field-kit/index.html', /<div class="card-actions">[^\n]+<\/div>\s*<div class="card-topline"[^>]*><span[^>]*>from [\s\S]*?<\/span>/g, 9, subtle, ['--surface']);
-  for (const [file, title, count] of [['learning-lab/index.html','latest notes',1],['table-talk/index.html',"what's inside",1],['magic-math/index.html',"what's inside",3]]) {
+  for (const [file, title, count] of [['learning-lab/index.html','experiment log',1],['table-talk/index.html',"what's inside",1],['magic-math/index.html',"what's inside",3]]) {
     expectRole(file, new RegExp(`<div class="note-card"[^>]*>\\s*<h2[^>]*>${title}<\\/h2>`, 'g'), count, fixed, ['--dark-2']);
     // The fixed role must stay paired with the fixed surface in every shared theme.
     const cards = [...read(file).matchAll(/<div class="note-card"[^>]*>/g)];
     assert.equal(cards.length, count);
     for (const card of cards) assert.match(card[0], /background:var\(--dark-2\)/);
   }
-  expectRole('learning-lab/index.html', /<p class="lane-note-cta"[^>]*>More build notes are coming[\s\S]*?<\/p>/g, 1, subtle, ['--bg']);
   expectRole('table-talk/index.html', /<p class="lane-note-cta"[^>]*>More table talk is coming[\s\S]*?<\/p>/g, 1, subtle, ['--bg']);
   expectRole('table-talk/index.html', /<p[^>]*>(?:Nine pieces I keep coming back to|These are workshops, not authorities:)[\s\S]*?<\/p>/g, 2, subtle, ['--bg']);
   for (const file of ['posts/how-i-run-ai-like-a-qa-system/index.html','posts/traceable-is-not-true/index.html']) {

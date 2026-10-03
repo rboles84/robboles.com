@@ -18,6 +18,13 @@ const { ROOT, listHtmlFiles } = require('./helpers');
 
 const STYLES = path.join(ROOT, 'assets', 'css', 'styles.css');
 
+test('RBB-050/051: native section links reserve space below the sticky site header', () => {
+  const lab = fs.readFileSync(path.join(ROOT, 'learning-lab/index.html'), 'utf8');
+  const project = fs.readFileSync(path.join(ROOT, 'projects/vox-mana/index.html'), 'utf8');
+  assert.match(lab, /id="experiment-log"[^>]*style="[^"]*scroll-margin-top:\s*84px/);
+  assert.match(project, /#live-proof\s*\{[^}]*scroll-margin-top:\s*84px/);
+});
+
 test('MT-31: no .project-feature element carries an inline grid-template-columns (must use the responsive class)', () => {
   const offenders = [];
   for (const file of listHtmlFiles()) {

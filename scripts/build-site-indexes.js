@@ -858,6 +858,7 @@ function renderPostCard(r, indent, opts) {
   const tagRow = tags.map((t) => `<span>${htmlEscape(t)}</span>`).join('');
   let out = `${indent}<article class="post-card" data-card data-title="${htmlEscape(r.title)}" data-category="${htmlEscape(r.section)}" data-tags="${htmlEscape(dataTags)}"${flavorAttr}>\n`;
   out += `${indent}  <div class="card-topline"><span>${htmlEscape(label)}</span>${readLabel}</div>\n`;
+  if (opts.showDate) out += `${indent}  <p class="meta"><time datetime="${r.published_date}">${r.published_date.replace(/-/g, '.')}</time></p>\n`;
   out += `${indent}  <${heading}><a href="${opts.href || `../posts/${slug}/`}">${htmlEscape(r.title)}</a></${heading}>\n`;
   out += `${indent}  <p>${htmlEscape(r.description)}</p>\n`;
   out += `${indent}  <div class="tag-row">${tagRow}</div>\n`;
@@ -880,7 +881,7 @@ function buildArticlesRegion(manifest, indent) {
 
 function buildLearningLabRegion(manifest, indent) {
   const posts = manifest.records.filter((r) => r.content_type === 'post' && r.section === 'Learning Lab' && r.status === 'published').sort(compareDateOrderedThenId);
-  return posts.map((r) => renderPostCard(r, indent)).join('\n') + '\n' + indent.slice(0, -2);
+  return posts.map((r) => renderPostCard(r, indent, { showDate: true })).join('\n') + '\n' + indent.slice(0, -2);
 }
 
 function buildTableTalkRegion(manifest, indent) {

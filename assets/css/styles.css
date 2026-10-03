@@ -56,6 +56,7 @@
      measured for normal text on the shared light surfaces; fixed dark-surface
      roles cover components that stay dark even while the page theme is light. */
   --text-subtle: #6f6b61;
+  --tt-label-text: #85651c;
   --text-subtle-on-dark: #9a958a;
   --link-text: #176b48;
   --link-text-hover: #0f5b3a;
@@ -114,6 +115,7 @@
     --faint: var(--dark-faint);
     --fainter: var(--dark-fainter);
     --text-subtle: #a6a095;
+    --tt-label-text: #b9902e;
     --link-text: #63bd8d;
     --link-text-hover: #7dcc9f;
     --warn-label-text: #f0c25b;
@@ -144,6 +146,7 @@
   --faint: var(--dark-faint);
   --fainter: var(--dark-fainter);
   --text-subtle: #a6a095;
+  --tt-label-text: #b9902e;
   --link-text: #63bd8d;
   --link-text-hover: #7dcc9f;
   --warn-label-text: #f0c25b;
@@ -1126,10 +1129,10 @@ body[data-lane="table-talk"] .tt-hero-copy { flex: 1 1 auto; min-width: 0; }
 .tt-art-frame img { display: block; width: 100%; height: auto; aspect-ratio: 626 / 457; object-fit: cover; }
 .tt-art-cap {
   margin: 9px 2px 0; font-family: var(--mono); font-size: 11.5px; line-height: 1.55;
-  color: var(--faint); letter-spacing: 0.01em;
+  color: var(--text-subtle); letter-spacing: 0.01em;
 }
 .tt-art-cap .nm { display: block; color: var(--muted); }
-.tt-art-cap .artist { color: var(--tt-gold); }
+.tt-art-cap .artist { color: var(--tt-label-text); }
 .tt-art-cap a { border-bottom: 1px dotted var(--fainter); }
 .tt-art-cap a:hover { border-bottom-color: currentColor; }
 /* Set symbol (Keyrune glyph, assets/css/keyrune.css) + its visible set-name/
@@ -1142,7 +1145,7 @@ body[data-lane="table-talk"] .tt-hero-copy { flex: 1 1 auto; min-width: 0; }
 .tt-art-cap .tt-set { display: block; margin: 2px 0 1px; }
 .tt-art-cap .tt-set .ss { margin-right: 0.4em; font-size: 1.7em; }
 .tt-art-cap .tt-set .ss-common { color: var(--ss-common); }
-.tt-art-cap .tt-set-name { color: var(--faint); }
+.tt-art-cap .tt-set-name { color: var(--text-subtle); }
 @media (max-width: 760px) {
   body[data-lane="table-talk"] section.page-hero > .container {
     flex-direction: column; align-items: flex-start; gap: 24px;
@@ -1164,7 +1167,7 @@ body[data-lane="table-talk"] .tt-hero-copy { flex: 1 1 auto; min-width: 0; }
    the page has a single pip moment, not three). */
 .tt-eyebrow {
   font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--tt-gold); margin: 0 0 14px;
+  text-transform: uppercase; color: var(--tt-label-text); margin: 0 0 14px;
 }
 
 /* Section divider: a centered WUBRG glyph cluster flanked by hairlines. */
@@ -1176,7 +1179,7 @@ body[data-lane="table-talk"] .tt-hero-copy { flex: 1 1 auto; min-width: 0; }
 
 /* Table Talk post-cards: gold lane label + gold hover edge instead of green,
    so the lane's card grid reads distinctly from the QA/Lab grids. */
-body[data-lane="table-talk"] .post-card .card-topline span:first-child { color: var(--tt-gold); }
+body[data-lane="table-talk"] .post-card .card-topline span:first-child { color: var(--tt-label-text); }
 body[data-lane="table-talk"] .post-card:hover { border-color: var(--tt-gold); }
 
 /* ---- Shelf: horizontal-scrolling card row (Recommended Shelf, Open the

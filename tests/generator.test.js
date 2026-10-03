@@ -31,6 +31,26 @@ const gen = require('../scripts/build-site-indexes.js');
 const GENERATOR_PATH = path.join(ROOT, 'scripts', 'build-site-indexes.js');
 const REAL_MANIFEST_PATH = path.join(ROOT, 'assets', 'data', 'content-index.json');
 
+test('RBB-051: Learning Lab dates come from published records without adding dates to other card listings', () => {
+  const manifest = gen.loadManifest(REAL_MANIFEST_PATH);
+  gen.validateManifest(manifest);
+  const outputs = gen.computeOutputs(manifest);
+  const posts = manifest.records.filter(r => r.content_type === 'post' && r.section === 'Learning Lab' && r.status === 'published').sort(gen.compareDateOrderedThenId);
+  const region = outputs['learning-lab/index.html'].match(/GENERATED:LEARNING_LAB_LIST:START[\s\S]*?GENERATED:LEARNING_LAB_LIST:END/)[0];
+  const dates = [...region.matchAll(/<time datetime="([^"]+)">([^<]+)<\/time>/g)];
+  assert.deepEqual(dates.map(m => m[1]), posts.map(r => r.published_date));
+  assert.deepEqual(dates.map(m => m[2]), posts.map(r => r.published_date.replace(/-/g, '.')));
+  for (const [file, marker] of [['articles/index.html','ARTICLES_LIST'],['table-talk/index.html','TABLE_TALK_LIST']]) {
+    const listing = outputs[file].match(new RegExp(`GENERATED:${marker}:START[\\s\\S]*?GENERATED:${marker}:END`));
+    assert.ok(listing, `missing listing ${marker}`);
+    assert.doesNotMatch(listing[0], /<time\b/);
+  }
+  const page = outputs['learning-lab/index.html'];
+  assert.match(page, /href="#experiment-log"/);
+  assert.match(page, /id="experiment-log"/);
+  assert.doesNotMatch(page, /Individual build-note writeups are in progress|More build notes are coming/);
+});
+
 function baseRecord(overrides) {
   return Object.assign({
     id: 'post:fixture-post',
