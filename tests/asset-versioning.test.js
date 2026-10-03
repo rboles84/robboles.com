@@ -55,6 +55,10 @@ test('asset-version sync is idempotent and leaves page-local release keys indepe
     path.join(ROOT, 'magic-math', 'partner-isnt-one-mechanic', 'index.html'),
     'utf8'
   );
-  assert.match(partnerPage, /partner-four-choices\.css\?v=20260803b/);
-  assert.match(partnerPage, /partner-four-choices\.js\?v=20260803b/);
+  const cssKey = partnerPage.match(/partner-four-choices\.css\?v=(\d{8}[a-z])/);
+  const jsKey = partnerPage.match(/partner-four-choices\.js\?v=(\d{8}[a-z])/);
+  assert.ok(cssKey, 'Partner CSS needs its local release key');
+  assert.ok(jsKey, 'Partner JS needs its local release key');
+  assert.equal(cssKey[1], jsKey[1], 'Partner assets ship as a paired local unit');
+  assert.equal(cssKey[1], '20261003a', 'Partner selected-text release key');
 });

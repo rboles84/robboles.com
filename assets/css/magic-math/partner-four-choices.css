@@ -120,6 +120,8 @@ footer a:hover, footer a:focus-visible { color: var(--gold); }
 .share-segment[aria-pressed="true"] { background: #596b60; box-shadow: inset 0 0 0 2px var(--gold); }
 .share-doctor[aria-pressed="true"] { background: #596681; }
 .share-other[aria-pressed="true"] { background: #746d60; }
+.share-segment[aria-pressed="true"] span,
+.share-other[aria-pressed="true"] strong { color: #fff8eb; }
 .share-segment:hover, .share-segment:focus-visible { transform: translateY(-2px); outline: 2px solid var(--gold); outline-offset: -4px; }
 
 /* Four rule structures shown with real cards instead of a dot field. */

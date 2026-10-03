@@ -76,6 +76,80 @@ const explicitDarkTokens = new Map([
   ...customProperties(declarationsFor(':root[data-theme="dark"]')),
 ]);
 
+test('RBB-076: Partner chart effective selected text passes while unselected colors stay intact', () => {
+  const source = fs.readFileSync(path.join(ROOT, 'assets/css/magic-math/partner-four-choices.css'), 'utf8');
+  const tokens = customProperties(source.slice(source.indexOf('{') + 1, source.indexOf('}')));
+  // Only this chart's simple selectors/solid surfaces are modeled. Unknown chart selectors
+  // fail closed; rendered QA independently verifies inheritance, mobile and interaction states.
+  function rulesAtWidth(width) {
+    const rules = [];
+    function walk(text) {
+      let cursor = 0;
+      while (cursor < text.length) {
+        const open = text.indexOf('{', cursor);
+        if (open < 0) break;
+        let depth = 1, close = open + 1;
+        while (depth && close < text.length) {
+          if (text[close] === '{') depth++;
+          if (text[close] === '}') depth--;
+          close++;
+        }
+        const selector = text.slice(cursor, open).trim();
+        const body = text.slice(open + 1, close - 1);
+        if (selector.startsWith('@media')) {
+          const min = selector.match(/min-width:\s*(\d+)px/);
+          const max = selector.match(/max-width:\s*(\d+)px/);
+          if ((!min || width >= Number(min[1])) && (!max || width <= Number(max[1]))) walk(body);
+        } else if (!selector.startsWith('@')) {
+          for (const part of selector.split(',')) {
+            if (!part.includes('.share-')) continue;
+            const match = part.trim().match(/^(\.share-[\w-]+)((?:\[aria-pressed="(?:true|false)"\]|:(?:hover|focus-visible))*)(?:\s+(strong|span))?$/);
+            assert.ok(match, `extend the scoped chart cascade check for ${part}`);
+            rules.push({ cls: match[1].slice(1), state: match[2], tag: match[3], body,
+              specificity: 10 + (match[2].match(/\[|:/g) || []).length * 10 + (match[3] ? 1 : 0), order: rules.length });
+          }
+        }
+        cursor = close;
+      }
+    }
+    walk(source.replace(/\/\*[\s\S]*?\*\//g, ''));
+    return rules.sort((a, b) => a.specificity - b.specificity || a.order - b.order);
+  }
+  function style(rules, key, pressed, hover, focus, tag) {
+    const result = {};
+    for (const r of rules) {
+      if (!['share-segment', `share-${key}`].includes(r.cls) || r.tag !== tag) continue;
+      if (r.state.includes('[aria-pressed="true"]') && !pressed) continue;
+      if (r.state.includes('[aria-pressed="false"]') && pressed) continue;
+      if (r.state.includes(':hover') && !hover) continue;
+      if (r.state.includes(':focus-visible') && !focus) continue;
+      for (const declaration of r.body.split(';')) {
+        const colon = declaration.indexOf(':');
+        if (colon >= 0) result[declaration.slice(0, colon).trim()] = declaration.slice(colon + 1).trim();
+      }
+    }
+    return result;
+  }
+  const originalSurfaces = { open: '#42665e', doctor: '#4c5872', other: '#625d53' };
+  for (const width of [1280, 390]) for (const key of ['open', 'doctor', 'other']) {
+    const rules = rulesAtWidth(width);
+    for (const pressed of [false, true]) for (const [hover, focus] of [[false,false],[true,false],[false,true],[true,true]]) {
+      const parent = style(rules, key, pressed, hover, focus);
+      const background = parent['background-color'] || parent.background;
+      if (!pressed) assert.equal(background, originalSurfaces[key]);
+      for (const tag of ['strong', 'span']) {
+        const child = style(rules, key, pressed, hover, focus, tag);
+        assert.ok(!child.background && !child['background-color'], 'chart text uses its segment surface');
+        const foreground = child.color || parent.color || tokens.get('--ink');
+        assertContrastAtLeast(`${width}/${key}/${pressed}/${hover}/${focus}/${tag}`, foreground, background, tokens);
+        if (!pressed || (tag === 'strong' && key !== 'other')) {
+          assert.equal(resolveToken(foreground, tokens), tag === 'span' ? '#e2ddd3' : '#f3efe7');
+        }
+      }
+    }
+  }
+});
+
 test('RBB-074: lane text uses readable colors while decorative gold keeps its original value', () => {
   for (const tokens of [rootTokens,systemDarkTokens,explicitDarkTokens]) {
     for (const surface of ['--bg','--surface','--surface-2']) {
