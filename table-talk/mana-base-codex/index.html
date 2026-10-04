@@ -476,16 +476,38 @@
 
 /* =============================================================================
    LAYER: print
-   Minimal print stylesheet: strip the dark theme and decorative/interactive
+   Paper palette: strip the dark theme and decorative/interactive
    chrome (search bar, tabs, ambient field) that make no sense on paper, and
    force every tab panel to print in full rather than only the active one.
    ============================================================================= */@layer print{
   @media print{
-    body{background:#fff; color:#111}
-    .aether,.vignette,.viewbar,.explorer,.flavor-toggle,.lab{display:none!important}
+    :root{
+      color-scheme:light;
+      --ink:#fff; --ink-2:#f7f6f2; --ink-3:#efede6; --ink-4:#e6e2d8;
+      --bone:#161616; --bone-dim:#37352f; --bone-tertiary:#555046;
+      --bone-faint:#655f51;
+      --gold:#6e5016; --gold-dim:#8d784e; --gold-glow:transparent;
+      --line:#c4bfb3; --line-2:#aaa393;
+      --warning-text:#8a3426;
+    }
+    body{background:var(--ink); color:var(--bone)}
+    .aether,.vignette,.viewbar,.explorer,.flavor-toggle,.lab,#cardpop{display:none!important}
     section.pane{display:block!important}
-    .lcard,.stat,.cyc-block{break-inside:avoid; border-color:#ccc}
-    a{color:#111}
+    .lcard,.stat,.cyc-block{break-inside:avoid; border-color:var(--line)}
+    .idcard,.lcard{background:var(--ink-2); box-shadow:none}
+    .lcard .foot{border-color:var(--line)}
+    .switch button[aria-pressed="true"]{color:var(--bone); background:var(--ink-3)}
+    .tier{outline:1px solid var(--line-2); outline-offset:-1px}
+    a{color:var(--gold)}
+    /* These catalog surfaces and guide headings are unlayered on screen.
+       Print-only importance crosses that boundary without a universal reset. */
+    #pane-catalog .mem,
+    #pane-catalog .mem .mana-run,
+    #pane-catalog .cyc-toggle .twisty{
+      background:var(--ink)!important; border-color:var(--line-2)!important;
+    }
+    .lcol.up h3{color:#275340!important}
+    .lcol.tp h3{color:#324d70!important}
   }
 }
 
