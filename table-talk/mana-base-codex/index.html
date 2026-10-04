@@ -503,12 +503,15 @@
    element being created per card name.
    ============================================================================= *//* ---- Card hover popups (Scryfall image + offline info fallback) — unlayered so overlay wins ---- */
 .cardname{cursor:help; border-bottom:1px dotted var(--line-2); transition:color .15s, border-color .15s}
-.cardname:hover,.cardname:focus-visible{color:var(--gold); border-bottom-color:var(--gold-dim); outline:none}
+.cardname:hover,.cardname:focus-visible{color:var(--gold); border-bottom-color:var(--gold-dim)}
+.cardname:focus-visible,#cardpop:focus-visible,#cardpop a:focus-visible{outline:2px solid var(--gold); outline-offset:3px}
 #cardpop{position:fixed; z-index:200; left:0; top:0; width:280px; max-width:min(82vw,300px); display:none;
   background:var(--ink-3); border:1px solid var(--line-2); border-radius:8px;
+  max-height:calc(100dvh - 16px); overflow:auto; overscroll-behavior:contain;
   box-shadow:0 22px 60px rgba(0,0,0,.6); pointer-events:none; opacity:0; transform:translateY(4px);
   transition:opacity .14s var(--ease), transform .14s var(--ease)}
-#cardpop.on{opacity:1; transform:none}
+#cardpop.on{opacity:1; transform:none; pointer-events:auto}
+#cardpop[aria-hidden="true"]{display:none}
 #cardpop .cp-img{padding:8px; line-height:0}
 #cardpop .cp-img img{width:100%; border-radius:10px; display:block}
 #cardpop .cp-load{padding:26px 16px; text-align:center; font-family:var(--mono); font-size:11px;
@@ -519,11 +522,11 @@
 @keyframes cpspin{to{transform:rotate(360deg)}}
 #cardpop .cp-info{padding:14px 15px}
 #cardpop .cp-top{display:flex; align-items:flex-start; gap:8px}
-#cardpop .cp-nm{font-size:15px; font-weight:600; line-height:1.2; flex:1; color:var(--bone)}
+#cardpop .cp-nm{font-size:15px; font-weight:600; line-height:1.2; flex:1; min-width:0; overflow-wrap:anywhere; color:var(--bone)}
 #cardpop .cp-pips{display:flex; gap:3px; margin-top:2px}
 #cardpop .cp-cyc{font-family:var(--mono); font-size:10.5px; color:var(--bone-tertiary); margin-top:4px; display:block}
 #cardpop .cp-beh{font-size:12.5px; color:var(--bone-dim); margin:9px 0 0; line-height:1.5}
-#cardpop .cp-foot{display:flex; gap:8px; align-items:center; margin-top:10px; padding-top:9px;
+#cardpop .cp-foot{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:10px; padding-top:9px;
   border-top:1px solid var(--line); font-family:var(--mono); font-size:10px; color:var(--bone-tertiary)}
 /* =============================================================================
    UNDERSTAND PANE STYLES (also unlayered — see note above; kept alongside
@@ -1436,11 +1439,11 @@ const ERAS = [
    currently contain quotes, but this makes that assumption unnecessary. */
 const escAttr = s => String(s).replace(/"/g,'&quot;');
 /* Wraps any card name in the markup the hover-popup system (cardPop, near
-   the end of this script) listens for: `tabindex="0"` makes it keyboard-
-   focusable (so the popup also works via Tab + the CARD's own focus, not
-   just mouse hover), and `data-card` carries the exact name cardPop will
+   the end of this script) listens for. Inline spans preserve wrapping in
+   gallery/ledger copy; button semantics and explicit Enter/Space handling
+   support activation as well as passive focus preview. `data-card` carries the exact name cardPop will
    look up on Scryfall / in the offline CARD_INFO table. */
-const cardName = nm => `<span class="cardname" tabindex="0" data-card="${escAttr(nm)}">${nm}</span>`;
+const cardName = nm => `<span class="cardname" role="button" tabindex="0" data-card="${escAttr(nm)}" aria-label="${escAttr(nm)} card preview" aria-haspopup="dialog" aria-controls="cardpop" aria-expanded="false">${nm}</span>`;
 const manaSymbol = c => `<i class="ms ms-${c.toLowerCase()} ms-cost mana-symbol" aria-hidden="true"></i>`;
 /* Color-IDENTITY glyph (picker cards + result header): a row of individual
    per-color manaSymbol() pips, one per color in the identity — same pattern
@@ -2169,7 +2172,8 @@ const CARD_INFO = (function(){
    exposed globally, so nothing else on the page can accidentally poke at
    the popup's internal state. */
 const cardPop = (function(){
-  let pop=null, hoverTimer=null, current=null;
+  let pop=null, hoverTimer=null, hideTimer=null, current=null, dismissedTrigger=null;
+  let pointerInTrigger=false, pointerInPop=false;
   const baseName=n=>n.split(' / ')[0].trim();
 
   /* Card art is loaded only when a reader requests a preview. Cache each
@@ -2206,21 +2210,46 @@ const cardPop = (function(){
   /* Lazily creates the ONE popup DOM element used for every card (not one
      per card name) — cheaper, and means there's only ever a single popup
      visible at a time by construction. */
-  function ensure(){ if(pop) return pop; pop=document.createElement('div'); pop.id='cardpop'; pop.setAttribute('aria-hidden','true'); document.body.appendChild(pop); return pop; }
+  function ensure(){
+    if(pop) return pop;
+    pop=document.createElement('div'); pop.id='cardpop'; pop.tabIndex=-1;
+    pop.setAttribute('role','dialog'); pop.setAttribute('aria-modal','false');
+    pop.setAttribute('aria-hidden','true'); pop.inert=true; document.body.appendChild(pop);
+    return pop;
+  }
+  const valid=session=>current===session&&session.el.isConnected&&session.el.getClientRects().length>0;
+  const within=node=>!!node&&(current?.el.contains(node)||pop?.contains(node));
+  function cancelHide(){ clearTimeout(hideTimer); }
+  function scheduleHide(){
+    cancelHide();
+    hideTimer=setTimeout(()=>{
+      if(!pointerInTrigger&&!pointerInPop&&!within(document.activeElement)) hide();
+    },220);
+  }
   /* Positions the popup next to whichever element `el` triggered it,
      preferring the right side but flipping to the left if it would run off
      the right edge of the viewport, and clamping vertically so it never
      renders partly off-screen top or bottom. */
-  function place(el){ const p=ensure(); const r=el.getBoundingClientRect(); p.style.display='block';
-    const pw=p.offsetWidth, ph=p.offsetHeight;
-    let left=r.right+12; if(left+pw>innerWidth-8) left=r.left-pw-12; if(left<8) left=8;
-    let top=r.top+r.height/2-ph/2; top=Math.max(8,Math.min(top,innerHeight-ph-8));
+  function place(session){ if(!valid(session)) return; const p=ensure(); const r=session.el.getBoundingClientRect();
+    p.style.maxHeight='';
+    const pw=p.offsetWidth; let ph=p.offsetHeight;
+    let left=r.right+12; if(left+pw>innerWidth-8) left=r.left-pw-12;
+    let top=r.top+r.height/2-ph/2;
+    if(left<8){
+      // Narrow screens need a vertical neighbor, so the panel does not
+      // cover its own trigger between touch focus and the click release.
+      left=8;
+      const below=innerHeight-r.bottom-20, above=r.top-20, down=below>=above;
+      p.style.maxHeight=Math.max(24,down?below:above)+'px'; ph=p.offsetHeight;
+      top=down?r.bottom+12:r.top-ph-12;
+    }
+    top=Math.max(8,Math.min(top,innerHeight-ph-8));
     p.style.left=left+'px'; p.style.top=top+'px';
   }
   const LOAD='<div class="cp-load"><span class="sp"></span>Summoning…</div>';
   function infoHTML(name){
     const i=CARD_INFO[name]||CARD_INFO[baseName(name)];
-    const scry=`<a href="${scryLink(name)}" target="_blank" rel="noopener">Scryfall&nbsp;&#8599;</a>`;
+    const scry=`<a href="${scryLink(name)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${escAttr(name)} on Scryfall (new tab)">Scryfall&nbsp;&#8599;</a>`;
     if(!i) return `<div class="cp-info"><div class="cp-top"><span class="cp-nm">${name}</span></div>
       <div class="cp-foot">${scry}</div></div>`;
     const pips=(i.colors&&i.colors.length)?`<span class="cp-pips">${i.colors.map(manaSymbol).join('')}</span>`:'';
@@ -2231,48 +2260,114 @@ const cardPop = (function(){
   /* Shows the popup for element `el`: displays a loading state
      immediately (so hovering never feels unresponsive even on a slow
      connection), then resolves the image and swaps in either the <img> or
-     the offline info card once resolve() settles. The `current!==name`
-     checks guard against a slow, stale request overwriting a NEWER hover's
-     popup if the person moved to a different card while the fetch was
-     still in flight. */
+     the offline info card once resolve() settles. Each open session owns
+     its trigger as well as its name: a same-name reopen must not accept
+     callbacks, images or placement from an earlier occurrence. */
   function show(el){
-    const name=el.dataset.card; if(!name) return; current=name;
-    const p=ensure(); p.innerHTML=LOAD; place(el); requestAnimationFrame(()=>p.classList.add('on'));
+    const name=el.dataset.card; if(!name||!el.isConnected||!el.getClientRects().length) return;
+    clearTimeout(hoverTimer); cancelHide();
+    if(current?.el===el) return;
+    hide();
+    const session={el,name}; current=session;
+    pointerInTrigger=el.matches(':hover');
+    const p=ensure(); p.innerHTML=LOAD; p.inert=false;
+    p.setAttribute('aria-label',name+' card preview'); p.setAttribute('aria-hidden','false');
+    el.setAttribute('aria-expanded','true'); p.style.display='block'; place(session);
+    requestAnimationFrame(()=>{ if(valid(session)) p.classList.add('on'); });
     resolve(name).then(val=>{
-      if(current!==name) return;
+      if(!valid(session)) return;
       if(val && val!=='none'){
         p.innerHTML=`<div class="cp-img"><img alt="${escAttr(name)}"></div>`;
         const img=p.querySelector('img');
-        img.onload=()=>{ if(current===name) place(el); };
-        img.onerror=()=>{ if(current===name){ p.innerHTML=infoHTML(name); place(el); } };
+        img.onload=()=>{ if(valid(session)&&p.querySelector('img')===img) place(session); };
+        img.onerror=()=>{ if(valid(session)&&p.querySelector('img')===img){ p.innerHTML=infoHTML(name); place(session); } };
         img.src=val;
-      } else { p.innerHTML=infoHTML(name); place(el); }
+        place(session);
+      } else { p.innerHTML=infoHTML(name); place(session); }
     });
   }
-  /* Fades the popup out, then (after the transition finishes) sets
-     display:none — the delay just keeps the CSS opacity transition from
-     being cut off instantly. */
-  function hide(){ current=null; if(pop){ pop.classList.remove('on'); const t=pop; setTimeout(()=>{ if(!current) t.style.display='none'; },160); } }
+  /* Remove focused actions before hiding. Escape/keyboard return suppress
+     passive reopening on the restored trigger; outside activation keeps
+     the newly chosen control's focus. No closing timer can hide a reopen. */
+  function hide({restore=false,dismiss=false}={}){
+    clearTimeout(hoverTimer); cancelHide();
+    const el=current?.el, focused=pop?.contains(document.activeElement);
+    if(dismiss) dismissedTrigger=el;
+    current=null; pointerInTrigger=false; pointerInPop=false;
+    if(el) el.setAttribute('aria-expanded','false');
+    if(restore&&el?.isConnected&&el.getClientRects().length){
+      dismissedTrigger=el; el.focus({preventScroll:true});
+    } else if(focused) document.activeElement.blur();
+    if(pop){ pop.inert=true; pop.setAttribute('aria-hidden','true'); pop.classList.remove('on'); pop.style.display='none'; }
+  }
+  function enterPanel(){
+    const action=pop.querySelector('a')||pop; action.focus({preventScroll:true});
+    if(action!==pop){
+      const r=action.getBoundingClientRect(),p=pop.getBoundingClientRect();
+      if(r.bottom>p.bottom-8) pop.scrollTop+=r.bottom-p.bottom+8;
+      else if(r.top<p.top+8) pop.scrollTop-=p.top+8-r.top;
+    }
+  }
 
-  /* Wires every interaction path that should show/hide the popup:
-     mouse hover (with a short delay via hoverTimer so quickly skimming
-     past many names doesn't fire a request for each one), keyboard focus/
-     blur (so Tab-only users get the same popup), Escape to dismiss, a
-     click to toggle it (useful on touch devices with no real "hover"), and
-     auto-hide on scroll/resize since a positioned popup would otherwise be
-     left floating over the wrong spot. Called once, at boot, below. */
+  /* Hover/focus preview is passive. Explicit activation always opens;
+     keyboard activation enters the panel, and Tab bridges its body-end
+     DOM position. Shift+Tab returns; forward Tab continues after origin.
+     Pointer departure has a gap grace period, canceled inside the pair. */
   function init(){
-    document.addEventListener('mouseover',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null; if(!el) return;
-      clearTimeout(hoverTimer); hoverTimer=setTimeout(()=>show(el),120); });
-    document.addEventListener('mouseout',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null; if(!el) return;
-      clearTimeout(hoverTimer); hide(); });
-    document.addEventListener('focusin',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null; if(el) show(el); });
-    document.addEventListener('focusout',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null; if(el) hide(); });
-    document.addEventListener('keydown',e=>{ if(e.key==='Escape') hide(); });
-    document.addEventListener('click',e=>{ const el=e.target.closest?e.target.closest('.cardname'):null;
-      if(el){ if(current===el.dataset.card) hide(); else show(el); } else if(current) hide(); });
-    addEventListener('scroll',()=>{ if(current) hide(); },{passive:true});
-    addEventListener('resize',()=>{ if(current) hide(); });
+    ensure();
+    document.addEventListener('pointerover',e=>{
+      if(e.pointerType==='touch') return;
+      if(pop.contains(e.target)){ pointerInPop=true; cancelHide(); return; }
+      const el=e.target.closest?.('.cardname'); if(!el||el.contains(e.relatedTarget)) return;
+      if(current?.el===el){ pointerInTrigger=true; cancelHide(); }
+      if(el===dismissedTrigger) return;
+      clearTimeout(hoverTimer); hoverTimer=setTimeout(()=>show(el),120);
+    });
+    document.addEventListener('pointerout',e=>{
+      if(e.pointerType==='touch') return;
+      const el=e.target.closest?.('.cardname');
+      if(el&&!el.contains(e.relatedTarget)){
+        clearTimeout(hoverTimer);
+        if(el===dismissedTrigger&&document.activeElement!==el) dismissedTrigger=null;
+        if(current?.el===el){ pointerInTrigger=false; scheduleHide(); }
+      }
+      if(pop.contains(e.target)&&!pop.contains(e.relatedTarget)){ pointerInPop=false; scheduleHide(); }
+    });
+    document.addEventListener('focusin',e=>{
+      if(pop.contains(e.target)){ cancelHide(); return; }
+      const el=e.target.closest?.('.cardname'); if(el&&el!==dismissedTrigger) show(el);
+    });
+    document.addEventListener('focusout',e=>{
+      if(e.target===dismissedTrigger&&!dismissedTrigger.contains(e.relatedTarget)) dismissedTrigger=null;
+      if(within(e.target)&&!within(e.relatedTarget)) scheduleHide();
+    });
+    document.addEventListener('keydown',e=>{
+      if((e.key==='Enter'||e.key===' ')&&e.target.closest?.('.cardname')){
+        e.preventDefault(); dismissedTrigger=null; show(e.target.closest('.cardname')); enterPanel();
+      }
+      if(e.key==='Escape'){
+        const el=e.target.closest?.('.cardname');
+        if(current){ e.preventDefault(); hide({restore:pop.contains(e.target),dismiss:true}); }
+        else { clearTimeout(hoverTimer); if(el) dismissedTrigger=el; }
+      }
+      if(e.key==='Tab'&&current){
+        if((e.target===current.el||e.target===pop)&&!e.shiftKey&&pop.querySelector('a')){
+          e.preventDefault(); enterPanel();
+        } else if(pop.contains(e.target)){
+          if(e.shiftKey) e.preventDefault();
+          hide({restore:true,dismiss:true});
+          // Forward Tab's native default now starts from the origin.
+        }
+      }
+    });
+    document.addEventListener('click',e=>{
+      if(pop.contains(e.target)) return;
+      const el=e.target.closest?.('.cardname');
+      if(el){ dismissedTrigger=null; show(el); if(e.detail===0) enterPanel(); }
+      else hide();
+    });
+    document.addEventListener('scroll',e=>{ if(!pop.contains(e.target)) hide(); },{passive:true,capture:true});
+    addEventListener('resize',()=>hide());
   }
   return {init};
 })();
